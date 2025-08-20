@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -18,6 +19,8 @@ public class EnemyBehavior : MonoBehaviour
     private PlayerBehavior player;
     bool alert = false;
 
+    NavMeshAgent agent;
+
 
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
@@ -28,6 +31,9 @@ public class EnemyBehavior : MonoBehaviour
         player = playerObject.GetComponent<PlayerBehavior>();
 
         health = maxHealth;
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = walkSpeed;    
     }
 
 
@@ -49,7 +55,16 @@ public class EnemyBehavior : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
 
-            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+            if (agent != null)
+            {
+                agent.SetDestination(player.transform.position);
+                Debug.Log("moving via agent");
+            }
+            else
+            {
+                //transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+                Debug.Log("no agent found");
+            }
         }
     }
 }
