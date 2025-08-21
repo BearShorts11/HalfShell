@@ -15,25 +15,35 @@ public class EnemyBehavior : MonoBehaviour
 
     private GameObject enemyObject;
 
-    public GameObject playerObject;
+    //public GameObject playerObject; //no need to have this as a class variable if it's only used once -N
     private PlayerBehavior player;
     bool alert = false;
 
     NavMeshAgent agent;
 
+    private State state;
+
+    public enum State
+    {
+        idle,
+        chasing
+    }
+
 
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
     {
-        enemyObject = this.gameObject;
+        enemyObject = this.gameObject; //why do we need this? -N
 
-        playerObject = GameObject.Find("Player");
+        GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
 
         health = maxHealth;
 
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = walkSpeed;    
+        agent.speed = walkSpeed;
+
+        state = State.idle;
     }
 
 
@@ -45,26 +55,36 @@ public class EnemyBehavior : MonoBehaviour
         // If so, persues. Enemies do not stop persuing the player post detetction
         if (distanceToPlayer <= detectionRadius)
         {
-            alert = true;
+            //alert = true;
+            state = State.chasing;
         }
 
-        if (alert)
+        switch (state)
         {
+            case State.idle:
+                break;
+            case State.chasing:
+                Chase();
+                break;
+        }
+    }
+
+    void Chase()
+    {
+        if (agent != null)
+        {
+            agent.SetDestination(player.transform.position);
+            Debug.Log("moving via agent");
+        }
+        else
+        {
+            // pretty sure agent takes care of rotation but no way to no for sure w/out a model -N
             // Rotates to "look" at the player
             Vector3 direction = (player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
 
-            if (agent != null)
-            {
-                agent.SetDestination(player.transform.position);
-                Debug.Log("moving via agent");
-            }
-            else
-            {
-                //transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
-                Debug.Log("no agent found");
-            }
         }
     }
 }

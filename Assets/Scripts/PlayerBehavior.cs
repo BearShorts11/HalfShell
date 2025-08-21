@@ -75,7 +75,7 @@ public class PlayerBehavior : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-
+        //keep or delete? -N
         //// Checks if the player is pressing the crouch key and can move, then sets player to crouch height and overrides sprinting/walking movement speeds
         //if (Input.GetKey(KeyCode.LeftControl) && canMove || Input.GetKey(KeyCode.C) && canMove)
         //{
@@ -91,6 +91,7 @@ public class PlayerBehavior : MonoBehaviour
         //}
 
 
+        //why this hanging out in the ether? -N
         characterController.Move(moveDirection * Time.deltaTime);
 
 
