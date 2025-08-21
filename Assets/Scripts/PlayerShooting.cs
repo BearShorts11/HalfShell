@@ -1,18 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
     //AKA Gun class
 
-    [SerializeField] private float spreadAmount;
-
+    private float spreadAmount;
     private float reloadTime = 1f; //time to load one shell
-    private int capacity = 5;
+    private int totalCapacity = 5;
+    private int currentCapacity = 0;
     private float shotCooldown = 1f; //time in between shots
     private float spreadRange = 3f; //variation in raycasts for non single shots (random spread)
 
-    //array or list? keep as array for now but if shells take up half a chamber space prob needs to be a list?
-    public int[] chamber;
+    //first in last out collection
+    private Stack<ShellBase> chamber;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,5 +25,23 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //change to coroutine to do cooldown time?? why yes I just don't want to do that rn
+    public void LoadChamber(ShellBase shell)
+    {
+        if (currentCapacity + shell.Size <= totalCapacity)
+        { 
+            chamber.Push(shell);
+            currentCapacity += shell.Size;
+        }
+
+    }
+
+    public void Fire()
+    { 
+        ShellBase shell = chamber.Pop();
+        currentCapacity -= shell.Size;
+        //determine behavior of shot based on shell type
     }
 }
