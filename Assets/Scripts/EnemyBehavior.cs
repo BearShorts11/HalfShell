@@ -88,12 +88,14 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    public void Damage(int damageAmt)
-    { 
-        health = damageAmt;
+    public void Damage(float damageAmt)
+    {
+        Debug.Log("ow");
+        health -= damageAmt;
 
         if (health <= 0)
         {
+            Debug.Log("dead");
             Destroy(this.gameObject);
         }
     }

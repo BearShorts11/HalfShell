@@ -47,6 +47,7 @@ public class PlayerShooting : MonoBehaviour
 
     public void Fire()
     {
+        //got overzealous and put in this code before it works -N
         //if (chamber.Count > 0)
         //{ 
             //ShellBase shell = chamber.Pop();
@@ -57,6 +58,15 @@ public class PlayerShooting : MonoBehaviour
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
             {
                 Debug.Log(hit.transform.name);
+
+            EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
+
+            if (enemy != null)
+            {
+                enemy.Damage(10f); //eventually will be shell.Damage instead of a random number;
+                Debug.Log("enemy hit");
+            }
+                //hit.transform.GetComponent<Target>
             }
         
         //}
