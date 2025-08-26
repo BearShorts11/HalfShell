@@ -9,7 +9,7 @@ public class EnemyBehavior : MonoBehaviour
 {
     public float walkSpeed = 12f;
     public float gravity = 20f;
-    public int health;
+    public float health = 100f; //note to self: check the fancy shit DM was doing with health properties -N
     public int maxHealth = 100;
     public float detectionRadius = 10;
 
@@ -85,6 +85,16 @@ public class EnemyBehavior : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
             transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
 
+        }
+    }
+
+    public void Damage(int damageAmt)
+    { 
+        health = damageAmt;
+
+        if (health <= 0)
+        {
+            Destroy(this.gameObject);
         }
     }
 }
