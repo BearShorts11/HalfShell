@@ -29,6 +29,9 @@ public class EnemyBehavior : MonoBehaviour
         chasing
     }
 
+    public Material tempEnemNormal;
+    public Material tempEnemDamage;
+
 
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
@@ -91,12 +94,22 @@ public class EnemyBehavior : MonoBehaviour
     public void Damage(float damageAmt)
     {
         Debug.Log("ow");
+        //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
+        StartCoroutine(DamageFlash());
 
         if (health <= 0)
         {
             Debug.Log("dead");
             Destroy(this.gameObject);
         }
+    }
+
+    private IEnumerator DamageFlash()
+    {
+        gameObject.GetComponent<Renderer>().material = tempEnemDamage;
+        yield return new WaitForSeconds(.5f);
+        gameObject.GetComponent<Renderer>().material = tempEnemNormal;
+        yield return new WaitForSeconds(.5f);
     }
 }
