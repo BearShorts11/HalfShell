@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,19 +15,19 @@ public class PlayerShooting : MonoBehaviour
     private float reloadTime = 1f; //time to load one shell
     private float nextTimeTofire = 0f;
     private int totalCapacity = 5;
-    private int currentCapacity = 0;
+    [SerializeField] private int currentCapacity = 0;
     private float shotCooldown = 1f; //time in between shots
     private float spreadRange = 3f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
-    //public Image chamberUI;
+    public Image chamberUI;
     public TextMeshProUGUI spaceLeftText;
-    public GameObject DoneButton; //I don't need this but I'm too lazy to delete it rn -N
+    //not being used rn
     public GameObject BuckButton;
     public GameObject SlugButton;
 
     //first in last out collection
-    private Stack<ShellBase> chamber;
+    private Stack<ShellBase> chamber = new Stack<ShellBase>();
 
     private bool isInMenu = false;
 
@@ -36,10 +37,7 @@ public class PlayerShooting : MonoBehaviour
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
         isInMenu = false;
-        spaceLeftText.gameObject.SetActive(false);
-        DoneButton.SetActive(false);
-        BuckButton.SetActive(false);
-        SlugButton.SetActive(false);
+        //spaceLeftText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -53,22 +51,32 @@ public class PlayerShooting : MonoBehaviour
             Fire();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && isInMenu == false)
-        { 
-            isInMenu = true;
-            spaceLeftText.gameObject.SetActive(true);
-            DoneButton.SetActive(true);
-            BuckButton.SetActive(true);
-            SlugButton.SetActive(true);
-        }
-        if (isInMenu == true && Input.GetKeyDown(KeyCode.Escape))
-        {
-            isInMenu = false;
-            spaceLeftText.gameObject.SetActive(false);
-            DoneButton.SetActive(false);
-            BuckButton.SetActive(false);
-            SlugButton.SetActive(false);
-        }
+
+        //not being used rn
+        //if (Input.GetKeyDown(KeyCode.Q) && isInMenu == false)
+        //{ 
+        //    isInMenu = true;
+        //    spaceLeftText.gameObject.SetActive(true);
+        //    DoneButton.SetActive(true);
+        //    BuckButton.SetActive(true);
+        //    SlugButton.SetActive(true);
+
+        //    gameObject.GetComponent<PlayerBehavior>().NoMove();
+        //}
+        //if (isInMenu == true && Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    isInMenu = false;
+        //    spaceLeftText.gameObject.SetActive(false);
+        //    DoneButton.SetActive(false);
+        //    BuckButton.SetActive(false);
+        //    SlugButton.SetActive(false);
+
+        //    gameObject.GetComponent<PlayerBehavior>().YesMove();
+        //}
+        if (Input.GetKeyDown(KeyCode.X)) AddSlug();
+        if (Input.GetKeyDown(KeyCode.C)) AddBuckshot();
+
+
     }
 
 
@@ -79,7 +87,8 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity + shell.Size <= totalCapacity)
         { 
             chamber.Push(shell);
-            currentCapacity += shell.Size;
+            //currentCapacity += shell.Size;
+            currentCapacity++;
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
         }
@@ -87,44 +96,68 @@ public class PlayerShooting : MonoBehaviour
     }
 
     public void AddSlug()
-    { 
+    {
         Slug slug = new Slug();
-        LoadChamber (slug);
+        if (currentCapacity + slug.Size <= totalCapacity - 1)
+        { 
+            LoadChamber(slug);
+            Debug.Log("slug pressed");
+
+            //this is messy I know I'll fix it later
+            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.SetActive(true);
+            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.GetComponent<Image>().color = Color.green;
+            
+        }
     }
 
     public void AddBuckshot()
     { 
         Buckshot buck = new Buckshot();
-        LoadChamber(buck);
+        if (currentCapacity + buck.Size <= totalCapacity - 1)
+        { 
+            LoadChamber(buck);
+            Debug.Log("buck pressed");
+
+            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.SetActive(true);
+            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.GetComponent<Image>().color = Color.red;
+            
+        }
     }
 
 
 
     public void Fire()
     {
-        //got overzealous and put in this code before it works -N
-        //if (chamber.Count > 0)
-        //{ 
-            //ShellBase shell = chamber.Pop();
+        if (currentCapacity > 0)
+        {
+            ShellBase shell = chamber.Pop();
             //currentCapacity -= shell.Size;
+            currentCapacity--;
+            chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
+            spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
+
             //determine behavior of shot based on shell type
+
+            //shell.GetType();  
+
 
             RaycastHit hit;
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
             {
                 Debug.Log(hit.transform.name);
 
-            EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
+                EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
 
-            if (enemy != null)
-            {
-                enemy.Damage(10f); //eventually will be shell.Damage instead of a random number;
-                Debug.Log("enemy hit");
-            }
+                if (enemy != null)
+                {
+                    enemy.Damage(10f); //eventually will be shell.Damage instead of a random number;
+                    Debug.Log("enemy hit");
+                }
                 //hit.transform.GetComponent<Target>
             }
-        
-        //}
+
+        }
+        else Debug.Log("cannot fire");
 
     }
 }
