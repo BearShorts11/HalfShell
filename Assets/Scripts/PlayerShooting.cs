@@ -11,20 +11,20 @@ public class PlayerShooting : MonoBehaviour
 
     public Camera fpsCam;
 
-    private float spreadAmount;
     private float reloadTime = 1f; //time to load one shell
     private float nextTimeTofire = 0f;
     private int totalCapacity = 5;
-    [SerializeField] private int currentCapacity = 0;
+    [SerializeField] private int currentCapacity = 0; //shown for debug purposes
     private float shotCooldown = 1f; //time in between shots
-    private float spreadRange = 3f; //variation in raycasts for non single shots (random spread)
+    [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
-    public Image chamberUI;
+    //UI fields
     public TextMeshProUGUI spaceLeftText;
-    //not being used rn
-    public GameObject BuckButton;
-    public GameObject SlugButton;
+    public Image chamberUI;
+    public Image SingleShotCrosshair;
+    public Image MultiShotCrosshair;
+
 
     //first in last out collection
     private Stack<ShellBase> chamber = new Stack<ShellBase>();
@@ -38,6 +38,9 @@ public class PlayerShooting : MonoBehaviour
 
         isInMenu = false;
         //spaceLeftText.gameObject.SetActive(false);
+
+        SingleShotCrosshair.gameObject.SetActive(true);
+        MultiShotCrosshair.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -51,6 +54,22 @@ public class PlayerShooting : MonoBehaviour
             Fire();
         }
 
+        if (chamber.Count > 0)
+        { 
+            ShellBase top = chamber.Peek();
+            switch (top.Type)
+            { 
+                case ShellBase.ShellType.Slug:
+                //case ShellBase.ShellType. some other shot type that also is a single fire
+                    SingleShotCrosshair.gameObject.SetActive(true);
+                    MultiShotCrosshair.gameObject.SetActive(false);
+                    break;
+                case ShellBase.ShellType.Buckshot:
+                    SingleShotCrosshair.gameObject.SetActive(false);
+                    MultiShotCrosshair.gameObject.SetActive(true);
+                    break;
+            }
+        }
 
         //not being used rn
         //if (Input.GetKeyDown(KeyCode.Q) && isInMenu == false)
@@ -73,6 +92,7 @@ public class PlayerShooting : MonoBehaviour
 
         //    gameObject.GetComponent<PlayerBehavior>().YesMove();
         //}
+
         if (Input.GetKeyDown(KeyCode.X)) AddSlug();
         if (Input.GetKeyDown(KeyCode.C)) AddBuckshot();
 
@@ -98,7 +118,7 @@ public class PlayerShooting : MonoBehaviour
     public void AddSlug()
     {
         Slug slug = new Slug();
-        if (currentCapacity + slug.Size <= totalCapacity - 1)
+        if (currentCapacity + slug.Size <= totalCapacity)
         { 
             LoadChamber(slug);
             Debug.Log("slug pressed");
@@ -113,7 +133,7 @@ public class PlayerShooting : MonoBehaviour
     public void AddBuckshot()
     { 
         Buckshot buck = new Buckshot();
-        if (currentCapacity + buck.Size <= totalCapacity - 1)
+        if (currentCapacity + buck.Size <= totalCapacity)
         { 
             LoadChamber(buck);
             Debug.Log("buck pressed");
@@ -138,26 +158,50 @@ public class PlayerShooting : MonoBehaviour
 
             //determine behavior of shot based on shell type
 
-            //shell.GetType();  
-
-
             RaycastHit hit;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
+            switch (shell.Type)
             {
-                Debug.Log(hit.transform.name);
+                case ShellBase.ShellType.Buckshot:
 
-                EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
+                    for (int i = 1; i <= shell.AmtProjectiles; i++)
+                    {
+                        //https://discussions.unity.com/t/raycast-bullet-spread/753464 
+                        Vector3 fwd = fpsCam.transform.forward;
+                        fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
+                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange))
+                        {
+                            Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
+                            HitEnemy(hit,shell);
+                        }
+                    
+                    }
 
-                if (enemy != null)
-                {
-                    enemy.Damage(10f); //eventually will be shell.Damage instead of a random number;
-                    Debug.Log("enemy hit");
-                }
-                //hit.transform.GetComponent<Target>
+                    break;
+                case ShellBase.ShellType.Slug:
+                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
+                    {
+                        HitEnemy(hit, shell);
+                    }
+                    break;
             }
+
+
 
         }
         else Debug.Log("cannot fire");
 
+    }
+
+    private void HitEnemy(RaycastHit hit, ShellBase shell)
+    {
+        Debug.Log(hit.transform.name);
+
+        EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
+
+        if (enemy != null)
+        {
+            enemy.Damage(shell.Damage); //eventually will be shell.Damage instead of a random number;
+            Debug.Log("enemy hit");
+        }
     }
 }
