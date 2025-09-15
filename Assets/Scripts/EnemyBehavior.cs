@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -12,6 +13,8 @@ public class EnemyBehavior : MonoBehaviour
     public float health = 100f; //note to self: check the fancy shit DM was doing with health properties -N
     public int maxHealth = 100;
     public float detectionRadius = 10;
+    public float attackRaidus = 2f;
+    public float cooldownTime = 1f;
 
     private GameObject enemyObject;
 
@@ -26,9 +29,12 @@ public class EnemyBehavior : MonoBehaviour
     public enum State
     {
         idle,
-        chasing
+        chasing,
+        attack,
+        cooldown
     }
 
+    //temporary materials to show that an enemy was damaged
     public Material tempEnemNormal;
     public Material tempEnemDamage;
 
@@ -61,6 +67,10 @@ public class EnemyBehavior : MonoBehaviour
             //alert = true;
             state = State.chasing;
         }
+        if (distanceToPlayer <= attackRaidus)
+        {
+            state = State.attack;
+        }
 
         switch (state)
         {
@@ -68,6 +78,12 @@ public class EnemyBehavior : MonoBehaviour
                 break;
             case State.chasing:
                 Chase();
+                break;
+            case State.attack:
+                Attack();
+                break;
+            case State.cooldown:
+                StartCoroutine(Cooldown());
                 break;
         }
     }
@@ -91,16 +107,26 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    void Attack()
+    { 
+        
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(cooldownTime);
+    }
+
     public void Damage(float damageAmt)
     {
-        Debug.Log("ow");
+        //Debug.Log("ow");
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
         StartCoroutine(DamageFlash());
 
         if (health <= 0)
         {
-            Debug.Log("dead");
+            //Debug.Log("dead");
             Destroy(this.gameObject);
         }
     }
