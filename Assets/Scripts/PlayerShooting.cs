@@ -24,6 +24,7 @@ public class PlayerShooting : MonoBehaviour
     public Image chamberUI;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
+    public GameObject ShellSelectionMenu;
 
 
     //first in last out collection
@@ -71,7 +72,7 @@ public class PlayerShooting : MonoBehaviour
             }
         }
 
-        //not being used rn
+        #region not being used rn
         //if (Input.GetKeyDown(KeyCode.Q) && isInMenu == false)
         //{ 
         //    isInMenu = true;
@@ -92,12 +93,26 @@ public class PlayerShooting : MonoBehaviour
 
         //    gameObject.GetComponent<PlayerBehavior>().YesMove();
         //}
+        #endregion
 
-        if (Input.GetKeyDown(KeyCode.X)) AddSlug();
-        if (Input.GetKeyDown(KeyCode.C)) AddBuckshot();
 
+        //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
+        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
+        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
+
+        //Opens Shell Selection menu UI while [TAB] is pressed - Alex
+        if (Input.GetKey(KeyCode.Tab)) ShellSelectionWheel.OpenShellWheel(ShellSelectionMenu);
 
     }
+
+    //private void OpenShellWheel()
+    //{
+    //    Debug.Log("opened shell selection menu");
+    //    isInMenu = true;
+
+        
+
+    //}
 
 
 

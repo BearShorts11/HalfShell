@@ -76,6 +76,8 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         //keep or delete? -N
+        //Keep in case lvl desgn wants crouching for some reason - A
+
         //// Checks if the player is pressing the crouch key and can move, then sets player to crouch height and overrides sprinting/walking movement speeds
         //if (Input.GetKey(KeyCode.LeftControl) && canMove || Input.GetKey(KeyCode.C) && canMove)
         //{
