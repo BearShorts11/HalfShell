@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -10,22 +11,19 @@ public class EnemyBehavior : MonoBehaviour
 {
     public float walkSpeed = 12f;
     public float gravity = 20f;
-    public float health = 100f; //note to self: check the fancy shit DM was doing with health properties -N
+    public float health = 100f; 
     public int maxHealth = 100;
+    public float damage = 10f;
     public float detectionRadius = 10;
-    public float attackRaidus = 2f;
+    public float attackRaidus = 3f;
+    public float attackTime = 1f; //tied to attack anim time
     public float cooldownTime = 1f;
 
-    private GameObject enemyObject;
-
-    //public GameObject playerObject; //no need to have this as a class variable if it's only used once -N
     private PlayerBehavior player;
-    bool alert = false;
-
     NavMeshAgent agent;
 
-    private State state;
 
+    private State state;
     public enum State
     {
         idle,
@@ -42,8 +40,6 @@ public class EnemyBehavior : MonoBehaviour
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
     {
-        enemyObject = this.gameObject; //why do we need this? -N
-
         GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
 
@@ -60,30 +56,22 @@ public class EnemyBehavior : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        // Detetcts if the player is within detetction radius.
-        // If so, persues. Enemies do not stop persuing the player post detetction
-        if (distanceToPlayer <= detectionRadius)
-        {
-            //alert = true;
-            state = State.chasing;
-        }
-        if (distanceToPlayer <= attackRaidus)
-        {
-            state = State.attack;
-        }
-
+        Debug.Log(state);
         switch (state)
         {
             case State.idle:
+                // Detetcts if the player is within detetction radius.
+                if (distanceToPlayer <= detectionRadius)
+                {
+                    state = State.chasing;
+                }
                 break;
             case State.chasing:
                 Chase();
                 break;
             case State.attack:
-                Attack();
                 break;
             case State.cooldown:
-                StartCoroutine(Cooldown());
                 break;
         }
     }
@@ -93,33 +81,46 @@ public class EnemyBehavior : MonoBehaviour
         if (agent != null)
         {
             agent.SetDestination(player.transform.position);
-            Debug.Log("moving via agent");
+
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer <= attackRaidus)
+            {
+                state = State.attack;
+                StartCoroutine(Attack());
+            }
         }
         else
         {
-            // pretty sure agent takes care of rotation but no way to no for sure w/out a model -N
+            //lowkey don't need this
+
             // Rotates to "look" at the player
             Vector3 direction = (player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
             transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
-
         }
     }
 
-    void Attack()
-    { 
-        
+    IEnumerator Attack()
+    {
+        agent.isStopped = true;
+        player.Damage(damage);
+        yield return new WaitForSeconds(attackTime);
+        //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
+        //aka play damage anim to give the player a chance to dodge?
+        state = State.cooldown;
+        StartCoroutine(Cooldown());
     }
 
     private IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(cooldownTime);
+        agent.isStopped = false;
+        state = State.chasing;
     }
 
     public void Damage(float damageAmt)
     {
-        //Debug.Log("ow");
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
         StartCoroutine(DamageFlash());

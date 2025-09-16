@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
@@ -18,6 +19,8 @@ public class PlayerBehavior : MonoBehaviour
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
 
+    public float health = 100f;
+
     // No Croutching intended for Half Shell Prototype
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
@@ -30,6 +33,8 @@ public class PlayerBehavior : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+
+    public TextMeshProUGUI HPtext;
     
 
     void Start()
@@ -38,6 +43,8 @@ public class PlayerBehavior : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        HPtext.text = $"HP: {health}";
     }
 
 
@@ -107,6 +114,15 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
+
     public void NoMove() => canMove = false;
     public void YesMove() => canMove = true;
+
+    //better way to do this? -N
+    public void Damage(float damage)
+    { 
+        health -= damage;
+        HPtext.text = $"HP: {health}";
+
+    }
 }

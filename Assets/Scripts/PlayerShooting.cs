@@ -11,11 +11,14 @@ public class PlayerShooting : MonoBehaviour
 
     public Camera fpsCam;
 
+    //Add [SerializeField] in front of anything that needs tweaking/balancing
     private float reloadTime = 1f; //time to load one shell
     private float nextTimeTofire = 0f;
     private int totalCapacity = 5;
+    //change to float when half shells get implimented, do away/change UI by then (breaks referencing)
     [SerializeField] private int currentCapacity = 0; //shown for debug purposes
     private float shotCooldown = 1f; //time in between shots
+    private float nextTimeToShot = 0f;
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
@@ -30,15 +33,11 @@ public class PlayerShooting : MonoBehaviour
     //first in last out collection
     private Stack<ShellBase> chamber = new Stack<ShellBase>();
 
-    private bool isInMenu = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-
-        isInMenu = false;
-        //spaceLeftText.gameObject.SetActive(false);
 
         SingleShotCrosshair.gameObject.SetActive(true);
         MultiShotCrosshair.gameObject.SetActive(false);
@@ -48,7 +47,7 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         //both L mouse & L control can fire as per the system currently being used. just thought I would note, can fix/change later
-        if (Input.GetButton("Fire1") && Time.time > nextTimeTofire && isInMenu == false)
+        if (Input.GetButton("Fire1") && Time.time > nextTimeTofire)
         {
             Debug.Log("pressed L mouse button");
             nextTimeTofire = Time.time + 1 / reloadTime;
@@ -72,30 +71,6 @@ public class PlayerShooting : MonoBehaviour
             }
         }
 
-        #region not being used rn
-        //if (Input.GetKeyDown(KeyCode.Q) && isInMenu == false)
-        //{ 
-        //    isInMenu = true;
-        //    spaceLeftText.gameObject.SetActive(true);
-        //    DoneButton.SetActive(true);
-        //    BuckButton.SetActive(true);
-        //    SlugButton.SetActive(true);
-
-        //    gameObject.GetComponent<PlayerBehavior>().NoMove();
-        //}
-        //if (isInMenu == true && Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    isInMenu = false;
-        //    spaceLeftText.gameObject.SetActive(false);
-        //    DoneButton.SetActive(false);
-        //    BuckButton.SetActive(false);
-        //    SlugButton.SetActive(false);
-
-        //    gameObject.GetComponent<PlayerBehavior>().YesMove();
-        //}
-        #endregion
-
-
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
@@ -109,21 +84,19 @@ public class PlayerShooting : MonoBehaviour
     //{
     //    Debug.Log("opened shell selection menu");
     //    isInMenu = true;
-
-        
-
     //}
 
 
 
-    //change to coroutine to do cooldown time?? why yes I just don't want to do that rn
+    //change to coroutine to do cooldown time?? why yes I just don't want to do that rn -N
+    //or do same shit you did with firing -N
     public void LoadChamber(ShellBase shell)
     {
         if (currentCapacity + shell.Size <= totalCapacity)
         { 
             chamber.Push(shell);
-            //currentCapacity += shell.Size;
-            currentCapacity++;
+            int size = shell.Size;
+            currentCapacity += size;
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
         }
@@ -138,9 +111,10 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(slug);
             Debug.Log("slug pressed");
 
-            //this is messy I know I'll fix it later
-            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.SetActive(true);
-            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.GetComponent<Image>().color = Color.green;
+            //move to LoadChamber() dependant on how we want to display what's in the chamber, if at all 
+            GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
+            display.SetActive(true);
+            display.GetComponent<Image>().color = Color.green;
             
         }
     }
@@ -153,9 +127,9 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             Debug.Log("buck pressed");
 
-            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.SetActive(true);
-            chamberUI.transform.GetChild(currentCapacity - 1).gameObject.GetComponent<Image>().color = Color.red;
-            
+            GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
+            display.SetActive(true);
+            display.GetComponent<Image>().color = Color.red;
         }
     }
 
@@ -166,8 +140,8 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity > 0)
         {
             ShellBase shell = chamber.Pop();
-            //currentCapacity -= shell.Size;
-            currentCapacity--;
+            int size = shell.Size;
+            currentCapacity -= size;
             chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
@@ -215,7 +189,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.Damage(shell.Damage); //eventually will be shell.Damage instead of a random number;
+            enemy.Damage(shell.Damage); 
             Debug.Log("enemy hit");
         }
     }
