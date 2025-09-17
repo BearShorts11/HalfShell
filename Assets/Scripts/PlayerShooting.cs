@@ -76,7 +76,7 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
 
         //Opens Shell Selection menu UI while [TAB] is pressed - Alex
-        if (Input.GetKey(KeyCode.Tab)) ShellSelectionWheel.OpenShellWheel(ShellSelectionMenu);
+        //if (Input.GetKey(KeyCode.Tab)) ShellSelectionButton.OpenShellWheel(ShellSelectionMenu);
 
     }
 

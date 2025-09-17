@@ -56,7 +56,8 @@ public class EnemyBehavior : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        Debug.Log(state);
+        // Commenting out because it clogs up Debug Log with "Idle"
+        //Debug.Log(state);
         switch (state)
         {
             case State.idle:

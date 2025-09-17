@@ -21,7 +21,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public float health = 100f;
 
-    // No Croutching intended for Half Shell Prototype
+    // Uncomment if Lvl Design feels strongly for crouching -A
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
 
@@ -33,6 +33,7 @@ public class PlayerBehavior : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+    private bool canLook = true;
 
     public TextMeshProUGUI HPtext;
     
@@ -82,6 +83,7 @@ public class PlayerBehavior : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
+        #region crouching input (CURRENTLY UNSUED) 
         //keep or delete? -N
         //Keep in case lvl desgn wants crouching for some reason - A
 
@@ -98,9 +100,11 @@ public class PlayerBehavior : MonoBehaviour
         //    walkSpeed = 6f;
         //    runSpeed = 12f;
         //}
+        #endregion
 
 
         //why this hanging out in the ether? -N
+        // ...I dunno -A
         characterController.Move(moveDirection * Time.deltaTime);
 
 
@@ -112,6 +116,22 @@ public class PlayerBehavior : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+
+        #region UI Controls
+
+        // To be added revised soon
+        // Shell Wheel UI
+        //if (Input.GetKeyDown(KeyCode.Tab))
+        //{
+
+        //    ShellWheelController.shellWheelSelected = true;
+        //}
+        //if (Input.GetKeyUp(KeyCode.Tab))
+        //{
+        //    ShellWheelController.shellWheelSelected = false;
+        //}
+        #endregion
     }
 
 

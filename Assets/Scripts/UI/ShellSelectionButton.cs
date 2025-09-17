@@ -2,13 +2,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class ShellSelectionWheel : MonoBehaviour
+public class ShellSelectionButton : MonoBehaviour
 {
     public int ID;
     private Animator anim;
     public string itemName;
-    public TextMeshPro itemText;
-    public Image selectedItem;
+    public TextMeshProUGUI itemText;
     private bool selected = false;
     public Sprite icon;
 
@@ -24,32 +23,38 @@ public class ShellSelectionWheel : MonoBehaviour
     {
         if (selected)
         {
-            selectedItem.sprite = icon;
             itemText.text = itemName;
-
         }
     }
 
-    public void Selected() => selected = true;
-    public void Deselected() => selected = false;
+    public void Selected()
+    {
+        selected = true;
+        ShellWheelController.shellID = ID;
+    }
+    public void Deselected()
+    {
+        selected = false;
+        ShellWheelController.shellID = 0;
+    }
     public void HoverEnter()
     {
-        anim.SetBool("Hover", true);
+        anim.SetBool("Hovered", true);
         itemText.text = itemName;
     }
     public void HoverExit()
     {
-        anim.SetBool("Hover", false);
+        anim.SetBool("Hovered", false);
         itemText.text = "";
     }
 
 
-    public static void OpenShellWheel(GameObject shellSelectionMenu)
-    {
-        Debug.Log("opened shell selection menu");
+    //public static void OpenShellWheel(GameObject shellSelectionMenu)
+    //{
+    //    Debug.Log("opened shell selection menu");
         
 
 
 
-    }
+    //}
 }
