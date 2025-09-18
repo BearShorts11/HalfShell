@@ -19,7 +19,20 @@ public class PlayerBehavior : MonoBehaviour
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
 
-    public float health = 100f;
+    private float health = 100f;
+    public float Health
+    { 
+        get { return health; }
+        set 
+        { 
+            health = value; 
+
+            //this no worky but I want it to -N
+            if (health <= 0) { OnDeath(); }
+        }
+    }
+
+    public GameObject GameOverTxt;
 
     // Uncomment if Lvl Design feels strongly for crouching -A
     //public float crouchHeight = 1f;
@@ -140,9 +153,23 @@ public class PlayerBehavior : MonoBehaviour
 
     //better way to do this? -N
     public void Damage(float damage)
-    { 
-        health -= damage;
-        HPtext.text = $"HP: {health}";
+    {
+        if (health > 0)
+        { 
+            health -= damage;
+            HPtext.text = $"HP: {health}";
+        }
 
+        if (health <= 0)
+        { 
+            OnDeath();
+        }
+    }
+
+    private void OnDeath()
+    { 
+        NoMove();
+        //display game over txt
+        GameOverTxt.SetActive(true);
     }
 }
