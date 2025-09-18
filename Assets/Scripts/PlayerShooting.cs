@@ -33,6 +33,9 @@ public class PlayerShooting : MonoBehaviour
     //first in last out collection
     private Stack<ShellBase> chamber = new Stack<ShellBase>();
 
+    //added so the player doesn't negligently discharge while interacting with UI -A
+    public static bool canFire = true;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,7 +50,7 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         //both L mouse & L control can fire as per the system currently being used. just thought I would note, can fix/change later
-        if (Input.GetButton("Fire1") && Time.time > nextTimeTofire)
+        if (canFire && Input.GetButton("Fire1") && Time.time > nextTimeTofire)
         {
             Debug.Log("pressed L mouse button");
             nextTimeTofire = Time.time + 1 / reloadTime;

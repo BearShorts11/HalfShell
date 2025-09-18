@@ -27,16 +27,14 @@ public class ShellSelectionButton : MonoBehaviour
         }
     }
 
-    public void Selected()
+    public void Click()
     {
         selected = true;
         ShellWheelController.shellID = ID;
-    }
-    public void Deselected()
-    {
         selected = false;
         ShellWheelController.shellID = 0;
     }
+
     public void HoverEnter()
     {
         anim.SetBool("Hovered", true);

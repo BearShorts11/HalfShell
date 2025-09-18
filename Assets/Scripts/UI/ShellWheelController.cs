@@ -20,11 +20,13 @@ public class ShellWheelController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+            PlayerBehavior.UnlockCursor();
             shellWheelSelected = true;
         }
 
         if (Input.GetKeyUp(KeyCode.Tab))
         {
+            PlayerBehavior.LockCursor();
             shellWheelSelected = false;
         }
 

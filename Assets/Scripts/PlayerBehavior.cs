@@ -46,7 +46,10 @@ public class PlayerBehavior : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
-    private bool canLook = true;
+    private static bool canLook = true;
+
+    public float SlowedTime = 0.1f;
+    public static bool SlowMoActive = false;
 
     public TextMeshProUGUI HPtext;
     
@@ -122,13 +125,23 @@ public class PlayerBehavior : MonoBehaviour
 
 
         // Ensures the player doesn't break their neck by looking 360 degrees along the Y axis
-        if (canMove)
+        if (canMove && canLook)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        if (SlowMoActive)
+        {
+            Time.timeScale = SlowedTime;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
 
 
         #region UI Controls
@@ -150,6 +163,23 @@ public class PlayerBehavior : MonoBehaviour
 
     public void NoMove() => canMove = false;
     public void YesMove() => canMove = true;
+    public static void UnlockCursor()
+    {
+        canLook = false;
+        SlowMoActive = true;
+        PlayerShooting.canFire = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    public static void LockCursor()
+    {
+        canLook = true;
+        SlowMoActive = false;
+        PlayerShooting.canFire = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
 
     //better way to do this? -N
     public void Damage(float damage)
