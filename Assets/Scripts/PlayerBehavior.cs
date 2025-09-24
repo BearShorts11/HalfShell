@@ -158,6 +158,11 @@ public class PlayerBehavior : MonoBehaviour
         //    ShellWheelController.shellWheelSelected = false;
         //}
         #endregion
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            BlowUp();
+        }
     }
 
 
@@ -201,5 +206,19 @@ public class PlayerBehavior : MonoBehaviour
         NoMove();
         //display game over txt
         GameOverTxt.SetActive(true);
+    }
+
+
+
+    // TEMPORARY FUNCTIONALITY TO TEST DESTRUCTIBLE OBJECTS
+    //private LayerMask interactableLayers;
+    private float useDistance = 3f;
+    [SerializeField] private Camera camera;
+    private void BlowUp()
+    {
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hit, useDistance) && hit.collider.TryGetComponent<BreakableObject>(out BreakableObject breakable))
+        {
+            breakable.Break();
+        }
     }
 }

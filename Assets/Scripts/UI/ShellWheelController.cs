@@ -45,7 +45,6 @@ public class ShellWheelController : MonoBehaviour
             // For future reference: This where we call associated unique animations, functions, sounds, etc. for all shell types -
 
             case 0: // Nothing is slected
-                selectedItem.sprite = noImage;
                 break;
             case 1: // Buckshot
                 Debug.Log("Buckshot loaded");
