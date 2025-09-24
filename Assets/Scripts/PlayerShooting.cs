@@ -11,37 +11,30 @@ public class PlayerShooting : MonoBehaviour
 
     public Camera fpsCam;
 
-    #region Gun Stats
     //Add [SerializeField] in front of anything that needs tweaking/balancing
     private float reloadTime = 1f; //time to load one shell
     private float nextTimeTofire = 0f;
-
     private int totalCapacity = 5;
     //change to float when half shells get implimented, do away/change UI by then (breaks referencing)
     [SerializeField] private int currentCapacity = 0; //shown for debug purposes
-
     private float shotCooldown = 1f; //time in between shots
     private float nextTimeToShot = 0f;
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
-    #endregion
 
-    #region UI fields
     //UI fields
     public TextMeshProUGUI spaceLeftText;
     public Image chamberUI;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
-    #endregion
 
 
     //first in last out collection
-    private Stack<ShellBase> magazine = new Stack<ShellBase>();
-    private ShellBase chamber;
+    private Stack<ShellBase> chamber = new Stack<ShellBase>();
 
     //added so the player doesn't negligently discharge while interacting with UI -A
-    public static bool canFire = false;
+    public static bool canFire = true;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -64,38 +57,26 @@ public class PlayerShooting : MonoBehaviour
             Fire();
         }
 
-        if (chamber != null)
+        if (chamber.Count > 0)
         {
-            ShellBase top = chamber;
-            SwitchCrosshairUI(top);
+            ShellBase top = chamber.Peek();
+            switch (top.Type)
+            {
+                case ShellBase.ShellType.Slug:
+                    //case ShellBase.ShellType. some other shot type that also is a single fire
+                    SingleShotCrosshair.gameObject.SetActive(true);
+                    MultiShotCrosshair.gameObject.SetActive(false);
+                    break;
+                case ShellBase.ShellType.Buckshot:
+                    SingleShotCrosshair.gameObject.SetActive(false);
+                    MultiShotCrosshair.gameObject.SetActive(true);
+                    break;
+            }
         }
-        else
-        {
-            //reset to small crosshair (for visibility)
-            SingleShotCrosshair.gameObject.SetActive(true);
-            MultiShotCrosshair.gameObject.SetActive(false);
-        }
-        
 
+        //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
-
-
-        //racking back
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        { 
-            canFire = false;
-            Debug.Log("racked back");
-            chamber = null;
-            //eject chamber
-        }
-        //racking forwards
-        if (Input.GetKeyUp(KeyCode.Mouse1))
-        { 
-            canFire = true;
-            Debug.Log("racked forwards");
-            if (magazine.Count > 0) chamber = magazine.Pop();
-        }
 
         //Opens Shell Selection menu UI while [TAB] is pressed - Alex
         //if (Input.GetKey(KeyCode.Tab)) ShellSelectionButton.OpenShellWheel(ShellSelectionMenu);
@@ -109,29 +90,14 @@ public class PlayerShooting : MonoBehaviour
     //}
 
 
-    private void SwitchCrosshairUI(ShellBase top)
-    {
-        switch (top.Type)
-        {
-            case ShellBase.ShellType.Slug:
-                //case ShellBase.ShellType. some other shot type that also is a single fire
-                SingleShotCrosshair.gameObject.SetActive(true);
-                MultiShotCrosshair.gameObject.SetActive(false);
-                break;
-            case ShellBase.ShellType.Buckshot:
-                SingleShotCrosshair.gameObject.SetActive(false);
-                MultiShotCrosshair.gameObject.SetActive(true);
-                break;
-        }
-    }
 
-    
-    public void LoadMag(ShellBase shell)
+    //change to coroutine to do cooldown time?? why yes I just don't want to do that rn -N
+    //or do same shit you did with firing -N
+    public void LoadChamber(ShellBase shell)
     {
         if (currentCapacity + shell.Size <= totalCapacity)
-        { 
-            //start anim
-            magazine.Push(shell);
+        {
+            chamber.Push(shell);
             int size = shell.Size;
             currentCapacity += size;
 
@@ -144,24 +110,24 @@ public class PlayerShooting : MonoBehaviour
     {
         Slug slug = new Slug();
         if (currentCapacity + slug.Size <= totalCapacity)
-        { 
-            LoadMag(slug);
+        {
+            LoadChamber(slug);
             Debug.Log("slug pressed");
 
             //move to LoadChamber() dependant on how we want to display what's in the chamber, if at all 
             GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
             display.SetActive(true);
             display.GetComponent<Image>().color = Color.green;
-            
+
         }
     }
 
     public void AddBuckshot()
-    { 
+    {
         Buckshot buck = new Buckshot();
         if (currentCapacity + buck.Size <= totalCapacity)
-        { 
-            LoadMag(buck);
+        {
+            LoadChamber(buck);
             Debug.Log("buck pressed");
 
             GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
@@ -174,9 +140,9 @@ public class PlayerShooting : MonoBehaviour
 
     public void Fire()
     {
-        if (chamber != null && canFire)
+        if (currentCapacity > 0)
         {
-            ShellBase shell = magazine.Pop();
+            ShellBase shell = chamber.Pop();
             int size = shell.Size;
             currentCapacity -= size;
             chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
@@ -197,9 +163,9 @@ public class PlayerShooting : MonoBehaviour
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange))
                         {
                             Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
-                            HitEnemy(hit,shell);
+                            HitEnemy(hit, shell);
                         }
-                    
+
                     }
 
                     break;
@@ -211,8 +177,7 @@ public class PlayerShooting : MonoBehaviour
                     break;
             }
 
-            canFire = false;
-            //shell fired but needs to be ejected from chamber
+
 
         }
         else Debug.Log("cannot fire");
@@ -227,7 +192,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.Damage(shell.Damage); 
+            enemy.Damage(shell.Damage);
             Debug.Log("enemy hit");
         }
     }
