@@ -31,7 +31,8 @@ public class PlayerShooting : MonoBehaviour
 
 
     //first in last out collection
-    private Stack<ShellBase> chamber = new Stack<ShellBase>();
+    private Stack<ShellBase> magazine = new Stack<ShellBase>();
+    private ShellBase chamber;
 
     //added so the player doesn't negligently discharge while interacting with UI -A
     public static bool canFire = true;
@@ -52,14 +53,46 @@ public class PlayerShooting : MonoBehaviour
         //both L mouse & L control can fire as per the system currently being used. just thought I would note, can fix/change later
         if (canFire && Input.GetButton("Fire1") && Time.time > nextTimeTofire)
         {
-            Debug.Log("pressed L mouse button");
             nextTimeTofire = Time.time + 1 / reloadTime;
             Fire();
         }
 
-        if (chamber.Count > 0)
+        if (Input.GetButtonDown("Fire2"))
         {
-            ShellBase top = chamber.Peek();
+            Debug.Log("R mouse down");
+            canFire = false;
+
+            if (chamber is not null)
+            {
+                int size = chamber.Size;
+                ChamberUILoss(size);
+            }
+
+            chamber = null;
+        }
+        if (Input.GetButtonUp("Fire2"))
+        {
+            Debug.Log("R mouse up");
+            if (magazine.Count > 0) chamber = magazine.Pop();
+            canFire = true;
+        }
+
+        SwitchCrosshairUI();
+
+        //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
+        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
+        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
+
+        //Opens Shell Selection menu UI while [TAB] is pressed - Alex
+        //if (Input.GetKey(KeyCode.Tab)) ShellSelectionButton.OpenShellWheel(ShellSelectionMenu);
+
+    }
+
+    private void SwitchCrosshairUI()
+    {
+        if (chamber is not null)
+        {
+            ShellBase top = chamber;
             switch (top.Type)
             {
                 case ShellBase.ShellType.Slug:
@@ -74,13 +107,23 @@ public class PlayerShooting : MonoBehaviour
             }
         }
 
-        //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
-        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
-        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
+        //defaults to small crosshair for visibility
+        if (chamber is null && magazine.Count <= 0)
+        {
+            SingleShotCrosshair.gameObject.SetActive(true);
+            MultiShotCrosshair.gameObject.SetActive(false);
+        }
+    }
 
-        //Opens Shell Selection menu UI while [TAB] is pressed - Alex
-        //if (Input.GetKey(KeyCode.Tab)) ShellSelectionButton.OpenShellWheel(ShellSelectionMenu);
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="shellSize"> size of a ShellBase </param>
+    private void ChamberUILoss(int shellSize)
+    {
+        currentCapacity -= shellSize;
+        chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
+        spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
 
     //private void OpenShellWheel()
@@ -97,7 +140,7 @@ public class PlayerShooting : MonoBehaviour
     {
         if (currentCapacity + shell.Size <= totalCapacity)
         {
-            chamber.Push(shell);
+            magazine.Push(shell);
             int size = shell.Size;
             currentCapacity += size;
 
@@ -140,14 +183,18 @@ public class PlayerShooting : MonoBehaviour
 
     public void Fire()
     {
+        //check if chamber IS NULL *NOT* == null, trying to reference chamber directly will always equate to null
+        if (canFire == false || chamber is null)
+        {
+            Debug.Log($"cannot fire: {canFire} or chamber is null");
+            return;
+        }
         if (currentCapacity > 0)
         {
-            ShellBase shell = chamber.Pop();
+            ShellBase shell = chamber;
             int size = shell.Size;
-            currentCapacity -= size;
-            chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
-            spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-
+            ChamberUILoss(size);
+            chamber = null;
             //determine behavior of shot based on shell type
 
             RaycastHit hit;
