@@ -12,8 +12,10 @@ public class PlayerShooting : MonoBehaviour
     public Camera fpsCam;
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
-    private float reloadTime = 1f; //time to load one shell
-    private float nextTimeTofire = 0f;
+
+    //private float reloadTime = 1f; //time to load one shell
+    //private float nextTimeTofire = 0f;
+
     private int totalCapacity = 5;
     //change to float when half shells get implimented, do away/change UI by then (breaks referencing)
     [SerializeField] private int currentCapacity = 0; //shown for debug purposes
@@ -24,7 +26,8 @@ public class PlayerShooting : MonoBehaviour
 
     //UI fields
     public TextMeshProUGUI spaceLeftText;
-    public Image chamberUI;
+    public Image magazineUI;
+    public Image chamberShell;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
@@ -51,11 +54,13 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         //both L mouse & L control can fire as per the system currently being used. just thought I would note, can fix/change later
-        if (canFire && Input.GetButton("Fire1") && Time.time > nextTimeTofire)
-        {
-            nextTimeTofire = Time.time + 1 / reloadTime;
-            Fire();
-        }
+        //if (canFire && Input.GetButton("Fire1") && Time.time > nextTimeTofire)
+        //{
+        //    nextTimeTofire = Time.time + 1 / reloadTime;
+        //    Fire();
+        //}
+
+        if (canFire && Input.GetButton("Fire1")) Fire();
 
         if (Input.GetButtonDown("Fire2"))
         {
@@ -64,8 +69,7 @@ public class PlayerShooting : MonoBehaviour
 
             if (chamber is not null)
             {
-                int size = chamber.Size;
-                ChamberUILoss(size);
+                ChamberUIOff();
             }
 
             chamber = null;
@@ -73,7 +77,16 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetButtonUp("Fire2"))
         {
             Debug.Log("R mouse up");
-            if (magazine.Count > 0) chamber = magazine.Pop();
+            if (magazine.Count > 0)
+            { 
+                chamber = magazine.Pop();
+                int size = chamber.Size;
+                MagLoss(chamber.Size);
+                MagazineUILoss();
+                //temporary based on current UI
+                if (chamber.Type == ShellBase.ShellType.Buckshot) ChamberUIOn(Color.red);
+                if (chamber.Type == ShellBase.ShellType.Slug) ChamberUIOn(Color.green);
+            }
             canFire = true;
         }
 
@@ -119,11 +132,19 @@ public class PlayerShooting : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="shellSize"> size of a ShellBase </param>
-    private void ChamberUILoss(int shellSize)
+    private void MagazineUILoss()
     {
-        currentCapacity -= shellSize;
-        chamberUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
+        magazineUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
+    }
+    private void ChamberUIOn(Color shellColor)
+    { 
+        chamberShell.gameObject.SetActive(true);
+        chamberShell.color = shellColor;
+    }
+    private void ChamberUIOff()
+    { 
+        chamberShell.gameObject.SetActive(false);
     }
 
     //private void OpenShellWheel()
@@ -158,7 +179,7 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("slug pressed");
 
             //move to LoadChamber() dependant on how we want to display what's in the chamber, if at all 
-            GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
+            GameObject display = magazineUI.transform.GetChild(currentCapacity - 1).gameObject;
             display.SetActive(true);
             display.GetComponent<Image>().color = Color.green;
 
@@ -173,7 +194,7 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             Debug.Log("buck pressed");
 
-            GameObject display = chamberUI.transform.GetChild(currentCapacity - 1).gameObject;
+            GameObject display = magazineUI.transform.GetChild(currentCapacity - 1).gameObject;
             display.SetActive(true);
             display.GetComponent<Image>().color = Color.red;
         }
@@ -189,12 +210,12 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log($"cannot fire: {canFire} or chamber is null");
             return;
         }
-        if (currentCapacity > 0)
+        else 
         {
             ShellBase shell = chamber;
-            int size = shell.Size;
-            ChamberUILoss(size);
+            MagazineUILoss();
             chamber = null;
+            ChamberUIOff();
             //determine behavior of shot based on shell type
 
             RaycastHit hit;
@@ -224,10 +245,7 @@ public class PlayerShooting : MonoBehaviour
                     break;
             }
 
-
-
         }
-        else Debug.Log("cannot fire");
 
     }
 
@@ -243,4 +261,6 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("enemy hit");
         }
     }
+
+    private void MagLoss(int shellSize) => currentCapacity -= shellSize;
 }
