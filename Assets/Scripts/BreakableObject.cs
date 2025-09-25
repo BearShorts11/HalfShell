@@ -11,6 +11,7 @@ public class BreakableObject : MonoBehaviour
     private Rigidbody Rigidbody;
     [SerializeField] public GameObject brokenPrefab;
     [SerializeField] public GameObject damagedPrefab;
+    [SerializeField] public GameObject debris;
 
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public float currentHealth;
@@ -42,25 +43,22 @@ public class BreakableObject : MonoBehaviour
             oldRenderer.enabled = false;
         }
 
-
-        // Places the broken object prefab in exactly the same position as the previous object, then throws the broken pieces
-        if (damagedPrefab.TryGetComponent<Renderer>(out Renderer renderer))
-        {
-            //damagedPrefab.GetComponent<Renderer>().enabled = true;
-            renderer.enabled = true;
-        }
-
-        Renderer[] newRenderers = damagedPrefab.GetComponentsInChildren<Renderer>();
-        foreach (Renderer newRenderer in newRenderers)
-        {
-            newRenderer.enabled = true;
-        }
+        GameObject damagedInstance = Instantiate(damagedPrefab, transform.position, transform.rotation);
+        damagedInstance.transform.parent = transform;
     }
 
 
     // Ensures the destroyed object doesn't move after being destroyed + destroys the previous object
     public void Break()
     {
+        if (transform.childCount > 0)
+        {
+            foreach (Transform child in transform.GetChild(0))
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
         GetComponent<Collider>().enabled = false;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
@@ -70,10 +68,11 @@ public class BreakableObject : MonoBehaviour
 
 
         // Instantiates and replaces the previous model/mesh
-        //GameObject instance = Replace(damagedPrefab, brokenPrefab);
-        GameObject instance = Instantiate(brokenPrefab, transform.position, transform.rotation);
+        GameObject brokenInstance = Instantiate(brokenPrefab, transform.position, transform.rotation);
+        brokenInstance.transform.parent = transform;
 
-        Rigidbody[] rigidbodies = instance.GetComponentsInChildren<Rigidbody>();
+
+        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
 
         foreach (Rigidbody body in rigidbodies)
         {
@@ -140,6 +139,8 @@ public class BreakableObject : MonoBehaviour
         {
             Destroy(renderer.gameObject);
         }
+
+
 
         // Destroys entire breakable object after co-coutine completes and all destroyed pieces have vanished
         Destroy(gameObject);

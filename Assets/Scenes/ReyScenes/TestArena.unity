@@ -21612,8 +21612,7 @@ Transform:
   m_LocalPosition: {x: -1, y: 1, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 660544580}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &554470997
@@ -23570,14 +23569,14 @@ Transform:
   m_GameObject: {fileID: 660544578}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -39, y: 1, z: -95.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 437691181}
   - {fileID: 768186014}
   - {fileID: 554470998}
-  m_Father: {fileID: 550788815}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &660544581
 MonoBehaviour:
@@ -23603,7 +23602,6 @@ MonoBehaviour:
   alwaysRun: 0
   SlowedTime: 0.1
   HPtext: {fileID: 596093779}
-  camera: {fileID: 437691178}
 --- !u!143 &660544582
 CharacterController:
   m_ObjectHideFlags: 0
@@ -37630,12 +37628,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrokenInstance: {fileID: 7510368504579788785, guid: 9db1de064efe3f143af1fac76f4f873a, type: 3}
-  ExplosiveForce: 500
-  ExplosiveRadius: 2
-  PieceFadeSpeed: 0.25
-  PieceDestroyDelay: 2
-  PieceSleepCheckDelay: 0.1
+  brokenPrefab: {fileID: 7510368504579788785, guid: 9db1de064efe3f143af1fac76f4f873a, type: 3}
+  damagedPrefab: {fileID: 4408264204463273585, guid: bed3b6c19ca33284c99e34da450cc69a, type: 3}
+  debris: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
+  explosiveForce: 1000
+  explosiveRadius: 2
+  pieceFadeSpeed: 0.25
+  pieceShrinkMult: 3
+  pieceDestroyDelay: 2
+  pieceSleepCheckDelay: 0.1
 --- !u!54 &1395615024
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -51067,6 +51070,7 @@ SceneRoots:
   - {fileID: 699672070}
   - {fileID: 166367143}
   - {fileID: 550788815}
+  - {fileID: 660544580}
   - {fileID: 1659127920}
   - {fileID: 1770447582}
   - {fileID: 1395615022}
