@@ -1,65 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using System.Linq;
 using System;
-using UnityEngine;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
 public class BreakableObject : MonoBehaviour
 {
     private Rigidbody Rigidbody;
+    [SerializeField] public GameObject brokenPrefab;
+    [SerializeField] public GameObject damagedPrefab;
 
-    [SerializeField] private GameObject BrokenInstance;
+    [SerializeField] public float maxHealth = 100;
+    [SerializeField] public float currentHealth;
+    // To-Do add resistance variable when dmg types are added
 
-    // Configurable Variables that control the breaking of the object when finally broken
-    [SerializeField] public float ExplosiveForce = 10000f;
-    [SerializeField] public float ExplosiveRadius = 2f;
+    [SerializeField] private float explosiveForce = 1000;
+    [SerializeField] private float explosiveRadius = 2;
 
-    // Variables that fade out broken pieces after destruction
-    [SerializeField] private float PieceFadeSpeed = .25f;
-    [SerializeField] private float PieceDestroyDelay = 5f;
-    [SerializeField] private float PieceSleepCheckDelay = 0.1f;
+    [SerializeField] private float pieceFadeSpeed = 0.25f;
+    [SerializeField] private float pieceShrinkMult = 1;
+    [SerializeField] private float pieceDestroyDelay = 5f;
+    [SerializeField] private float pieceSleepCheckDelay = 0.1f;
 
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        currentHealth = maxHealth;
     }
+
+
+    public void Chip()
+    {
+        Destroy(Rigidbody);
+        GetComponent<Renderer>().enabled = false;
+
+        Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer oldRenderer in oldRenderers)
+        {
+            oldRenderer.enabled = false;
+        }
+
+
+        // Places the broken object prefab in exactly the same position as the previous object, then throws the broken pieces
+        if (damagedPrefab.TryGetComponent<Renderer>(out Renderer renderer))
+        {
+            //damagedPrefab.GetComponent<Renderer>().enabled = true;
+            renderer.enabled = true;
+        }
+
+        Renderer[] newRenderers = damagedPrefab.GetComponentsInChildren<Renderer>();
+        foreach (Renderer newRenderer in newRenderers)
+        {
+            newRenderer.enabled = true;
+        }
+    }
+
 
     // Ensures the destroyed object doesn't move after being destroyed + destroys the previous object
     public void Break()
     {
-        //if (Rigidbody != null)
-        //{
-        //    Destroy(Rigidbody);
-        //}
-
-        // Grabs the collider and renderer from the parent object + any possible children and deactivates them
         GetComponent<Collider>().enabled = false;
-        GetComponent<Renderer>().enabled = false;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
         {
             collider.enabled = false;
         }
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in renderers)
-        {
-            renderer.enabled = false;
-        }
 
-        // Places the broken object prefab in exactly the same position as the previous object, then throws the broken pieces
-        GameObject brokenInstance = Instantiate(BrokenInstance, transform.position, transform.rotation);
 
-        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
+        // Instantiates and replaces the previous model/mesh
+        //GameObject instance = Replace(damagedPrefab, brokenPrefab);
+        GameObject instance = Instantiate(brokenPrefab, transform.position, transform.rotation);
+
+        Rigidbody[] rigidbodies = instance.GetComponentsInChildren<Rigidbody>();
+
         foreach (Rigidbody body in rigidbodies)
         {
             if (Rigidbody != null)
             {
                 body.linearVelocity = Rigidbody.linearVelocity;
             }
-
-            body.AddExplosionForce(ExplosiveForce, transform.position, ExplosiveRadius);
+            body.AddExplosionForce(explosiveForce, transform.position, explosiveRadius);
         }
 
         // Calls for the broken pieces to begin fading out
@@ -69,70 +91,88 @@ public class BreakableObject : MonoBehaviour
 
 
     // Slowly moves the broken pieces down and out of the worldspace before permanent deletion
-    private IEnumerator FadeOutRigidBodies(Rigidbody[] rigidbodies)
+    private IEnumerator FadeOutRigidBodies(Rigidbody[] Rigidbodies)
     {
-        Debug.Log("FadeOut Called");
-        WaitForSeconds wait = new WaitForSeconds(PieceSleepCheckDelay);
-        int activeRigidbodies = rigidbodies.Length; 
+        WaitForSeconds Wait = new WaitForSeconds(pieceSleepCheckDelay);
+        float activeRigidbodies = Rigidbodies.Length;
 
-        while(activeRigidbodies > 0)
+        while (activeRigidbodies > 0)
         {
-            Debug.Log("waiting...");
-            yield return wait;
+            yield return Wait;
 
-            foreach(Rigidbody body in rigidbodies)
+            foreach (Rigidbody rigidbody in Rigidbodies)
             {
-                if (body.IsSleeping())
+                if (rigidbody.IsSleeping())
                 {
-                    Debug.Log("Eliminating Active Rigidbodies");
                     activeRigidbodies--;
                 }
             }
         }
 
-        Debug.Log("waiting...");
-        yield return new WaitForSeconds(PieceDestroyDelay);
 
+        yield return new WaitForSeconds(pieceDestroyDelay);
 
         float time = 0;
-        Renderer[] renderers = Array.ConvertAll(rigidbodies, GetRendererFromRigidbody);
-        Debug.Log("Coverted Rigidbodies");
+        Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbody);
 
-        foreach (Rigidbody body in rigidbodies)
+        foreach (Rigidbody body in Rigidbodies)
         {
-            Debug.Log("Destroyed Rigidbodies");
             Destroy(body.GetComponent<Collider>());
             Destroy(body);
         }
 
         // This controls the fade out behavior specifically
         // Currently melts the pieces into the ground until they are out of view
-        while(time <= 1)
+        while (time < 1)
         {
-            float step = Time.deltaTime * PieceFadeSpeed;
-            foreach(Renderer renderer in renderers)
+            float step = Time.deltaTime * pieceFadeSpeed;
+            foreach (Renderer renderer in renderers)
             {
-                Debug.Log("Melting");
                 renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
+                renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step;
             }
 
             time += step;
             yield return null;
         }
 
-        foreach(Renderer renderer in renderers)
+        foreach (Renderer renderer in renderers)
         {
-            Debug.Log("Destroyed Instance");
             Destroy(renderer.gameObject);
-            Destroy(renderer);
         }
 
         // Destroys entire breakable object after co-coutine completes and all destroyed pieces have vanished
         Destroy(gameObject);
     }
 
-    private Renderer GetRendererFromRigidbody(Rigidbody rigidbody)
+
+
+    private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
     {
         return Rigidbody.GetComponent<Renderer>();
     }
+
+
+
+
+
+
+
+
+    //// Removes the previous model with another, different one
+    //public GameObject Replace(GameObject previous, GameObject replacement)
+    //{
+    //    Destroy(Rigidbody);
+    //    previous.GetComponent<Renderer>().enabled = false;
+
+    //    Renderer[] renderers = GetComponentsInChildren<Renderer>();
+    //    foreach (Renderer renderer in renderers)
+    //    {
+    //        renderer.enabled = false;
+    //    }
+
+    //    // Places the broken object prefab in exactly the same position as the previous object, then throws the broken pieces
+    //    GameObject replacedObject = Instantiate(replacement, transform.position, transform.rotation);
+    //    return replacedObject;
+    //}
 }

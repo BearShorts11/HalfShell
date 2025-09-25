@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
@@ -159,9 +160,11 @@ public class PlayerBehavior : MonoBehaviour
         //}
         #endregion
 
+
+        // TEMPORARY INPUT FOR TESTING BREAKABLE OBJECTS
         if (Input.GetKeyDown(KeyCode.F))
         {
-            BlowUp();
+            DamageObject();
         }
     }
 
@@ -213,12 +216,24 @@ public class PlayerBehavior : MonoBehaviour
     // TEMPORARY FUNCTIONALITY TO TEST DESTRUCTIBLE OBJECTS
     //private LayerMask interactableLayers;
     private float useDistance = 3f;
-    [SerializeField] private Camera camera;
-    private void BlowUp()
+    private void DamageObject()
     {
-        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hit, useDistance) && hit.collider.TryGetComponent<BreakableObject>(out BreakableObject breakable))
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, useDistance) && hit.collider.TryGetComponent<BreakableObject>(out BreakableObject breakable))
         {
-            breakable.Break();
+            breakable.currentHealth -= 50;
+            Debug.Log("Breakable Item HP: " + breakable.currentHealth);
+
+            // Damage State 1
+            if (breakable.currentHealth <= (breakable.maxHealth / 2) && breakable.currentHealth > 0)
+            {
+                //breakable.Replace(breakable.gameObject, breakable.damagedPrefab);
+                breakable.Chip();
+            }
+            // Damage State 2 (Broken)
+            else if (breakable.currentHealth <= 0)
+            {
+                breakable.Break();
+            }
         }
     }
 }
