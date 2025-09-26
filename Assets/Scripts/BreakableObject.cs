@@ -9,13 +9,15 @@ using System;
 public class BreakableObject : MonoBehaviour
 {
     private Rigidbody Rigidbody;
+    [SerializeField] private ParticleSystem Particles;
     [SerializeField] public GameObject brokenPrefab;
     [SerializeField] public GameObject damagedPrefab;
-    [SerializeField] public GameObject debris;
+    [SerializeField] public GameObject debrisPrefab;
+    // TO-DO: make particle systems child of prefab object
 
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public float currentHealth;
-    // To-Do add resistance variable when dmg types are added
+    // TO-DO: add resistance variable when dmg types are added
 
     [SerializeField] private float explosiveForce = 1000;
     [SerializeField] private float explosiveRadius = 2;
@@ -29,6 +31,7 @@ public class BreakableObject : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
+        // TO-DO: grab particles component on Awake
     }
 
 
@@ -37,12 +40,15 @@ public class BreakableObject : MonoBehaviour
         Destroy(Rigidbody);
         GetComponent<Renderer>().enabled = false;
 
+        Particles.Play();
+
         Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer oldRenderer in oldRenderers)
         {
             oldRenderer.enabled = false;
         }
 
+        // TO-DO: make damaged prefab child object and activate, DON'T instantiate
         GameObject damagedInstance = Instantiate(damagedPrefab, transform.position, transform.rotation);
         damagedInstance.transform.parent = transform;
     }
@@ -51,6 +57,8 @@ public class BreakableObject : MonoBehaviour
     // Ensures the destroyed object doesn't move after being destroyed + destroys the previous object
     public void Break()
     {
+        Particles.Play();
+
         if (transform.childCount > 0)
         {
             foreach (Transform child in transform.GetChild(0))
@@ -66,8 +74,10 @@ public class BreakableObject : MonoBehaviour
             collider.enabled = false;
         }
 
+        GameObject debrisInstance = Instantiate(debrisPrefab, transform.position, transform.rotation);
 
         // Instantiates and replaces the previous model/mesh
+        // TO-DO: make destroyed prefab child object and activate, DON'T instantiate
         GameObject brokenInstance = Instantiate(brokenPrefab, transform.position, transform.rotation);
         brokenInstance.transform.parent = transform;
 
@@ -141,8 +151,8 @@ public class BreakableObject : MonoBehaviour
         }
 
 
-
         // Destroys entire breakable object after co-coutine completes and all destroyed pieces have vanished
+        Destroy(Particles.gameObject);
         Destroy(gameObject);
     }
 
@@ -152,28 +162,4 @@ public class BreakableObject : MonoBehaviour
     {
         return Rigidbody.GetComponent<Renderer>();
     }
-
-
-
-
-
-
-
-
-    //// Removes the previous model with another, different one
-    //public GameObject Replace(GameObject previous, GameObject replacement)
-    //{
-    //    Destroy(Rigidbody);
-    //    previous.GetComponent<Renderer>().enabled = false;
-
-    //    Renderer[] renderers = GetComponentsInChildren<Renderer>();
-    //    foreach (Renderer renderer in renderers)
-    //    {
-    //        renderer.enabled = false;
-    //    }
-
-    //    // Places the broken object prefab in exactly the same position as the previous object, then throws the broken pieces
-    //    GameObject replacedObject = Instantiate(replacement, transform.position, transform.rotation);
-    //    return replacedObject;
-    //}
 }
