@@ -53,6 +53,9 @@ public class PlayerBehavior : MonoBehaviour
     public static bool SlowMoActive = false;
 
     public TextMeshProUGUI HPtext;
+
+    // TEMPORARY FOR DESTRUCTABLE OBJECTS
+    [SerializeField] public float objectDamage; 
     
 
     void Start()
@@ -220,7 +223,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, useDistance) && hit.collider.TryGetComponent<BreakableObject>(out BreakableObject breakable))
         {
-            breakable.currentHealth -= 50;
+            breakable.currentHealth -= objectDamage;
             Debug.Log("Breakable Item HP: " + breakable.currentHealth);
 
             // Damage State 1

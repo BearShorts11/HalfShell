@@ -37,10 +37,10 @@ public class BreakableObject : MonoBehaviour
 
     public void Chip()
     {
+        Particles.Play();
+
         Destroy(Rigidbody);
         GetComponent<Renderer>().enabled = false;
-
-        Particles.Play();
 
         Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer oldRenderer in oldRenderers)
@@ -58,6 +58,13 @@ public class BreakableObject : MonoBehaviour
     public void Break()
     {
         Particles.Play();
+
+        GetComponent<Renderer>().enabled = false;
+        Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer oldRenderer in oldRenderers)
+        {
+            oldRenderer.enabled = false;
+        }
 
         if (transform.childCount > 0)
         {
