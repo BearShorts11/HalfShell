@@ -59,7 +59,14 @@
 			<destination>{4b631d30-4514-4b2a-a53f-53a3a5ba0551}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{74eacecd-a5ff-4b95-bb6b-4476b7b99c48}" />
+	<object class="EventAutomatableProperties" id="{74eacecd-a5ff-4b95-bb6b-4476b7b99c48}">
+		<property name="minimumDistance">
+			<value>3</value>
+		</property>
+		<property name="maximumDistance">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{4a170787-d21f-48b4-bdf0-18ae110f9fdc}" />
 	<object class="GroupTrack" id="{24c903e2-be27-4cd7-9fe2-58280886802d}">
 		<relationship name="modules">
@@ -194,11 +201,8 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{1c2dccd1-cd2e-4cb4-9291-82d645aaec32}">
-		<property name="isAsync">
-			<value>true</value>
-		</property>
 		<property name="length">
-			<value>1.1208390022675736</value>
+			<value>0.45000000000000001</value>
 		</property>
 		<relationship name="fadeOutCurve">
 			<destination>{c8899049-62a0-4a50-b4e5-03deac711f2a}</destination>
@@ -242,7 +246,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{915a0521-f86f-446f-a4c7-cfc245ae715a}">
 		<property name="volume">
-			<value>-1.5</value>
+			<value>-5</value>
 		</property>
 		<property name="name">
 			<value>TriggerPull</value>
@@ -399,9 +403,6 @@
 		<property name="maximumDistance">
 			<value>30</value>
 		</property>
-		<property name="overrideRange">
-			<value>true</value>
-		</property>
 	</object>
 	<object class="AutomationPoint" id="{1f4208c2-c539-47db-b8bf-212a2fc24737}">
 		<property name="position">
@@ -445,7 +446,7 @@
 	<object class="MixerBusFader" id="{0d3068be-98be-4a34-92cd-2ba973fce62f}" />
 	<object class="AutomationPoint" id="{bcb9c8a0-5cc2-4057-aa86-86b1cc74d248}">
 		<property name="position">
-			<value>0.10000000000000001</value>
+			<value>0.050000000000000017</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -459,7 +460,7 @@
 	</object>
 	<object class="AutomationPoint" id="{92b106c2-cb43-4ed0-95fa-812d77913d57}">
 		<property name="position">
-			<value>1.1208390022675736</value>
+			<value>0.45000000000000001</value>
 		</property>
 		<property name="value">
 			<value>0</value>
