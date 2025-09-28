@@ -3,6 +3,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -40,6 +41,14 @@ public class PlayerShooting : MonoBehaviour
     //added so the player doesn't negligently discharge while interacting with UI -A
     public static bool canFire = true;
 
+    //Sound variable
+    public EventReference firingSound;
+    public EventReference dryFireSound;
+    public EventReference reloadSound;
+    public EventReference pumpBackwardSound;
+    public EventReference pumpForwardSound;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,10 +69,12 @@ public class PlayerShooting : MonoBehaviour
         //    Fire();
         //}
 
-        if (canFire && Input.GetButton("Fire1")) Fire();
+        // Changed Input.GetButton to Input.GetButtonDown, basically, no slam firing. I also did this because it spams the Dry Fire sound -V
+        if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
         if (Input.GetButtonDown("Fire2"))
         {
+            PlaySound(pumpBackwardSound);
             Debug.Log("R mouse down");
             canFire = false;
 
@@ -76,6 +87,7 @@ public class PlayerShooting : MonoBehaviour
         }
         if (Input.GetButtonUp("Fire2"))
         {
+            PlaySound(pumpForwardSound);
             Debug.Log("R mouse up");
             if (magazine.Count > 0)
             { 
@@ -134,7 +146,9 @@ public class PlayerShooting : MonoBehaviour
     /// <param name="shellSize"> size of a ShellBase </param>
     private void MagazineUILoss()
     {
-        magazineUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
+        // Transform out of bound error fix (5 + 1 in the chamber) -V
+        if (currentCapacity < totalCapacity)
+            magazineUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
     private void ChamberUIOn(Color shellColor)
@@ -153,7 +167,15 @@ public class PlayerShooting : MonoBehaviour
     //    isInMenu = true;
     //}
 
-
+    // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
+    /// <summary>
+    /// Plays a sound from the game object that this script is attached to, in this case, the player
+    /// </summary>
+    /// <param name="eventReference"> The path to the FMOD sound event </param>
+    private void PlaySound(EventReference eventReference)
+    {
+        RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
+    }
 
     //change to coroutine to do cooldown time?? why yes I just don't want to do that rn -N
     //or do same shit you did with firing -N
@@ -166,6 +188,7 @@ public class PlayerShooting : MonoBehaviour
             currentCapacity += size;
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
+            PlaySound(reloadSound);
         }
 
     }
@@ -208,6 +231,7 @@ public class PlayerShooting : MonoBehaviour
         if (canFire == false || chamber is null)
         {
             Debug.Log($"cannot fire: {canFire} or chamber is null");
+            PlaySound(dryFireSound);
             return;
         }
         else 
@@ -217,7 +241,7 @@ public class PlayerShooting : MonoBehaviour
             chamber = null;
             ChamberUIOff();
             //determine behavior of shot based on shell type
-
+            PlaySound(firingSound);
             RaycastHit hit;
             switch (shell.Type)
             {
