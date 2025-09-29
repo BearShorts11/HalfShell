@@ -177,6 +177,21 @@ public class PlayerShooting : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
     }
 
+    private void PlaySound(string path)
+    {
+        RuntimeManager.PlayOneShotAttached(path, this.gameObject);
+    }
+
+    // will these work in the animation event once we have modular shells set up? -V
+    private void HideShellModel()
+    {
+        Debug.Log("Shell Invisible!");
+    }
+    private void ShowShellModel()
+    {
+        Debug.Log("Shell Visible!");
+    }
+
     //change to coroutine to do cooldown time?? why yes I just don't want to do that rn -N
     //or do same shit you did with firing -N
     public void LoadChamber(ShellBase shell)
