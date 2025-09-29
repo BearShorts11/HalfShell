@@ -12,6 +12,8 @@ public class PlayerShooting : MonoBehaviour
 
     public Camera fpsCam;
 
+    [SerializeField] private ParticleSystem blood;
+
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
     //private float reloadTime = 1f; //time to load one shell
@@ -270,6 +272,8 @@ public class PlayerShooting : MonoBehaviour
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange))
                         {
                             Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
+                            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+
                             HitEnemy(hit, shell);
                         }
 
@@ -280,6 +284,7 @@ public class PlayerShooting : MonoBehaviour
                     if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
                     {
                         HitEnemy(hit, shell);
+                        Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
                     }
                     break;
             }
