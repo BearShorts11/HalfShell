@@ -13,6 +13,7 @@ public class PlayerShooting : MonoBehaviour
     public Camera fpsCam;
 
     [SerializeField] private ParticleSystem blood;
+    [SerializeField] private ParticleSystem dust;
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
@@ -109,10 +110,6 @@ public class PlayerShooting : MonoBehaviour
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddBuckshot();
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
-
-        //Opens Shell Selection menu UI while [TAB] is pressed - Alex
-        //if (Input.GetKey(KeyCode.Tab)) ShellSelectionButton.OpenShellWheel(ShellSelectionMenu);
-
     }
 
     private void SwitchCrosshairUI()
@@ -162,12 +159,6 @@ public class PlayerShooting : MonoBehaviour
     { 
         chamberShell.gameObject.SetActive(false);
     }
-
-    //private void OpenShellWheel()
-    //{
-    //    Debug.Log("opened shell selection menu");
-    //    isInMenu = true;
-    //}
 
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
@@ -278,6 +269,15 @@ public class PlayerShooting : MonoBehaviour
                                 Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
                                 HitEnemy(hit, shell);
                             }
+                            else if (hit.collider.gameObject.tag == "Breakable")
+                            {
+                                Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+                                HitBreakable(hit, shell);
+                            }
+                            else
+                            {
+                                Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+                            }
                         }
 
                     }
@@ -290,6 +290,15 @@ public class PlayerShooting : MonoBehaviour
                         {
                             Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
                             HitEnemy(hit, shell);
+                        }
+                        else if (hit.collider.gameObject.tag == "Breakable")
+                        {
+                            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+                            HitBreakable(hit, shell);
+                        }
+                        else
+                        {
+                            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
                         }
                     }
                     break;
@@ -309,6 +318,19 @@ public class PlayerShooting : MonoBehaviour
         {
             enemy.Damage(shell.Damage);
             Debug.Log("enemy hit");
+        }
+    }
+
+    private void HitBreakable(RaycastHit hit, ShellBase shell)
+    {
+        Debug.Log(hit.transform.name);
+
+        BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
+
+        if (obj != null)
+        {
+            obj.Damage(shell.Damage);
+            Debug.Log("breakable hit");
         }
     }
 

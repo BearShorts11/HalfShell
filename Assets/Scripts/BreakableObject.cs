@@ -34,6 +34,21 @@ public class BreakableObject : MonoBehaviour
         // TO-DO: grab particles component on Awake
     }
 
+    public void Damage(float damageAmt)
+    {
+        currentHealth -= damageAmt;
+        Debug.Log("Breakable Item HP: " + currentHealth);
+
+        if (currentHealth <= (maxHealth / 2) && currentHealth > 0)
+        {
+            Chip();
+        }
+        else if (currentHealth <= 0)
+        {
+            Break();
+        }
+    }
+
 
     public void Chip()
     {
