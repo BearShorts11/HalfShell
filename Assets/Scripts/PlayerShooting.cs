@@ -272,9 +272,12 @@ public class PlayerShooting : MonoBehaviour
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange))
                         {
                             Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
-                            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
 
-                            HitEnemy(hit, shell);
+                            if (hit.collider.gameObject.tag == "Enemy")
+                            { 
+                                Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+                                HitEnemy(hit, shell);
+                            }
                         }
 
                     }
@@ -283,8 +286,11 @@ public class PlayerShooting : MonoBehaviour
                 case ShellBase.ShellType.Slug:
                     if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
                     {
-                        HitEnemy(hit, shell);
-                        Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+                        if (hit.collider.gameObject.tag == "Enemy")
+                        {
+                            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+                            HitEnemy(hit, shell);
+                        }
                     }
                     break;
             }
