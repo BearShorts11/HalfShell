@@ -10,7 +10,7 @@ public class BreakableObject : MonoBehaviour
 {
     private Rigidbody Rigidbody;
     [SerializeField] private ParticleSystem Particles;
-    [SerializeField] public GameObject undamagedPrafab;
+    [SerializeField] public GameObject undamagedPrefab;
     [SerializeField] public GameObject brokenPrefab;
     [SerializeField] public GameObject damagedPrefab;
     [SerializeField] public GameObject debrisPrefab;
@@ -34,6 +34,23 @@ public class BreakableObject : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
+
+        if (undamagedPrefab != null)
+        {
+            undamagedPrefab.SetActive(true);
+        }
+        //if (damagedPrefab != null)
+        //{
+        //    undamagedPrefab.SetActive(false);
+        //}
+        //if (brokenPrefab != null)
+        //{
+        //    undamagedPrefab.SetActive(false);
+        //}
+        //if (debrisPrefab != null)
+        //{
+        //    undamagedPrefab.SetActive(false);
+        //}
         // TO-DO: grab particles component on Awake
     }
 
@@ -57,7 +74,7 @@ public class BreakableObject : MonoBehaviour
     {
         Particles.Play();
 
-        undamagedPrafab.SetActive(false);
+        undamagedPrefab.SetActive(false);
         damagedPrefab.transform.position = gameObject.transform.position;
         damagedPrefab.transform.rotation = gameObject.transform.rotation;
         damagedPrefab.SetActive(true);
@@ -74,9 +91,9 @@ public class BreakableObject : MonoBehaviour
 
         Particles.Play();
 
-        if (undamagedPrafab != null)
+        if (undamagedPrefab != null)
         {
-            undamagedPrafab.SetActive(false);
+            undamagedPrefab.SetActive(false);
         }
         if (damagedPrefab != null)
         {
