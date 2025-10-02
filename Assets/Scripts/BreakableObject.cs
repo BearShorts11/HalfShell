@@ -58,6 +58,8 @@ public class BreakableObject : MonoBehaviour
         Particles.Play();
 
         undamagedPrafab.SetActive(false);
+        damagedPrefab.transform.position = gameObject.transform.position;
+        damagedPrefab.transform.rotation = gameObject.transform.rotation;
         damagedPrefab.SetActive(true);
         Explode(damagedPrefab);
 
@@ -83,11 +85,16 @@ public class BreakableObject : MonoBehaviour
 
         if (brokenPrefab != null)
         {
+
+            brokenPrefab.transform.position = gameObject.transform.position;
+            brokenPrefab.transform.rotation = gameObject.transform.rotation;
             brokenPrefab.SetActive(true);
             Explode(brokenPrefab);
         }
         if (debrisPrefab != null)
         {
+            debrisPrefab.transform.position = gameObject.transform.position;
+            debrisPrefab.transform.rotation = gameObject.transform.rotation;
             debrisPrefab.SetActive(true);
             debrisPrefab.transform.parent = null;
         }
