@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using FMODUnity;
+using System.Diagnostics.CodeAnalysis;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -22,11 +24,11 @@ public class PlayerBehavior : MonoBehaviour
 
     private float health = 100f;
     public float Health
-    { 
+    {
         get { return health; }
-        set 
-        { 
-            health = value; 
+        set
+        {
+            health = value;
 
             //this no worky but I want it to -N
             if (health <= 0) { OnDeath(); }
@@ -53,8 +55,18 @@ public class PlayerBehavior : MonoBehaviour
     public static bool SlowMoActive = false;
 
     public TextMeshProUGUI HPtext;
-    
 
+    //game over sounds
+    public EventReference deathRemark;
+    // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
+    /// <summary>
+    /// Plays a sound from the game object that this script is attached to, in this case, the player
+    /// </summary>
+    /// <param name="eventReference"> The path to the FMOD sound event </param>
+    private void PlaySound(EventReference eventReference)
+    {
+        RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
+    }
     void Start()
     {
         // Object needs a Character Controller for Script to work
@@ -86,7 +98,7 @@ public class PlayerBehavior : MonoBehaviour
         // Checks that the player can move and is touching the ground when they press the "Jump" input key, then allows them to jump
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
-            moveDirection.y = jumpPower; 
+            moveDirection.y = jumpPower;
         }
         else
         {
@@ -142,6 +154,14 @@ public class PlayerBehavior : MonoBehaviour
         {
             Time.timeScale = 1;
         }
+
+        if (health <= 0)
+        {
+
+            
+            Time.timeScale = 0;
+
+        }
     }
 
 
@@ -169,21 +189,26 @@ public class PlayerBehavior : MonoBehaviour
     public void Damage(float damage)
     {
         if (health > 0)
-        { 
+        {
             health -= damage;
             HPtext.text = $"HP: {health}";
         }
 
         if (health <= 0)
-        { 
+        {
+
             OnDeath();
+            
+
         }
     }
 
     private void OnDeath()
-    { 
+    {
+        PlaySound(deathRemark);
         NoMove();
         //display game over txt
         GameOverTxt.SetActive(true);
     }
+
 }
