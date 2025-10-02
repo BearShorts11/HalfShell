@@ -118,6 +118,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &229440848 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3447568621469227289, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+  m_PrefabInstance: {fileID: 1302684772}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &229440851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229440848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea1a7f3bbabe184e93323e5c6207559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 1298237872}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &354633235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,6 +1404,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1208387133}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1298237872 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 765761212573964377, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+  m_PrefabInstance: {fileID: 1302684772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1302684772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1425,6 +1449,34 @@ PrefabInstance:
       propertyPath: SingleShotCrosshair
       value: 
       objectReference: {fileID: 1607532437}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: effectSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: swayMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: effectIntensity
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: effectIntensityX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: sprintEffectSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: sprintEffectIntensity
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572080501347480808, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: sprintEffectIntensityX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5175454161512950739, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1469,10 +1521,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3472432424150999284, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3447568621469227289, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 229440851}
   m_SourcePrefab: {fileID: 100100000, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
 --- !u!1 &1353027638
 GameObject:

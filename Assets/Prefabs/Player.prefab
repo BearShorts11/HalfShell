@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 503214248198723163}
   - component: {fileID: 2572080501347480808}
+  - component: {fileID: 3472432424150999284}
   m_Layer: 0
   m_Name: Gun Position
   m_TagString: Untagged
@@ -47,6 +48,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smooth: 8
   swayMultiplier: 3
+  effectIntensity: 0.04
+  effectIntensityX: 1
+  effectSpeed: 4
+  sprintEffectIntensity: 0.08
+  sprintEffectIntensityX: 1
+  sprintEffectSpeed: 7
+--- !u!114 &3472432424150999284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3447568621469227289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea1a7f3bbabe184e93323e5c6207559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 765761212573964377}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5078965712888966585
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +263,13 @@ MonoBehaviour:
   alwaysRun: 0
   SlowedTime: 0.1
   HPtext: {fileID: 0}
-  objectDamage: 0
+  deathRemark:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1626164165021683729
 MonoBehaviour:
   m_ObjectHideFlags: 0
