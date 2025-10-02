@@ -53,9 +53,6 @@ public class PlayerBehavior : MonoBehaviour
     public static bool SlowMoActive = false;
 
     public TextMeshProUGUI HPtext;
-
-    // TEMPORARY FOR DESTRUCTABLE OBJECTS
-    [SerializeField] public float objectDamage; 
     
 
     void Start()
@@ -145,30 +142,6 @@ public class PlayerBehavior : MonoBehaviour
         {
             Time.timeScale = 1;
         }
-
-
-
-        #region UI Controls
-
-        // To be added revised soon
-        // Shell Wheel UI
-        //if (Input.GetKeyDown(KeyCode.Tab))
-        //{
-
-        //    ShellWheelController.shellWheelSelected = true;
-        //}
-        //if (Input.GetKeyUp(KeyCode.Tab))
-        //{
-        //    ShellWheelController.shellWheelSelected = false;
-        //}
-        #endregion
-
-
-        // TEMPORARY INPUT FOR TESTING BREAKABLE OBJECTS
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            DamageObject();
-        }
     }
 
 
@@ -212,31 +185,5 @@ public class PlayerBehavior : MonoBehaviour
         NoMove();
         //display game over txt
         GameOverTxt.SetActive(true);
-    }
-
-
-
-    // TEMPORARY FUNCTIONALITY TO TEST DESTRUCTIBLE OBJECTS
-    //private LayerMask interactableLayers;
-    private float useDistance = 3f;
-    private void DamageObject()
-    {
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, useDistance) && hit.collider.TryGetComponent<BreakableObject>(out BreakableObject breakable))
-        {
-            breakable.currentHealth -= objectDamage;
-            Debug.Log("Breakable Item HP: " + breakable.currentHealth);
-
-            // Damage State 1
-            if (breakable.currentHealth <= (breakable.maxHealth / 2) && breakable.currentHealth > 0)
-            {
-                //breakable.Replace(breakable.gameObject, breakable.damagedPrefab);
-                breakable.Chip();
-            }
-            // Damage State 2 (Broken)
-            else if (breakable.currentHealth <= 0)
-            {
-                breakable.Break();
-            }
-        }
     }
 }

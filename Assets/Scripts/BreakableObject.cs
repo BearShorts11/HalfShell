@@ -10,10 +10,13 @@ public class BreakableObject : MonoBehaviour
 {
     private Rigidbody Rigidbody;
     [SerializeField] private ParticleSystem Particles;
+    [SerializeField] public GameObject undamagedPrafab;
     [SerializeField] public GameObject brokenPrefab;
     [SerializeField] public GameObject damagedPrefab;
     [SerializeField] public GameObject debrisPrefab;
     // TO-DO: make particle systems child of prefab object
+
+    private bool isDamaged = false;
 
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public float currentHealth;
@@ -39,7 +42,7 @@ public class BreakableObject : MonoBehaviour
         currentHealth -= damageAmt;
         Debug.Log("Breakable Item HP: " + currentHealth);
 
-        if (currentHealth <= (maxHealth / 2) && currentHealth > 0)
+        if (currentHealth <= (maxHealth / 2) && currentHealth > 0 && isDamaged == false && damagedPrefab != null)
         {
             Chip();
         }
@@ -54,69 +57,40 @@ public class BreakableObject : MonoBehaviour
     {
         Particles.Play();
 
-        Destroy(Rigidbody);
-        GetComponent<Renderer>().enabled = false;
+        undamagedPrafab.SetActive(false);
+        damagedPrefab.SetActive(true);
+        Explode(damagedPrefab);
 
-        Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer oldRenderer in oldRenderers)
-        {
-            oldRenderer.enabled = false;
-        }
-
-        // TO-DO: make damaged prefab child object and activate, DON'T instantiate
-        GameObject damagedInstance = Instantiate(damagedPrefab, transform.position, transform.rotation);
-        damagedInstance.transform.parent = transform;
+        isDamaged = true;
     }
 
 
     // Ensures the destroyed object doesn't move after being destroyed + destroys the previous object
     public void Break()
     {
+        Destroy(GetComponent<Collider>());
+
         Particles.Play();
 
-        GetComponent<Renderer>().enabled = false;
-        Renderer[] oldRenderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer oldRenderer in oldRenderers)
+        if (undamagedPrafab != null)
         {
-            oldRenderer.enabled = false;
+            undamagedPrafab.SetActive(false);
+        }
+        if (damagedPrefab != null)
+        {
+            damagedPrefab.SetActive(false);
         }
 
-        if (transform.childCount > 0)
+        if (brokenPrefab != null)
         {
-            foreach (Transform child in transform.GetChild(0))
-            {
-                Destroy(child.gameObject);
-            }
+            brokenPrefab.SetActive(true);
+            Explode(brokenPrefab);
         }
-
-        GetComponent<Collider>().enabled = false;
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
+        if (debrisPrefab != null)
         {
-            collider.enabled = false;
+            debrisPrefab.SetActive(true);
+            debrisPrefab.transform.parent = null;
         }
-
-        GameObject debrisInstance = Instantiate(debrisPrefab, transform.position, transform.rotation);
-
-        // Instantiates and replaces the previous model/mesh
-        // TO-DO: make destroyed prefab child object and activate, DON'T instantiate
-        GameObject brokenInstance = Instantiate(brokenPrefab, transform.position, transform.rotation);
-        brokenInstance.transform.parent = transform;
-
-
-        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
-
-        foreach (Rigidbody body in rigidbodies)
-        {
-            if (Rigidbody != null)
-            {
-                body.linearVelocity = Rigidbody.linearVelocity;
-            }
-            body.AddExplosionForce(explosiveForce, transform.position, explosiveRadius);
-        }
-
-        // Calls for the broken pieces to begin fading out
-        StartCoroutine(FadeOutRigidBodies(rigidbodies));
     }
 
 
@@ -174,11 +148,30 @@ public class BreakableObject : MonoBehaviour
 
 
         // Destroys entire breakable object after co-coutine completes and all destroyed pieces have vanished
-        Destroy(Particles.gameObject);
-        Destroy(gameObject);
+        if (brokenPrefab.activeSelf == true)
+        {
+            Destroy(gameObject);
+        }
     }
 
+    // Exerts a force on any rigidbodies in the subject prefab
+    private void Explode(GameObject prefab)
+    {
+        Vector3 playerPos = FindFirstObjectByType<PlayerBehavior>().gameObject.transform.position;
+        Rigidbody[] rigidbodies = prefab.GetComponentsInChildren<Rigidbody>();
 
+        foreach (Rigidbody body in rigidbodies)
+        {
+            if (Rigidbody != null)
+            {
+                body.linearVelocity = Rigidbody.linearVelocity;
+            }
+            body.AddExplosionForce(explosiveForce, playerPos, explosiveRadius);
+        }
+
+        // Calls for the broken pieces to begin fading out
+        StartCoroutine(FadeOutRigidBodies(rigidbodies));
+    }
 
     private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
     {
