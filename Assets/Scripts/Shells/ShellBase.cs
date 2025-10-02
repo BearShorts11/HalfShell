@@ -10,7 +10,8 @@ public class ShellBase : MonoBehaviour
     public bool hasSpecialEffects;
     //something to store effects (enum??)
 
-    //move outside the class??
+    public Color DisplayColor;
+
     public enum ShellType
     { 
         Buckshot,
