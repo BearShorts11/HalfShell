@@ -255,12 +255,23 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    private void MakeShellUI()
+    private void MakeShellUI(ShellBase shell)
     {
         GameObject newShell = new GameObject();
         Image display = newShell.AddComponent<Image>();
         newShell.GetComponent<RectTransform>().SetParent(magazineUI.transform);
 
+        switch (shell.Type)
+        {
+            case ShellBase.ShellType.Slug:
+                newShell.GetComponent<Image>().color = Color.green;
+                //set size based on full or half shell
+                //set position based on capacity, shell size, & buffer
+                break;
+            case ShellBase.ShellType.HalfShell:
+                newShell.GetComponent<Image>().color = Color.red;
+                break;
+        }
     }
 
 
