@@ -15,6 +15,8 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
 
+    public Animator animator;
+
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
     //private float reloadTime = 1f; //time to load one shell
@@ -28,6 +30,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
+    #region UI fields - move to own object
     //UI fields
     public TextMeshProUGUI spaceLeftText;
     public Image magazineUI;
@@ -35,23 +38,22 @@ public class PlayerShooting : MonoBehaviour
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
+    #endregion 
 
 
     //first in last out collection
     private Stack<ShellBase> magazine = new Stack<ShellBase>();
     private ShellBase chamber;
-
-    //added so the player doesn't negligently discharge while interacting with UI -A
     public static bool canFire = true;
 
+    #region Sound variables
     //Sound variable
     public EventReference firingSound;
     public EventReference dryFireSound;
     public EventReference reloadSound;
     public EventReference pumpBackwardSound;
     public EventReference pumpForwardSound;
-
-
+    #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,24 +62,23 @@ public class PlayerShooting : MonoBehaviour
 
         SingleShotCrosshair.gameObject.SetActive(true);
         MultiShotCrosshair.gameObject.SetActive(false);
+
+        //dw about it
+        animator.SetBool("canFire", true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //both L mouse & L control can fire as per the system currently being used. just thought I would note, can fix/change later
-        //if (canFire && Input.GetButton("Fire1") && Time.time > nextTimeTofire)
-        //{
-        //    nextTimeTofire = Time.time + 1 / reloadTime;
-        //    Fire();
-        //}
-
         // Changed Input.GetButton to Input.GetButtonDown, basically, no slam firing. I also did this because it spams the Dry Fire sound -V
+        //that's so smart dude - N
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
+        //racking
         if (Input.GetButtonDown("Fire2"))
         {
             PlaySound(pumpBackwardSound);
+            animator.Play("Pump_Backwards");
             Debug.Log("R mouse down");
             canFire = false;
 
@@ -91,6 +92,7 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetButtonUp("Fire2"))
         {
             PlaySound(pumpForwardSound);
+            animator.Play("Pump_Fwd");
             Debug.Log("R mouse up");
             if (magazine.Count > 0)
             { 
@@ -104,6 +106,21 @@ public class PlayerShooting : MonoBehaviour
             }
             canFire = true;
         }
+
+        /**
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            //animator.Play("Reload_Start");
+            animator.SetBool("shellWheelSelected", false);
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        { 
+            animator.SetBool("shellWheelSelected", true);
+            //animator.Play("Reload_Finish");
+        }
+         */
+
+
 
         SwitchCrosshairUI();
 
@@ -185,8 +202,7 @@ public class PlayerShooting : MonoBehaviour
         Debug.Log("Shell Visible!");
     }
 
-    //change to coroutine to do cooldown time?? why yes I just don't want to do that rn -N
-    //or do same shit you did with firing -N
+
     public void LoadChamber(ShellBase shell)
     {
         if (currentCapacity + shell.Size <= totalCapacity)
@@ -244,6 +260,8 @@ public class PlayerShooting : MonoBehaviour
         }
         else 
         {
+            animator.SetTrigger("Fire");
+
             ShellBase shell = chamber;
             MagazineUILoss();
             chamber = null;

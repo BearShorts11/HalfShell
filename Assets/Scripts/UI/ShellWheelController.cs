@@ -9,6 +9,8 @@ public class ShellWheelController : MonoBehaviour
     public Sprite noImage;
     public static int shellID;
 
+    public Animator playerAnimator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
