@@ -22,9 +22,9 @@ public class PlayerShooting : MonoBehaviour
     //private float reloadTime = 1f; //time to load one shell
     //private float nextTimeTofire = 0f;
 
-    private int totalCapacity = 5;
+    private float totalCapacity = 5;
     //change to float when half shells get implimented, do away/change UI by then (breaks referencing)
-    [SerializeField] private int currentCapacity = 0; //shown for debug purposes
+    [SerializeField] private float currentCapacity = 0; //shown for debug purposes
     private float shotCooldown = 1f; //time in between shots
     private float nextTimeToShot = 0f;
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
@@ -97,7 +97,7 @@ public class PlayerShooting : MonoBehaviour
             if (magazine.Count > 0)
             { 
                 chamber = magazine.Pop();
-                int size = chamber.Size;
+                float size = chamber.Size;
                 MagLoss(chamber.Size);
                 MagazineUILoss();
                 //temporary based on current UI
@@ -156,15 +156,12 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="shellSize"> size of a ShellBase </param>
+
     private void MagazineUILoss()
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (currentCapacity < totalCapacity)
-            magazineUI.transform.GetChild(currentCapacity).gameObject.SetActive(false);
+            magazineUI.transform.GetChild((int)currentCapacity).gameObject.SetActive(false);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
     private void ChamberUIOn(Color shellColor)
@@ -208,7 +205,7 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity + shell.Size <= totalCapacity)
         {
             magazine.Push(shell);
-            int size = shell.Size;
+            float size = shell.Size;
             currentCapacity += size;
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
@@ -226,7 +223,7 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("slug pressed");
 
             //move to LoadChamber() dependant on how we want to display what's in the chamber, if at all 
-            GameObject display = magazineUI.transform.GetChild(currentCapacity - 1).gameObject;
+            GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
             display.SetActive(true);
             display.GetComponent<Image>().color = Color.green;
 
@@ -241,12 +238,30 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             Debug.Log("buck pressed");
 
-            GameObject display = magazineUI.transform.GetChild(currentCapacity - 1).gameObject;
+            GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
             display.SetActive(true);
             display.GetComponent<Image>().color = Color.red;
         }
     }
 
+    public void AddHalfShell()
+    { 
+        HalfShell half = new HalfShell();
+        if (currentCapacity + half.Size <= totalCapacity)
+        {
+            LoadChamber(half);
+            Debug.Log("half shell pressed");
+
+        }
+    }
+
+    private void MakeShellUI()
+    {
+        GameObject newShell = new GameObject();
+        Image display = newShell.AddComponent<Image>();
+        newShell.GetComponent<RectTransform>().SetParent(magazineUI.transform);
+
+    }
 
 
     public void Fire()
@@ -352,5 +367,5 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    private void MagLoss(int shellSize) => currentCapacity -= shellSize;
+    private void MagLoss(float shellSize) => currentCapacity -= shellSize;
 }

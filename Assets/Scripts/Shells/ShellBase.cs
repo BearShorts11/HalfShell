@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShellBase : MonoBehaviour
 {
     public int AmtProjectiles;
-    public int Size;
+    public float Size;
 
     public float Damage;
 
@@ -14,7 +14,8 @@ public class ShellBase : MonoBehaviour
     public enum ShellType
     { 
         Buckshot,
-        Slug
+        Slug,
+        HalfShell
     }
 
     protected ShellType type;

@@ -1,15 +1,7 @@
 using UnityEngine;
 
-public class HalfShell : ShellBase
+public class PlayerUI : MonoBehaviour
 {
-    public HalfShell()
-    {
-        Size = 0.5f;
-        Damage = 6;
-        AmtProjectiles = 9;
-        type = ShellType.HalfShell;
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
