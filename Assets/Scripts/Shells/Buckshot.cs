@@ -7,8 +7,7 @@ public class Buckshot : ShellBase
         Size = 1;
         Damage = 12;
         AmtProjectiles = 9;
-        type = ShellType.Buckshot; 
-        DisplayColor = Color.red;
+        type = ShellType.Buckshot;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
