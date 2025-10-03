@@ -122,6 +122,8 @@ public class EnemyBehavior : MonoBehaviour
 
     public void Damage(float damageAmt)
     {
+        if (state == State.idle) state = State.attack;
+
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
         StartCoroutine(DamageFlash());
