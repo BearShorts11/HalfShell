@@ -9,6 +9,7 @@ public class Slug : ShellBase
         Damage = 80;
         AmtProjectiles = 1;
         type = ShellType.Slug;
+        DisplayColor = Color.green;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

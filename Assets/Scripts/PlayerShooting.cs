@@ -78,7 +78,7 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetButtonDown("Fire2"))
         {
             PlaySound(pumpBackwardSound);
-            animator.Play("Pump_Backwards");
+            animator.CrossFade("Pump_Backwards", 0.2f);
             Debug.Log("R mouse down");
             canFire = false;
 
@@ -92,7 +92,7 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetButtonUp("Fire2"))
         {
             PlaySound(pumpForwardSound);
-            animator.Play("Pump_Fwd");
+            animator.CrossFade("Pump_Fwd", 0.2f);
             Debug.Log("R mouse up");
             if (magazine.Count > 0)
             { 
@@ -161,7 +161,8 @@ public class PlayerShooting : MonoBehaviour
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (currentCapacity < totalCapacity)
-            magazineUI.transform.GetChild((int)currentCapacity).gameObject.SetActive(false);
+            //magazineUI.transform.GetChild((int)currentCapacity).gameObject.SetActive(false);
+        Destroy(magazineUI.transform.GetChild((int)currentCapacity).gameObject);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
     private void ChamberUIOn(Color shellColor)
@@ -222,10 +223,11 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(slug);
             Debug.Log("slug pressed");
 
+            MakeShellUI(slug);
             //move to LoadChamber() dependant on how we want to display what's in the chamber, if at all 
-            GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
-            display.SetActive(true);
-            display.GetComponent<Image>().color = Color.green;
+            //GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
+            //display.SetActive(true);
+            //display.GetComponent<Image>().color = Color.green;
 
         }
     }
@@ -238,9 +240,10 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             Debug.Log("buck pressed");
 
-            GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
-            display.SetActive(true);
-            display.GetComponent<Image>().color = Color.red;
+            MakeShellUI(buck);
+            //GameObject display = magazineUI.transform.GetChild((int)currentCapacity - 1).gameObject;
+            //display.SetActive(true);
+            //display.GetComponent<Image>().color = Color.red;
         }
     }
 
@@ -251,27 +254,56 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadChamber(half);
             Debug.Log("half shell pressed");
-
+            MakeShellUI(half);
         }
     }
 
     private void MakeShellUI(ShellBase shell)
     {
-        GameObject newShell = new GameObject();
-        Image display = newShell.AddComponent<Image>();
-        newShell.GetComponent<RectTransform>().SetParent(magazineUI.transform);
+        GameObject UIshell = new GameObject();
+        Image display = UIshell.AddComponent<Image>();
+        RectTransform UIShellRectTransform = UIshell.GetComponent<RectTransform>();
+        UIShellRectTransform.SetParent(magazineUI.transform, false);
+        //does nothing??
+        UIShellRectTransform.anchoredPosition = magazineUI.GetComponent<RectTransform>().anchorMax;
 
+        //put this somewhere better dumbass -N
+        float xOffset = -38;
+        float buffer = -10f;
+        float shellWidth = 30f;
+        float shellHeight = 70f;
+        float halfShellHeight = 35f;
+        float max = 150; //there is no way i can possibly explain what max is in words only -N
+
+        Color color = shell.DisplayColor;
+        UIshell.GetComponent<Image>().color = color;
+
+        //set size based on full or half shell
         switch (shell.Type)
         {
-            case ShellBase.ShellType.Slug:
-                newShell.GetComponent<Image>().color = Color.green;
-                //set size based on full or half shell
-                //set position based on capacity, shell size, & buffer
-                break;
             case ShellBase.ShellType.HalfShell:
-                newShell.GetComponent<Image>().color = Color.red;
+                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, halfShellHeight);
+                break;
+            default:
+                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
                 break;
         }
+
+                //set position based on capacity, shell size, & buffer
+                float y = 0;
+                float temp = max;
+                if (currentCapacity % 1 == 0)
+                {
+                    //even number/no singluar half shells
+                    y = max - ((totalCapacity - currentCapacity) * 75);
+                }
+                else
+                {
+                    y = max - ((currentCapacity + 0.5f) * 75) + 40;
+                }
+
+        UIShellRectTransform.localPosition = new Vector3(0, y, 0);
+        UIshell.SetActive(true);
     }
 
 
@@ -286,10 +318,11 @@ public class PlayerShooting : MonoBehaviour
         }
         else 
         {
+            animator.SetInteger("Shoot_Variation", Random.Range(0, 3));
             animator.SetTrigger("Fire");
 
             ShellBase shell = chamber;
-            MagazineUILoss();
+            //MagazineUILoss();
             chamber = null;
             ChamberUIOff();
             //determine behavior of shot based on shell type
