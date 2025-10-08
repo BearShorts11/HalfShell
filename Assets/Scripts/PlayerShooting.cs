@@ -14,6 +14,8 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
+    [SerializeField] private ParticleSystem muzzleflash;
+    [SerializeField] private Transform      shotgunMuzzleflashPos;
 
     public Animator animator;
 
@@ -190,7 +192,7 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadChamber(buck);
             Debug.Log("buck pressed");
-
+            magUI.Add(buck);
             LoadMagUI(buck);
         }
     }
@@ -219,6 +221,8 @@ public class PlayerShooting : MonoBehaviour
         }
         else 
         {
+            if (muzzleflash != null)
+                Instantiate(muzzleflash, shotgunMuzzleflashPos);
             animator.SetInteger("Shoot_Variation", Random.Range(0, 3));
             animator.SetTrigger("Fire");
 

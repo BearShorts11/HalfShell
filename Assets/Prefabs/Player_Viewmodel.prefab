@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1118406220452860431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2339547268110737238}
+  m_Layer: 5
+  m_Name: tip_MuzzleFlash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2339547268110737238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118406220452860431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.172, z: 5.86}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1556905580632562220}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3142030119010781667
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +445,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5162719184954017897, guid: 5359200b254587a4eab17ef68681a820, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2339547268110737238}
     - targetCorrespondingSourceObject: {fileID: -7930773444763250791, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8060852427603943768}
@@ -422,6 +456,11 @@ PrefabInstance:
       addedObject: {fileID: 4694034381157682010}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5359200b254587a4eab17ef68681a820, type: 3}
+--- !u!4 &1556905580632562220 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5162719184954017897, guid: 5359200b254587a4eab17ef68681a820, type: 3}
+  m_PrefabInstance: {fileID: 5926337843624022597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4886035389026082268 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7930773444763250791, guid: 5359200b254587a4eab17ef68681a820, type: 3}
