@@ -90,6 +90,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         // Object needs a Character Controller for Script to work
         characterController = GetComponent<CharacterController>();
+        input = GetComponent<PlayerInput>();
+        cameraInput = GetComponent<PlayerCameraInputs>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
