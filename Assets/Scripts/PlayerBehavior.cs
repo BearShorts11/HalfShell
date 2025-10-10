@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using FMODUnity;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine.Windows;
+using Unity.Cinemachine;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -56,6 +59,22 @@ public class PlayerBehavior : MonoBehaviour
 
     public TextMeshProUGUI HPtext;
 
+    [Header("Cinemachine")]
+    public CinemachineCamera playerCam;
+    public GameObject CinemachineCameraTarget;
+    public PlayerInput input;
+    public PlayerCameraInputs cameraInput;
+    public float TopClamp = 90.0f;
+    public float BottomClamp = -90.0f;
+    public float rotationVelocity;
+
+    private bool isCurrentDeviceMouse
+    {
+        get { return input.currentControlScheme == "KeyBoardMouse"; }
+    }
+    private float cinemachineTargetPitch;
+    private const float threshold = 0.01f;
+
     //game over sounds
     public EventReference deathRemark;
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
@@ -77,26 +96,31 @@ public class PlayerBehavior : MonoBehaviour
         HPtext.text = $"HP: {health}";
     }
 
+    private void LateUpdate()
+    {
+        CameraRotation();
+    }
 
     void Update()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+        bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
         if (alwaysRun)
         {
             walkSpeed = runSpeed;
+
         }
 
 
         // Checks that the player can move and is touching the ground when they press the "Jump" input key, then allows them to jump
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (UnityEngine.Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
         }
@@ -138,12 +162,12 @@ public class PlayerBehavior : MonoBehaviour
 
 
         // Ensures the player doesn't break their neck by looking 360 degrees along the Y axis
-        if (canMove && canLook)
+        //if (canMove && canLook)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX += -UnityEngine.Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, UnityEngine.Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
 
         if (SlowMoActive)
@@ -161,6 +185,33 @@ public class PlayerBehavior : MonoBehaviour
             
             Time.timeScale = 0;
 
+        }
+    }
+
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+    private void CameraRotation()
+    {
+        // if there is an input
+        if (cameraInput.look.sqrMagnitude >= threshold)
+        {
+            //Don't multiply mouse input by Time.deltaTime
+            float deltaTimeMultiplier = 1.0f;
+            cinemachineTargetPitch += cameraInput.look.y * lookSpeed * deltaTimeMultiplier;
+            rotationVelocity = cameraInput.look.x * lookSpeed * deltaTimeMultiplier;
+
+            // clamp our pitch rotation
+            cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, BottomClamp, TopClamp);
+
+            // Update Cinemachine camera target pitch
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
+
+            // rotate the player left and right
+            transform.Rotate(Vector3.up * rotationVelocity);
         }
     }
 
