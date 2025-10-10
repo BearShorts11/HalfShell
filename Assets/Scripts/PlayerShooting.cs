@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using FMODUnity;
+using Unity.Cinemachine;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerShooting : MonoBehaviour
     //https://www.youtube.com/watch?v=THnivyG0Mvo 
 
     public Camera fpsCam;
+    public CinemachineImpulseSource impulse;
 
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
@@ -232,6 +234,7 @@ public class PlayerShooting : MonoBehaviour
             ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
+            impulse.GenerateImpulse();
             RaycastHit hit;
             switch (shell.Type)
             {

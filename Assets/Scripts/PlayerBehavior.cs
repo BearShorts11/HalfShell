@@ -60,7 +60,7 @@ public class PlayerBehavior : MonoBehaviour
     public TextMeshProUGUI HPtext;
 
     [Header("Cinemachine")]
-    public CinemachineCamera playerCam;
+    public CinemachineCamera playerCinemachineCamera;
     public GameObject CinemachineCameraTarget;
     public PlayerInput input;
     public PlayerCameraInputs cameraInput;
@@ -107,6 +107,7 @@ public class PlayerBehavior : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -115,7 +116,6 @@ public class PlayerBehavior : MonoBehaviour
         if (alwaysRun)
         {
             walkSpeed = runSpeed;
-
         }
 
 
