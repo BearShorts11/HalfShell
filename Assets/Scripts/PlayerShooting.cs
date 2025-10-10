@@ -112,6 +112,10 @@ public class PlayerShooting : MonoBehaviour
             canFire = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.Tab)) canFire = false;
+        if (Input.GetKeyUp(KeyCode.Tab)) canFire = true;
+
+
         /**
         if (Input.GetKey(KeyCode.Tab))
         {
@@ -144,6 +148,7 @@ public class PlayerShooting : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
     }
 
+    //if this isn't used in the next few weeks can I get rid of this? -N
     private void PlaySound(string path)
     {
         RuntimeManager.PlayOneShotAttached(path, this.gameObject);
