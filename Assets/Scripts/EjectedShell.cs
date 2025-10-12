@@ -7,17 +7,12 @@ public class EjectedShell : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Invoke("Delete", lifetime);
+        Destroy(this.gameObject, lifetime);
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    void Delete()
-    {
-        Destroy(this.gameObject);
     }
 }

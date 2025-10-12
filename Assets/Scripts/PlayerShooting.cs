@@ -175,7 +175,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 PlaySound(reloadSound);
             }
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Fwd") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Backwards") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
 
         }
 

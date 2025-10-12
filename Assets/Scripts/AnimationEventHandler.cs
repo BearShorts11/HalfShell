@@ -6,10 +6,12 @@ using UnityEngine;
 public class AnimationEventHandler : MonoBehaviour
 {
     private GameObject shellObject;
+    private Transform shellEjectionTransform;
 
     private void Start()
     {
         shellObject = GameObject.Find("Shell");
+        shellEjectionTransform = GameObject.Find("Shell_Eject").transform;
         //shellObject.SetActive(false);
     }
     //if this isn't used in the next few weeks can I get rid of this? -N
@@ -43,9 +45,8 @@ public class AnimationEventHandler : MonoBehaviour
     }
     private void EjectShell(GameObject shell)
     {
-        
         // I hate this, WHY DOESN'T THIS FOLLOW THE TRANSFORM WHEN LOOKING UP OR DOWN!!! -V
-        shell = Instantiate(shell, GameObject.Find("Shell_Eject").transform.position, Quaternion.LookRotation(GameObject.Find("Shell_Eject").transform.right));
+        shell = Instantiate(shell, shellEjectionTransform.position, Quaternion.LookRotation(shellEjectionTransform.right));
         // This too -V
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.right * Random.Range(150f, 300f));
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
