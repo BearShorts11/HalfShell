@@ -58,8 +58,8 @@ public class PlayerShooting : MonoBehaviour
     public EventReference firingSound;
     public EventReference dryFireSound;
     public EventReference reloadSound;
-    public EventReference pumpBackwardSound;
-    public EventReference pumpForwardSound;
+    //public EventReference pumpBackwardSound;
+    //public EventReference pumpForwardSound;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -82,7 +82,7 @@ public class PlayerShooting : MonoBehaviour
         //racking
         if (Input.GetButtonDown("Fire2"))
         {
-            PlaySound(pumpBackwardSound);
+            //PlaySound(pumpBackwardSound);
             animator.CrossFade("Pump_Backwards", 0.2f);
             Debug.Log("R mouse down");
             canFire = false;
@@ -96,7 +96,7 @@ public class PlayerShooting : MonoBehaviour
         }
         if (Input.GetButtonUp("Fire2"))
         {
-            PlaySound(pumpForwardSound);
+            //PlaySound(pumpForwardSound);
             animator.CrossFade("Pump_Fwd", 0.2f);
             Debug.Log("R mouse up");
             if (magazine.Count > 0)
@@ -112,30 +112,37 @@ public class PlayerShooting : MonoBehaviour
             canFire = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab)) canFire = false;
-        if (Input.GetKeyUp(KeyCode.Tab)) canFire = true;
-
-
-        /**
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            //animator.Play("Reload_Start");
-            animator.SetBool("shellWheelSelected", false);
+        if (Input.GetKeyDown(KeyCode.Tab)) {
+            canFire = false;
+            animator.SetBool("shellWheelSelected", true);
+            animator.CrossFade("Reload_Start", 0.2f);
         }
         if (Input.GetKeyUp(KeyCode.Tab))
-        { 
-            animator.SetBool("shellWheelSelected", true);
-            //animator.Play("Reload_Finish");
+        {
+            canFire = true;
+            animator.speed = 1;
+            animator.SetBool("shellWheelSelected", false);
+            animator.CrossFade("Reload_Finish", 0.2f);
         }
-         */
+
+
+
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            animator.speed = 1 / Time.timeScale;
+            //animator.CrossFade("Reload_Start", 0.2f);
+        }
+        
         //can I remove this? -N
 
 
         SwitchCrosshairUI();
 
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
-        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell();
-        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug();
+        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
+        
+        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
+        
     }
 
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
@@ -148,22 +155,6 @@ public class PlayerShooting : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
     }
 
-    //if this isn't used in the next few weeks can I get rid of this? -N
-    private void PlaySound(string path)
-    {
-        RuntimeManager.PlayOneShotAttached(path, this.gameObject);
-    }
-
-    // will these work in the animation event once we have modular shells set up? -V
-    private void HideShellModel()
-    {
-        Debug.Log("Shell Invisible!");
-    }
-    private void ShowShellModel()
-    {
-        Debug.Log("Shell Visible!");
-    }
-
 
     public void LoadChamber(ShellBase shell)
     {
@@ -174,7 +165,18 @@ public class PlayerShooting : MonoBehaviour
             currentCapacity += size;
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-            PlaySound(reloadSound);
+            //PlaySound(reloadSound);
+            if (Input.GetKey(KeyCode.Tab)) // Do not play the reload animation if the player is loading via number keys (Alt reload animations for number keys?) -V
+            {
+                animator.CrossFade("reload_loop", 0.01f);
+                animator.SetTrigger("LoadShell");
+            }
+            else
+            {
+                PlaySound(reloadSound);
+            }
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Fwd") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
+
         }
 
     }

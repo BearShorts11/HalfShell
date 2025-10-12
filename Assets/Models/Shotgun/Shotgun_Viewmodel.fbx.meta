@@ -262,7 +262,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.1331155
+        functionName: PlaySound
+        data: event:/Weapons/Shotgun_PumpBCK
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6403484
+        functionName: EjectShell
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -291,7 +305,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.032469526
+        functionName: PlaySound
+        data: event:/Weapons/Shotgun_PumpFWD
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -349,7 +370,35 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: HideShellModel
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.018518519
+        functionName: ShowShellModel
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.24967979
+        functionName: PlaySound
+        data: event:/Weapons/Shotgun_InsertShell
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.80353844
+        functionName: HideShellModel
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
