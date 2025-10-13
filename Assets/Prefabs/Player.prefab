@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2111073342127768728}
-  m_Father: {fileID: 765761212573964377}
+  m_Father: {fileID: 5145192282393300189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2572080501347480808
 MonoBehaviour:
@@ -194,7 +194,7 @@ MonoBehaviour:
     AmplitudeGain: 1
     FrequencyGain: 1
     Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: -250.75354, y: 829.1669, z: -800.2344}
 --- !u!1 &5078965712888966585
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94650ec635bff8144b6d02bdb7d1d604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fpsCam: {fileID: 5717759520288571188}
+  fpsCam: {fileID: 9124881526004739986}
   impulse: {fileID: 6453100501509869400}
   blood: {fileID: 7649582879852285066, guid: 3050398df40b4ec4b8baf2a26d61d4ad, type: 3}
   dust: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
@@ -457,20 +457,6 @@ MonoBehaviour:
       Data3: -1297708394
       Data4: -1537037362
     Path: event:/Weapons/Shotgun_InsertShell
-  pumpBackwardSound:
-    Guid:
-      Data1: -648243380
-      Data2: 1302180602
-      Data3: -651845206
-      Data4: 1350618772
-    Path: event:/Weapons/Shotgun_PumpBCK
-  pumpForwardSound:
-    Guid:
-      Data1: 2022008643
-      Data2: 1225919817
-      Data3: -506234957
-      Data4: -420837064
-    Path: event:/Weapons/Shotgun_PumpFWD
 --- !u!114 &4660708139432030009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +522,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ImpulseDuration: 0.2
+    ImpulseDuration: 0.3
     ImpulseType: 0
     DissipationRate: 0.25
     RawSignal: {fileID: 0}
@@ -567,7 +553,7 @@ MonoBehaviour:
     DissipationMode: 2
     DissipationDistance: 100
     PropagationSpeed: 343
-  DefaultVelocity: {x: 0, y: 0.3, z: 0}
+  DefaultVelocity: {x: 0.1, y: 0.1, z: 0}
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,12 +582,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6719948019014343288}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0.01896331, y: -0.42426506, z: -0.008887117, w: 0.90529585}
+  m_LocalPosition: {x: 37.761456, y: 4.5799994, z: 106.641525}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 503214248198723163}
+  m_Children: []
   m_Father: {fileID: 5175454161512950739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5717759520288571188
@@ -773,7 +758,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 503214248198723163}
   m_Father: {fileID: 1574212701098856315}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8034355594651571339

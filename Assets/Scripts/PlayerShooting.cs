@@ -11,7 +11,7 @@ public class PlayerShooting : MonoBehaviour
     //AKA Gun class
     //https://www.youtube.com/watch?v=THnivyG0Mvo 
 
-    public Camera fpsCam;
+    public GameObject fpsCam;
     public CinemachineImpulseSource impulse;
 
     [SerializeField] private ParticleSystem blood;
