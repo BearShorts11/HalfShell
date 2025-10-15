@@ -76,7 +76,8 @@ public class PlayerBehavior : MonoBehaviour
     private const float threshold = 0.01f;
 
     //game over sounds
-    public EventReference deathRemark;
+    //public EventReference deathRemark;
+    public EventReference dmgEfforts;
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
     /// Plays a sound from the game object that this script is attached to, in this case, the player
@@ -245,6 +246,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             health -= damage;
             HPtext.text = $"HP: {health}";
+            PlaySound(dmgEfforts);
         }
 
         if (health <= 0)
@@ -258,7 +260,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnDeath()
     {
-        PlaySound(deathRemark);
+        //PlaySound(deathRemark);
         NoMove();
         //display game over txt
         GameOverTxt.SetActive(true);
