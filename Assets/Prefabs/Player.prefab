@@ -101,7 +101,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 23
 --- !u!1 &3447568621469227289
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,13 +505,13 @@ MonoBehaviour:
   TopClamp: 90
   BottomClamp: -90
   rotationVelocity: 0
-  deathRemark:
+  dmgEfforts:
     Guid:
-      Data1: 2081764530
-      Data2: 1323748206
-      Data3: 809461164
-      Data4: 532747064
-    Path: event:/Barks/Bark_GameOver
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1626164165021683729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1065,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2450990273374725786, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 258e2896fabf7014084a19ffe8a730dc, type: 2}
     - target: {fileID: 2490016417305763104, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
       propertyPath: m_Layer
       value: 2
