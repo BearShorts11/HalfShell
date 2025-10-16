@@ -23,7 +23,7 @@ public class EnemyBehavior : MonoBehaviour
     NavMeshAgent agent;
 
 
-    private State state;
+    public State state;
     public enum State
     {
         idle,
@@ -122,7 +122,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public void Damage(float damageAmt)
     {
-        if (state == State.idle) state = State.attack;
+        if (state == State.idle) state = State.chasing;
 
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;

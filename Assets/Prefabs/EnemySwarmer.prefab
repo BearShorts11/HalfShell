@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5071593514229173191}
   - component: {fileID: 384848225298394743}
   - component: {fileID: 5236014739524334920}
-  - component: {fileID: 4894805334357173144}
   - component: {fileID: 1676573364625945026}
+  - component: {fileID: 8384322713868323038}
   m_Layer: 0
   m_Name: EnemySwarmer
   m_TagString: Enemy
@@ -134,29 +134,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4894805334357173144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6309285473008256643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc27c863d1b1a44bbff5e07a8bf7631, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 10
-  gravity: 20
-  health: 0
-  maxHealth: 100
-  damage: 10
-  detectionRadius: 20
-  attackRaidus: 2
-  attackTime: 1
-  cooldownTime: 1
-  tempEnemNormal: {fileID: 2100000, guid: dba35823f1c6a6b4c96865c2306e1976, type: 2}
-  tempEnemDamage: {fileID: 2100000, guid: 5774137de1e5c344ca6f2bc1fcaf12f5, type: 2}
 --- !u!195 &1676573364625945026
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -179,3 +156,26 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8384322713868323038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309285473008256643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9492bb245a7ed944585e15985098e1ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 12
+  gravity: 20
+  health: 100
+  maxHealth: 100
+  damage: 10
+  detectionRadius: 10
+  attackRaidus: 3
+  attackTime: 1
+  cooldownTime: 1
+  tempEnemNormal: {fileID: 2100000, guid: dba35823f1c6a6b4c96865c2306e1976, type: 2}
+  tempEnemDamage: {fileID: 2100000, guid: 5774137de1e5c344ca6f2bc1fcaf12f5, type: 2}

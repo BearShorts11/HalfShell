@@ -23,14 +23,8 @@ public class PlayerShooting : MonoBehaviour
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
-    //private float reloadTime = 1f; //time to load one shell
-    //private float nextTimeTofire = 0f;
-
     private float totalCapacity = 5;
-    //change to float when half shells get implimented, do away/change UI by then (breaks referencing)
-    [SerializeField] private float currentCapacity = 0; //shown for debug purposes
-    private float shotCooldown = 1f; //time in between shots
-    private float nextTimeToShot = 0f;
+    private float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
@@ -305,7 +299,7 @@ public class PlayerShooting : MonoBehaviour
     {
         Debug.Log(hit.transform.name);
 
-        EnemyBehavior enemy = hit.transform.GetComponent<EnemyBehavior>();
+        IEnemy enemy = hit.transform.GetComponent<IEnemy>();
 
         if (enemy != null)
         {
