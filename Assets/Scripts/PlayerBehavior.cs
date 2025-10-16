@@ -17,10 +17,10 @@ using Unity.Cinemachine;
 public class PlayerBehavior : MonoBehaviour
 {
     public Camera playerCamera;
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float jumpPower = 10f;
-    public float gravity = 20f;
+    public float walkSpeed = 10f;
+    public float runSpeed = 10f;
+    public float jumpPower = 5f;
+    public float gravity = 15f;
     public float lookSpeed = 3f;
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
@@ -109,17 +109,13 @@ public class PlayerBehavior : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+        //bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+        bool isRunning = false;
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        if (alwaysRun)
-        {
-            walkSpeed = runSpeed;
-        }
 
 
         // Checks that the player can move and is touching the ground when they press the "Jump" input key, then allows them to jump
@@ -165,7 +161,7 @@ public class PlayerBehavior : MonoBehaviour
 
 
         // Ensures the player doesn't break their neck by looking 360 degrees along the Y axis
-        //if (canMove && canLook)
+        if (canMove && canLook)
         {
             rotationX += -UnityEngine.Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -184,10 +180,10 @@ public class PlayerBehavior : MonoBehaviour
 
         if (health <= 0)
         {
-
-            
+            NoMove();
+            UnlockCursor();
+            canLook = false;
             Time.timeScale = 0;
-
         }
     }
 
@@ -200,7 +196,7 @@ public class PlayerBehavior : MonoBehaviour
     private void CameraRotation()
     {
         // if there is an input
-        if (cameraInput.look.sqrMagnitude >= threshold)
+        if (cameraInput.look.sqrMagnitude >= threshold && canLook)
         {
             //Don't multiply mouse input by Time.deltaTime
             float deltaTimeMultiplier = 1.0f;
