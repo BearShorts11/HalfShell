@@ -100,7 +100,7 @@ public class IEnemy : MonoBehaviour
     public void Damage(float damageAmt)
     {
         //override depending on enemy type??
-        if (state == State.idle) state = State.chasing;
+        if (state == State.idle || state == State.patrol) state = State.chasing;
 
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;

@@ -496,6 +496,37 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &434749381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 434749382}
+  m_Layer: 0
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &434749382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434749381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.69, y: 0, z: 10.81}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &549412601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -548,6 +579,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySwarmer (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8384322713868323038, guid: f976106c600f35346bc753db2122236f, type: 3}
+      propertyPath: isPatrol
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384322713868323038, guid: f976106c600f35346bc753db2122236f, type: 3}
+      propertyPath: waypoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384322713868323038, guid: f976106c600f35346bc753db2122236f, type: 3}
+      propertyPath: 'waypoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 855051178}
+    - target: {fileID: 8384322713868323038, guid: f976106c600f35346bc753db2122236f, type: 3}
+      propertyPath: 'waypoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 434749382}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1062,6 +1109,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &855051177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 855051178}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &855051178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855051177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.18, y: 0, z: 10.81}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &859348234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,6 +1276,9 @@ MonoBehaviour:
   cooldownTime: 1
   tempEnemNormal: {fileID: 2100000, guid: dba35823f1c6a6b4c96865c2306e1976, type: 2}
   tempEnemDamage: {fileID: 2100000, guid: 5774137de1e5c344ca6f2bc1fcaf12f5, type: 2}
+  waypoints: []
+  foundTargetRadius: 2
+  isPatrol: 0
 --- !u!1 &978673591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +1922,9 @@ MonoBehaviour:
   cooldownTime: 1
   tempEnemNormal: {fileID: 0}
   tempEnemDamage: {fileID: 0}
+  waypoints: []
+  foundTargetRadius: 2
+  isPatrol: 0
 --- !u!1 &1508508102
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,3 +2435,5 @@ SceneRoots:
   - {fileID: 851922988}
   - {fileID: 1353027641}
   - {fileID: 549412601}
+  - {fileID: 855051178}
+  - {fileID: 434749382}
