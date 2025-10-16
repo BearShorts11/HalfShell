@@ -37,6 +37,14 @@ public class IEnemy : MonoBehaviour
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
     {
+        Startup();
+    }
+
+    /// <summary>
+    /// call from base classes in Start() so as to not copy/paste code
+    /// </summary>
+    protected void Startup()
+    {
         GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
 
@@ -47,7 +55,6 @@ public class IEnemy : MonoBehaviour
 
         state = State.idle;
     }
-
 
     void Update()
     {
@@ -97,6 +104,7 @@ public class IEnemy : MonoBehaviour
         state = State.chasing;
     }
 
+    
     public void Damage(float damageAmt)
     {
         //override depending on enemy type??

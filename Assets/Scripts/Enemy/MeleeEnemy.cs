@@ -14,13 +14,7 @@ public class MeleeEnemy : IEnemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameObject playerObject = GameObject.Find("Player");
-        player = playerObject.GetComponent<PlayerBehavior>();
-
-        health = maxHealth;
-
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = walkSpeed;
+        Startup();
 
         if (waypoints.Count == 0 || waypoints[0] is null) isPatrol = false;
         //else isPatrol = true;
@@ -31,7 +25,7 @@ public class MeleeEnemy : IEnemy
             goalPatrolPoint = waypoints[0].position;
             pathIndex = 0;
         }
-        else state = State.idle;
+        //else state = State.idle;
     }
 
     // Update is called once per frame

@@ -78,7 +78,6 @@ public class PlayerShooting : MonoBehaviour
         {
             //PlaySound(pumpBackwardSound);
             animator.CrossFade("Pump_Backwards", 0.2f);
-            Debug.Log("R mouse down");
             canFire = false;
 
             if (chamber is not null)
@@ -92,7 +91,6 @@ public class PlayerShooting : MonoBehaviour
         {
             //PlaySound(pumpForwardSound);
             animator.CrossFade("Pump_Fwd", 0.2f);
-            Debug.Log("R mouse up");
             if (magazine.Count > 0)
             { 
                 chamber = magazine.Pop();
@@ -181,7 +179,6 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity + slug.Size <= totalCapacity)
         {
             LoadChamber(slug);
-            Debug.Log("slug pressed");
             magUI.Add(slug);
             LoadMagUI(slug);
 
@@ -194,7 +191,6 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity + buck.Size <= totalCapacity)
         {
             LoadChamber(buck);
-            Debug.Log("buck pressed");
             magUI.Add(buck);
             LoadMagUI(buck);
         }
@@ -206,7 +202,6 @@ public class PlayerShooting : MonoBehaviour
         if (currentCapacity + half.Size <= totalCapacity)
         {
             LoadChamber(half);
-            Debug.Log("half shell pressed");
             magUI.Add(half);
             LoadMagUI(half);
         }
@@ -297,27 +292,27 @@ public class PlayerShooting : MonoBehaviour
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
-        Debug.Log(hit.transform.name);
+        //Debug.Log(hit.transform.name);
 
         IEnemy enemy = hit.transform.GetComponent<IEnemy>();
 
         if (enemy != null)
         {
             enemy.Damage(shell.Damage);
-            Debug.Log("enemy hit");
+            //Debug.Log("enemy hit");
         }
     }
 
     private void HitBreakable(RaycastHit hit, ShellBase shell)
     {
-        Debug.Log(hit.transform.name);
+        //Debug.Log(hit.transform.name);
 
         BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
 
         if (obj != null)
         {
             obj.Damage(shell.Damage);
-            Debug.Log("breakable hit");
+            //Debug.Log("breakable hit");
         }
     }
 
@@ -389,11 +384,12 @@ public class PlayerShooting : MonoBehaviour
             else y -= 75;
         }
 
-        Debug.Log(y);
+        //Debug.Log(y);
         UIshell.GetComponent<RectTransform>().localPosition = new Vector3(0, y, 0);
         UIshell.SetActive(true);
     }
 
+    //THIS IS BAD -N
     public GameObject MakeUIShell(Image parent, ShellBase shell)
     {
         GameObject UIshell = new GameObject();
