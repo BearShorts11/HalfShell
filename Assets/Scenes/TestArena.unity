@@ -485,16 +485,48 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
       propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 669858770}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Click
       objectReference: {fileID: 0}
     - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlaySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: ShellSelectionButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: AnimationEventHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: event:/UI/Tick
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019736325768407163, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6530520037859015581, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
       propertyPath: m_Pivot.x
@@ -23443,6 +23475,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7992562752975051249, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
   m_PrefabInstance: {fileID: 54807677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &669858770 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6271865102261660452, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
+  m_PrefabInstance: {fileID: 54807677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669858766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2871495680bb1cc4b9c0dd754bcd001a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &674018148
 GameObject:
   m_ObjectHideFlags: 0

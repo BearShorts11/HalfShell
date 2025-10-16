@@ -16,7 +16,7 @@ public class AnimationEventHandler : MonoBehaviour
     }
     //if this isn't used in the next few weeks can I get rid of this? -N
     // You may. -V
-    private void PlaySound(string path)
+    public void PlaySound(string path)
     {
         RuntimeManager.PlayOneShotAttached(path, this.gameObject);
     }
@@ -45,9 +45,7 @@ public class AnimationEventHandler : MonoBehaviour
     }
     private void EjectShell(GameObject shell)
     {
-        // I hate this, WHY DOESN'T THIS FOLLOW THE TRANSFORM WHEN LOOKING UP OR DOWN!!! -V
         shell = Instantiate(shell, shellEjectionTransform.position, Quaternion.LookRotation(shellEjectionTransform.right));
-        // This too -V
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.right * Random.Range(150f, 300f));
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
         shell.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-15f, 15f), Random.Range(30f, 50f), Random.Range(-5f,-5f)));
