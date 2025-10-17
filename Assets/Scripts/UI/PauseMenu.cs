@@ -8,7 +8,16 @@ public class PauseMenu : MonoBehaviour
     public static bool paused = false;
     public GameObject pauseMenu;
     public GameObject deathMenu;
+    public GameObject sceneSelectMenu;
     private PlayerBehavior player;
+
+    public enum Scene
+    {
+        MockUp, //0
+        SampleScene, //1
+        TestArena, //2
+    }
+    public Scene currentScene;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,5 +66,20 @@ public class PauseMenu : MonoBehaviour
         PlayerBehavior.UnlockCursor();
         PlayerBehavior.PauseTime();
         deathMenu.SetActive(true);
+    }
+
+    public void SceneSelectMenu()
+    {
+        sceneSelectMenu.SetActive(true);
+    }
+
+    public void BackButton(GameObject screen)
+    {
+        screen.SetActive(false);
+    }
+
+    public void LoadSelectedScene(int selecteedScene)
+    {
+        SceneManager.LoadScene(selecteedScene);
     }
 }
