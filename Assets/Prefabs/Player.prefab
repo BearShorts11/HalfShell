@@ -507,11 +507,11 @@ MonoBehaviour:
   rotationVelocity: 0
   dmgEfforts:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -482168951
+      Data2: 1168774307
+      Data3: -1777142105
+      Data4: 1622016491
+    Path: event:/Efforts/dmgEfforts
 --- !u!114 &1626164165021683729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +531,6 @@ MonoBehaviour:
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
   animator: {fileID: 7794537637733972831}
-  currentCapacity: 2
   spreadRange: 0.05
   spaceLeftText: {fileID: 0}
   magazineUI: {fileID: 0}
@@ -560,6 +559,13 @@ MonoBehaviour:
       Data3: -1297708394
       Data4: -1537037362
     Path: event:/Weapons/Shotgun_InsertShell
+  fullyLoadedSound:
+    Guid:
+      Data1: 1749799284
+      Data2: 1175900339
+      Data3: 2097687216
+      Data4: 543903414
+    Path: event:/UI/Tick
 --- !u!114 &4660708139432030009
 MonoBehaviour:
   m_ObjectHideFlags: 0

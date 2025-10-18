@@ -52,6 +52,8 @@ public class PlayerShooting : MonoBehaviour
     public EventReference firingSound;
     public EventReference dryFireSound;
     public EventReference reloadSound;
+    [Tooltip("Fully Loaded Sound - Plays when you can't load more shells")]
+    public EventReference fullyLoadedSound;
     //public EventReference pumpBackwardSound;
     //public EventReference pumpForwardSound;
     #endregion
@@ -147,10 +149,21 @@ public class PlayerShooting : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
     }
 
+    // Making the if checks regarding currentCapacity <= total capacity to this return method to save time later on -V
+    // Following the KISS principal
+    private bool CanLoad(float shellSize)
+    {
+        if (currentCapacity + shellSize <= totalCapacity)
+        {
+            return true;
+        }
+        PlaySound(fullyLoadedSound);
+        return false;
+    }
 
     public void LoadChamber(ShellBase shell)
     {
-        if (currentCapacity + shell.Size <= totalCapacity)
+        if (CanLoad(shell.Size))
         {
             magazine.Push(shell);
             float size = shell.Size;
@@ -176,7 +189,7 @@ public class PlayerShooting : MonoBehaviour
     public void AddSlug()
     {
         Slug slug = new Slug();
-        if (currentCapacity + slug.Size <= totalCapacity)
+        if (CanLoad(slug.Size))
         {
             LoadChamber(slug);
             magUI.Add(slug);
@@ -188,7 +201,7 @@ public class PlayerShooting : MonoBehaviour
     public void AddBuckshot()
     {
         Buckshot buck = new Buckshot();
-        if (currentCapacity + buck.Size <= totalCapacity)
+        if (CanLoad(buck.Size))
         {
             LoadChamber(buck);
             magUI.Add(buck);
@@ -197,9 +210,9 @@ public class PlayerShooting : MonoBehaviour
     }
 
     public void AddHalfShell()
-    { 
+    {
         HalfShell half = new HalfShell();
-        if (currentCapacity + half.Size <= totalCapacity)
+        if (CanLoad(half.Size))
         {
             LoadChamber(half);
             magUI.Add(half);
