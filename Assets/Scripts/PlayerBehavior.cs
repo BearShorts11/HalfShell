@@ -38,8 +38,6 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    public GameObject GameOverTxt;
-
     // Uncomment if Lvl Design feels strongly for crouching -A
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
@@ -93,10 +91,10 @@ public class PlayerBehavior : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
         cameraInput = GetComponent<PlayerCameraInputs>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         HPtext.text = $"HP: {health}";
+        LockCursor();
+        ResumeTime();
     }
 
     private void LateUpdate()
@@ -106,6 +104,11 @@ public class PlayerBehavior : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.paused == true)
+        {
+            return;
+        }
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -177,14 +180,6 @@ public class PlayerBehavior : MonoBehaviour
         {
             Time.timeScale = 1;
         }
-
-        if (health <= 0)
-        {
-            NoMove();
-            UnlockCursor();
-            canLook = false;
-            Time.timeScale = 0;
-        }
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -220,7 +215,6 @@ public class PlayerBehavior : MonoBehaviour
     public static void UnlockCursor()
     {
         canLook = false;
-        SlowMoActive = true;
         PlayerShooting.canFire = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -228,11 +222,13 @@ public class PlayerBehavior : MonoBehaviour
     public static void LockCursor()
     {
         canLook = true;
-        SlowMoActive = false;
         PlayerShooting.canFire = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    public static void PauseTime() => Time.timeScale = 0;
+    public static void ResumeTime() => Time.timeScale = 1;
 
 
     //better way to do this? -N
@@ -247,10 +243,7 @@ public class PlayerBehavior : MonoBehaviour
 
         if (health <= 0)
         {
-
             OnDeath();
-            
-
         }
     }
 
@@ -258,8 +251,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         //PlaySound(deathRemark);
         NoMove();
+
         //display game over txt
-        GameOverTxt.SetActive(true);
     }
 
 }

@@ -20,16 +20,21 @@ public class ShellWheelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (PauseMenu.paused != true)
         {
-            PlayerBehavior.UnlockCursor();
-            shellWheelSelected = true;
-        }
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                PlayerBehavior.UnlockCursor();
+                PlayerBehavior.SlowMoActive = true;
+                shellWheelSelected = true;
+            }
 
-        if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            PlayerBehavior.LockCursor();
-            shellWheelSelected = false;
+            if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                PlayerBehavior.LockCursor();
+                PlayerBehavior.SlowMoActive = false;
+                shellWheelSelected = false;
+            }
         }
 
         if (shellWheelSelected)

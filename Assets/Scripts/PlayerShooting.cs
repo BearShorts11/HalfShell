@@ -359,7 +359,7 @@ public class PlayerShooting : MonoBehaviour
     private void ChamberUIOn(ShellBase shell)
     {
 
-        GameObject UIshell = MakeUIShell(ChamberUINOTSHELLUI, shell);
+        GameObject UIshell = PlayerUI.MakeUIShell(ChamberUINOTSHELLUI, shell);
         UIshell.SetActive(true);
     }
     private void ChamberUIOff()
@@ -369,7 +369,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void LoadMagUI(ShellBase shell)
     {
-        GameObject UIshell = MakeUIShell(magazineUI, shell);
+        GameObject UIshell = PlayerUI.MakeUIShell(magazineUI, shell);
 
         //set position based on capacity, shell size, & buffer
         float y = 0;
@@ -387,35 +387,5 @@ public class PlayerShooting : MonoBehaviour
         //Debug.Log(y);
         UIshell.GetComponent<RectTransform>().localPosition = new Vector3(0, y, 0);
         UIshell.SetActive(true);
-    }
-
-    //THIS IS BAD -N
-    public GameObject MakeUIShell(Image parent, ShellBase shell)
-    {
-        GameObject UIshell = new GameObject();
-        Image display = UIshell.AddComponent<Image>();
-        RectTransform UIShellRectTransform = UIshell.GetComponent<RectTransform>();
-        UIShellRectTransform.SetParent(parent.transform, false);
-
-        //put this somewhere better dumbass -N
-        float shellWidth = 30f;
-        float shellHeight = 70f;
-        float halfShellHeight = 35f;
-
-        Color color = shell.DisplayColor;
-        UIshell.GetComponent<Image>().color = color;
-
-        //set size based on full or half shell
-        switch (shell.Type)
-        {
-            case ShellBase.ShellType.HalfShell:
-                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, halfShellHeight);
-                break;
-            default:
-                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
-                break;
-        }
-
-        return UIshell;
     }
 }
