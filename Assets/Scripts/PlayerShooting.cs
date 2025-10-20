@@ -178,9 +178,26 @@ public class PlayerShooting : MonoBehaviour
             }
             else
             {
-                PlaySound(reloadSound);
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Backwards") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
+                else
+                {
+                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped"))
+                    {
+                        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped"))
+                            animator.CrossFade("Idle_QuickReload_Pumped", 0.1f);
+                        else
+                            animator.CrossFade("Idle_QuickReload_Pumped", 0.05f, 0, 0.08f);
+                    }
+                    else
+                    {
+                        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload"))
+                            animator.CrossFade("Idle_QuickReload", 0.1f);
+                        else
+                            animator.CrossFade("Idle_QuickReload", 0.05f, 0, 0.08f);
+                    }
+                }
+                //PlaySound(reloadSound);
             }
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Backwards") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
 
         }
 
