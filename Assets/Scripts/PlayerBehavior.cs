@@ -42,9 +42,6 @@ public class PlayerBehavior : MonoBehaviour
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
 
-    // Every Boomer Shooter needs an always run setting
-    public bool alwaysRun = false;
-
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
@@ -55,6 +52,7 @@ public class PlayerBehavior : MonoBehaviour
     public float SlowedTime = 0.1f;
     public static bool SlowMoActive = false;
 
+    private PlayerUI UI;
     public TextMeshProUGUI HPtext;
 
     [Header("Cinemachine")]
@@ -91,6 +89,7 @@ public class PlayerBehavior : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
         cameraInput = GetComponent<PlayerCameraInputs>();
+        UI = FindFirstObjectByType<PlayerUI>();
 
         HPtext.text = $"HP: {health}";
         LockCursor();
@@ -234,6 +233,8 @@ public class PlayerBehavior : MonoBehaviour
     //better way to do this? -N
     public void Damage(float damage)
     {
+        UI.Hurt();
+
         if (health > 0)
         {
             health -= damage;

@@ -3,18 +3,32 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    
+    private PlayerBehavior player;
+
+    public GameObject hurtOverlay;
+    public Animator hurtOverlayAnim;
+    public bool lowHealth = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        player = FindFirstObjectByType<PlayerBehavior>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // TESTING INPUTS 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            player.Damage(10f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            player.Health += 10;
+            CheckHealth();
+        }
     }
 
     //THIS IS BAD DON'T LOOK AT THIS I FIX LATER -N
@@ -45,6 +59,38 @@ public class PlayerUI : MonoBehaviour
         }
 
         return UIshell;
+    }
+
+
+    public void Hurt()
+    {
+        CheckHealth();
+        hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
+
+        //if (lowHealth)
+        //{
+        //    //play anim, keep overlay up and pulsate (???)
+        //    hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
+        //}
+        //else
+        //{
+        //    hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
+        //}
+    }
+
+    public void CheckHealth()
+    {
+        // TO-DO: Change hard-coded values to check for percentage of HP
+        if (player.Health <= 25)
+        {
+            lowHealth = true;
+            hurtOverlayAnim.SetBool("lowHealth", true);
+        }
+        else
+        {
+            lowHealth = false;
+            hurtOverlayAnim.SetBool("lowHealth", false);
+        }
     }
 
 }
