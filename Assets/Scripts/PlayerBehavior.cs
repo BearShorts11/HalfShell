@@ -233,8 +233,6 @@ public class PlayerBehavior : MonoBehaviour
     //better way to do this? -N
     public void Damage(float damage)
     {
-        UI.Hurt();
-
         if (health > 0)
         {
             health -= damage;
@@ -246,6 +244,8 @@ public class PlayerBehavior : MonoBehaviour
         {
             OnDeath();
         }
+
+        UI.Hurt();
     }
 
     private void OnDeath()

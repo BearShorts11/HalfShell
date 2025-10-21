@@ -66,16 +66,6 @@ public class PlayerUI : MonoBehaviour
     {
         CheckHealth();
         hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
-
-        //if (lowHealth)
-        //{
-        //    //play anim, keep overlay up and pulsate (???)
-        //    hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
-        //}
-        //else
-        //{
-        //    hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
-        //}
     }
 
     public void CheckHealth()

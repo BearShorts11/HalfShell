@@ -31,26 +31,31 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            switch (paused)
-            {
-                case false:
-                    PlayerBehavior.UnlockCursor();
-                    PlayerBehavior.PauseTime();
-                    pauseMenu.SetActive(true);
-                    paused = true;
-                    break;
-                case true:
-                    PlayerBehavior.LockCursor();
-                    PlayerBehavior.ResumeTime();
-                    pauseMenu.SetActive(false);
-                    paused = false;
-                    break;
-            }
+            Pause();
         }
 
         if (player.Health <= 0)
         {
             Death();
+        }
+    }
+
+    public void Pause()
+    {
+        switch (paused)
+        {
+            case false:
+                PlayerBehavior.UnlockCursor();
+                PlayerBehavior.PauseTime();
+                pauseMenu.SetActive(true);
+                paused = true;
+                break;
+            case true:
+                PlayerBehavior.LockCursor();
+                PlayerBehavior.ResumeTime();
+                pauseMenu.SetActive(false);
+                paused = false;
+                break;
         }
     }
 
