@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class ShellWheelController : MonoBehaviour
 {
-    public Animator anim;
+    public Animator shellWheelAnim;
+    public Animator slowOverlayAnim;
     public static bool shellWheelSelected = false;
     public Image selectedItem;
     public Sprite noImage;
     public static int shellID;
-
-    public Animator playerAnimator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,12 +38,14 @@ public class ShellWheelController : MonoBehaviour
 
         if (shellWheelSelected)
         {
-            anim.SetBool("OpenShellWheel", true);
+            shellWheelAnim.SetBool("OpenShellWheel", true);
+            slowOverlayAnim.SetBool("OpenShellWheel", true);
         }
 
         else
         {
-            anim.SetBool("OpenShellWheel", false);
+            shellWheelAnim.SetBool("OpenShellWheel", false);
+            slowOverlayAnim.SetBool("OpenShellWheel", false);
         }
 
         switch (shellID)

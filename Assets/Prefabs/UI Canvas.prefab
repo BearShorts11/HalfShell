@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 4570742518305894201}
   - component: {fileID: 2578459593814186113}
   - component: {fileID: 5364708075305467195}
+  - component: {fileID: 5003281866242799471}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -109,6 +110,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6654607611444587848}
+  - {fileID: 8888309430829054750}
   - {fileID: 6822052623835393523}
   - {fileID: 7453683998617233317}
   - {fileID: 8887229615035698687}
@@ -211,6 +213,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hurtOverlay: {fileID: 836163625169609104}
   hurtOverlayAnim: {fileID: 8901726076389903714}
+  lowHealth: 0
+--- !u!114 &5003281866242799471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35712146091506738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f5995ce6dfe9f468081b065c605b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hurtOverlay: {fileID: 0}
+  hurtOverlayAnim: {fileID: 0}
   lowHealth: 0
 --- !u!1 &36379511150537956
 GameObject:
@@ -858,7 +875,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 027df5b1e6d68904d9d94d12d0b7115d, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -1805,6 +1822,104 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2428919490165659925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8888309430829054750}
+  - component: {fileID: 5576684208840356981}
+  - component: {fileID: 8928721168620957168}
+  - component: {fileID: 6757526707159195501}
+  m_Layer: 5
+  m_Name: Slow Overlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8888309430829054750
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428919490165659925}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6530520037859015581}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5576684208840356981
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428919490165659925}
+  m_CullTransparentMesh: 1
+--- !u!114 &8928721168620957168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428919490165659925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 38a856aaac6b63f489dc607ee808ac57, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!95 &6757526707159195501
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428919490165659925}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 835a71fdb721eda4f86c1f960bfcc776, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2430799757981840844
 GameObject:
   m_ObjectHideFlags: 0
@@ -6454,7 +6569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4733261002941934002
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8266,10 +8381,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735d5636c7f172944bc2b7c5f1bbddcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 6658761639629678899}
+  shellWheelAnim: {fileID: 6658761639629678899}
+  slowOverlayAnim: {fileID: 6757526707159195501}
   selectedItem: {fileID: 0}
   noImage: {fileID: 0}
-  playerAnimator: {fileID: 0}
 --- !u!95 &6658761639629678899
 Animator:
   serializedVersion: 7
