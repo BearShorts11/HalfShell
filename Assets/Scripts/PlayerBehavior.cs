@@ -26,12 +26,15 @@ public class PlayerBehavior : MonoBehaviour
     public float defaultHeight = 2f;
 
     private float health = 100f;
+    private float maxHP = 100f;
     public float Health
     {
         get { return health; }
         set
         {
             health = value;
+
+            if (health > maxHP) health = maxHP;
 
             //this no worky but I want it to -N
             if (health <= 0) { OnDeath(); }
@@ -53,7 +56,6 @@ public class PlayerBehavior : MonoBehaviour
     public static bool SlowMoActive = false;
 
     private PlayerUI UI;
-    public TextMeshProUGUI HPtext;
 
     [Header("Cinemachine")]
     public CinemachineCamera playerCinemachineCamera;
@@ -89,11 +91,12 @@ public class PlayerBehavior : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
         cameraInput = GetComponent<PlayerCameraInputs>();
-        UI = FindFirstObjectByType<PlayerUI>();
 
-        HPtext.text = $"HP: {health}";
+        UI = FindFirstObjectByType<PlayerUI>();
         LockCursor();
         ResumeTime();
+        UI.UpdateHP(health);
+        UI.UpdateMaxHP(maxHP);
     }
 
     private void LateUpdate()
@@ -236,7 +239,7 @@ public class PlayerBehavior : MonoBehaviour
         if (health > 0)
         {
             health -= damage;
-            HPtext.text = $"HP: {health}";
+            UI.UpdateHP(health);
             PlaySound(dmgEfforts);
         }
 

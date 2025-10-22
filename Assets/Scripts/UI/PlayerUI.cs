@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,9 @@ public class PlayerUI : MonoBehaviour
     // Exclude crosshairs from this because it gets real disorienting
     public GameObject HUD;
     public Animator UIRattleAnim;
+
+    public Slider healthBar;
+    public TextMeshProUGUI HPtext;
 
     public GameObject hurtOverlay;
     public Animator hurtOverlayAnim;
@@ -32,6 +36,7 @@ public class PlayerUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             player.Health += 10;
+            UpdateHP(player.Health);
             CheckHealth();
         }
     }
@@ -70,6 +75,7 @@ public class PlayerUI : MonoBehaviour
     public void Hurt()
     {
         UIRattle(1);
+        UpdateHP(player.Health);
         CheckHealth();
         hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
     }
@@ -91,11 +97,19 @@ public class PlayerUI : MonoBehaviour
 
     public void UIRattle(int type)
     {
-        //UIRattleAnim.SetBool("Rattle", true);
         UIRattleAnim.SetInteger("Type", type);
         UIRattleAnim.Play(Animator.StringToHash("Base Layer.UI Rattle"));
-        //UIRattleAnim.SetBool("Rattle", false);
         UIRattleAnim.SetInteger("Type", 0);
     }
 
+    public void UpdateHP(float HP)
+    {
+        healthBar.value = HP; 
+        HPtext.text = $"HP: {HP}";
+    }
+    public void UpdateMaxHP(float HP)
+    {
+        healthBar.maxValue = HP;
+        HPtext.text = $"HP: {HP}";
+    }
 }
