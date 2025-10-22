@@ -276,8 +276,9 @@ public class PlayerShooting : MonoBehaviour
                         //https://discussions.unity.com/t/raycast-bullet-spread/753464 
                         Vector3 fwd = fpsCam.transform.forward;
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
-                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange))
+                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange) && hit.distance <= shell.MaxRange)
                         {
+                            Debug.Log("hit successful");
                             Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
                             if (hit.collider.gameObject.tag == "Enemy")
@@ -332,7 +333,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.Damage(shell.Damage);
+            enemy.Damage(shell.ScaleDamage(hit));
             //Debug.Log("enemy hit");
         }
     }

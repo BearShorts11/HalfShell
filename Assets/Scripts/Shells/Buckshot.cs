@@ -7,6 +7,7 @@ public class Buckshot : ShellBase
         Size = 1;
         Damage = 12;
         AmtProjectiles = 9;
+        MaxRange = 100f;
         type = ShellType.Buckshot; 
         DisplayColor = Color.red;
     }
@@ -21,5 +22,10 @@ public class Buckshot : ShellBase
     void Update()
     {
         
+    }
+
+    public override float ScaleDamage(RaycastHit hit)
+    {
+        throw new System.NotImplementedException();
     }
 }

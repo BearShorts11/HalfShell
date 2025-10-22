@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class Slug : ShellBase
 {
-
     public Slug()
     {
         Size = 1;
         Damage = 80;
         AmtProjectiles = 1;
+        MaxRange = 200f;
         type = ShellType.Slug;
         DisplayColor = Color.green;
     }
@@ -22,5 +22,26 @@ public class Slug : ShellBase
     void Update()
     {
         
+    }
+
+    public override float ScaleDamage(RaycastHit hit)
+    {
+        if (hit.distance > MaxRange) return 0; //just in case
+        float damageModifier = Damage;
+
+        switch (hit.distance)
+        {
+            case > 50f and <= 100f:
+                damageModifier *= -0.02f;
+                break;
+            case > 100f:
+                damageModifier *= -0.05f;
+                break;
+            default:
+                damageModifier = 0;
+                break;
+        }
+
+        return Damage + damageModifier;
     }
 }
