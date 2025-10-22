@@ -5,6 +5,11 @@ public class PlayerUI : MonoBehaviour
 {
     private PlayerBehavior player;
 
+    // The parent object for all static UI elements (Chamber/Load, HP Bar, etc)
+    // Exclude crosshairs from this because it gets real disorienting
+    public GameObject HUD;
+    public Animator UIRattleAnim;
+
     public GameObject hurtOverlay;
     public Animator hurtOverlayAnim;
     public bool lowHealth = false;
@@ -64,6 +69,7 @@ public class PlayerUI : MonoBehaviour
 
     public void Hurt()
     {
+        UIRattle(1);
         CheckHealth();
         hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
     }
@@ -81,6 +87,15 @@ public class PlayerUI : MonoBehaviour
             lowHealth = false;
             hurtOverlayAnim.SetBool("lowHealth", false);
         }
+    }
+
+    public void UIRattle(int type)
+    {
+        //UIRattleAnim.SetBool("Rattle", true);
+        UIRattleAnim.SetInteger("Type", type);
+        UIRattleAnim.Play(Animator.StringToHash("Base Layer.UI Rattle"));
+        //UIRattleAnim.SetBool("Rattle", false);
+        UIRattleAnim.SetInteger("Type", 0);
     }
 
 }

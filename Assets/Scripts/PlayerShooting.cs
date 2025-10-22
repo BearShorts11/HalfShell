@@ -36,9 +36,10 @@ public class PlayerShooting : MonoBehaviour
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
-    #endregion 
+    #endregion
 
     //realated but UI
+    private PlayerUI playerUI;
     float shellUIstart;
     List<ShellBase> magUI = new List<ShellBase>();
 
@@ -61,6 +62,7 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
         SingleShotCrosshair.gameObject.SetActive(true);
@@ -261,6 +263,8 @@ public class PlayerShooting : MonoBehaviour
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
             impulse.GenerateImpulse();
+            playerUI.UIRattle(2);
+
             RaycastHit hit;
             switch (shell.Type)
             {
