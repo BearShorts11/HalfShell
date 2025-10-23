@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
@@ -22,6 +23,8 @@ public class EnemyBullet : MonoBehaviour
         {
             other.GetComponent<PlayerBehavior>().Damage(RangedEnemy.gunDamage);
         }
+
+        Debug.Log(other.gameObject.name);
 
         Destroy(this.gameObject);
     }

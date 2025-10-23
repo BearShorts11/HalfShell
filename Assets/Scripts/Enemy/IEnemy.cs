@@ -18,12 +18,13 @@ public class IEnemy : MonoBehaviour
     protected NavMeshAgent agent;
 
 
-    protected State state;
+    [SerializeField] protected State state;
     public enum State
     {
         idle,
         patrol,
         chasing,
+        findCover,
         meleeAttack,
         shoot,
         cooldown
@@ -121,11 +122,24 @@ public class IEnemy : MonoBehaviour
         }
     }
 
+    protected void SwitchStateOnDamage()
+    {
+        //override depending on enemy type??
+        if (state == State.idle || state == State.patrol) state = State.chasing;
+    }
+
     protected IEnumerator DamageFlash()
     {
         gameObject.GetComponent<Renderer>().material = tempEnemDamage;
         yield return new WaitForSeconds(.5f);
         gameObject.GetComponent<Renderer>().material = tempEnemNormal;
         yield return new WaitForSeconds(.5f);
+    }
+
+    //can call from editor by right clicking script- for debugging
+    [ContextMenu("Damage")]
+    public void DamageTest()
+    {
+        Damage(10f);
     }
 }

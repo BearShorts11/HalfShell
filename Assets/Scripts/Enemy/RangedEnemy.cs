@@ -1,12 +1,13 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class RangedEnemy : IEnemy
 {
-    public List<Transform> shootingPoints;
-    [SerializeField] private float shootingDistance= 10f;
+    [SerializeField] private float shootingDistance = 50f;
+    [SerializeField] private float tooClose = 10f;
     public GameObject bulletPrefab;
     /// <summary>
     /// fire rate is shots per second
@@ -17,10 +18,19 @@ public class RangedEnemy : IEnemy
 
     public static float gunDamage = 15f;
 
+    public List<Transform> shootingPoints;
+    private Transform currentPoint;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Startup();
+
+        if (shootingPoints.Count > 1)
+        {
+            GetNearestCover();
+            state = State.findCover;
+        }
     }
 
     // Update is called once per frame
@@ -45,20 +55,70 @@ public class RangedEnemy : IEnemy
                     Shoot();
                 }
                 break;
+            case State.findCover:
+                NavigateToCover();
+                break;
+            case State.chasing:
+                state = State.shoot;
+                break;
         }
 
         //look towards/track player
+        //find a way to restrict to only y rotation
         transform.LookAt(player.transform);
+    }
+
+    private void FindNewCover()
+    {
+        //choose a new cover: random
+        currentPoint = shootingPoints[Random.Range(0, shootingPoints.Count)];
+            Debug.Log($"new point found: {currentPoint.gameObject.name}");
+
+        //navigate to cover
+        NavigateToCover();
+    }
+
+    private void NavigateToCover()
+    {
+        //new cover found
+        if (Vector3.Distance(this.transform.position, currentPoint.position) < 2f)
+        {
+            state = State.idle;
+            return;
+        }
+
+        agent.SetDestination(currentPoint.position);
+    }
+
+    private void GetNearestCover()
+    {
+        int index = 0;
+        float currentClosest = Vector3.Distance(this.transform.position, shootingPoints[0].position);
+        for (int i = 1; i < shootingPoints.Count; i++)
+        {
+            if (shootingPoints[i] is null) Debug.Log("ERROR: fill up your shooting points list (empty/null space)");
+            //throw new ArgumentException("Wasp is in patrol mode and path list is empty. Please add some waypoints or take it out of patrol mode.");
+
+            float currDistance = Vector3.Distance(this.transform.position, shootingPoints[i].position);
+            if (currDistance < currentClosest)
+            {
+                index = i;
+                currentClosest = currDistance;
+            }
+        }
+        currentPoint = shootingPoints[index];
     }
 
     private void Shoot()
     { 
         Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);
-    }
 
-    [ContextMenu("Damage")]
-    public void DamageTest()
-    {
-        base.Damage(10f);
+        float playerDistance = Vector3.Distance(transform.position, player.transform.position);
+        if (playerDistance <= tooClose && shootingPoints.Count > 1)
+        {
+            Debug.Log("too close!");
+            FindNewCover();
+            state = State.findCover;
+        }
     }
 }
