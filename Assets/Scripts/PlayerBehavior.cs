@@ -255,6 +255,19 @@ public class PlayerBehavior : MonoBehaviour
         UI.Hurt();
     }
 
+    public void GainHealth(float gainhealth)
+    {
+        health = health + gainhealth;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Health Pickup"))
+        {
+            UI.UpdateHP(health, maxHP);
+        }
+    }
+
     private void OnDeath()
     {
         //PlaySound(deathRemark);

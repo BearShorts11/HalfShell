@@ -423,6 +423,7 @@ GameObject:
   - component: {fileID: 4660708139432030009}
   - component: {fileID: 7505624498068720646}
   - component: {fileID: 6453100501509869400}
+  - component: {fileID: 4852961133968993161}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -494,8 +495,8 @@ MonoBehaviour:
   lookSpeed: 0.3
   lookXLimit: 90
   defaultHeight: 2
+  health: 100
   SlowedTime: 0.1
-  HPtext: {fileID: 0}
   playerCinemachineCamera: {fileID: 3181911189500020457}
   CinemachineCameraTarget: {fileID: 9124881526004739986}
   input: {fileID: 7505624498068720646}
@@ -661,6 +662,29 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0.1, y: 0.1, z: 0}
+--- !u!136 &4852961133968993161
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.9908803
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.0033677816, z: 0}
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
