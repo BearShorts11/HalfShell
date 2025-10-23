@@ -423,4 +423,6 @@ public class PlayerShooting : MonoBehaviour
         UIshell.GetComponent<RectTransform>().localPosition = new Vector3(0, y, 0);
         UIshell.SetActive(true);
     }
+
+    public bool ShellInChamber() => chamber is not null;
 }

@@ -41,6 +41,10 @@ public class AnimationEventHandler : MonoBehaviour
     public void EjectShell()
     {
         // TODO: Find a way to link this to the player shooting script and know what shell to eject based on what the shotgun just shot or what shell is sitting in the chamber
+        GameObject playerObject = GameObject.Find("Player");
+        PlayerShooting shooting = playerObject.GetComponent<PlayerShooting>();
+        if (shooting.ShellInChamber() == false) return;
+
         EjectShell(Resources.Load<GameObject>("Shell_Ejection/Shell_Generic"));
     }
     private void EjectShell(GameObject shell)
