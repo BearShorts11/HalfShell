@@ -36,7 +36,7 @@ public class PlayerUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             player.Health += 10;
-            UpdateHP(player.Health);
+            UpdateHP(player.Health, player.MaxHP);
             CheckHealth();
         }
     }
@@ -75,7 +75,7 @@ public class PlayerUI : MonoBehaviour
     public void Hurt()
     {
         UIRattle(1);
-        UpdateHP(player.Health);
+        UpdateHP(player.Health, player.MaxHP);
         CheckHealth();
         hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
     }
@@ -102,14 +102,14 @@ public class PlayerUI : MonoBehaviour
         UIRattleAnim.SetInteger("Type", 0);
     }
 
-    public void UpdateHP(float HP)
+    public void UpdateHP(float HP, float Max)
     {
         healthBar.value = HP; 
-        HPtext.text = $"HP: {HP}";
+        HPtext.text = $"{Max} / {HP}";
     }
-    public void UpdateMaxHP(float HP)
+    public void UpdateMaxHP(float HP, float Max)
     {
         healthBar.maxValue = HP;
-        HPtext.text = $"HP: {HP}";
+        HPtext.text = $"{Max} / {HP}";
     }
 }

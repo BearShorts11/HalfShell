@@ -40,6 +40,10 @@ public class PlayerBehavior : MonoBehaviour
             if (health <= 0) { OnDeath(); }
         }
     }
+    public float MaxHP
+    {
+        get { return maxHP; }
+    }
 
     // Uncomment if Lvl Design feels strongly for crouching -A
     //public float crouchHeight = 1f;
@@ -95,8 +99,8 @@ public class PlayerBehavior : MonoBehaviour
         UI = FindFirstObjectByType<PlayerUI>();
         LockCursor();
         ResumeTime();
-        UI.UpdateHP(health);
-        UI.UpdateMaxHP(maxHP);
+        UI.UpdateHP(health, maxHP);
+        UI.UpdateMaxHP(maxHP, maxHP);
     }
 
     private void LateUpdate()
@@ -239,7 +243,7 @@ public class PlayerBehavior : MonoBehaviour
         if (health > 0)
         {
             health -= damage;
-            UI.UpdateHP(health);
+            UI.UpdateHP(health, maxHP);
             PlaySound(dmgEfforts);
         }
 
