@@ -260,13 +260,7 @@ public class PlayerBehavior : MonoBehaviour
         health = health + gainhealth;
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Health Pickup"))
-        {
-            UI.UpdateHP(health, maxHP);
-        }
-    }
+
 
     private void OnDeath()
     {
