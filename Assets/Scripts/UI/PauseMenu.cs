@@ -24,6 +24,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         player = FindAnyObjectByType<PlayerBehavior>();
+        if (paused) { Pause(); }
     }
 
     // Update is called once per frame

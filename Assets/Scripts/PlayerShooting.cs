@@ -105,7 +105,7 @@ public class PlayerShooting : MonoBehaviour
                 //temporary based on current UI
                 ChamberUIOn(chamber);
             }
-            canFire = true;
+            if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         }
 
         if (Input.GetKeyDown(KeyCode.Tab)) {
