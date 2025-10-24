@@ -37,7 +37,7 @@ public class RangedEnemy : IEnemy
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        Debug.Log(state);
+        //Debug.Log(state);
 
         switch (state)
         {
@@ -71,9 +71,15 @@ public class RangedEnemy : IEnemy
     private void FindNewCover()
     {
         //choose a new cover: random
-        currentPoint = shootingPoints[Random.Range(0, shootingPoints.Count)];
-            Debug.Log($"new point found: {currentPoint.gameObject.name}");
+        //Debug.Log("Finding new cover");
+        Transform newPoint = shootingPoints[Random.Range(0, shootingPoints.Count)];
+        while (newPoint.position == currentPoint.position)
+        {
+            newPoint = shootingPoints[Random.Range(0, shootingPoints.Count)];
+        }
 
+        currentPoint = newPoint;
+        Debug.Log($"New point: {currentPoint.gameObject.name}");
         //navigate to cover
         NavigateToCover();
     }
@@ -81,6 +87,7 @@ public class RangedEnemy : IEnemy
     private void NavigateToCover()
     {
         //new cover found
+        //Debug.Log("Navigating");
         if (Vector3.Distance(this.transform.position, currentPoint.position) < 2f)
         {
             state = State.idle;
@@ -116,7 +123,7 @@ public class RangedEnemy : IEnemy
         float playerDistance = Vector3.Distance(transform.position, player.transform.position);
         if (playerDistance <= tooClose && shootingPoints.Count > 1)
         {
-            Debug.Log("too close!");
+            //Debug.Log("too close!");
             FindNewCover();
             state = State.findCover;
         }
