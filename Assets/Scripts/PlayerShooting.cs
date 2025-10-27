@@ -162,7 +162,7 @@ public class PlayerShooting : MonoBehaviour
     private bool CanLoad(ShellBase shell)
     {
         //check dictionary
-        if (AmmoCounts[shell.Type] == 0) return false;
+        if (AmmoCounts[shell.Type] > 0) return false;
 
         float size = shell.Size;
         if (currentCapacity + size <= totalCapacity)
