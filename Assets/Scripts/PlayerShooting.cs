@@ -28,6 +28,9 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
+    private Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>();
+
+
     #region UI fields - move to own object
     //UI fields
     public TextMeshProUGUI spaceLeftText;
@@ -62,6 +65,9 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        AmmoCounts.Add(ShellBase.ShellType.HalfShell, 50);
+        AmmoCounts.Add(ShellBase.ShellType.Slug, 50);
+
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
@@ -153,9 +159,13 @@ public class PlayerShooting : MonoBehaviour
 
     // Making the if checks regarding currentCapacity <= total capacity to this return method to save time later on -V
     // Following the KISS principal
-    private bool CanLoad(float shellSize)
+    private bool CanLoad(ShellBase shell)
     {
-        if (currentCapacity + shellSize <= totalCapacity)
+        //check dictionary
+        if (AmmoCounts[shell.Type] == 0) return false;
+
+        float size = shell.Size;
+        if (currentCapacity + size <= totalCapacity)
         {
             return true;
         }
@@ -165,7 +175,7 @@ public class PlayerShooting : MonoBehaviour
 
     public void LoadChamber(ShellBase shell)
     {
-        if (CanLoad(shell.Size))
+        if (CanLoad(shell))
         {
             magazine.Push(shell);
             float size = shell.Size;
@@ -208,19 +218,20 @@ public class PlayerShooting : MonoBehaviour
     public void AddSlug()
     {
         Slug slug = new Slug();
-        if (CanLoad(slug.Size))
+        if (CanLoad(slug))
         {
             LoadChamber(slug);
             magUI.Add(slug);
             LoadMagUI(slug);
 
+            AmmoCounts[ShellBase.ShellType.Slug]--;
         }
     }
 
     public void AddBuckshot()
     {
         Buckshot buck = new Buckshot();
-        if (CanLoad(buck.Size))
+        if (CanLoad(buck))
         {
             LoadChamber(buck);
             magUI.Add(buck);
@@ -231,11 +242,13 @@ public class PlayerShooting : MonoBehaviour
     public void AddHalfShell()
     {
         HalfShell half = new HalfShell();
-        if (CanLoad(half.Size))
+        if (CanLoad(half))
         {
             LoadChamber(half);
             magUI.Add(half);
             LoadMagUI(half);
+
+            AmmoCounts[ShellBase.ShellType.HalfShell]--;
         }
     }
 
