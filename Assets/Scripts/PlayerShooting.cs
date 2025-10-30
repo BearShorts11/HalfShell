@@ -23,16 +23,23 @@ public class PlayerShooting : MonoBehaviour
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
+
+
     private float totalCapacity = 5;
     private float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
-    private Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>();
+    public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>();
 
+    [Header("Starting Ammo Counts")]
+    public int startingHalfShells = 15;
+    public int startingSlugs = 15;
+    public int startingBuckshot = 15;
 
     #region UI fields - move to own object
-    //UI fields
+
+    [Header("UI")]
     public TextMeshProUGUI spaceLeftText;
     public Image magazineUI;
     public Image ChamberUINOTSHELLUI;
@@ -65,8 +72,9 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts.Add(ShellBase.ShellType.HalfShell, 50);
-        AmmoCounts.Add(ShellBase.ShellType.Slug, 50);
+        AmmoCounts.Add(ShellBase.ShellType.HalfShell, startingHalfShells);
+        AmmoCounts.Add(ShellBase.ShellType.Slug, startingSlugs);
+        AmmoCounts.Add(ShellBase.ShellType.Buckshot, startingBuckshot);
 
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
@@ -237,6 +245,8 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             magUI.Add(buck);
             LoadMagUI(buck);
+
+            AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
     }
 
@@ -251,6 +261,21 @@ public class PlayerShooting : MonoBehaviour
 
             AmmoCounts[ShellBase.ShellType.HalfShell]--;
         }
+    }
+
+    public void AmmoHalfShell(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.HalfShell] =+ ammoCount;
+    }
+
+    public void AmmoSlug(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.Slug] =+ ammoCount;
+    }
+
+    public void AmmoBuckShot(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.Buckshot] =+ ammoCount;
     }
 
 
