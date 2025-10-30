@@ -4,6 +4,7 @@ public class GunFace : MonoBehaviour
 {
     [SerializeField] private Animator gunFaceAnimator;
     private float animationSpeed = 1;
+    public bool debugging = true;
     [Tooltip("isTalking - Is only used for the scene view with the inspector while play mode is on. Sets the drawn face on the shotgun to a talking animation state on true")]
     public bool isTalking = false;
 
@@ -22,9 +23,18 @@ public class GunFace : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (debugging && Input.GetKeyDown(KeyCode.Period))
+            if (isTalking)
+                StopTalking();
+            else
+                Talk();
     }
-    
+
+    void FixedUpdate()
+    {
+        gunFaceAnimator.speed = Time.timeScale < 1 ? 1 / Time.timeScale : 1;
+    }
+
     public float AnimationSpeed
     {
         get { return animationSpeed; }
