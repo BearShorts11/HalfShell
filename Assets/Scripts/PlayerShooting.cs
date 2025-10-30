@@ -75,7 +75,7 @@ public class PlayerShooting : MonoBehaviour
         MultiShotCrosshair.gameObject.SetActive(false);
 
         //dw about it
-        animator.SetBool("canFire", true);
+        animator.SetBool("canFire", true);        
     }
 
     // Update is called once per frame
@@ -114,12 +114,13 @@ public class PlayerShooting : MonoBehaviour
             if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab)) {
+        if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl) ) 
+        {
             canFire = false;
             animator.SetBool("shellWheelSelected", true);
             animator.CrossFade("Reload_Start", 0.2f);
         }
-        if (Input.GetKeyUp(KeyCode.Tab))
+        if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
         {
             canFire = true;
             animator.speed = 1;
@@ -129,7 +130,7 @@ public class PlayerShooting : MonoBehaviour
 
 
 
-        if (Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl))
         {
             animator.speed = 1 / Time.timeScale;
             //animator.CrossFade("Reload_Start", 0.2f);
@@ -183,7 +184,7 @@ public class PlayerShooting : MonoBehaviour
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
-            if (Input.GetKey(KeyCode.Tab)) // Do not play the reload animation if the player is loading via number keys (Alt reload animations for number keys?) -V
+            if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl)) // Do not play the reload animation if the player is loading via number keys (Alt reload animations for number keys?) -V
             {
                 animator.CrossFade("reload_loop", 0.01f);
                 animator.SetTrigger("LoadShell");

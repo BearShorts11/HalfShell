@@ -112,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7181507913943004412}
   - component: {fileID: 1532934804459060817}
+  - component: {fileID: 6835107172025151030}
   m_Layer: 2
   m_Name: Face
   m_TagString: Untagged
@@ -129,7 +130,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.0000001192093, y: 0.7071068, z: -0.00000005960465, w: 0.7071068}
   m_LocalPosition: {x: -0.2339935, y: 0.0096974075, z: 0.120683275}
-  m_LocalScale: {x: 0.104980186, y: 0.06742166, z: 0.07978044}
+  m_LocalScale: {x: 0.5249009, y: 0.33710828, z: 0.07978044}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8855482833545481895}
@@ -178,17 +179,39 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e5538302632e5fb4fbfdea243ec90bc1, type: 3}
+  m_Sprite: {fileID: -321836604, guid: 032353f01465a4045a01bf7beb9f8fef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6835107172025151030
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184696727414136185}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d588240f87386594bb6c529bf5092e0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3447568621469227289
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +534,7 @@ GameObject:
   - component: {fileID: 7505624498068720646}
   - component: {fileID: 6453100501509869400}
   - component: {fileID: 4852961133968993161}
+  - component: {fileID: 7517447553230873106}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -771,6 +795,20 @@ CapsuleCollider:
   m_Height: 1.9908803
   m_Direction: 1
   m_Center: {x: 0, y: 0.0033677816, z: 0}
+--- !u!114 &7517447553230873106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b294fafd20d7e514a8afb9ac5eddef40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunFaceAnimator: {fileID: 6835107172025151030}
+  isTalking: 0
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
