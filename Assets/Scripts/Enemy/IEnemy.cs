@@ -12,7 +12,8 @@ public class IEnemy : MonoBehaviour
     public float detectionRadius = 10;
     public float attackRaidus = 3f;
     public float attackTime = 1f; //tied to attack anim time
-    public float cooldownTime = 1f;
+    public float attackCooldownTime = 0.5f;
+    public float damageCooldownTime = 1.5f;
 
     protected PlayerBehavior player;
     protected NavMeshAgent agent;
@@ -95,12 +96,12 @@ public class IEnemy : MonoBehaviour
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
         //aka play damage anim to give the player a chance to dodge?
         state = State.cooldown;
-        StartCoroutine(Cooldown());
+        StartCoroutine(Cooldown(attackCooldownTime));
     }
 
-    protected IEnumerator Cooldown()
+    protected IEnumerator Cooldown(float time)
     {
-        yield return new WaitForSeconds(cooldownTime);
+        yield return new WaitForSeconds(time);
         agent.isStopped = false;
         state = State.chasing;
     }
@@ -108,12 +109,12 @@ public class IEnemy : MonoBehaviour
     
     public void Damage(float damageAmt)
     {
-        //override depending on enemy type??
-        if (state == State.idle || state == State.patrol) state = State.chasing;
-
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
         StartCoroutine(DamageFlash());
+
+        //override depending on enemy type??
+        SwitchStateOnDamage();
 
         if (health <= 0)
         {
@@ -126,6 +127,11 @@ public class IEnemy : MonoBehaviour
     {
         //override depending on enemy type??
         if (state == State.idle || state == State.patrol) state = State.chasing;
+        if (state == State.chasing)
+        { 
+            state = State.cooldown;
+            StartCoroutine(Cooldown(damageCooldownTime));
+        }
     }
 
     protected IEnumerator DamageFlash()
