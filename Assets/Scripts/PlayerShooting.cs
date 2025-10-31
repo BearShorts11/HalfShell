@@ -47,6 +47,7 @@ public class PlayerShooting : MonoBehaviour
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
+        {ShellBase.ShellType.Buckshot, 0},
         { ShellBase.ShellType.HalfShell, 0 },
         { ShellBase.ShellType.Slug, 0 }
     };

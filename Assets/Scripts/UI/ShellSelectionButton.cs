@@ -14,12 +14,16 @@ public class ShellSelectionButton : MonoBehaviour
     private PlayerShooting player;
     private ShellBase.ShellType type;
 
+    private Button button;
+    private bool active;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         anim = GetComponent<Animator>();
         player = FindFirstObjectByType<PlayerShooting>();
+        button = GetComponent<Button>();
         SetShellType();
         UpdateAmmoCount();
     }
@@ -33,7 +37,7 @@ public class ShellSelectionButton : MonoBehaviour
     public void Click()
     {
         selected = true;
-        ammoText.text = $"{player.AmmoCounts[type]}";
+        UpdateAmmoCount();
         selected = false;
     }
 
@@ -66,7 +70,25 @@ public class ShellSelectionButton : MonoBehaviour
 
     public void UpdateAmmoCount()
     {
-        if (type != ShellBase.ShellType.Buckshot) { ammoText.text = $"{player.AmmoCounts[type]}"; }
+        if (type != ShellBase.ShellType.Buckshot)
+        { 
+            ammoText.text = $"{player.AmmoCounts[type]}"; 
+        }
         else { ammoText.text = $""; }
+        CheckActive();
+    }
+
+    private void CheckActive()
+    {
+        if (player.AmmoCounts[type] > 0) 
+        { 
+            button.interactable = true;
+            anim.SetBool("Active", true);
+        }
+        else 
+        { 
+            button.interactable = false;
+            anim.SetBool("Active", false);
+        }
     }
 }
