@@ -14,6 +14,9 @@ public class PlayerUI : MonoBehaviour
     public Slider healthBar;
     public TextMeshProUGUI HPtext;
 
+    public Slider armorBar;
+    public TextMeshProUGUI armorText;
+
     public GameObject hurtOverlay;
     public Animator hurtOverlayAnim;
     public bool lowHealth = false;
@@ -105,11 +108,27 @@ public class PlayerUI : MonoBehaviour
     public void UpdateHP(float HP, float Max)
     {
         healthBar.value = HP; 
-        HPtext.text = $"HP: {HP}";
+        HPtext.text = $"HP: {Mathf.Round(HP)}";
     }
     public void UpdateMaxHP(float HP, float Max)
     {
-        healthBar.maxValue = HP;
-        HPtext.text = $"HP: {HP}";
+        healthBar.maxValue = Max;
+        HPtext.text = $"HP: {Mathf.Round(HP)}";
+    }
+
+    public void UpdateArmor(float Arm, float Max)
+    {
+        armorBar.value = Arm;
+        if (armorBar.value > 0)
+        {
+            armorText.enabled = true;
+            armorText.text = $"ARM: {Mathf.Round(Arm)}";
+        }
+        else { armorText.enabled = false; }
+    }
+    public void UpdateMaxArmor(float Arm, float Max)
+    {
+        armorBar.maxValue = Max;
+        armorText.text = $"ARM: {Mathf.Round(Arm)}";
     }
 }

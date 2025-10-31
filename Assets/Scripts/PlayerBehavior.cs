@@ -25,7 +25,7 @@ public class PlayerBehavior : MonoBehaviour
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
 
-    private float health = 100f;
+    [SerializeField] private float health = 100f;
     private float maxHP = 100f;
     public float Health
     {
@@ -43,6 +43,19 @@ public class PlayerBehavior : MonoBehaviour
     public float MaxHP
     {
         get { return maxHP; }
+    }
+
+    [SerializeField] private float armor = 100f;
+    private float maxArmor = 100f;
+    public float Armor
+    {
+        get { return maxArmor; }
+        set
+        {
+            maxArmor = value;
+            if (armor > maxArmor) armor = maxArmor;
+            if (armor < 0) armor = 0;
+        }
     }
 
     // Uncomment if Lvl Design feels strongly for crouching -A
@@ -101,6 +114,8 @@ public class PlayerBehavior : MonoBehaviour
         ResumeTime();
         UI.UpdateHP(health, maxHP);
         UI.UpdateMaxHP(maxHP, maxHP);
+        UI.UpdateArmor(armor, maxArmor);
+        UI.UpdateMaxArmor(armor, maxArmor);
     }
 
     private void LateUpdate()
@@ -242,6 +257,20 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (health > 0)
         {
+            if (armor > 0) 
+            { 
+                float newDamage = (damage / 3);
+                if (armor < (newDamage * 2))
+                {
+                    float spillover = (newDamage * 2) - armor;
+                    Armor = 0;
+                    newDamage = spillover;
+                }
+                else { Armor -= (newDamage * 2); }
+                //Armor -= Mathf.Round(newDamage * 2);
+                UI.UpdateArmor(armor, maxArmor);
+                damage = newDamage;
+            }
             health -= damage;
             UI.UpdateHP(health, maxHP);
             PlaySound(dmgEfforts);
