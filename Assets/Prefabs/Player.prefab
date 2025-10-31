@@ -640,6 +640,12 @@ MonoBehaviour:
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
   animator: {fileID: 7794537637733972831}
+  pumpBackTime: 0.05
+  pumpFWDTime: 0.05
+  reloadRate: 0.15
+  chamberInsertTime: 0.5
+  gunReloadFinishTime: 0.25
+  inputBuffer: 0.01
   spreadRange: 0.05
   startingHalfShells: 15
   startingSlugs: 15
@@ -811,6 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunFaceAnimator: {fileID: 6835107172025151030}
+  debugging: 1
   isTalking: 0
 --- !u!1 &6719948019014343288
 GameObject:
