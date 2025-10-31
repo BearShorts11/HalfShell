@@ -391,7 +391,9 @@ public class PlayerShooting : MonoBehaviour
             ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
-            impulse.GenerateImpulse();
+            float impulseRange = Random.Range(0.5f, 2f);
+            impulse.GenerateImpulseWithForce(impulseRange);
+            //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
 
             RaycastHit hit;
