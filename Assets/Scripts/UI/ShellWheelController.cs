@@ -8,7 +8,6 @@ public class ShellWheelController : MonoBehaviour
     public static bool shellWheelSelected = false;
     public Image selectedItem;
     public Sprite noImage;
-    public static int shellID;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,20 +45,6 @@ public class ShellWheelController : MonoBehaviour
         {
             shellWheelAnim.SetBool("OpenShellWheel", false);
             slowOverlayAnim.SetBool("OpenShellWheel", false);
-        }
-
-        switch (shellID)
-        {
-            // For future reference: This where we call associated unique animations, functions, sounds, etc. for all shell types -
-
-            case 0: // Nothing is slected
-                break;
-            case 1: // Buckshot
-                Debug.Log("Buckshot loaded");
-                break;
-            case 2: // Slug
-                Debug.Log("Slug loaded");
-                break;
         }
     }
 }

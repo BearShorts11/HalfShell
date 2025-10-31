@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HealthPickup : MonoBehaviour
 {
     public GameObject healthPickup;
     public float healthRegainAmount;
+    public bool rotate;
     public float rotateSpeed = 50f;
 
     private PlayerBehavior player;
@@ -19,7 +21,10 @@ public class HealthPickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rotate();
+        if (rotate == true)
+        {
+            Rotate();
+        }
     }
 
     public void Rotate()

@@ -155,14 +155,17 @@ MonoBehaviour:
   detectionRadius: 10
   attackRaidus: 3
   attackTime: 1
-  cooldownTime: 1
+  attackCooldownTime: 0.5
+  damageCooldownTime: 1.5
+  state: 0
   tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
   tempEnemDamage: {fileID: 2100000, guid: 3111c951a37f2ce46ac1b80947f63242, type: 2}
-  shootingPoints: []
   shootingDistance: 10
+  tooClose: 15
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   fireRate: 0.5
   turnSpeed: 5
+  shootingPoints: []
 --- !u!195 &3725621020842838227
 NavMeshAgent:
   m_ObjectHideFlags: 0

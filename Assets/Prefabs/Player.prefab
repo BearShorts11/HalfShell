@@ -244,7 +244,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2111073342127768728}
-  m_Father: {fileID: 5145192282393300189}
+  m_Father: {fileID: 765761212573964377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2572080501347480808
 MonoBehaviour:
@@ -640,7 +640,16 @@ MonoBehaviour:
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
   animator: {fileID: 7794537637733972831}
+  pumpBackTime: 0.05
+  pumpFWDTime: 0.05
+  reloadRate: 0.15
+  chamberInsertTime: 0.5
+  gunReloadFinishTime: 0.25
+  inputBuffer: 0.01
   spreadRange: 0.05
+  startingHalfShells: 15
+  startingSlugs: 15
+  startingBuckshot: 15
   spaceLeftText: {fileID: 0}
   magazineUI: {fileID: 0}
   ChamberUINOTSHELLUI: {fileID: 0}
@@ -808,6 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunFaceAnimator: {fileID: 6835107172025151030}
+  debugging: 1
   isTalking: 0
 --- !u!1 &6719948019014343288
 GameObject:
@@ -843,6 +853,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2675686232405694590}
+  - {fileID: 503214248198723163}
   m_Father: {fileID: 5175454161512950739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5717759520288571188
@@ -1224,8 +1235,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 503214248198723163}
+  m_Children: []
   m_Father: {fileID: 1574212701098856315}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8034355594651571339

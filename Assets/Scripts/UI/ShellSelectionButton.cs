@@ -9,30 +9,36 @@ public class ShellSelectionButton : MonoBehaviour
     public string itemName;
     public TextMeshProUGUI itemText;
     private bool selected = false;
-    public Sprite icon;
+
+    public TextMeshProUGUI ammoText;
+    private PlayerShooting player;
+    private ShellBase.ShellType type;
+
+    private Button button;
+    private bool active;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         anim = GetComponent<Animator>();
+        player = FindFirstObjectByType<PlayerShooting>();
+        button = GetComponent<Button>();
+        SetShellType();
+        UpdateAmmoCount();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (selected)
-        {
-            itemText.text = itemName;
-        }
+        if (selected) { itemText.text = itemName; }
     }
 
     public void Click()
     {
         selected = true;
-        ShellWheelController.shellID = ID;
+        UpdateAmmoCount();
         selected = false;
-        ShellWheelController.shellID = 0;
     }
 
     public void HoverEnter()
@@ -46,13 +52,43 @@ public class ShellSelectionButton : MonoBehaviour
         itemText.text = "";
     }
 
+    private void SetShellType()
+    {
+        switch (ID)
+        {
+            case 0: // Half Shell
+                type = ShellBase.ShellType.HalfShell;
+                break;
+            case 1: // Slug
+                type = ShellBase.ShellType.Slug;
+                break;
+            default:
+                type = ShellBase.ShellType.Buckshot;
+                break;
+        }
+    }
 
-    //public static void OpenShellWheel(GameObject shellSelectionMenu)
-    //{
-    //    Debug.Log("opened shell selection menu");
-        
+    public void UpdateAmmoCount()
+    {
+        if (type != ShellBase.ShellType.Buckshot)
+        { 
+            ammoText.text = $"{player.AmmoCounts[type]}"; 
+        }
+        else { ammoText.text = $""; }
+        CheckActive();
+    }
 
-
-
-    //}
+    private void CheckActive()
+    {
+        if (player.AmmoCounts[type] > 0) 
+        { 
+            button.interactable = true;
+            anim.SetBool("Active", true);
+        }
+        else 
+        { 
+            button.interactable = false;
+            anim.SetBool("Active", false);
+        }
+    }
 }

@@ -23,16 +23,43 @@ public class PlayerShooting : MonoBehaviour
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
+    [SerializeField] private float pumpBackTime = 0.06f;
+    [SerializeField] private float pumpFWDTime = 0.06f;
+    [SerializeField] private float reloadRate = 0.15f;
+    [SerializeField] private float chamberInsertTime = 0.5f;
+    [SerializeField] private float gunReloadFinishTime = 0.25f;
+    [SerializeField] private float inputBuffer = 0.01f;
+    private float _WaitTime;
+    private float waitTime
+    {
+        // Return the time left from a previous action
+        get { return _WaitTime - Time.time; }
+        set { _WaitTime = value; }
+    }
+    private string lastMethod;
+    private bool isInShellSelect = false;
+    private bool pumped = false;
+
     private float totalCapacity = 5;
     private float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
-    private Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>();
+    public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
+    {
+        { ShellBase.ShellType.Buckshot, 0},
+        { ShellBase.ShellType.HalfShell, 0 },
+        { ShellBase.ShellType.Slug, 0 }
+    };
 
+    [Header("Starting Ammo Counts")]
+    public int startingHalfShells = 15;
+    public int startingSlugs = 15;
+    public int startingBuckshot = 15;
 
     #region UI fields - move to own object
-    //UI fields
+
+    [Header("UI")]
     public TextMeshProUGUI spaceLeftText;
     public Image magazineUI;
     public Image ChamberUINOTSHELLUI;
@@ -65,8 +92,9 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts.Add(ShellBase.ShellType.HalfShell, 50);
-        AmmoCounts.Add(ShellBase.ShellType.Slug, 50);
+        AmmoCounts[ShellBase.ShellType.Buckshot] = 0;
+        AmmoCounts[ShellBase.ShellType.HalfShell] = 15;
+        AmmoCounts[ShellBase.ShellType.Slug] = 15;
 
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
@@ -75,7 +103,15 @@ public class PlayerShooting : MonoBehaviour
         MultiShotCrosshair.gameObject.SetActive(false);
 
         //dw about it
-        animator.SetBool("canFire", true);        
+        animator.SetBool("canFire", true);
+
+        List<GameObject> buttons = new List<GameObject>();
+        buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
+        foreach (GameObject button in buttons)
+        {
+            ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
+            counter.UpdateAmmoCount();
+        }
     }
 
     // Update is called once per frame
@@ -86,57 +122,26 @@ public class PlayerShooting : MonoBehaviour
         //racking
         if (Input.GetButtonDown("Fire2"))
         {
-            //PlaySound(pumpBackwardSound);
-            animator.CrossFade("Pump_Backwards", 0.2f);
-            canFire = false;
-
-            if (chamber is not null)
-            {
-                ChamberUIOff();
-            }
-
-            chamber = null;
+            PumpBack();
         }
         if (Input.GetButtonUp("Fire2"))
         {
-            //PlaySound(pumpForwardSound);
-            animator.CrossFade("Pump_Fwd", 0.2f);
-            if (magazine.Count > 0)
-            { 
-                chamber = magazine.Pop();
-                float size = chamber.Size;
-                MagLoss(chamber.Size);
-                magUI.RemoveAt(magUI.Count - 1);
-                MagazineUILoss();
-                //temporary based on current UI
-                ChamberUIOn(chamber);
-            }
-            if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
+            PumpFWD();
         }
 
+        animator.speed = Time.timeScale < 1 ? 1 / Time.timeScale : 1;
+        // Can someone set a button name for these? - V  
         if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl) ) 
         {
-            canFire = false;
-            animator.SetBool("shellWheelSelected", true);
-            animator.CrossFade("Reload_Start", 0.2f);
+            GunRaise();
         }
         if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
         {
-            canFire = true;
-            animator.speed = 1;
-            animator.SetBool("shellWheelSelected", false);
-            animator.CrossFade("Reload_Finish", 0.2f);
+            GunLower();
         }
 
 
 
-        if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl))
-        {
-            animator.speed = 1 / Time.timeScale;
-            //animator.CrossFade("Reload_Start", 0.2f);
-        }
-        
-        //can I remove this? -N
 
 
         SwitchCrosshairUI();
@@ -146,6 +151,84 @@ public class PlayerShooting : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
         
+    }
+
+
+    private void GunRaise()
+    {
+        if (isWaiting())
+        { 
+            BufferLastFunction(nameof(GunRaise), waitTime);
+            return;
+        }
+        canFire = false;
+        isInShellSelect = true;
+        animator.SetBool("shellWheelSelected", true);
+        animator.CrossFade("Reload_Start", 0.2f);
+    }
+
+    private void GunLower()
+    {
+        if (isWaiting())
+        {
+            BufferLastFunction(nameof(GunLower), waitTime);
+            return;
+        }
+        canFire = true;
+        isInShellSelect = false;
+        animator.speed = 1;
+        animator.SetBool("shellWheelSelected", false);
+        animator.CrossFade("Reload_Finish", 0.2f);
+        SetWaitTime(gunReloadFinishTime);
+    }
+
+    private void PumpBack()
+    {
+        if (isWaiting())
+        {
+            BufferLastFunction(nameof(PumpBack), waitTime);
+            return;
+        }
+        if (isInShellSelect)
+            return;
+
+        //PlaySound(pumpBackwardSound);
+        animator.CrossFade("Pump_Backwards", 0.2f);
+        canFire = false;
+
+        if (chamber is not null)
+        {
+            ChamberUIOff();
+        }
+
+        chamber = null;
+        SetWaitTime(pumpBackTime);
+        pumped = true;
+    }
+    private void PumpFWD()
+    {
+        if (isWaiting())
+        {
+            BufferLastFunction(nameof(PumpFWD), waitTime);
+            return;
+        }
+        if (isInShellSelect)
+            return;
+        //PlaySound(pumpForwardSound);
+        animator.CrossFade("Pump_Fwd", 0.2f);
+        if (magazine.Count > 0)
+        {
+            chamber = magazine.Pop();
+            float size = chamber.Size;
+            MagLoss(chamber.Size);
+            magUI.RemoveAt(magUI.Count - 1);
+            MagazineUILoss();
+            //temporary based on current UI
+            ChamberUIOn(chamber);
+        }
+        if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
+        SetWaitTime(pumpFWDTime);
+        pumped = false;
     }
 
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
@@ -163,7 +246,11 @@ public class PlayerShooting : MonoBehaviour
     private bool CanLoad(ShellBase shell)
     {
         //check dictionary
-        if (AmmoCounts[shell.Type] <= 0) return false;
+        if (AmmoCounts[shell.Type] <= 0 || isWaiting()) return false;
+
+        // CHAMBER LOAD: the player still has the gun pumped back after inserting from the chamber instead of the usual feed, the player needs to pump the gun forward before making subsequent reloads.
+        if ((animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped")) && pumped)
+            return false;
 
         float size = shell.Size;
         if (currentCapacity + size <= totalCapacity)
@@ -184,14 +271,19 @@ public class PlayerShooting : MonoBehaviour
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
-            if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl)) // Do not play the reload animation if the player is loading via number keys (Alt reload animations for number keys?) -V
+            if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl)) 
             {
-                animator.CrossFade("reload_loop", 0.01f);
+                //animator.CrossFade("reload_loop", 0.01f);
                 animator.SetTrigger("LoadShell");
+                SetWaitTime(reloadRate / animator.speed);
             }
-            else
+            else // Play Alt reload animations for number keys
             {
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Backwards") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) animator.CrossFade("Empty_InsertShell", 0.2f);
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Pump_Backwards") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_Pumped")) 
+                {
+                    animator.CrossFade("Empty_InsertShell", 0.2f);
+                    SetWaitTime(chamberInsertTime);
+                }
                 else
                 {
                     if (animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped"))
@@ -208,6 +300,7 @@ public class PlayerShooting : MonoBehaviour
                         else
                             animator.CrossFade("Idle_QuickReload", 0.05f, 0, 0.08f);
                     }
+                    SetWaitTime(reloadRate);
                 }
                 //PlaySound(reloadSound);
             }
@@ -237,6 +330,8 @@ public class PlayerShooting : MonoBehaviour
             LoadChamber(buck);
             magUI.Add(buck);
             LoadMagUI(buck);
+
+            AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
     }
 
@@ -253,9 +348,29 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    public void AmmoHalfShell(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.HalfShell] =+ ammoCount;
+    }
+
+    public void AmmoSlug(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.Slug] =+ ammoCount;
+    }
+
+    public void AmmoBuckShot(int ammoCount)
+    {
+        AmmoCounts[ShellBase.ShellType.Buckshot] =+ ammoCount;
+    }
+
 
     public void Fire()
     {
+        if (isWaiting())
+        {
+            BufferLastFunction(nameof(Fire), waitTime);
+            return;
+        }
         //check if chamber IS NULL *NOT* == null, trying to reference chamber directly will always equate to null
         if (canFire == false || chamber is null)
         {
@@ -276,7 +391,9 @@ public class PlayerShooting : MonoBehaviour
             ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
-            impulse.GenerateImpulse();
+            float impulseRange = Random.Range(0.5f, 2f);
+            impulse.GenerateImpulseWithForce(impulseRange);
+            //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
 
             RaycastHit hit;
@@ -369,7 +486,6 @@ public class PlayerShooting : MonoBehaviour
 
 
 
-
     private void SwitchCrosshairUI()
     {
         if (chamber is not null)
@@ -439,4 +555,29 @@ public class PlayerShooting : MonoBehaviour
     }
 
     public bool ShellInChamber() => chamber is not null;
+
+    private void BufferLastFunction(string methodName, float time)
+    {
+        if (lastMethod == methodName)
+            return;
+        CancelInvoke();
+        time += inputBuffer;
+        Invoke(methodName, time);
+        Invoke(nameof(ClearLastMethod), time + inputBuffer);
+    }
+
+    private void ClearLastMethod()
+    {
+        lastMethod = "";
+    }
+
+    private void SetWaitTime(float time)
+    {
+        waitTime = Time.time + time;
+    }
+
+    private bool isWaiting()
+    {
+        return Time.time < _WaitTime;
+    }
 }
