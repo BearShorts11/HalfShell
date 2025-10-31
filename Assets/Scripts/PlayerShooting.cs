@@ -45,7 +45,11 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
 
-    public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>();
+    public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
+    {
+        { ShellBase.ShellType.HalfShell, 0 },
+        { ShellBase.ShellType.Slug, 0 }
+    };
 
     [Header("Starting Ammo Counts")]
     public int startingHalfShells = 15;
@@ -87,9 +91,15 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts.Add(ShellBase.ShellType.HalfShell, startingHalfShells);
-        AmmoCounts.Add(ShellBase.ShellType.Slug, startingSlugs);
-        AmmoCounts.Add(ShellBase.ShellType.Buckshot, startingBuckshot);
+        AmmoCounts[ShellBase.ShellType.HalfShell] = 15;
+        AmmoCounts[ShellBase.ShellType.Slug] = 15;
+        List<GameObject> buttons = new List<GameObject>();
+        buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
+        foreach (GameObject button in buttons)
+        {
+            ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
+            counter.UpdateAmmoCount();
+        }
 
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
