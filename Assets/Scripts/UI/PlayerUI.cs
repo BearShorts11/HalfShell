@@ -105,11 +105,11 @@ public class PlayerUI : MonoBehaviour
     public void UpdateHP(float HP, float Max)
     {
         healthBar.value = HP; 
-        HPtext.text = $"{Max} / {HP}";
+        HPtext.text = $"HP: {HP}";
     }
     public void UpdateMaxHP(float HP, float Max)
     {
         healthBar.maxValue = HP;
-        HPtext.text = $"{Max} / {HP}";
+        HPtext.text = $"HP: {HP}";
     }
 }

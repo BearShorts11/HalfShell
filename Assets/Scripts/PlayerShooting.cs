@@ -47,7 +47,7 @@ public class PlayerShooting : MonoBehaviour
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
-        {ShellBase.ShellType.Buckshot, 0},
+        { ShellBase.ShellType.Buckshot, 0},
         { ShellBase.ShellType.HalfShell, 0 },
         { ShellBase.ShellType.Slug, 0 }
     };
@@ -92,15 +92,9 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        AmmoCounts[ShellBase.ShellType.Buckshot] = 0;
         AmmoCounts[ShellBase.ShellType.HalfShell] = 15;
         AmmoCounts[ShellBase.ShellType.Slug] = 15;
-        List<GameObject> buttons = new List<GameObject>();
-        buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
-        foreach (GameObject button in buttons)
-        {
-            ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
-            counter.UpdateAmmoCount();
-        }
 
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
@@ -109,7 +103,15 @@ public class PlayerShooting : MonoBehaviour
         MultiShotCrosshair.gameObject.SetActive(false);
 
         //dw about it
-        animator.SetBool("canFire", true);        
+        animator.SetBool("canFire", true);
+
+        List<GameObject> buttons = new List<GameObject>();
+        buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
+        foreach (GameObject button in buttons)
+        {
+            ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
+            counter.UpdateAmmoCount();
+        }
     }
 
     // Update is called once per frame
