@@ -15,7 +15,6 @@ public class ShellSelectionButton : MonoBehaviour
     private ShellBase.ShellType type;
 
     private Button button;
-    private bool active;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,6 +31,7 @@ public class ShellSelectionButton : MonoBehaviour
     void Update()
     {
         if (selected) { itemText.text = itemName; }
+        UpdateAmmoCount();
     }
 
     public void Click()
