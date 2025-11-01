@@ -33,11 +33,16 @@ public class PlayerShooting : MonoBehaviour
     private float waitTime
     {
         // Return the time left from a previous action
-        get { return _WaitTime - Time.time; }
+        get { return Mathf.Clamp(_WaitTime - Time.time, 0, Mathf.Infinity); }
         set { _WaitTime = value; }
     }
+
     private string lastMethod;
-    private bool isInShellSelect = false;
+    private bool isInShellSelect // Bool that can only return a value
+    {
+        get { return ShellWheelController.shellWheelSelected; }
+    }
+    private bool lookingAtGun = false;
     private bool pumped = false;
 
     private float totalCapacity = 5;
@@ -117,6 +122,15 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Looking at the face of the gun: cannot shoot or reload while looking at it.
+        if (Input.GetKeyDown(KeyCode.F) && !isInShellSelect && !pumped) 
+        {
+            lookingAtGun = !lookingAtGun;
+            ShellWheelController.shellWheelDisabled = !ShellWheelController.shellWheelDisabled;
+            LookAtGun(lookingAtGun);
+        }
+        if (lookingAtGun) return;
+
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
         //racking
@@ -134,13 +148,12 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl) ) 
         {
             GunRaise();
+            if (lookingAtGun) lookingAtGun = false;
         }
         if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
         {
             GunLower();
         }
-
-
 
 
 
@@ -153,6 +166,11 @@ public class PlayerShooting : MonoBehaviour
         
     }
 
+    private void LookAtGun(bool looking)
+    {
+        if (looking) animator.CrossFade("Idle_Goto_LookAtFace", 0.1f);
+        else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
+    }
 
     private void GunRaise()
     {
@@ -162,7 +180,7 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         canFire = false;
-        isInShellSelect = true;
+        lookingAtGun = false;
         animator.SetBool("shellWheelSelected", true);
         animator.CrossFade("Reload_Start", 0.2f);
     }
@@ -175,7 +193,6 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         canFire = true;
-        isInShellSelect = false;
         animator.speed = 1;
         animator.SetBool("shellWheelSelected", false);
         animator.CrossFade("Reload_Finish", 0.2f);
@@ -193,7 +210,7 @@ public class PlayerShooting : MonoBehaviour
             return;
 
         //PlaySound(pumpBackwardSound);
-        animator.CrossFade("Pump_Backwards", 0.2f);
+        animator.CrossFade("Pump_Backwards", 0.15f);
         canFire = false;
 
         if (chamber is not null)
@@ -215,7 +232,7 @@ public class PlayerShooting : MonoBehaviour
         if (isInShellSelect)
             return;
         //PlaySound(pumpForwardSound);
-        animator.CrossFade("Pump_Fwd", 0.2f);
+        animator.CrossFade("Pump_Fwd", 0.15f);
         if (magazine.Count > 0)
         {
             chamber = magazine.Pop();

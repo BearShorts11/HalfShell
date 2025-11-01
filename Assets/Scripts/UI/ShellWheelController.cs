@@ -6,6 +6,7 @@ public class ShellWheelController : MonoBehaviour
     public Animator shellWheelAnim;
     public Animator slowOverlayAnim;
     public static bool shellWheelSelected = false;
+    public static bool shellWheelDisabled = false;
     public Image selectedItem;
     public Sprite noImage;
 
@@ -18,6 +19,8 @@ public class ShellWheelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (shellWheelDisabled) return;
+
         if (PauseMenu.paused != true)
         {
             if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl))
