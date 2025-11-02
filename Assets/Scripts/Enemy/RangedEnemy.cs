@@ -1,3 +1,4 @@
+using FMODUnity;
 using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -127,5 +128,7 @@ public class RangedEnemy : IEnemy
             FindNewCover();
             state = State.findCover;
         }
+
+        RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
     }
 }
