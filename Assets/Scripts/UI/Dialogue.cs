@@ -8,18 +8,34 @@ using FMODUnity;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine.Windows;
 using System;
+using UnityEngine.Windows.Speech;
+using UnityEngine.UI;
+
 
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI txtComp;
-    public string[] lines;
+    private string[] lines = 
+        {
+        /*0*/"Light these fiends up", //Start of First Strike Lines (Shooting the door)
+        /*1*/"Are you waiting for them to shoot first? Fire!",
+        /*2*/"There are raiders everywhere. We must take them out!", //Start of Mission 1 lines
+        /*3*/"Defend! Defend! Defend!",
+        /*4*/"We must escape!",
+        /*5*/"No use waiting on them to come out.", //Start of burial lines
+        /*6*/"I was the exception Kerth. You don't need anybody else."
+        };
     public float txtSpeed;
 
     private int index;
+    private bool speech;
 
     private static System.Random rand = new System.Random();
     private static int GetRandomNumber(int max) => rand.Next(max);
     private static int GetRandomNumber(int min, int max) => rand.Next(min, max);
+    public PlayerShooting player;
+    public GameObject Sbutton;
+    public GunFace gunFace;
 
     public EventReference dialogue;
     /// <summary>
@@ -32,21 +48,49 @@ public class Dialogue : MonoBehaviour
     }
     void Start()
     {
-       
+       //Clear any text on game start
         txtComp.text = string.Empty;
+        Debug.Log("Dialogue text cleared.");
+        Sbutton.SetActive(false);
+        //StartDialogue();
+    }
+
+     void FixedUpdate()
+    {
+        if (player.lookingAtGun == true)
+        {
+
+            Debug.Log("player is looking at gun.");
+            Sbutton.SetActive(true);
+            PlayerBehavior.UnlockCursor();
+        }
+        else
+        { 
+           Sbutton.SetActive(false);
+            PlayerBehavior.LockCursor();
+            txtComp.text = string.Empty;
+            gunFace.StopTalking();
+        }
+    }
+
+    public void Click()
+    {
+        txtComp.text = string.Empty ;
         StartDialogue();
     }
 
-     void Update()
-    {
-        
-    }
     void StartDialogue()
     {
-        RandomLine();
+      
+        gunFace.Talk();
+        RandomMissionOneLine();
         StartCoroutine(TypeLine());
+        Debug.Log("Line End hit");
+        
+        
     }
 
+    
     
 
     IEnumerator TypeLine()
@@ -56,13 +100,14 @@ public class Dialogue : MonoBehaviour
             PlaySound(dialogue);
             txtComp.text += c;
             yield return new WaitForSeconds(txtSpeed);
+            
         }
     }
 
-    void RandomLine()
+    void RandomMissionOneLine()
     {
 
-        index = GetRandomNumber(0, 2);
-        
+        index = GetRandomNumber(2, 4);
+        Debug.Log("Random line chosen.");
     }
 }

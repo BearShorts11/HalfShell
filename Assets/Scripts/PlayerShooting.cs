@@ -42,7 +42,7 @@ public class PlayerShooting : MonoBehaviour
     {
         get { return ShellWheelController.shellWheelSelected; }
     }
-    private bool lookingAtGun = false;
+    public bool lookingAtGun = false;
     private bool pumped = false;
 
     private float totalCapacity = 5;
@@ -172,7 +172,7 @@ public class PlayerShooting : MonoBehaviour
         else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
     }
 
-    private void GunRaise()
+    internal void GunRaise()
     {
         if (isWaiting())
         { 
