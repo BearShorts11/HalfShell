@@ -52,7 +52,7 @@ public class PlayerBehavior : MonoBehaviour
         get { return armor; }
         set
         {
-            maxArmor = value;
+            armor = value;
             if (armor > maxArmor) armor = maxArmor;
             if (armor < 0) armor = 0;
         }

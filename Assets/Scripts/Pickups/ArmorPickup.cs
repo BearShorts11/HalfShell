@@ -19,7 +19,7 @@ public class ArmorPickup : IPickup
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //if (Player.Armor >= Player.MaxArmor) { return; }
+            if (Player.Armor >= Player.MaxArmor) { return; }
 
             Player.Armor += regainAmount;
             UI.UpdateArmor(Player.Armor, Player.MaxArmor);
