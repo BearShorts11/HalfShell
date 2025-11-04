@@ -8,43 +8,30 @@ public enum AmmoType
     BuckShot,
 }
 
-public class AmmoPickup : MonoBehaviour
+public class AmmoPickup : IPickup
 {
-    public int ammoRegainAmount;
-    public bool infinite;
-    public bool rotate;
-    public float rotateSpeed = 50f;
-
-    public AmmoType ammoType;
-
-    private PlayerShooting player;
-    private PlayerUI playerUI;
+    [SerializeField] private AmmoType ammoType;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindFirstObjectByType<PlayerShooting>();
-        playerUI = FindFirstObjectByType<PlayerUI>();
+        Gun = FindFirstObjectByType<PlayerShooting>();
+        UI = FindFirstObjectByType<PlayerUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (rotate == true) { Rotate(); }
-    }
-
-    public void Rotate()
-    {
-        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
+        if (rotate) { Rotate(); }
     }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (ammoType == AmmoType.HalfShell)     { player.AmmoHalfShell(ammoRegainAmount); }
-            else if (ammoType == AmmoType.Slug)     { player.AmmoSlug(ammoRegainAmount); }
-            else if (ammoType == AmmoType.BuckShot) { player.AmmoBuckShot(ammoRegainAmount); }
+            if (ammoType == AmmoType.HalfShell)     { Gun.AmmoHalfShell(regainAmount); }
+            else if (ammoType == AmmoType.Slug)     { Gun.AmmoSlug(regainAmount); }
+            else if (ammoType == AmmoType.BuckShot) { Gun.AmmoBuckShot(regainAmount); }
 
             List<GameObject> buttons = new List<GameObject>();
             buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));

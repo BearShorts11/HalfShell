@@ -45,17 +45,21 @@ public class PlayerBehavior : MonoBehaviour
         get { return maxHP; }
     }
 
-    [SerializeField] private float armor = 100f;
+    [SerializeField] private float armor = 0f;
     private float maxArmor = 100f;
     public float Armor
     {
-        get { return maxArmor; }
+        get { return armor; }
         set
         {
             maxArmor = value;
             if (armor > maxArmor) armor = maxArmor;
             if (armor < 0) armor = 0;
         }
+    }
+    public float MaxArmor
+    {
+        get { return maxArmor; }
     }
 
     // Uncomment if Lvl Design feels strongly for crouching -A
