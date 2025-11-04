@@ -52,7 +52,7 @@ public class PlayerShooting : MonoBehaviour
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
-        { ShellBase.ShellType.Buckshot, 0},
+        { ShellBase.ShellType.Buckshot, 0 },
         { ShellBase.ShellType.HalfShell, 0 },
         { ShellBase.ShellType.Slug, 0 }
     };
@@ -367,17 +367,17 @@ public class PlayerShooting : MonoBehaviour
 
     public void AmmoHalfShell(int ammoCount)
     {
-        AmmoCounts[ShellBase.ShellType.HalfShell] =+ ammoCount;
+        AmmoCounts[ShellBase.ShellType.HalfShell] += ammoCount;
     }
 
     public void AmmoSlug(int ammoCount)
     {
-        AmmoCounts[ShellBase.ShellType.Slug] =+ ammoCount;
+        AmmoCounts[ShellBase.ShellType.Slug] += ammoCount;
     }
 
     public void AmmoBuckShot(int ammoCount)
     {
-        AmmoCounts[ShellBase.ShellType.Buckshot] =+ ammoCount;
+        AmmoCounts[ShellBase.ShellType.Buckshot] += ammoCount;
     }
 
 

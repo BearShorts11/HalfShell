@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum AmmoType
@@ -9,8 +10,8 @@ public enum AmmoType
 
 public class AmmoPickup : MonoBehaviour
 {
-    public GameObject ammoPickup;
     public int ammoRegainAmount;
+    public bool infinite;
     public bool rotate;
     public float rotateSpeed = 50f;
 
@@ -29,10 +30,7 @@ public class AmmoPickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (rotate == true)
-        {
-            Rotate();
-        }
+        if (rotate == true) { Rotate(); }
     }
 
     public void Rotate()
@@ -44,21 +42,20 @@ public class AmmoPickup : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (ammoType == AmmoType.HalfShell)
+            if (ammoType == AmmoType.HalfShell)     { player.AmmoHalfShell(ammoRegainAmount); }
+            else if (ammoType == AmmoType.Slug)     { player.AmmoSlug(ammoRegainAmount); }
+            else if (ammoType == AmmoType.BuckShot) { player.AmmoBuckShot(ammoRegainAmount); }
+
+            List<GameObject> buttons = new List<GameObject>();
+            buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
+            foreach (GameObject button in buttons)
             {
-                other.GetComponent<PlayerShooting>().AmmoHalfShell(ammoRegainAmount);
-                Destroy(ammoPickup);
+                ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
+                counter.UpdateAmmoCount();
             }
-            else if (ammoType == AmmoType.Slug)
-            {
-                other.GetComponent<PlayerShooting>().AmmoSlug(ammoRegainAmount);
-                Destroy(ammoPickup);
-            }
-            else if (ammoType == AmmoType.BuckShot)
-            {
-                other.GetComponent<PlayerShooting>().AmmoBuckShot(ammoRegainAmount);
-                Destroy(ammoPickup);
-            }
+
+            // More to be added here when Ammo Maximums are added -A
+            if (!infinite) { Destroy(gameObject); }
         }
     }
 }
