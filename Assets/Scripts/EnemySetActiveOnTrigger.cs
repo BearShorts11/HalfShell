@@ -6,6 +6,8 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
 {
     public List<IEnemy> enemies = new List<IEnemy>();
 
+    public GameObject GameObject;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,7 +24,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     private void Update()
     {
         CheckEnemies();
-        if (enemies.Count == 0) Debug.Log("you passed!");
+        if (enemies.Count == 0) GameObject.SetActive(false);
     }
 
     //this is pretty resource intensive, no?

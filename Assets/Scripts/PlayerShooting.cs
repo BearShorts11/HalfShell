@@ -262,8 +262,15 @@ public class PlayerShooting : MonoBehaviour
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
     {
+        //can always use half shells
+        if (shell.Type == ShellBase.ShellType.HalfShell) return true;
+
         //check dictionary
-        if (AmmoCounts[shell.Type] <= 0 || isWaiting()) return false;
+        if (AmmoCounts[shell.Type] <= 0 || isWaiting())
+        {
+            PlaySound(fullyLoadedSound); //some kind of feedback for number key users
+            return false;
+        }
 
         // CHAMBER LOAD: the player still has the gun pumped back after inserting from the chamber instead of the usual feed, the player needs to pump the gun forward before making subsequent reloads.
         if ((animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped")) && pumped)
@@ -361,7 +368,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.Add(half);
             LoadMagUI(half);
 
-            AmmoCounts[ShellBase.ShellType.HalfShell]--;
+            //AmmoCounts[ShellBase.ShellType.HalfShell]--;
         }
     }
 
