@@ -262,8 +262,10 @@ public class PlayerShooting : MonoBehaviour
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
     {
+        float size = shell.Size;
+
         //can always use half shells
-        if (shell.Type == ShellBase.ShellType.HalfShell) return true;
+        if (shell.Type == ShellBase.ShellType.HalfShell && currentCapacity + size <= totalCapacity) return true;
 
         //check dictionary
         if (AmmoCounts[shell.Type] <= 0 || isWaiting())
@@ -276,7 +278,6 @@ public class PlayerShooting : MonoBehaviour
         if ((animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped")) && pumped)
             return false;
 
-        float size = shell.Size;
         if (currentCapacity + size <= totalCapacity)
         {
             return true;

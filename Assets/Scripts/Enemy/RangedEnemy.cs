@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class RangedEnemy : IEnemy
 {
-    [SerializeField] private float shootingDistance = 50f;
+    [SerializeField] private float shootingDistance = 25;
     [SerializeField] private float tooClose = 10f;
     public GameObject bulletPrefab;
     /// <summary>
@@ -17,7 +17,7 @@ public class RangedEnemy : IEnemy
     [SerializeField] private float turnSpeed = 5f;
     private float nextTimeToFire = 0;
 
-    public static float gunDamage = 15f;
+    public static float gunDamage = 10f;
 
     public List<Transform> shootingPoints;
     private Transform currentPoint;

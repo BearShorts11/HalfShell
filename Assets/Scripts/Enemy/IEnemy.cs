@@ -19,7 +19,7 @@ public class IEnemy : MonoBehaviour
     protected NavMeshAgent agent;
 
 
-    [SerializeField] protected State state;
+    protected State state;
     public enum State
     {
         idle,

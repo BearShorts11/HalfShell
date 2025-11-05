@@ -32,7 +32,6 @@ public class EnemyBullet : MonoBehaviour
         }
 
         Debug.Log(other.gameObject.name);
-
         Destroy(this.gameObject);
     }
 
