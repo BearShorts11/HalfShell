@@ -118,8 +118,12 @@ public class RangedEnemy : IEnemy
     }
 
     private void Shoot()
-    { 
-        Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);
+    {
+        Transform gunChild = this.transform.GetChild(0);
+        GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
+        Vector3 playerCurrPos = player.transform.position;
+        bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
+        //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);
 
         float playerDistance = Vector3.Distance(transform.position, player.transform.position);
         if (playerDistance <= tooClose && shootingPoints.Count > 1)
