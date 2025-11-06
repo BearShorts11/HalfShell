@@ -606,6 +606,8 @@ MonoBehaviour:
   lookSpeed: 0.3
   lookXLimit: 90
   defaultHeight: 2
+  health: 100
+  armor: 0
   SlowedTime: 0.1
   playerCinemachineCamera: {fileID: 3181911189500020457}
   CinemachineCameraTarget: {fileID: 9124881526004739986}
@@ -640,19 +642,18 @@ MonoBehaviour:
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
   animator: {fileID: 7794537637733972831}
-  pumpBackTime: 0.05
-  pumpFWDTime: 0.05
-  reloadRate: 0.15
+  pumpBackTime: 0.06
+  pumpFWDTime: 0.06
+  reloadRate: 0.01
   chamberInsertTime: 0.5
   gunReloadFinishTime: 0.25
   inputBuffer: 0.01
+  lookingAtGun: 0
   spreadRange: 0.05
-  startingHalfShells: 15
-  startingSlugs: 15
-  startingBuckshot: 15
-  spaceLeftText: {fileID: 0}
+  startingHalfShells: 1
+  startingSlugs: 0
+  startingBuckshot: 0
   magazineUI: {fileID: 0}
-  ChamberUINOTSHELLUI: {fileID: 0}
   SingleShotCrosshair: {fileID: 0}
   MultiShotCrosshair: {fileID: 0}
   ShellSelectionMenu: {fileID: 0}

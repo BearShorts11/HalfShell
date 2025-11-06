@@ -58,9 +58,9 @@ public class PlayerShooting : MonoBehaviour
     };
 
     [Header("Starting Ammo Counts")]
-    public int startingHalfShells = 15;
-    public int startingSlugs = 15;
-    public int startingBuckshot = 15;
+    public int startingHalfShells;
+    public int startingSlugs;
+    public int startingBuckshot;
 
     #region UI fields - move to own object
 
@@ -96,9 +96,9 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts[ShellBase.ShellType.Buckshot] = 0;
-        AmmoCounts[ShellBase.ShellType.HalfShell] = 15;
-        AmmoCounts[ShellBase.ShellType.Slug] = 15;
+        AmmoCounts[ShellBase.ShellType.Buckshot] = startingBuckshot; // Should be 0 but wtv
+        AmmoCounts[ShellBase.ShellType.HalfShell] = startingHalfShells;
+        AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
 
         playerUI = FindFirstObjectByType<PlayerUI>();
         spaceLeftText = playerUI.currentCapacityText;
