@@ -43,8 +43,11 @@ public class ShellSelectionButton : MonoBehaviour
 
     public void HoverEnter()
     {
-        anim.SetBool("Hovered", true);
-        itemText.text = itemName;
+        if (button.interactable)
+        {
+            anim.SetBool("Hovered", true);
+            itemText.text = itemName;
+        }
     }
     public void HoverExit()
     {
@@ -70,11 +73,11 @@ public class ShellSelectionButton : MonoBehaviour
 
     public void UpdateAmmoCount()
     {
-        if (type != ShellBase.ShellType.Buckshot)
+        if (ammoText != null)
         { 
-            ammoText.text = $"{player.AmmoCounts[type]}"; 
+            if (type != ShellBase.ShellType.Buckshot) { ammoText.text = $"{player.AmmoCounts[type]}"; }
+            else { ammoText.text = $""; }
         }
-        else { ammoText.text = $""; }
         CheckActive();
     }
 
