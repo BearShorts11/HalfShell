@@ -447,6 +447,10 @@ public class PlayerShooting : MonoBehaviour
                                 Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
                                 HitBreakable(hit, shell);
                             }
+                            else if (hit.collider.gameObject.GetComponent<ObjActivator>())
+                            {
+                                HitObjActivator(hit, shell.Type);
+                            }
                             else
                             {
                                 Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
@@ -468,6 +472,10 @@ public class PlayerShooting : MonoBehaviour
                         {
                             Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
                             HitBreakable(hit, shell);
+                        }
+                        else if (hit.collider.gameObject.GetComponent<ObjActivator>())
+                        {
+                            HitObjActivator(hit, shell.Type);
                         }
                         else
                         {
@@ -504,6 +512,15 @@ public class PlayerShooting : MonoBehaviour
         {
             obj.Damage(shell.Damage);
             //Debug.Log("breakable hit");
+        }
+    }
+
+    private void HitObjActivator(RaycastHit hit, ShellBase.ShellType shellType)
+    {
+        ObjActivator objActivator = hit.transform.GetComponent<ObjActivator>();
+        if (objActivator != null)
+        {
+            objActivator.ObjSwap(shellType);
         }
     }
 
