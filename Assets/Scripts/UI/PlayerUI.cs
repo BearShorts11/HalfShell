@@ -21,6 +21,16 @@ public class PlayerUI : MonoBehaviour
     public Animator hurtOverlayAnim;
     public bool lowHealth = false;
 
+    public TextMeshProUGUI currentCapacityText;
+    public Image ChamberUI;
+    public Image SingleShotCrosshair;
+    public Image MultiShotCrosshair;
+
+    //UI shell size vals
+    static float shellWidth = 30f;
+    static float shellHeight = 70f;
+    static float halfShellHeight = 35f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,18 +54,13 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    //THIS IS BAD DON'T LOOK AT THIS I FIX LATER -N
+
     public static GameObject MakeUIShell(Image parent, ShellBase shell)
     {
         GameObject UIshell = new GameObject();
         Image display = UIshell.AddComponent<Image>();
         RectTransform UIShellRectTransform = UIshell.GetComponent<RectTransform>();
         UIShellRectTransform.SetParent(parent.transform, false);
-
-        //put this somewhere better dumbass -N
-        float shellWidth = 30f;
-        float shellHeight = 70f;
-        float halfShellHeight = 35f;
 
         Color color = shell.DisplayColor;
         UIshell.GetComponent<Image>().color = color;
@@ -73,6 +78,48 @@ public class PlayerUI : MonoBehaviour
 
         return UIshell;
     }
+
+    public void ChamberUIOff()
+    {
+        Destroy(ChamberUI.transform.GetChild(1).gameObject);
+    }
+
+    public void ChamberUIOn(ShellBase shell)
+    {
+
+        GameObject UIshell = PlayerUI.MakeUIShell(ChamberUI, shell);
+        UIshell.SetActive(true);
+    }
+
+
+    public void SwitchCrosshairUI(ShellBase chamber, float magCount)
+    {
+        if (chamber is not null)
+        {
+            ShellBase top = chamber;
+            switch (top.Type)
+            {
+                case ShellBase.ShellType.Slug:
+                    //case ShellBase.ShellType. some other shot type that also is a single fire
+                    SingleShotCrosshair.gameObject.SetActive(true);
+                    MultiShotCrosshair.gameObject.SetActive(false);
+                    break;
+                case ShellBase.ShellType.Buckshot:
+                case ShellBase.ShellType.HalfShell:
+                    SingleShotCrosshair.gameObject.SetActive(false);
+                    MultiShotCrosshair.gameObject.SetActive(true);
+                    break;
+            }
+        }
+
+        //defaults to small crosshair for visibility
+        if (chamber is null && magCount <= 0)
+        {
+            SingleShotCrosshair.gameObject.SetActive(true);
+            MultiShotCrosshair.gameObject.SetActive(false);
+        }
+    }
+
 
 
     public void Hurt()

@@ -65,9 +65,8 @@ public class PlayerShooting : MonoBehaviour
     #region UI fields - move to own object
 
     [Header("UI")]
-    public TextMeshProUGUI spaceLeftText;
+    TextMeshProUGUI spaceLeftText;
     public Image magazineUI;
-    public Image ChamberUINOTSHELLUI;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
@@ -102,6 +101,7 @@ public class PlayerShooting : MonoBehaviour
         AmmoCounts[ShellBase.ShellType.Slug] = 15;
 
         playerUI = FindFirstObjectByType<PlayerUI>();
+        spaceLeftText = playerUI.currentCapacityText;
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
         SingleShotCrosshair.gameObject.SetActive(true);
@@ -156,8 +156,8 @@ public class PlayerShooting : MonoBehaviour
         }
 
 
-
-        SwitchCrosshairUI();
+        float magCount = magazine.Count;
+        playerUI.SwitchCrosshairUI(chamber, magCount);
 
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
@@ -215,7 +215,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (chamber is not null)
         {
-            ChamberUIOff();
+            playerUI.ChamberUIOff();
         }
 
         chamber = null;
@@ -241,7 +241,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.RemoveAt(magUI.Count - 1);
             MagazineUILoss();
             //temporary based on current UI
-            ChamberUIOn(chamber);
+            playerUI.ChamberUIOn(chamber);
         }
         if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         SetWaitTime(pumpFWDTime);
@@ -413,7 +413,7 @@ public class PlayerShooting : MonoBehaviour
             ShellBase shell = chamber;
             //MagazineUILoss();
             chamber = null;
-            ChamberUIOff();
+            playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
             float impulseRange = Random.Range(0.5f, 2f);
@@ -510,51 +510,12 @@ public class PlayerShooting : MonoBehaviour
     private void MagLoss(float shellSize) => currentCapacity -= shellSize;
 
 
-
-    private void SwitchCrosshairUI()
-    {
-        if (chamber is not null)
-        {
-            ShellBase top = chamber;
-            switch (top.Type)
-            {
-                case ShellBase.ShellType.Slug:
-                    //case ShellBase.ShellType. some other shot type that also is a single fire
-                    SingleShotCrosshair.gameObject.SetActive(true);
-                    MultiShotCrosshair.gameObject.SetActive(false);
-                    break;
-                case ShellBase.ShellType.Buckshot:
-                case ShellBase.ShellType.HalfShell:
-                    SingleShotCrosshair.gameObject.SetActive(false);
-                    MultiShotCrosshair.gameObject.SetActive(true);
-                    break;
-            }
-        }
-
-        //defaults to small crosshair for visibility
-        if (chamber is null && magazine.Count <= 0)
-        {
-            SingleShotCrosshair.gameObject.SetActive(true);
-            MultiShotCrosshair.gameObject.SetActive(false);
-        }
-    }
-
     private void MagazineUILoss()
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (currentCapacity < totalCapacity)
             Destroy(magazineUI.transform.GetChild(magazine.Count).gameObject);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-    }
-    private void ChamberUIOn(ShellBase shell)
-    {
-
-        GameObject UIshell = PlayerUI.MakeUIShell(ChamberUINOTSHELLUI, shell);
-        UIshell.SetActive(true);
-    }
-    private void ChamberUIOff()
-    {
-        Destroy(ChamberUINOTSHELLUI.transform.GetChild(1).gameObject);
     }
 
     private void LoadMagUI(ShellBase shell)
