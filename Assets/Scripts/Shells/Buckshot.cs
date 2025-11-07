@@ -10,6 +10,7 @@ public class Buckshot : ShellBase
         MaxRange = 100f;
         type = ShellType.Buckshot; 
         DisplayColor = Color.red;
+        MaxHolding = 25;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

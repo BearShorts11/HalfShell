@@ -10,6 +10,7 @@ public class HalfShell : ShellBase
         MaxRange = 18f;
         type = ShellType.HalfShell;
         DisplayColor = Color.red;
+        MaxHolding = int.MaxValue;
     }
 
 

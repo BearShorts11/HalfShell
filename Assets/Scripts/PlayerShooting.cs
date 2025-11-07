@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FMODUnity;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -373,19 +374,16 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    public void AmmoHalfShell(int ammoCount)
-    {
-        AmmoCounts[ShellBase.ShellType.HalfShell] += ammoCount;
-    }
 
-    public void AmmoSlug(int ammoCount)
+    public bool AddAmmo(int ammoCount, ShellBase shell)
     {
-        AmmoCounts[ShellBase.ShellType.Slug] += ammoCount;
-    }
-
-    public void AmmoBuckShot(int ammoCount)
-    {
-        AmmoCounts[ShellBase.ShellType.Buckshot] += ammoCount;
+        if (AmmoCounts[shell.Type] < shell.MaxHolding)
+        { 
+            AmmoCounts[shell.Type] += ammoCount;
+            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding;
+            return true;
+        }
+        return false;
     }
 
 

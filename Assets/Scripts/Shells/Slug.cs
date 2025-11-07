@@ -10,6 +10,7 @@ public class Slug : ShellBase
         MaxRange = 200f;
         type = ShellType.Slug;
         DisplayColor = Color.green;
+        MaxHolding = 20; //eventually 15
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

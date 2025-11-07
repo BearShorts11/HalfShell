@@ -17,7 +17,7 @@ public class RangedEnemy : IEnemy
     [SerializeField] private float turnSpeed = 5f;
     private float nextTimeToFire = 0;
 
-    public static float gunDamage = 10f;
+    public static float gunDamage = 5f;
 
     public List<Transform> shootingPoints;
     private Transform currentPoint;
