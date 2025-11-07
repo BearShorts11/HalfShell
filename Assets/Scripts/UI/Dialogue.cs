@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using FMODUnity;
 using System.Diagnostics.CodeAnalysis;
-using UnityEngine.Windows;
+
 using System;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
@@ -33,9 +33,10 @@ public class Dialogue : MonoBehaviour
     private static System.Random rand = new System.Random();
     private static int GetRandomNumber(int max) => rand.Next(max);
     private static int GetRandomNumber(int min, int max) => rand.Next(min, max);
-    public PlayerShooting player;
+    private PlayerShooting playerShoot;
     public GameObject Sbutton;
     public GunFace gunFace;
+    private PlayerBehavior player;
 
     public EventReference dialogue;
     /// <summary>
@@ -53,23 +54,28 @@ public class Dialogue : MonoBehaviour
         Debug.Log("Dialogue text cleared.");
         Sbutton.SetActive(false);
         //StartDialogue();
+        player = FindFirstObjectByType<PlayerBehavior>();
+        playerShoot = FindFirstObjectByType<PlayerShooting>();
     }
 
-     void FixedUpdate()
+     void Update()
     {
-        if (player.lookingAtGun == true)
-        {
+        if (Input.GetKeyDown(KeyCode.F)) {
+            if (playerShoot.lookingAtGun == false)
+            {
 
-            Debug.Log("player is looking at gun.");
-            Sbutton.SetActive(true);
-            PlayerBehavior.UnlockCursor();
-        }
-        else
-        { 
-           Sbutton.SetActive(false);
-            PlayerBehavior.LockCursor();
-            txtComp.text = string.Empty;
-            gunFace.StopTalking();
+                Debug.Log("player is looking at gun.");
+                Sbutton.SetActive(true);
+                PlayerBehavior.UnlockCursor();
+            }
+            if (playerShoot.lookingAtGun == true)
+            {
+                gunFace.StopTalking();
+                Sbutton.SetActive(false);
+                PlayerBehavior.LockCursor();
+                txtComp.text = string.Empty;
+                
+            }
         }
     }
 
