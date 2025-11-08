@@ -217,6 +217,8 @@ public class PlayerShooting : MonoBehaviour
         if (chamber is not null)
         {
             playerUI.ChamberUIOff();
+            ShellBase shell = chamber as ShellBase;
+            AmmoCounts[shell.Type]++;
         }
 
         chamber = null;
