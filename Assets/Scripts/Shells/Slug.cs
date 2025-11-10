@@ -33,10 +33,10 @@ public class Slug : ShellBase
         switch (hit.distance)
         {
             case > 50f and <= 100f:
-                damageModifier *= -0.02f;
+                damageModifier *= -0.05f;
                 break;
             case > 100f:
-                damageModifier *= -0.05f;
+                damageModifier *= -0.1f;
                 break;
             default:
                 damageModifier = 0;
