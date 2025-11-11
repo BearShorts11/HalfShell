@@ -265,6 +265,9 @@ public class PlayerShooting : MonoBehaviour
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
     {
+        //technicially true, gonna need checks in loading instead for if chamber is empty
+        if (shell.Type == ShellBase.ShellType.BMG) return false;
+
         float size = shell.Size;
 
         //can always use half shells
@@ -289,7 +292,7 @@ public class PlayerShooting : MonoBehaviour
         return false;
     }
 
-    public void LoadChamber(ShellBase shell)
+    public void LoadMagazine(ShellBase shell)
     {
         if (CanLoad(shell))
         {
@@ -342,7 +345,7 @@ public class PlayerShooting : MonoBehaviour
         Slug slug = new Slug();
         if (CanLoad(slug))
         {
-            LoadChamber(slug);
+            LoadMagazine(slug);
             magUI.Add(slug);
             LoadMagUI(slug);
 
@@ -355,7 +358,7 @@ public class PlayerShooting : MonoBehaviour
         Buckshot buck = new Buckshot();
         if (CanLoad(buck))
         {
-            LoadChamber(buck);
+            LoadMagazine(buck);
             magUI.Add(buck);
             LoadMagUI(buck);
 
@@ -368,7 +371,7 @@ public class PlayerShooting : MonoBehaviour
         HalfShell half = new HalfShell();
         if (CanLoad(half))
         {
-            LoadChamber(half);
+            LoadMagazine(half);
             magUI.Add(half);
             LoadMagUI(half);
 
