@@ -496,6 +496,9 @@ public class PlayerShooting : MonoBehaviour
     {
         //Debug.Log(hit.transform.name);
 
+        Limb eLimb = hit.transform.GetComponent<Limb>();
+        if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
+
         IEnemy enemy = hit.transform.GetComponent<IEnemy>();
 
         if (enemy != null)
