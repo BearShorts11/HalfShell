@@ -32,7 +32,7 @@ public class Limb : MonoBehaviour
         
     }
 
-    public void TakeDamage(float Damage) // Should be called by the shotgun
+    public void TakeDamage(float Damage) // Should be called by the shotgun or any other source that would damage this
     {
         Damage *= damMult;
 
@@ -40,8 +40,9 @@ public class Limb : MonoBehaviour
 
         if (enemy  != null) enemy.Damage(Damage);
 
-        if (health <= 0f) { 
-            enemy.Damage(enemy.maxHealth * damMultOnRemove);
+        if (health <= 0f) {
+            // Check again just incase
+            if (enemy != null) enemy.Damage(enemy.maxHealth * damMultOnRemove);
             Destroy(gameObject);
         }
     }
