@@ -26,11 +26,15 @@ public class MeleeEnemy : IEnemy
             pathIndex = 0;
         }
         //else state = State.idle;
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        AnimationController();
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         switch (state)
@@ -71,6 +75,43 @@ public class MeleeEnemy : IEnemy
         if (Vector3.Distance(transform.position, player.transform.position) <= detectionRadius)
         {
             state = State.chasing;
+        }
+    }
+
+    private void AnimationController()
+    {
+        //Controls Idle/Walking/Running 
+        if (state == State.idle)
+        {
+            animator.SetFloat("Speed", 0.0f);
+        }
+        else if (state == State.patrol)
+        {
+            animator.SetFloat("Speed", 0.5f);
+        }
+        else if (state == State.chasing)
+        {
+            animator.SetFloat("Speed", 1f);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0.0f);
+        }
+
+        //Controls Attacking
+        if (state == State.meleeAttack)
+        {
+            animator.SetBool("Attacking", true);
+            animator.Play("PunchingME");
+        }
+        else if (state == State.cooldown)
+        {
+            animator.SetBool("Attacking", false);
+            animator.SetBool("Recovering", true);
+        }
+        else
+        {
+            animator.SetBool("Attacking", false);
         }
     }
 }

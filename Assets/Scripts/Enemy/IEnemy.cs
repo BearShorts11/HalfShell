@@ -17,7 +17,7 @@ public class IEnemy : MonoBehaviour
 
     protected PlayerBehavior player;
     protected NavMeshAgent agent;
-
+    protected Animator animator;
 
     protected State state;
     public enum State
@@ -49,6 +49,8 @@ public class IEnemy : MonoBehaviour
     {
         GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
+
+        animator = player.GetComponentInChildren<Animator>();
 
         health = maxHealth;
 
@@ -91,10 +93,10 @@ public class IEnemy : MonoBehaviour
     protected IEnumerator Attack()
     {
         agent.isStopped = true;
-        player.Damage(damage);
         yield return new WaitForSeconds(attackTime);
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
         //aka play damage anim to give the player a chance to dodge?
+        player.Damage(damage);
         state = State.cooldown;
         StartCoroutine(Cooldown(attackCooldownTime));
     }
@@ -102,8 +104,19 @@ public class IEnemy : MonoBehaviour
     protected IEnumerator Cooldown(float time)
     {
         yield return new WaitForSeconds(time);
-        agent.isStopped = false;
-        state = State.chasing;
+
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        if (distanceToPlayer <= attackRaidus)
+        {
+            state = State.meleeAttack;
+            StartCoroutine(Attack());
+        }
+        else
+        {
+            agent.isStopped = false;
+            state = State.chasing;
+        }
     }
 
     
