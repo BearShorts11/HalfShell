@@ -14,6 +14,7 @@ public class PlayerShooting : MonoBehaviour
 
     public GameObject fpsCam;
     public CinemachineImpulseSource impulse;
+    public GameObject ApollyonBarks;
 
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
@@ -133,6 +134,8 @@ public class PlayerShooting : MonoBehaviour
         if (lookingAtGun) return;
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
+        
+        
 
         //racking
         if (Input.GetButtonDown("Fire2"))
@@ -423,7 +426,7 @@ public class PlayerShooting : MonoBehaviour
             impulse.GenerateImpulseWithForce(impulseRange);
             //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
-
+            Destroy(ApollyonBarks);
             RaycastHit hit;
             switch (shell.Type)
             {
