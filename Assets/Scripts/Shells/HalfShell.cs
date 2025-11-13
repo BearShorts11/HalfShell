@@ -13,19 +13,6 @@ public class HalfShell : ShellBase
         MaxHolding = int.MaxValue;
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override float ScaleDamage(RaycastHit hit)
     {
         if (hit.distance > MaxRange) return 0; //just in case

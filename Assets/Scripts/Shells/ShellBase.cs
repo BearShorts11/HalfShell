@@ -17,7 +17,9 @@ public abstract class ShellBase : MonoBehaviour
     { 
         Buckshot,
         Slug,
-        HalfShell
+        HalfShell,
+        BeanBag,
+        BMG
     }
 
     protected ShellType type;

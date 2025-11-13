@@ -34,7 +34,7 @@ public class Dialogue : MonoBehaviour
     private static int GetRandomNumber(int max) => rand.Next(max);
     private static int GetRandomNumber(int min, int max) => rand.Next(min, max);
     private PlayerShooting playerShoot;
-    public GameObject Sbutton;
+    private GameObject Apollyon;
     public GunFace gunFace;
     private PlayerBehavior player;
 
@@ -52,10 +52,12 @@ public class Dialogue : MonoBehaviour
        //Clear any text on game start
         txtComp.text = string.Empty;
         Debug.Log("Dialogue text cleared.");
-        Sbutton.SetActive(false);
+        Apollyon = GameObject.Find("Apollyon");
+        Apollyon.SetActive(false);
         //StartDialogue();
         player = FindFirstObjectByType<PlayerBehavior>();
         playerShoot = FindFirstObjectByType<PlayerShooting>();
+        
     }
 
      void Update()
@@ -65,13 +67,13 @@ public class Dialogue : MonoBehaviour
             {
 
                 Debug.Log("player is looking at gun.");
-                Sbutton.SetActive(true);
+                Apollyon.SetActive(true);
                 PlayerBehavior.UnlockCursor();
             }
             if (playerShoot.lookingAtGun == true)
             {
                 gunFace.StopTalking();
-                Sbutton.SetActive(false);
+                Apollyon.SetActive(false);
                 PlayerBehavior.LockCursor();
                 txtComp.text = string.Empty;
                 

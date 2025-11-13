@@ -14,6 +14,7 @@ public class PlayerShooting : MonoBehaviour
 
     public GameObject fpsCam;
     public CinemachineImpulseSource impulse;
+    public GameObject ApollyonBarks;
 
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
@@ -133,6 +134,8 @@ public class PlayerShooting : MonoBehaviour
         if (lookingAtGun) return;
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
+        
+        
 
         //racking
         if (Input.GetButtonDown("Fire2"))
@@ -217,6 +220,8 @@ public class PlayerShooting : MonoBehaviour
         if (chamber is not null)
         {
             playerUI.ChamberUIOff();
+            ShellBase shell = chamber as ShellBase;
+            AmmoCounts[shell.Type]++;
         }
 
         chamber = null;
@@ -263,6 +268,9 @@ public class PlayerShooting : MonoBehaviour
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
     {
+        //technicially true, gonna need checks in loading instead for if chamber is empty
+        if (shell.Type == ShellBase.ShellType.BMG) return false;
+
         float size = shell.Size;
 
         //can always use half shells
@@ -287,7 +295,7 @@ public class PlayerShooting : MonoBehaviour
         return false;
     }
 
-    public void LoadChamber(ShellBase shell)
+    public void LoadMagazine(ShellBase shell)
     {
         if (CanLoad(shell))
         {
@@ -340,7 +348,7 @@ public class PlayerShooting : MonoBehaviour
         Slug slug = new Slug();
         if (CanLoad(slug))
         {
-            LoadChamber(slug);
+            LoadMagazine(slug);
             magUI.Add(slug);
             LoadMagUI(slug);
 
@@ -353,7 +361,7 @@ public class PlayerShooting : MonoBehaviour
         Buckshot buck = new Buckshot();
         if (CanLoad(buck))
         {
-            LoadChamber(buck);
+            LoadMagazine(buck);
             magUI.Add(buck);
             LoadMagUI(buck);
 
@@ -366,7 +374,7 @@ public class PlayerShooting : MonoBehaviour
         HalfShell half = new HalfShell();
         if (CanLoad(half))
         {
-            LoadChamber(half);
+            LoadMagazine(half);
             magUI.Add(half);
             LoadMagUI(half);
 
@@ -418,7 +426,7 @@ public class PlayerShooting : MonoBehaviour
             impulse.GenerateImpulseWithForce(impulseRange);
             //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
-
+            Destroy(ApollyonBarks);
             RaycastHit hit;
             switch (shell.Type)
             {
@@ -490,6 +498,9 @@ public class PlayerShooting : MonoBehaviour
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
         //Debug.Log(hit.transform.name);
+
+        Limb eLimb = hit.transform.GetComponent<Limb>();
+        if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
 
         IEnemy enemy = hit.transform.GetComponent<IEnemy>();
 
