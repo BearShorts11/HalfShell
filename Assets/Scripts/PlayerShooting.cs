@@ -486,6 +486,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    //https://www.youtube.com/shorts/mkIRV4nLOWo 
     private void SpawnBulletHole(RaycastHit hit)
     {
         GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), Quaternion.FromToRotation(Vector3.up, hit.normal));
