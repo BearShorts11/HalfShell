@@ -8,6 +8,10 @@ public class Limb : MonoBehaviour
     [Tooltip("Should the limb have it's own health or pass down the damage to the enemy instead. NOTE: damMult is still in effect")]
     public bool isRemovable = true;
 
+    [Tooltip("Is this a separate object or a part of the armature? Shrinks the bone after this limb has been removed")] // Attach a bloody stump afterwards? idk
+    [SerializeField] private bool isBone = false;
+
+    // Not used yet, could be a particle system game object or something that acts like it
     [SerializeField] private GameObject Gibs = null;
 
     [Tooltip("Multiplier for the damage taken (<1 - Less damage, >1 - More damage)")]
@@ -43,11 +47,12 @@ public class Limb : MonoBehaviour
         if (isRemovable) health -= Damage;  // This limb can only lose health if it is removable (i.e decapitation, amputation, is a body armor, etc.)
                                             //  This also means that the health check in the last line will never return true
 
-        if (enemy  != null) enemy.Damage(Damage);
+        if (enemy  != null) enemy.Damage(Damage); // Pass the damage down to the enemy
 
-        if (health <= 0f) {
+        if (health <= 0f && isRemovable) {
             // Check again just incase
             if (enemy != null && damPctHealthOnRemove > 0) enemy.Damage(enemy.maxHealth * damPctHealthOnRemove);
+            if (isBone) transform.parent.localScale = Vector3.zero;
             Destroy(gameObject);
         }
     }
