@@ -19,7 +19,9 @@ public class IEnemy : MonoBehaviour
     protected NavMeshAgent agent;
     protected Animator animator;
 
+    public bool SpawnAgro;
     protected State state;
+    protected State startState = State.idle;
     public enum State
     {
         idle,
@@ -35,6 +37,10 @@ public class IEnemy : MonoBehaviour
     public Material tempEnemNormal;
     public Material tempEnemDamage;
 
+    private void Awake()
+    {
+        if (SpawnAgro) startState = State.chasing;
+    }
 
     // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
     void Start()
@@ -47,6 +53,7 @@ public class IEnemy : MonoBehaviour
     /// </summary>
     protected void Startup()
     {
+        Debug.Log("starting up");
         GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
 
@@ -57,7 +64,7 @@ public class IEnemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
 
-        state = State.idle;
+        state = startState;
     }
 
     void Update()
@@ -161,4 +168,9 @@ public class IEnemy : MonoBehaviour
     {
         Damage(10f);
     }
+
+    public void SwitchState(State newState) => state = newState;
+    public void Alert() => state = State.chasing;
+    public State GetState() => state;
+    public void SetStartState(State state) => this.startState = state;
 }

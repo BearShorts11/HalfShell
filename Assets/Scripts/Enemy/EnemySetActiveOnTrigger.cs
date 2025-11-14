@@ -22,25 +22,22 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-
+            //yes, i can do e.Alert seperately & omit the first if check, but then at worst case it runs 2 foreach loops instead of 1
             if (AlertInstead)
             {
                 foreach (IEnemy e in enemies)
                 {
-                    //set enemey state
-                    if (e is RangedEnemy)
-                    { }
-                    else if (e is MeleeEnemy)
-                    { }
+                    e.Alert();
                 }
             }
             else 
             { 
-            
-                foreach (IEnemy en in enemies)
+                foreach (IEnemy e in enemies)
                 {
-                    GameObject o = en.gameObject;
+                    GameObject o = e.gameObject;
                     o.SetActive(true);
+                    e.SetStartState(IEnemy.State.chasing);
+                    //Debug.Log(e.GetState());
                 }
             }
         }

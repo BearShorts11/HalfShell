@@ -16,6 +16,7 @@ public class PlayerShooting : MonoBehaviour
     public CinemachineImpulseSource impulse;
     public GameObject ApollyonBarks;
 
+    public GameObject BulletHole;
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
     [SerializeField] private ParticleSystem muzzleflash;
@@ -440,59 +441,55 @@ public class PlayerShooting : MonoBehaviour
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange) && hit.distance <= shell.MaxRange)
                         {
-                            Debug.Log("hit successful");
-                            Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
-
-                            if (hit.collider.gameObject.tag == "Enemy")
-                            { 
-                                Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
-                                HitEnemy(hit, shell);
-                            }
-                            else if (hit.collider.gameObject.tag == "Breakable")
-                            {
-                                Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-                                HitBreakable(hit, shell);
-                            }
-                            else if (hit.collider.gameObject.GetComponent<ObjActivator>())
-                            {
-                                HitObjActivator(hit, shell.Type);
-                            }
-                            else
-                            {
-                                Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-                            }
+                            DoHit(hit, shell);
                         }
-
                     }
 
                     break;
                 case ShellBase.ShellType.Slug:
-                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange))
+                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange) && hit.distance <= shell.MaxRange)
                     {
-                        if (hit.collider.gameObject.tag == "Enemy")
-                        {
-                            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
-                            HitEnemy(hit, shell);
-                        }
-                        else if (hit.collider.gameObject.tag == "Breakable")
-                        {
-                            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-                            HitBreakable(hit, shell);
-                        }
-                        else if (hit.collider.gameObject.GetComponent<ObjActivator>())
-                        {
-                            HitObjActivator(hit, shell.Type);
-                        }
-                        else
-                        {
-                            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-                        }
+                        DoHit(hit, shell);
                     }
                     break;
             }
 
         }
 
+    }
+
+    private void DoHit(RaycastHit hit, ShellBase shell)
+    {
+        Debug.Log("hit successful");
+        Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
+
+        if (hit.collider.gameObject.tag == "Enemy")
+        {
+            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+            HitEnemy(hit, shell);
+        }
+        else if (hit.collider.gameObject.tag == "Breakable")
+        {
+            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+            HitBreakable(hit, shell);
+            SpawnBulletHole(hit);
+        }
+        else if (hit.collider.gameObject.GetComponent<ObjActivator>())
+        {
+            HitObjActivator(hit, shell.Type);
+            SpawnBulletHole(hit);
+        }
+        else
+        {
+            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+            SpawnBulletHole(hit);
+        }
+    }
+
+    private void SpawnBulletHole(RaycastHit hit)
+    {
+        GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), Quaternion.FromToRotation(Vector3.up, hit.normal));
+        Destroy(decal, 3f);
     }
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
