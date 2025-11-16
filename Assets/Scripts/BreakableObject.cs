@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using static UnityEditor.PlayerSettings;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
@@ -17,6 +18,10 @@ public class BreakableObject : MonoBehaviour
     // TO-DO: make particle systems child of prefab object
 
     private bool isDamaged = false;
+    private Vector3 explodePos;
+    public Vector3 ExplodePos { set { explodePos = value; } }
+    [field: SerializeField] public bool explosionOveride { get; private set; } // determines if the explosion direction should occur from the object instead of the external damage source.
+
 
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public float currentHealth;
@@ -34,23 +39,12 @@ public class BreakableObject : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
+        explodePos = this.gameObject.transform.position;
 
-        if (undamagedPrefab != null)
-        {
-            undamagedPrefab.SetActive(true);
-        }
-        //if (damagedPrefab != null)
-        //{
-        //    undamagedPrefab.SetActive(false);
-        //}
-        //if (brokenPrefab != null)
-        //{
-        //    undamagedPrefab.SetActive(false);
-        //}
-        //if (debrisPrefab != null)
-        //{
-        //    undamagedPrefab.SetActive(false);
-        //}
+        if (undamagedPrefab != null)    { undamagedPrefab.SetActive(true); }
+        if (damagedPrefab != null)      { damagedPrefab.SetActive(false); }
+        if (brokenPrefab != null)       { brokenPrefab.SetActive(false); }
+        if (debrisPrefab != null)       { debrisPrefab.SetActive(false); }
         // TO-DO: grab particles component on Awake
     }
 
@@ -59,20 +53,14 @@ public class BreakableObject : MonoBehaviour
         currentHealth -= damageAmt;
         Debug.Log("Breakable Item HP: " + currentHealth);
 
-        if (currentHealth <= (maxHealth / 2) && currentHealth > 0 && isDamaged == false && damagedPrefab != null)
-        {
-            Chip();
-        }
-        else if (currentHealth <= 0)
-        {
-            Break();
-        }
+        if (currentHealth <= (maxHealth / 2) && currentHealth > 0 && isDamaged == false && damagedPrefab != null) { Chip(); }
+        else if (currentHealth <= 0) { Break(); }
     }
 
 
     public void Chip()
     {
-        Particles.Play();
+        if (Particles != null) { Particles.Play(); }
 
         undamagedPrefab.SetActive(false);
         damagedPrefab.transform.position = gameObject.transform.position;
@@ -89,20 +77,13 @@ public class BreakableObject : MonoBehaviour
     {
         Destroy(GetComponent<Collider>());
 
-        Particles.Play();
+        if (Particles != null) { Particles.Play(); }
 
-        if (undamagedPrefab != null)
-        {
-            undamagedPrefab.SetActive(false);
-        }
-        if (damagedPrefab != null)
-        {
-            damagedPrefab.SetActive(false);
-        }
+        if (undamagedPrefab != null)    { undamagedPrefab.SetActive(false); }
+        if (damagedPrefab != null)      { damagedPrefab.SetActive(false); }
 
         if (brokenPrefab != null)
         {
-
             brokenPrefab.transform.position = gameObject.transform.position;
             brokenPrefab.transform.rotation = gameObject.transform.rotation;
             brokenPrefab.SetActive(true);
@@ -172,33 +153,23 @@ public class BreakableObject : MonoBehaviour
 
 
         // Destroys entire breakable object after co-coutine completes and all destroyed pieces have vanished
-        if (brokenPrefab.activeSelf == true)
-        {
-            Destroy(gameObject);
-        }
+        if (brokenPrefab.activeSelf == true) { Destroy(gameObject); }
     }
 
     // Exerts a force on any rigidbodies in the subject prefab
     private void Explode(GameObject prefab)
     {
-        Vector3 playerPos = FindFirstObjectByType<PlayerBehavior>().gameObject.transform.position;
         Rigidbody[] rigidbodies = prefab.GetComponentsInChildren<Rigidbody>();
 
         foreach (Rigidbody body in rigidbodies)
         {
-            if (Rigidbody != null)
-            {
-                body.linearVelocity = Rigidbody.linearVelocity;
-            }
-            body.AddExplosionForce(explosiveForce, playerPos, explosiveRadius);
+            if (Rigidbody != null) { body.linearVelocity = Rigidbody.linearVelocity; }
+            body.AddExplosionForce(explosiveForce, explodePos, explosiveRadius);
         }
 
         // Calls for the broken pieces to begin fading out
         StartCoroutine(FadeOutRigidBodies(rigidbodies));
     }
 
-    private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
-    {
-        return Rigidbody.GetComponent<Renderer>();
-    }
+    private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody) { return Rigidbody.GetComponent<Renderer>(); }
 }

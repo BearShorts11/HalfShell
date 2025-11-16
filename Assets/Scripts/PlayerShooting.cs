@@ -517,24 +517,16 @@ public class PlayerShooting : MonoBehaviour
 
     private void HitBreakable(RaycastHit hit, ShellBase shell)
     {
-        //Debug.Log(hit.transform.name);
-
         BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
+        if (obj.explosionOveride == false) { obj.ExplodePos = gameObject.transform.position; }
 
-        if (obj != null)
-        {
-            obj.Damage(shell.Damage);
-            //Debug.Log("breakable hit");
-        }
+        if (obj != null) { obj.Damage(shell.Damage); }
     }
 
     private void HitObjActivator(RaycastHit hit, ShellBase.ShellType shellType)
     {
         ObjActivator objActivator = hit.transform.GetComponent<ObjActivator>();
-        if (objActivator != null)
-        {
-            objActivator.ObjSwap(shellType);
-        }
+        if (objActivator != null) { objActivator.ObjSwap(shellType); }
     }
 
     private void MagLoss(float shellSize) => currentCapacity -= shellSize;
