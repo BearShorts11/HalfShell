@@ -4,42 +4,75 @@ using UnityEngine;
 using System.Linq;
 using System;
 using static UnityEditor.PlayerSettings;
+using UnityEditor;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
 public class BreakableObject : MonoBehaviour
 {
-    private Rigidbody Rigidbody;
+    [Header("Health Settings")]
+    [SerializeField] public float maxHealth = 100;
+    [SerializeField] public float currentHealth;
+    // TO-DO: add resistance variable when dmg types are added
+
+    [Header("Damage State Objects")]
     [SerializeField] private ParticleSystem Particles;
     [SerializeField] public GameObject undamagedPrefab;
     [SerializeField] public GameObject brokenPrefab;
     [SerializeField] public GameObject damagedPrefab;
     [SerializeField] public GameObject debrisPrefab;
     // TO-DO: make particle systems child of prefab object
-
+    private Rigidbody Rigidbody;
     private bool isDamaged = false;
-    private Vector3 explodePos;
-    public Vector3 ExplodePos { set { explodePos = value; } }
-    [field: SerializeField] public bool explosionOveride { get; private set; } // determines if the explosion direction should occur from the object instead of the external damage source.
 
+    [Header("Destruction Settings")]
+    public bool destructionOveride = false;
+    private Vector3 destructionPos;
+    public Vector3 ExplodePos { set { destructionPos = value; } }
+    [SerializeField] private float destructionForce = 1000;
+    [SerializeField] private float destructionRadius = 2;
 
-    [SerializeField] public float maxHealth = 100;
-    [SerializeField] public float currentHealth;
-    // TO-DO: add resistance variable when dmg types are added
-
-    [SerializeField] private float explosiveForce = 1000;
-    [SerializeField] private float explosiveRadius = 2;
-
+    [Header("Fragment Despawn Settings")]
     [SerializeField] private float pieceFadeSpeed = 0.25f;
     [SerializeField] private float pieceShrinkMult = 1;
     [SerializeField] private float pieceDestroyDelay = 5f;
     [SerializeField] private float pieceSleepCheckDelay = 0.1f;
 
+    [Header("Explosive Object Settings")]
+    public bool explosive;
+    [HideInInspector] public int testValue;
+    [HideInInspector] public int testValue2;
+
+    // Cool ability to make these variables only appear when a bool is checked
+    // Taken from StackOverflow thread. Link: https://stackoverflow.com/questions/72732460/unity-how-to-let-my-variables-show-up-in-the-inspector-if-a-boolean-is-true-an)
+    [CustomEditor(typeof(BreakableObject))]
+    public class MyScriptEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            BreakableObject script = (BreakableObject)target;
+
+            if (script.explosive)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"[Variable 1]", GUILayout.MaxWidth(100));
+                script.testValue = EditorGUILayout.IntField(script.testValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"[Variable 2]", GUILayout.MaxWidth(100));
+                script.testValue2 = EditorGUILayout.IntField(script.testValue2);
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+    }
+
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
-        explodePos = this.gameObject.transform.position;
+        destructionPos = this.gameObject.transform.position;
 
         if (undamagedPrefab != null)    { undamagedPrefab.SetActive(true); }
         if (damagedPrefab != null)      { damagedPrefab.SetActive(false); }
@@ -164,7 +197,7 @@ public class BreakableObject : MonoBehaviour
         foreach (Rigidbody body in rigidbodies)
         {
             if (Rigidbody != null) { body.linearVelocity = Rigidbody.linearVelocity; }
-            body.AddExplosionForce(explosiveForce, explodePos, explosiveRadius);
+            body.AddExplosionForce(destructionForce, destructionPos, destructionRadius);
         }
 
         // Calls for the broken pieces to begin fading out

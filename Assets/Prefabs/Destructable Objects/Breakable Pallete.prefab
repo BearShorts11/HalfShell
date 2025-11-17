@@ -49,19 +49,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 50
+  currentHealth: 0
   Particles: {fileID: 7264443544018146961}
   undamagedPrefab: {fileID: 2923154293561069454}
   brokenPrefab: {fileID: 5298560812263553820}
   damagedPrefab: {fileID: 0}
   debrisPrefab: {fileID: 0}
-  maxHealth: 50
-  currentHealth: 0
-  explosiveForce: 100
-  explosiveRadius: 1000
+  destructionOveride: 0
+  destructionForce: 300
+  destructionRadius: 1000
   pieceFadeSpeed: 0.25
   pieceShrinkMult: 1
   pieceDestroyDelay: 5
   pieceSleepCheckDelay: 0.1
+  explosive: 0
+  testValue: 0
+  testValue2: 0
 --- !u!54 &1127285940728007392
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4953,7 +4957,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 121141311530104144, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 252865676225414829, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_Convex
@@ -4965,11 +4969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 358400089158152568, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 397356457585842658, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 1204829594656605237, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_Convex
@@ -4981,7 +4985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1677972915219581058, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 2454305517259911473, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_Name
@@ -4997,11 +5001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4106528803466017432, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 5138008458345131223, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 5162234431499853384, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_Convex
@@ -5037,7 +5041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7389793165554539731, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 7395433553986971384, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5081,7 +5085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7524672106877235800, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_VersionIndex
-      value: 7117
+      value: 7138
       objectReference: {fileID: 0}
     - target: {fileID: 9149646297161114191, guid: cc52d4e267eaff244ab7f3d8923eff24, type: 3}
       propertyPath: m_Convex

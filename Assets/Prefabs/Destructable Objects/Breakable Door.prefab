@@ -4860,7 +4860,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4024439332844407935}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.999999, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4883,19 +4883,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
   Particles: {fileID: 7326787198827754570}
   undamagedPrefab: {fileID: 2347696266635400248}
   brokenPrefab: {fileID: 673923888503748509}
   damagedPrefab: {fileID: 6360302681186183448}
   debrisPrefab: {fileID: 0}
-  maxHealth: 100
-  currentHealth: 0
-  explosiveForce: 200
-  explosiveRadius: 1000
+  destructionOveride: 0
+  destructionForce: 200
+  destructionRadius: 1000
   pieceFadeSpeed: 0.1
   pieceShrinkMult: 1.1
   pieceDestroyDelay: 2
   pieceSleepCheckDelay: 0.1
+  explosive: 0
+  testValue: 0
+  testValue2: 0
 --- !u!54 &124400480953714888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5136,7 +5140,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1429583342680425609, guid: 5ddd712c3386c7c41b6aa18958228cfd, type: 3}
       propertyPath: m_VersionIndex
-      value: 498
+      value: 519
       objectReference: {fileID: 0}
     - target: {fileID: 4263843989851924356, guid: 5ddd712c3386c7c41b6aa18958228cfd, type: 3}
       propertyPath: m_LocalPosition.x
