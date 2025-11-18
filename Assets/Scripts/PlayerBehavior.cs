@@ -18,7 +18,7 @@ public class PlayerBehavior : MonoBehaviour
 {
     public Camera playerCamera;
     public float walkSpeed = 10f;
-    public float runSpeed = 10f;
+    public float runSpeed = 15f;
     public float jumpPower = 5f;
     public float gravity = 15f;
     public float lookSpeed = 3f;
@@ -137,13 +137,16 @@ public class PlayerBehavior : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        //bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
-        bool isRunning = false;
+        bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+        //bool isRunning = false;
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        if (isRunning) { moveDirection = Vector3.ClampMagnitude(moveDirection, runSpeed); }
+        else { moveDirection = Vector3.ClampMagnitude(moveDirection, walkSpeed); }
 
 
         // Checks that the player can move and is touching the ground when they press the "Jump" input key, then allows them to jump
