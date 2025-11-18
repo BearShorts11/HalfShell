@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 7517447553230873106}
   - component: {fileID: 8382919727395203364}
   - component: {fileID: 2340924979681423522}
+  - component: {fileID: 6507287202376100298}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -641,6 +642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fpsCam: {fileID: 9124881526004739986}
   impulse: {fileID: 6453100501509869400}
+  ApollyonBarks: {fileID: 0}
+  BulletHole: {fileID: 0}
   blood: {fileID: 7649582879852285066, guid: 3050398df40b4ec4b8baf2a26d61d4ad, type: 3}
   dust: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
@@ -888,6 +891,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tagSpecificElements: []
   layerSpecificElements: []
+--- !u!114 &6507287202376100298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9069aa916f71348b5c188069a977b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepEvent:
+    Guid:
+      Data1: -396874295
+      Data2: 1321142235
+      Data3: 1209864601
+      Data4: 1782515175
+    Path: event:/PlayerCharacter/PlayerFootsteps
+  landEvent:
+    Guid:
+      Data1: 82139900
+      Data2: 1288646063
+      Data3: 2147362979
+      Data4: 388735582
+    Path: event:/PlayerCharacter/PlayerLandings
+  surfaceParameterName: SurfaceTerrain
+  stepInterval: 0.5
+  minMoveSpeed: 0.1
+  raycastDistance: 2.09
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,7 +999,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 115
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 8e4c7b94822fb7d4793f5246a9a87bd7, type: 2}
   m_TargetDisplay: 0
@@ -1315,6 +1351,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5175454161512950739}
     m_Modifications:
+    - target: {fileID: 2017640328336907220, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3194527589093206725, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.092243195
