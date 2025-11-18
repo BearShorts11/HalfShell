@@ -110,9 +110,10 @@ public class IEnemy : MonoBehaviour
 
     protected IEnumerator Cooldown(float time)
     {
-        agent.speed = 0;
-        agent.isStopped = true;
-        agent.SetDestination(transform.position);
+        //this is how you do a full stop. for some reason just one of these does not work. all 3 however? yeah apparently that works
+        //agent.speed = 0;
+        //agent.isStopped = true;
+        //agent.SetDestination(transform.position);
 
 
         yield return new WaitForSeconds(time);
