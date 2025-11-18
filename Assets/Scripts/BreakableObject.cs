@@ -28,7 +28,7 @@ public class BreakableObject : MonoBehaviour
     [Header("Destruction Settings")]
     public bool destructionOveride = false;
     private Vector3 destructionPos;
-    public Vector3 ExplodePos { set { destructionPos = value; } }
+    public Vector3 DestructionPos { set { destructionPos = value; } }
     [SerializeField] private float destructionForce = 1000;
     [SerializeField] private float destructionRadius = 2;
 
@@ -39,34 +39,24 @@ public class BreakableObject : MonoBehaviour
     [SerializeField] private float pieceSleepCheckDelay = 0.1f;
 
     [Header("Explosive Object Settings")]
-    public bool explosive;
-    [HideInInspector] public int testValue;
-    [HideInInspector] public int testValue2;
+    [SerializeField] public bool explosive;
+    [SerializeField] private int fragments = 25;
+    private Collider[] fragmentHits;
+    [SerializeField] private float explosionRadius = 10f;
 
-    // Cool ability to make these variables only appear when a bool is checked
-    // Taken from StackOverflow thread. Link: https://stackoverflow.com/questions/72732460/unity-how-to-let-my-variables-show-up-in-the-inspector-if-a-boolean-is-true-an)
-    [CustomEditor(typeof(BreakableObject))]
-    public class MyScriptEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            BreakableObject script = (BreakableObject)target;
+    [SerializeField] private LayerMask damageLayer;
+    [SerializeField] private LayerMask blockFragmentsLayer;
 
-            if (script.explosive)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"[Variable 1]", GUILayout.MaxWidth(100));
-                script.testValue = EditorGUILayout.IntField(script.testValue);
-                EditorGUILayout.EndHorizontal();
+    [SerializeField] public float maxDamage = 100;
+    [SerializeField] public float minDamage = 10;
+    private float explosiveForce;
 
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"[Variable 2]", GUILayout.MaxWidth(100));
-                script.testValue2 = EditorGUILayout.IntField(script.testValue2);
-                EditorGUILayout.EndHorizontal();
-            }
-        }
-    }
+    private bool EXPLODED = false;
+    // THE MOST IMPORTANT VARIBALE MAKE SURE THIS VARIABLE IS TRUE WHEN AN OBJECT BLOWS UP HOLY FUCK
+    // MAKE SURE THIS VARIABLE IS TRUE PLEASE FOR THE LOVE OF GOD
+    // YOU WILL BRICK YOUR COMPUTER AND THE ENTIRE PROJECT IF IT IS FALSE WHEN AN OBJECT EXPLODES
+    // THAT'S WHY ITS IN ALL CAPS
+
 
     private void Awake()
     {
@@ -79,12 +69,13 @@ public class BreakableObject : MonoBehaviour
         if (brokenPrefab != null)       { brokenPrefab.SetActive(false); }
         if (debrisPrefab != null)       { debrisPrefab.SetActive(false); }
         // TO-DO: grab particles component on Awake
+
+        if (explosive) { fragmentHits = new Collider[fragments]; }
     }
 
     public void Damage(float damageAmt)
     {
         currentHealth -= damageAmt;
-        Debug.Log("Breakable Item HP: " + currentHealth);
 
         if (currentHealth <= (maxHealth / 2) && currentHealth > 0 && isDamaged == false && damagedPrefab != null) { Chip(); }
         else if (currentHealth <= 0) { Break(); }
@@ -112,8 +103,63 @@ public class BreakableObject : MonoBehaviour
 
         if (Particles != null) { Particles.Play(); }
 
-        if (undamagedPrefab != null)    { undamagedPrefab.SetActive(false); }
-        if (damagedPrefab != null)      { damagedPrefab.SetActive(false); }
+        if (undamagedPrefab != null) { undamagedPrefab.SetActive(false); }
+        if (damagedPrefab != null) { damagedPrefab.SetActive(false); }
+
+
+        // Draws raycasts in a sphere in all directions
+        // If it hits something with an HP value, it'll damage it (Enemies, Player). 
+        // If it hits another breakable object, it'll damage it and apply force.
+        if (explosive)
+        {
+            EXPLODED = true;
+            // DO NOT TOUCH THIS VARIABLE
+
+            Vector3 explodePos = gameObject.transform.position;
+            int hits = Physics.OverlapSphereNonAlloc(explodePos, explosionRadius, fragmentHits, damageLayer, QueryTriggerInteraction.Collide);
+
+            for (int i = 0; i < hits; i++)
+            {
+                // Breaks Objects
+                if (fragmentHits[i].TryGetComponent<BreakableObject>(out BreakableObject obj))
+                {
+                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                    {
+                        if (!obj.EXPLODED)
+                        {
+                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                            Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.currentHealth -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
+                            obj.DestructionPos = explodePos;
+                            obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        }
+                    }
+                }
+                // Hurts Enemies
+                //if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
+                //{
+                //    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+
+                //    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                //    {
+                //        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                //    }
+                //}
+                // Hurts Player
+                //if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                //{
+                //    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+
+                //    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                //    {
+                //        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                //        Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
+                //        player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                //    }
+                //}
+            }
+        }
 
         if (brokenPrefab != null)
         {
@@ -205,4 +251,13 @@ public class BreakableObject : MonoBehaviour
     }
 
     private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody) { return Rigidbody.GetComponent<Renderer>(); }
+
+    private void OnDrawGizmos()
+    {
+        if (explosive) 
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, explosionRadius); 
+        }
+    }
 }
