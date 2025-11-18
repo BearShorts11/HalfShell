@@ -110,9 +110,14 @@ public class IEnemy : MonoBehaviour
 
     protected IEnumerator Cooldown(float time)
     {
+        agent.speed = 0;
+        agent.isStopped = true;
+        agent.SetDestination(transform.position);
+
+
         yield return new WaitForSeconds(time);
 
-
+        agent.speed = walkSpeed;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         if (distanceToPlayer <= attackRaidus)
         {
@@ -131,10 +136,9 @@ public class IEnemy : MonoBehaviour
     {
         //put in damage flash aka have a damange cooldown?
         health -= damageAmt;
-        StartCoroutine(DamageFlash());
 
-        //override depending on enemy type??
         SwitchStateOnDamage();
+        StartCoroutine(DamageFlash());
 
         if (health <= 0)
         {
