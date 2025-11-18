@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3589dc0c9281e09459dd9881be4e8977, type: 2}
     - target: {fileID: 919132149155446097, guid: 9360751eb65575f42a32550747d826db, type: 3}
       propertyPath: m_Name
-      value: AmmoCrateWorking
+      value: AmmoCrate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -115,11 +115,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9814acc7c2e66543868e43a2989f3fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoPickup: {fileID: 6646272130030352823}
-  ammoRegainAmount: 12
+  regainAmount: 0
+  infinite: 0
   rotate: 1
   rotateSpeed: 50
   ammoType: 0
+  pickupSound:
+    Guid:
+      Data1: -1557584089
+      Data2: 1324648709
+      Data3: 374113940
+      Data4: 172278774
+    Path: event:/Pickups/AmmoPickup
 --- !u!108 &5819839186671479577
 Light:
   m_ObjectHideFlags: 0

@@ -1,8 +1,11 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.UIElements;
+using FMOD.Studio;
 
 public class HealthPickup : IPickup
 {
+    [SerializeField] private EventReference pickupSound;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,7 +24,7 @@ public class HealthPickup : IPickup
         if (other.gameObject.CompareTag("Player"))
         {
             if (Player.Health >= Player.MaxHP) { return; }
-
+            RuntimeManager.PlayOneShot(pickupSound, transform.position);
             Player.Health += regainAmount;
             UI.UpdateHP(Player.Health, Player.MaxHP);
             UI.CheckHealth();

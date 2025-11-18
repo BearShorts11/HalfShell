@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 
 public class AmmoPickup : IPickup
 {
     [SerializeField] private ShellBase.ShellType ammoType;
+    [SerializeField] private EventReference pickupSound;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,12 +33,14 @@ public class AmmoPickup : IPickup
 
             if (canPickup)
             {
+                RuntimeManager.PlayOneShot(pickupSound, transform.position);
                 List<GameObject> buttons = new List<GameObject>();
                 buttons.AddRange(GameObject.FindGameObjectsWithTag("ShellButton"));
                 foreach (GameObject button in buttons)
                 {
                     ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
                     counter.UpdateAmmoCount();
+                   
                 }
 
                 // More to be added here when Ammo Maximums are added -A
