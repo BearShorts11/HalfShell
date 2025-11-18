@@ -24,6 +24,7 @@ public class BreakableObject : MonoBehaviour
     // TO-DO: make particle systems child of prefab object
     private Rigidbody Rigidbody;
     private bool isDamaged = false;
+    private bool isBroken = false;
 
     [Header("Destruction Settings")]
     public bool destructionOveride = false;
@@ -99,6 +100,9 @@ public class BreakableObject : MonoBehaviour
     // Ensures the destroyed object doesn't move after being destroyed + destroys the previous object
     public void Break()
     {
+        if (isBroken) return;
+
+        isBroken = true;
         Destroy(GetComponent<Collider>());
 
         if (Particles != null) { Particles.Play(); }
@@ -107,16 +111,18 @@ public class BreakableObject : MonoBehaviour
         if (damagedPrefab != null) { damagedPrefab.SetActive(false); }
 
 
-        // Draws raycasts in a sphere in all directions
-        // If it hits something with an HP value, it'll damage it (Enemies, Player). 
-        // If it hits another breakable object, it'll damage it and apply force.
+        // Uses Overlap sphere to draw rays to all damageable objects within range
+        // If it hits something with an HP value, it'll damage it (Enemies, Player, Breakables).
+        // If it hits something with a rigidbody, it'll apply force.
         if (explosive)
         {
             EXPLODED = true;
             // DO NOT TOUCH THIS VARIABLE
+            bool playerHurt = false;
+            // Ensures the player only gets hit once per object explosion
 
             Vector3 explodePos = gameObject.transform.position;
-            int hits = Physics.OverlapSphereNonAlloc(explodePos, explosionRadius, fragmentHits, damageLayer, QueryTriggerInteraction.Collide);
+            int hits = Physics.OverlapSphereNonAlloc(explodePos, explosionRadius, fragmentHits, damageLayer);
 
             for (int i = 0; i < hits; i++)
             {
@@ -146,18 +152,22 @@ public class BreakableObject : MonoBehaviour
                 //        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                 //    }
                 //}
-                // Hurts Player
-                //if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
-                //{
-                //    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                //Hurts Player
+                if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                {
+                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
-                //    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
-                //    {
-                //        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                //        Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
-                //        player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                //    }
-                //}
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                    {
+                        if (!playerHurt)
+                        {
+                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                            Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
+                            player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                            playerHurt = true;
+                        }
+                    }
+                }
             }
         }
 
