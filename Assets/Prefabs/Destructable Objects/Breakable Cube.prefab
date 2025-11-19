@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7188936643703074249}
   - component: {fileID: 6760477896561300915}
   - component: {fileID: 5923075753309014574}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Breakable Cube
   m_TagString: Breakable
   m_Icon: {fileID: 0}
@@ -66,8 +66,17 @@ MonoBehaviour:
   pieceDestroyDelay: 2
   pieceSleepCheckDelay: 0.1
   explosive: 0
-  testValue: 0
-  testValue2: 0
+  fragments: 25
+  explosionRadius: 10
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  blockFragmentsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDamage: 100
+  minDamage: 10
+  explosionForce: 100
 --- !u!54 &6760477896561300915
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4967,7 +4976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6009999486654713579, guid: 874c66c2b42381c469a32d51e096566f, type: 3}
       propertyPath: m_VersionIndex
-      value: 320
+      value: 344
       objectReference: {fileID: 0}
     - target: {fileID: 8389964990879521921, guid: 874c66c2b42381c469a32d51e096566f, type: 3}
       propertyPath: m_LocalPosition.x

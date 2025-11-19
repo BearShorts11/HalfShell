@@ -4845,7 +4845,7 @@ GameObject:
   - component: {fileID: 6869153947717005950}
   - component: {fileID: 124400480953714888}
   - component: {fileID: 8327400527717561766}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Breakable Door
   m_TagString: Breakable
   m_Icon: {fileID: 0}
@@ -4883,7 +4883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 50
   currentHealth: 0
   Particles: {fileID: 7326787198827754570}
   undamagedPrefab: {fileID: 2347696266635400248}
@@ -4898,8 +4898,17 @@ MonoBehaviour:
   pieceDestroyDelay: 2
   pieceSleepCheckDelay: 0.1
   explosive: 0
-  testValue: 0
-  testValue2: 0
+  fragments: 25
+  explosionRadius: 10
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  blockFragmentsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDamage: 100
+  minDamage: 10
+  explosionForce: 100
 --- !u!54 &124400480953714888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5140,7 +5149,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1429583342680425609, guid: 5ddd712c3386c7c41b6aa18958228cfd, type: 3}
       propertyPath: m_VersionIndex
-      value: 519
+      value: 543
       objectReference: {fileID: 0}
     - target: {fileID: 4263843989851924356, guid: 5ddd712c3386c7c41b6aa18958228cfd, type: 3}
       propertyPath: m_LocalPosition.x

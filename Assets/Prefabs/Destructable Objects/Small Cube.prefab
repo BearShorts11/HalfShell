@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4979288267763269869}
   - component: {fileID: 170720600802381993}
   - component: {fileID: 6078659570600007010}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Small Cube
   m_TagString: Breakable
   m_Icon: {fileID: 0}
@@ -65,8 +65,17 @@ MonoBehaviour:
   pieceDestroyDelay: 5
   pieceSleepCheckDelay: 0.1
   explosive: 0
-  testValue: 0
-  testValue2: 0
+  fragments: 25
+  explosionRadius: 10
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  blockFragmentsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDamage: 100
+  minDamage: 10
+  explosionForce: 100
 --- !u!65 &6078659570600007010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5074,7 +5083,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 303692242602088897, guid: a56afc1bfb799d5439cf6a4e2f557226, type: 3}
       propertyPath: m_VersionIndex
-      value: 1861
+      value: 1885
       objectReference: {fileID: 0}
     - target: {fileID: 2287866404057434681, guid: a56afc1bfb799d5439cf6a4e2f557226, type: 3}
       propertyPath: m_Name
