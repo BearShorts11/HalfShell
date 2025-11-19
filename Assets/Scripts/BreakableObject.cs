@@ -53,6 +53,7 @@ public class BreakableObject : MonoBehaviour
     [SerializeField] public float minDamage = 10;
     [SerializeField] private float explosionForce = 100;
 
+    [SerializeField] private ParticleSystem explosionParticles;
     private bool EXPLODED = false;
     // THE MOST IMPORTANT VARIBALE MAKE SURE THIS VARIABLE IS TRUE WHEN AN OBJECT BLOWS UP HOLY FUCK
     // MAKE SURE THIS VARIABLE IS TRUE PLEASE FOR THE LOVE OF GOD
@@ -117,6 +118,8 @@ public class BreakableObject : MonoBehaviour
         // If it hits something with a rigidbody, it'll apply force.
         if (explosive)
         {
+            if (explosionParticles != null) { explosionParticles.Play(); }
+
             EXPLODED = true;
             // DO NOT TOUCH THIS VARIABLE
             bool playerHurt = false;
@@ -138,12 +141,6 @@ public class BreakableObject : MonoBehaviour
                         Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.currentHealth -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
                         obj.DestructionPos = explodePos;
                         obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-
-                        //if (obj.TryGetComponent<Rigidbody>(out Rigidbody rb)) 
-                        //{
-                        //Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.blue, 5f);
-                        //rb.AddExplosionForce(explosionForce, explodePos, 100f);
-                        //}
                     }
                 }
                 // Hurts Enemies
@@ -158,7 +155,7 @@ public class BreakableObject : MonoBehaviour
                         enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
-                //Hurts Player
+                // Hurts Player
                 if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
                 {
                     float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
@@ -171,6 +168,7 @@ public class BreakableObject : MonoBehaviour
                         playerHurt = true;
                     }
                 }
+                // Rigidbody Forces
                 if (fragmentHits[i].TryGetComponent<Rigidbody>(out Rigidbody rb))
                 {
                     float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
