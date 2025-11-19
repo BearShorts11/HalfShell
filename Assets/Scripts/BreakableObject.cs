@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using static UnityEditor.PlayerSettings;
 using UnityEditor;
+using Unity.VisualScripting;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
@@ -50,7 +51,7 @@ public class BreakableObject : MonoBehaviour
 
     [SerializeField] public float maxDamage = 100;
     [SerializeField] public float minDamage = 10;
-    private float explosiveForce;
+    [SerializeField] private float explosionForce = 100;
 
     private bool EXPLODED = false;
     // THE MOST IMPORTANT VARIBALE MAKE SURE THIS VARIABLE IS TRUE WHEN AN OBJECT BLOWS UP HOLY FUCK
@@ -131,41 +132,53 @@ public class BreakableObject : MonoBehaviour
                 {
                     float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
-                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !obj.EXPLODED)
                     {
-                        if (!obj.EXPLODED)
-                        {
-                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                            Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.currentHealth -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
-                            obj.DestructionPos = explodePos;
-                            obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                        }
+                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                        Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.currentHealth -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
+                        obj.DestructionPos = explodePos;
+                        obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+
+                        //if (obj.TryGetComponent<Rigidbody>(out Rigidbody rb)) 
+                        //{
+                        //Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.blue, 5f);
+                        //rb.AddExplosionForce(explosionForce, explodePos, 100f);
+                        //}
                     }
                 }
                 // Hurts Enemies
-                //if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
-                //{
-                //    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
-
-                //    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
-                //    {
-                //        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                //    }
-                //}
-                //Hurts Player
-                if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
                 {
                     float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
-                        if (!playerHurt)
-                        {
-                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                            Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
-                            player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                            playerHurt = true;
-                        }
+                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                        Debug.Log($"{enemy.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {enemy.health}");
+                        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                    }
+                }
+                //Hurts Player
+                if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                {
+                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
+                    {
+                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                        Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
+                        player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        playerHurt = true;
+                    }
+                }
+                if (fragmentHits[i].TryGetComponent<Rigidbody>(out Rigidbody rb))
+                {
+                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
+                    {
+                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.blue, 5f);
+                        rb.AddExplosionForce(explosionForce, explodePos, 100f);
                     }
                 }
             }
