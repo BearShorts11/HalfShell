@@ -49,7 +49,7 @@ public class PlayerUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             player.Health += 10;
-            UpdateHP(player.Health, player.MaxHP);
+            UpdateHP(player.Health, player.maxHealth);
             CheckHealth();
         }
     }
@@ -125,7 +125,7 @@ public class PlayerUI : MonoBehaviour
     public void Hurt()
     {
         UIRattle(1);
-        UpdateHP(player.Health, player.MaxHP);
+        UpdateHP(player.Health, player.maxHealth);
         CheckHealth();
         hurtOverlayAnim.Play(Animator.StringToHash("Base Layer.Hurt Overlay Enter"));
     }

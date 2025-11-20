@@ -26,6 +26,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
 
+    private float sensitivityModifier = 1f;
+    public const string SENSITIVITY_KEY = "SENSITIVITY";
+    //if camera FOV is set to horizontal, FOV should be 90. if set to vertical, FOV should be 60. Adjust slider values accordingly in UI
+    private float FOVvalue = 90;
+    public const string FOV_KEY = "FOV";
+
     [SerializeField] private float health = 100f;
     public float maxHealth { get { return 100f; } }
     public float Health
@@ -40,10 +46,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             //this no worky but I want it to -N
             if (health <= 0) { OnDeath(); }
         }
-    }
-    public float MaxHP
-    {
-        get { return maxHealth; }
     }
 
     [SerializeField] private float armor = 0f;
@@ -195,10 +197,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         // Ensures the player doesn't break their neck by looking 360 degrees along the Y axis
         if (canMove && canLook)
         {
-            rotationX += -UnityEngine.Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX += -UnityEngine.Input.GetAxis("Mouse Y") * lookSpeed * sensitivityModifier;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, UnityEngine.Input.GetAxis("Mouse X") * lookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, UnityEngine.Input.GetAxis("Mouse X") * lookSpeed * sensitivityModifier, 0);
         }
 
         if (SlowMoActive)
@@ -224,8 +226,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             //Don't multiply mouse input by Time.deltaTime
             float deltaTimeMultiplier = 1.0f;
-            cinemachineTargetPitch += cameraInput.look.y * lookSpeed * deltaTimeMultiplier;
-            rotationVelocity = cameraInput.look.x * lookSpeed * deltaTimeMultiplier;
+            cinemachineTargetPitch += cameraInput.look.y * lookSpeed * sensitivityModifier * deltaTimeMultiplier;
+            rotationVelocity = cameraInput.look.x * lookSpeed * sensitivityModifier * deltaTimeMultiplier;
 
             // clamp our pitch rotation
             cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, BottomClamp, TopClamp);
@@ -238,6 +240,14 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
+    public void UpdateSensitivity()
+    {
+        if (PlayerPrefs.HasKey(SENSITIVITY_KEY)) sensitivityModifier = PlayerPrefs.GetFloat(SENSITIVITY_KEY);
+    }
+    public void UpdateFOV()
+    {
+        if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = FOVvalue;
+    }
 
     public void NoMove() => canMove = false;
     public void YesMove() => canMove = true;

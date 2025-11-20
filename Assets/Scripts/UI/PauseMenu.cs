@@ -2,6 +2,7 @@
 //using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,7 +10,11 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject deathMenu;
     public GameObject sceneSelectMenu;
+    public GameObject settingsMenu;
     private PlayerBehavior player;
+
+    public Slider Sensitivity; 
+    public Slider FOV; 
 
     public enum Scene
     {
@@ -87,5 +92,24 @@ public class PauseMenu : MonoBehaviour
     public void LoadSelectedScene(int selecteedScene)
     {
         SceneManager.LoadScene(selecteedScene);
+    }
+
+    public void OpenSettings()
+    { 
+        settingsMenu.SetActive(true);
+    }
+
+    public void ApplySettings()
+    {
+        //get value from slider element
+        //set to PlayerPrefs;
+        float sensitivityModifier = Sensitivity.value;
+        PlayerPrefs.SetFloat(PlayerBehavior.SENSITIVITY_KEY, sensitivityModifier);
+
+        float FOVvalue = FOV.value;
+        PlayerPrefs.SetFloat(PlayerBehavior.FOV_KEY, FOVvalue);
+
+        PlayerPrefs.Save();
+        player.UpdateSensitivity();
     }
 }

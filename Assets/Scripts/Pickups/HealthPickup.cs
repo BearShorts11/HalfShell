@@ -23,10 +23,10 @@ public class HealthPickup : IPickup
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (Player.Health >= Player.MaxHP) { return; }
+            if (Player.Health >= Player.maxHealth) { return; }
             RuntimeManager.PlayOneShot(pickupSound, transform.position);
             Player.Health += regainAmount;
-            UI.UpdateHP(Player.Health, Player.MaxHP);
+            UI.UpdateHP(Player.Health, Player.maxHealth);
             UI.CheckHealth();
 
             Destroy(gameObject);
