@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Assets.Scripts;
 
-public class IEnemy : MonoBehaviour
+public class IEnemy : MonoBehaviour, IDamageable
 {
     public float walkSpeed = 12f;
     public float gravity = 20f;
-    public float health = 100f;
-    public int maxHealth = 100;
+    public float Health { get; set; }
+    public float maxHealth { get { return 100f; } }
     public float damage = 10f;
     public float detectionRadius = 10;
     public float attackRaidus = 3f;
@@ -59,7 +60,7 @@ public class IEnemy : MonoBehaviour
 
         animator = player.GetComponentInChildren<Animator>();
 
-        health = maxHealth;
+        Health = maxHealth;
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
@@ -136,12 +137,12 @@ public class IEnemy : MonoBehaviour
     public void Damage(float damageAmt)
     {
         //put in damage flash aka have a damange cooldown?
-        health -= damageAmt;
+        Health -= damageAmt;
 
         SwitchStateOnDamage();
         StartCoroutine(DamageFlash());
 
-        if (health <= 0)
+        if (Health <= 0)
         {
             //Debug.Log("dead");
             Destroy(this.gameObject);

@@ -8,13 +8,14 @@ using FMODUnity;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine.Windows;
 using Unity.Cinemachine;
+using Assets.Scripts;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
 // Edits/additions made to variables and values
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerBehavior : MonoBehaviour
+public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     public Camera playerCamera;
     public float walkSpeed = 10f;
@@ -26,7 +27,7 @@ public class PlayerBehavior : MonoBehaviour
     public float defaultHeight = 2f;
 
     [SerializeField] private float health = 100f;
-    private float maxHP = 100f;
+    public float maxHealth { get { return 100f; } }
     public float Health
     {
         get { return health; }
@@ -34,7 +35,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             health = value;
 
-            if (health > maxHP) health = maxHP;
+            if (health > maxHealth) health = maxHealth;
 
             //this no worky but I want it to -N
             if (health <= 0) { OnDeath(); }
@@ -42,7 +43,7 @@ public class PlayerBehavior : MonoBehaviour
     }
     public float MaxHP
     {
-        get { return maxHP; }
+        get { return maxHealth; }
     }
 
     [SerializeField] private float armor = 0f;
@@ -116,8 +117,8 @@ public class PlayerBehavior : MonoBehaviour
         UI = FindFirstObjectByType<PlayerUI>();
         LockCursor();
         ResumeTime();
-        UI.UpdateHP(health, maxHP);
-        UI.UpdateMaxHP(maxHP, maxHP);
+        UI.UpdateHP(health, maxHealth);
+        UI.UpdateMaxHP(maxHealth, maxHealth);
         UI.UpdateArmor(armor, maxArmor);
         UI.UpdateMaxArmor(armor, maxArmor);
     }
@@ -279,7 +280,7 @@ public class PlayerBehavior : MonoBehaviour
                 damage = newDamage;
             }
             health -= damage;
-            UI.UpdateHP(health, maxHP);
+            UI.UpdateHP(health, maxHealth);
             PlaySound(dmgEfforts);
         }
 

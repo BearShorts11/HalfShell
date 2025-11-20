@@ -6,14 +6,15 @@ using System;
 using static UnityEditor.PlayerSettings;
 using UnityEditor;
 using Unity.VisualScripting;
+using Assets.Scripts;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
-public class BreakableObject : MonoBehaviour
+public class BreakableObject : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
-    [SerializeField] public float maxHealth = 100;
-    [SerializeField] public float currentHealth;
+    [SerializeField] public float maxHealth { get { return 100f; } }
+    [SerializeField] public float Health { get; set; }
     // TO-DO: add resistance variable when dmg types are added
 
     [Header("Damage State Objects")]
@@ -64,7 +65,7 @@ public class BreakableObject : MonoBehaviour
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        currentHealth = maxHealth;
+        Health = maxHealth;
         destructionPos = this.gameObject.transform.position;
 
         if (undamagedPrefab != null)    { undamagedPrefab.SetActive(true); }
@@ -78,10 +79,10 @@ public class BreakableObject : MonoBehaviour
 
     public void Damage(float damageAmt)
     {
-        currentHealth -= damageAmt;
+        Health -= damageAmt;
 
-        if (currentHealth <= (maxHealth / 2) && currentHealth > 0 && isDamaged == false && damagedPrefab != null) { Chip(); }
-        else if (currentHealth <= 0) { Break(); }
+        if (Health <= (maxHealth / 2) && Health > 0 && isDamaged == false && damagedPrefab != null) { Chip(); }
+        else if (Health <= 0) { Break(); }
     }
 
 
@@ -138,7 +139,7 @@ public class BreakableObject : MonoBehaviour
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !obj.EXPLODED)
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.currentHealth -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
+                        Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.Health -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
                         obj.DestructionPos = explodePos;
                         obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
@@ -151,7 +152,7 @@ public class BreakableObject : MonoBehaviour
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        Debug.Log($"{enemy.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {enemy.health}");
+                        Debug.Log($"{enemy.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {enemy.Health}");
                         enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
