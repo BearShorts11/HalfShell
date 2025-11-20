@@ -495,8 +495,8 @@ public class PlayerShooting : MonoBehaviour
             return; 
         }
 
-        GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), Quaternion.FromToRotation(Vector3.up, hit.normal));
-        Destroy(decal, 3f);
+        GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), transform.rotation, hit.transform);
+        //decal.transform.rotation = Quaternion.LookRotation(hit.normal);
     }
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
