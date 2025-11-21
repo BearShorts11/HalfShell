@@ -11,6 +11,9 @@ public class MeleeEnemy : IEnemy
     [SerializeField] float foundTargetRadius = 2f;
     public bool isPatrol;
 
+    private MeleeEnemy enemyLogic;
+    private RagdollController ragdollController;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,7 +30,9 @@ public class MeleeEnemy : IEnemy
         }
         //else state = State.idle;
 
+        enemyLogic = GetComponent<MeleeEnemy>();
         animator = GetComponentInChildren<Animator>();
+        ragdollController = GetComponentInChildren<RagdollController>();
     }
 
     // Update is called once per frame
@@ -113,6 +118,16 @@ public class MeleeEnemy : IEnemy
         else
         {
             animator.SetBool("Attacking", false);
+        }
+
+        //Controls Death
+        if (state == State.dead)
+        {
+            enemyLogic.enabled = false;
+            animator.enabled = false;
+            ragdollController.SetColliderState(true);
+            ragdollController.SetRigidbodyState(false);
+            ragdollController.ApplyForceToRagdoll();
         }
     }
 }

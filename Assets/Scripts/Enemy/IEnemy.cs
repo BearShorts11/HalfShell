@@ -31,7 +31,8 @@ public class IEnemy : MonoBehaviour, IDamageable
         findCover,
         meleeAttack,
         shoot,
-        cooldown
+        cooldown,
+        dead
     }
 
     //temporary materials to show that an enemy was damaged
@@ -145,7 +146,8 @@ public class IEnemy : MonoBehaviour, IDamageable
         if (Health <= 0)
         {
             //Debug.Log("dead");
-            Destroy(this.gameObject);
+            state = State.dead; 
+            Destroy(this.gameObject, 10f);
         }
     }
 
