@@ -147,7 +147,6 @@ public class IEnemy : MonoBehaviour, IDamageable
         {
             //Debug.Log("dead");
             state = State.dead; 
-            Destroy(this.gameObject, 10f);
         }
     }
 
@@ -159,6 +158,11 @@ public class IEnemy : MonoBehaviour, IDamageable
         { 
             state = State.cooldown;
             StartCoroutine(Cooldown(damageCooldownTime));
+        }
+        else if (state == State.dead)
+        {
+            StopAllCoroutines();
+            Destroy(this.gameObject, 10f);
         }
     }
 
