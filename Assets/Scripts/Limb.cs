@@ -1,15 +1,24 @@
+using Assets.Scripts;
 using UnityEngine;
 
-public class Limb : MonoBehaviour
+public class Limb : MonoBehaviour, IDamageable
 {
-    public float maxHealth = 50f;
-    public float health {  get; private set; }
+    [Tooltip("The max amount health set")]
+    public float defaultHealth = 50f;
+    public float maxHealth { get; set; }
+    [field: SerializeField] public float Health {  get; set; }
 
     [Tooltip("Should the limb have it's own health or pass down the damage to the enemy instead. NOTE: damMult is still in effect")]
     public bool isRemovable = true;
 
-    [Tooltip("Is this a separate object or a part of the armature? Shrinks the bone after this limb has been removed")] // Attach a bloody stump afterwards? idk
-    [SerializeField] private bool isBone = false;
+    [Tooltip("Is this Game Object a separate object or a part of the armature? Shrinks the parent after this limb has been removed")] // Attach a bloody stump afterwards? idk
+    [SerializeField] private bool isAttatchedToBone = false;
+
+    [Tooltip("(Requires isAttatchedToBone = true) Is this the bone collider itself?")]
+    [SerializeField] private bool isBoneItself = false;
+
+    [Tooltip("Is this soley a hitbox or is this a game object that relies on physics?")]
+    [SerializeField] private bool hasCollision = false;
 
     // Not used yet, could be a particle system game object or something that acts like it
     [SerializeField] private GameObject Gibs = null;
@@ -20,39 +29,57 @@ public class Limb : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float damPctHealthOnRemove = 0f; // Take extra damage based on enemy max health upon removing this limb
 
     private IEnemy enemy;
+    private Collider coll;
 
     void Awake()
     {
         enemy = GetComponentInParent<IEnemy>();
         if (enemy == null)
             Debug.LogError("Error! Enemy script not detected! Is this Game Object a child of the Enemy Game Object?");
+        coll = this.gameObject.GetComponent<Collider>();
+        if (coll == null)
+            Debug.LogError("Error! No collider attatched to this script's Game Object!");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        health = maxHealth;
+        maxHealth = defaultHealth;
+        Health = maxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // (hasCollision) If this is just a hitbox and not a collider for the ragdoll system, disable collision
+        // (coll.isTrigger) If it's also trigger, keep the collision enabled.
+        // If this confuses you, the code after the if statement means { if (!hasCollision) { if (coll.isTrigger){ } else { } } else { } }
+        if (enemy.Health <= 0 && coll.enabled) hasCollision = false ? coll.isTrigger = true ? coll.enabled = true : coll.enabled = false : coll.enabled = true;
     }
 
-    public void TakeDamage(float Damage) // Should be called by the shotgun or any other source that would damage this
+    public void Damage(float Damage) // Should be called by the shotgun or any other source that would damage this
     {
+        if (Health <= 0f) return; // Do not run the code if the limb is already at 0 health! Fixes the strange issue of this funciton being called multiple times from being hit by a half shell (Multi-hit, so it makes sense that it would do that I guess?) 
         Damage *= damMult;
 
-        if (isRemovable) health -= Damage;  // This limb can only lose health if it is removable (i.e decapitation, amputation, is a body armor, etc.)
+        if (isRemovable) Health -= Damage;  // This limb can only lose health if it is removable (i.e decapitation, amputation, is a body armor, etc.)
                                             //  This also means that the health check in the last line will never return true
 
         if (enemy  != null) enemy.Damage(Damage); // Pass the damage down to the enemy
 
-        if (health <= 0f && isRemovable) {
+        if (Health <= 0f && isRemovable) {
             // Check again just incase
             if (enemy != null && damPctHealthOnRemove > 0) enemy.Damage(enemy.maxHealth * damPctHealthOnRemove);
-            if (isBone) transform.parent.localScale = Vector3.zero;
+            if (isAttatchedToBone) {
+                if (isBoneItself)
+                    transform.localScale = Vector3.zero;
+                else
+                { 
+                    transform.parent.localScale = Vector3.zero;
+                    //transform.parent.GetComponent<Collider>().enabled = false;
+                }
+            }
+            if (Gibs != null) Instantiate(Gibs, this.gameObject.transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

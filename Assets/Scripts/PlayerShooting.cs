@@ -1,11 +1,12 @@
+using Assets.Scripts;
+using FMODUnity;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using FMODUnity;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -504,17 +505,20 @@ public class PlayerShooting : MonoBehaviour
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
         //Debug.Log(hit.transform.name);
+        
+        if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
+            damageable.Damage(shell.ScaleDamage(hit));
 
-        Limb eLimb = hit.transform.GetComponent<Limb>();
-        if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
+        //Limb eLimb = hit.transform.GetComponent<Limb>();
+        //if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
 
-        IEnemy enemy = hit.transform.GetComponent<IEnemy>();
+        //IEnemy enemy = hit.transform.GetComponent<IEnemy>();
 
-        if (enemy != null)
-        {
-            enemy.Damage(shell.ScaleDamage(hit));
-            //Debug.Log("enemy hit");
-        }
+        //if (enemy != null)
+        //{
+        //    enemy.Damage(shell.ScaleDamage(hit));
+        //    //Debug.Log("enemy hit");
+        //}
     }
 
     private void HitBreakable(RaycastHit hit, ShellBase shell)

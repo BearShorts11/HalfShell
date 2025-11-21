@@ -7,8 +7,11 @@ public class IEnemy : MonoBehaviour, IDamageable
 {
     public float walkSpeed = 12f;
     public float gravity = 20f;
-    public float Health { get; set; }
-    public float maxHealth { get { return 100f; } }
+
+    [Tooltip("The max amount health set")]
+    public float defaultHealth = 50f; // Since you can't set default values in properties
+    public float maxHealth { get; set; }
+    [field: SerializeField] public float Health { get; set; }
     public float damage = 10f;
     public float detectionRadius = 10;
     public float attackRaidus = 3f;
@@ -60,6 +63,8 @@ public class IEnemy : MonoBehaviour, IDamageable
         player = playerObject.GetComponent<PlayerBehavior>();
 
         animator = player.GetComponentInChildren<Animator>();
+
+        maxHealth = defaultHealth;
 
         Health = maxHealth;
 

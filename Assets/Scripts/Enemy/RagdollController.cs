@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using UnityEngine;
 
 public class RagdollController : MonoBehaviour
@@ -47,6 +48,11 @@ public class RagdollController : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
+            if (collider.gameObject.GetComponent<IDamageable>() != null) // Is this a damageable limb, prevent the collider from being disabled if so (or else the limb system doesn't work)
+            {
+                collider.isTrigger = !state;
+                if (!state) continue; // The limb system will handle the collision.
+            }
             collider.enabled = state;
         }
     }

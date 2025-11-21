@@ -12873,7 +12873,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -12946,9 +12946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  defaultHealth: 50
+  <Health>k__BackingField: 0
   isRemovable: 1
-  isBone: 0
+  isAttatchedToBone: 0
+  isBoneItself: 0
+  hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
   damPctHealthOnRemove: 0
@@ -31973,6 +31976,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   gravity: 20
+  defaultHealth: 1000
+  <Health>k__BackingField: 0
   damage: 0
   detectionRadius: 0
   attackRaidus: 0
@@ -37891,7 +37896,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -37962,9 +37967,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  defaultHealth: 50
+  <Health>k__BackingField: 0
   isRemovable: 0
-  isBone: 0
+  isAttatchedToBone: 0
+  isBoneItself: 0
+  hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
   damPctHealthOnRemove: 0
@@ -55740,7 +55748,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -55811,9 +55819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 500
+  defaultHealth: 200
+  <Health>k__BackingField: 0
   isRemovable: 1
-  isBone: 0
+  isAttatchedToBone: 0
+  isBoneItself: 0
+  hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 2
   damPctHealthOnRemove: 0.15
@@ -62740,7 +62751,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -62813,9 +62824,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  defaultHealth: 50
+  <Health>k__BackingField: 0
   isRemovable: 1
-  isBone: 0
+  isAttatchedToBone: 0
+  isBoneItself: 0
+  hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
   damPctHealthOnRemove: 0

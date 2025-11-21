@@ -62,6 +62,9 @@ public class RangedEnemy : IEnemy
             case State.chasing:
                 state = State.shoot;
                 break;
+            case State.dead:
+                Destroy(gameObject);
+                break;
         }
 
         //look towards/track player
