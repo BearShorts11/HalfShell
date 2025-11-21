@@ -13,8 +13,8 @@ using Assets.Scripts;
 public class BreakableObject : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
-    [SerializeField] public float maxHealth { get { return 100f; } }
-    [SerializeField] public float Health { get; set; }
+    [field:SerializeField] public float maxHealth { get; private set; }
+    [field: SerializeField] public float Health { get; set; }
     // TO-DO: add resistance variable when dmg types are added
 
     [Header("Damage State Objects")]
