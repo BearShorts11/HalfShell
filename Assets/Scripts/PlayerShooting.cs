@@ -15,6 +15,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject fpsCam;
     public CinemachineImpulseSource impulse;
     public GameObject ApollyonBarks;
+    public Vector3 hitPosition;
 
     public GameObject BulletHole;
     [SerializeField] private ParticleSystem blood;
@@ -465,6 +466,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (hit.collider.gameObject.tag == "Enemy")
         {
+            hitPosition = hit.point;
             Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
             HitEnemy(hit, shell);
         }

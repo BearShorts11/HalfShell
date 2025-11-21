@@ -5,14 +5,18 @@ public class RagdollController : MonoBehaviour
     public Collider enemyCollider;
 
     [Header("Impact Variables")]
-    public GameObject explosionPosition;
+    //public GameObject explosionPosition;
     public float explosionForce;
     public float explosionRadius;
+    public float explosionLift;
+
+    private PlayerShooting playerShooting;
     
     //public Rigidbody enemyRigidbody;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerShooting = FindFirstObjectByType<PlayerShooting>();
         SetRigidbodyState(true);
         SetColliderState(false);
     }
@@ -53,7 +57,7 @@ public class RagdollController : MonoBehaviour
 
         foreach (Rigidbody rigidbody in rigidbodies)
         {
-            rigidbody.AddExplosionForce(explosionForce, explosionPosition.transform.position, explosionRadius, 0.0f, ForceMode.Impulse);
+            rigidbody.AddExplosionForce(explosionForce, playerShooting.hitPosition, explosionRadius, explosionLift, ForceMode.Impulse);
         }
     }
 }
