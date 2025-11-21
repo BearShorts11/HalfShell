@@ -27,9 +27,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float defaultHeight = 2f;
 
     private float sensitivityModifier = 1f;
+    public const float DEFAULT_SENSITIVITY_MOD = 1f;
     public const string SENSITIVITY_KEY = "SENSITIVITY";
-    //if camera FOV is set to horizontal, FOV should be 90. if set to vertical, FOV should be 60. Adjust slider values accordingly in UI
-    private float FOVvalue = 90;
+    private float FOVvalue = 60f;
+    public const float DEFAULT_FOV_VALUE = 60f;
     public const string FOV_KEY = "FOV";
 
     [SerializeField] private float health = 100f;
@@ -89,6 +90,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float TopClamp = 90.0f;
     public float BottomClamp = -90.0f;
     public float rotationVelocity;
+
 
     private bool isCurrentDeviceMouse
     {
@@ -246,7 +248,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
     public void UpdateFOV()
     {
-        if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = FOVvalue;
+        //for some reason does not do exact value, but still works fine
+        if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
     }
 
     public void NoMove() => canMove = false;

@@ -1,5 +1,6 @@
 //using UnityEditor;
 //using UnityEditor.SearchService;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,8 +14,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject settingsMenu;
     private PlayerBehavior player;
 
-    public Slider Sensitivity; 
-    public Slider FOV; 
+    public Slider SensitivitySlider; 
+    public Slider FOVSlider;
+    public TextMeshProUGUI FOV_val_txt;
 
     public enum Scene
     {
@@ -87,6 +89,10 @@ public class PauseMenu : MonoBehaviour
     public void BackButton(GameObject screen)
     {
         screen.SetActive(false);
+        if (screen.name == "Settings Menu")
+        {
+            pauseMenu.SetActive(true);
+        }
     }
 
     public void LoadSelectedScene(int selecteedScene)
@@ -97,19 +103,39 @@ public class PauseMenu : MonoBehaviour
     public void OpenSettings()
     { 
         settingsMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+    }
+
+    public void ResetSettings()
+    {
+        Debug.Log("reset settings");
+        PlayerPrefs.SetFloat(PlayerBehavior.SENSITIVITY_KEY, PlayerBehavior.DEFAULT_SENSITIVITY_MOD);
+        PlayerPrefs.SetFloat(PlayerBehavior.FOV_KEY, PlayerBehavior.DEFAULT_FOV_VALUE);
+
+        SensitivitySlider.value = PlayerBehavior.DEFAULT_SENSITIVITY_MOD;
+        FOVSlider.value = PlayerBehavior.DEFAULT_FOV_VALUE;
+
+        SaveUpdateSettings();
     }
 
     public void ApplySettings()
     {
         //get value from slider element
         //set to PlayerPrefs;
-        float sensitivityModifier = Sensitivity.value;
+        float sensitivityModifier = SensitivitySlider.value;
         PlayerPrefs.SetFloat(PlayerBehavior.SENSITIVITY_KEY, sensitivityModifier);
 
-        float FOVvalue = FOV.value;
+        float FOVvalue = FOVSlider.value;
         PlayerPrefs.SetFloat(PlayerBehavior.FOV_KEY, FOVvalue);
 
+        SaveUpdateSettings();
+    }
+
+    private void SaveUpdateSettings()
+    {
         PlayerPrefs.Save();
         player.UpdateSensitivity();
+        player.UpdateFOV();
+        FOV_val_txt.text = $"{FOVSlider.value}";
     }
 }
