@@ -13,8 +13,8 @@ using Assets.Scripts;
 public class BreakableObject : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
-    [SerializeField] public float maxHealth { get { return 100f; } }
-    [SerializeField] public float Health { get; set; }
+    [field:SerializeField] public float maxHealth { get; private set; }
+    [field: SerializeField] public float Health { get; set; }
     // TO-DO: add resistance variable when dmg types are added
 
     [Header("Damage State Objects")]
@@ -127,7 +127,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
             // Ensures the player only gets hit once per object explosion
 
             Vector3 explodePos = gameObject.transform.position;
-            int hits = Physics.OverlapSphereNonAlloc(explodePos, explosionRadius, fragmentHits, damageLayer);
+            int hits = Physics.OverlapSphereNonAlloc(explodePos, explosionRadius, fragmentHits, damageLayer, QueryTriggerInteraction.Collide);
 
             for (int i = 0; i < hits; i++)
             {
@@ -139,7 +139,6 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !obj.EXPLODED)
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        Debug.Log($"{obj.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {obj.Health -= (Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius))}");
                         obj.DestructionPos = explodePos;
                         obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
@@ -152,7 +151,6 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        Debug.Log($"{enemy.name} HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {enemy.Health}");
                         enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
@@ -164,7 +162,6 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        Debug.Log($"Player HP hit for {Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius)} --- New HP: {player.Health}");
                         player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                         playerHurt = true;
                     }
@@ -174,10 +171,10 @@ public class BreakableObject : MonoBehaviour, IDamageable
                 {
                     float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
-                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.blue, 5f);
-                        rb.AddExplosionForce(explosionForce, explodePos, 100f);
+                        rb.AddExplosionForce(explosionForce, explodePos, explosionRadius);
                     }
                 }
             }

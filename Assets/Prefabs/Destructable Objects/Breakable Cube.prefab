@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
+  <maxHealth>k__BackingField: 100
+  <Health>k__BackingField: 0
   Particles: {fileID: 5028326839893468463}
   undamagedPrefab: {fileID: 870389802793807183}
   brokenPrefab: {fileID: 8228311303523186247}
@@ -77,6 +77,7 @@ MonoBehaviour:
   maxDamage: 100
   minDamage: 10
   explosionForce: 100
+  explosionParticles: {fileID: 0}
 --- !u!54 &6760477896561300915
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4976,7 +4977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6009999486654713579, guid: 874c66c2b42381c469a32d51e096566f, type: 3}
       propertyPath: m_VersionIndex
-      value: 344
+      value: 353
       objectReference: {fileID: 0}
     - target: {fileID: 8389964990879521921, guid: 874c66c2b42381c469a32d51e096566f, type: 3}
       propertyPath: m_LocalPosition.x

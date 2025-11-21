@@ -7228,8 +7228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e30dc989ce9fcb44bf6d821a6e83b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 0
+  <maxHealth>k__BackingField: 10
+  <Health>k__BackingField: 0
   Particles: {fileID: 4950512654408073001}
   undamagedPrefab: {fileID: 2496048657907936559}
   brokenPrefab: {fileID: 3807324455864659808}
@@ -7243,7 +7243,7 @@ MonoBehaviour:
   pieceDestroyDelay: 5
   pieceSleepCheckDelay: 0.1
   explosive: 1
-  fragments: 5
+  fragments: 25
   explosionRadius: 10
   damageLayer:
     serializedVersion: 2
@@ -7253,7 +7253,7 @@ MonoBehaviour:
     m_Bits: 1
   maxDamage: 200
   minDamage: 10
-  explosionForce: 100
+  explosionForce: 1000
   explosionParticles: {fileID: 0}
 --- !u!65 &4139915300140076577
 BoxCollider:
