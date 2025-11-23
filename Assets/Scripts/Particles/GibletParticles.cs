@@ -25,13 +25,14 @@ public class GibletParticles : MonoBehaviour
                 rotation.x = Random.Range(-360f, 360f);
                 rotation.y = Random.Range(-360f, 360f);
                 rotation.z = Random.Range(-360f, 360f);
-                force.x = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y,minMaxForce.y));
-                force.y = Random.Range(minMaxForce.x, minMaxForce.y) * 1.2f;
-                force.z = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y, minMaxForce.y));
                 go = Instantiate(gibModels[Random.Range(0,gibModels.Length)],this.gameObject.transform.position, Quaternion.Euler(rotation));
                 gibRB = go.GetComponent<Rigidbody>();
                 if (gibRB == null) { Debug.LogError($"Rigid Body not found for {go}!"); continue; }
-                gibRB.AddForce(force);
+                force.x = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y,minMaxForce.y));
+                force.y = Random.Range(minMaxForce.x, minMaxForce.y) * 2f;
+                //force.y *= gibRB.mass <= 1 ? 1.2f : gibRB.mass;
+                force.z = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y, minMaxForce.y));
+                gibRB.AddForce(force, ForceMode.VelocityChange);
                 gibRB.AddTorque(rotation*Random.Range(1,4));
                 Destroy(go, lifetime);
             }
