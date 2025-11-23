@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using static UnityEditor.PlayerSettings;
 using UnityEditor;
 using Unity.VisualScripting;
 using Assets.Scripts;
