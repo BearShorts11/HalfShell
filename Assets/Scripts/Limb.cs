@@ -79,7 +79,10 @@ public class Limb : MonoBehaviour, IDamageable
                     //transform.parent.GetComponent<Collider>().enabled = false;
                 }
             }
-            if (Gibs != null) Instantiate(Gibs, this.gameObject.transform.position, Quaternion.identity);
+            if (Gibs != null) { 
+                //Instantiate(Gibs, this.gameObject.transform.position, Quaternion.identity); 
+                if (!Gibs.activeInHierarchy) Gibs.SetActive(true);
+            }
             Destroy(gameObject);
         }
     }

@@ -2,30 +2,52 @@ using UnityEngine;
 
 public class GibletParticles : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 5.0f;
-    public GameObject[] gibModels;
-    [Tooltip("Amount of Gibs to spawn")]
-    public Vector2Int minMaxAmount = new Vector2Int(3, 12);
+    [SerializeField] private float lifetime = 7.0f;
+    [SerializeField] private float giblifetime = 5.0f;
+    public Mesh[] randomGibModels;
+    public GameObject[] gibObjects;
+    public Material[] gibMaterials;
+    [Tooltip("Mind amount of Gibs to spawn")]
+    public int minAmount = 3;
     [Tooltip("Force to apply when spawned")]
     public Vector2 minMaxForce = new Vector2(4, 8);
     private int gibsAmount;
     private Vector3 rotation;
     private Vector3 force;
+    private MeshFilter meshFilter;
+    private Renderer rend;
     private Rigidbody gibRB;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GameObject go;
-        gibsAmount = Random.Range(minMaxAmount.x, minMaxAmount.y);
-        if (gibsAmount > 0 && gibModels.Length > 0)
+        this.gameObject.transform.parent = null;
+        if (gibObjects.Length > 0)
         {
+            gibsAmount = Random.Range(minAmount, gibObjects.Length);
             for (int i = 0; i < gibsAmount; i++)
             {
+                gibObjects[i].SetActive(true);
                 rotation.x = Random.Range(-360f, 360f);
                 rotation.y = Random.Range(-360f, 360f);
                 rotation.z = Random.Range(-360f, 360f);
-                go = Instantiate(gibModels[Random.Range(0,gibModels.Length)],this.gameObject.transform.position, Quaternion.Euler(rotation));
+                //go = Instantiate(gibObjects[Random.Range(0,gibObjects.Length)],this.gameObject.transform.position, Quaternion.Euler(rotation));
+                go = gibObjects[i];
+                go.transform.parent = null;
+                if (gibMaterials.Length > 0)
+                {
+                    rend = go.GetComponent<Renderer>();
+                    rend.material = gibMaterials[Random.Range(0,gibMaterials.Length)];
+                    rend.material.mainTextureOffset = new Vector2(Random.Range(0f,1f),Random.Range(0f,1f));
+                }
+                if (randomGibModels.Length > 0)
+                {
+                    meshFilter = go.GetComponent<MeshFilter>();
+                    meshFilter.mesh = randomGibModels[Random.Range(0,randomGibModels.Length)];
+                }
+                go.transform.position = this.gameObject.transform.position;
+                go.transform.localScale = Vector3.one * Random.Range(0.75f, 1.25f);
                 gibRB = go.GetComponent<Rigidbody>();
                 if (gibRB == null) { Debug.LogError($"Rigid Body not found for {go}!"); continue; }
                 force.x = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y,minMaxForce.y));
@@ -34,9 +56,11 @@ public class GibletParticles : MonoBehaviour
                 force.z = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y, minMaxForce.y));
                 gibRB.AddForce(force, ForceMode.VelocityChange);
                 gibRB.AddTorque(rotation*Random.Range(1,4));
-                Destroy(go, lifetime);
+                Destroy(go, giblifetime);
             }
         }
-        Destroy(this.gameObject, lifetime + 1);
+        Destroy(this.gameObject, lifetime);
     }
+
+    
 }
