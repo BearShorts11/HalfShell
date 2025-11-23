@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GibletParticles : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 7.0f;
-    [SerializeField] private float giblifetime = 5.0f;
+    [SerializeField] private float lifetime = 12.0f;
+    [SerializeField] private float giblifetime = 9.0f;
     public Mesh[] randomGibModels;
     public GameObject[] gibObjects;
     public Material[] gibMaterials;
