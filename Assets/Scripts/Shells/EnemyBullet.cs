@@ -40,10 +40,10 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
-        }
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    collision.gameObject.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
+        //}
         Destroy(this.gameObject);
     }
 
