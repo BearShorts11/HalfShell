@@ -13,6 +13,7 @@ public class EnemyBullet : MonoBehaviour
     void Start()
     {
         Destroy(this.gameObject, 5f);
+        if (target != null) transform.LookAt(target);
     }
 
     private void FixedUpdate()
@@ -21,15 +22,16 @@ public class EnemyBullet : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
             if (Vector3.Distance(transform.position, target) <= targetReached) Destroy(this.gameObject);
+
         }
         else transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerBehavior>().Damage(RangedEnemy.gunDamage);
+            other.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
         }
 
         Debug.Log(other.gameObject.name);
@@ -38,7 +40,11 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy (this.gameObject);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
+        }
+        Destroy(this.gameObject);
     }
 
     public void GiveTarget(Vector3 target)
