@@ -137,8 +137,9 @@ public class PlayerShooting : MonoBehaviour
         if (lookingAtGun) return;
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
-        
-        
+
+        //Debug only DO NOT LEAVE IN FINAL GAME
+        if (Input.GetKeyDown(KeyCode.O)) AmmoCounts[ShellBase.ShellType.Slug] = (new Slug()).MaxHolding;
 
         //racking
         if (Input.GetButtonDown("Fire2"))
