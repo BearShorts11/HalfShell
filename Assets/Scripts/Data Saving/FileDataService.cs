@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Assets.Scripts.Data_Saving
+namespace Assets.Scripts
 {
     //https://www.youtube.com/watch?v=z1sMhGIgfoo
 
@@ -15,7 +15,11 @@ namespace Assets.Scripts.Data_Saving
 
         public FileDataService(ISerializer serializer)
         {
-            this.dataPath = Application.persistentDataPath;
+            //you'll prob have to search %appdata% in windows search bar to find it
+            //contact nick if you can't cuz jesus christ it was a whole journey to find that fucking folder
+            //will probably change
+            this.dataPath = Application.persistentDataPath; //Debug.Log to find this file path
+
             this.fileExtension = ".json";
             this.serializer = serializer;
         }

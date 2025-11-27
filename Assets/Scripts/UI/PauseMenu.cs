@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviour
     public Slider FOVSlider;
     public TextMeshProUGUI FOV_val_txt;
 
+    string JsonFilePath = "Assets/JsonFiles/PlayerSettings.txt";
+
     public enum Scene
     {
         MockUp, //0
@@ -32,6 +34,8 @@ public class PauseMenu : MonoBehaviour
     {
         player = FindAnyObjectByType<PlayerBehavior>();
         if (paused) { Pause(); }
+
+        FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange();  });
     }
 
     // Update is called once per frame
@@ -137,5 +141,11 @@ public class PauseMenu : MonoBehaviour
         player.UpdateSensitivity();
         player.UpdateFOV();
         FOV_val_txt.text = $"{FOVSlider.value}";
+    }
+
+    private void FOVValueChange()
+    {
+        FOV_val_txt.text = $"{FOVSlider.value}";
+
     }
 }

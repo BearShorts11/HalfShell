@@ -1,5 +1,6 @@
-﻿using Assets.Scripts.Data_Saving;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,17 +8,29 @@ namespace Assets.Scripts
 {
     //https://www.youtube.com/watch?v=z1sMhGIgfoo - tutorial for base save system
 
-    [Serializable]
-    public class GameData
-    { 
-        public string Name { get; set; }
+    [Serializable] public class GameData
+    {
+        public string Name;
 
-        public string CurrentLevelName { get; set; }
+        public string CurrentLevelName;
     }
+
+    //TODO: throw in own interface ISaveandBind
+    public interface ISaveable
+    {
+        SerializableGuid Id { get; set; }
+    }
+
+    public interface IBind<TData> where TData : ISaveable
+    {
+        SerializableGuid Id { get; set; }
+        void Bind(TData tData);
+    }
+
 
     public class SaveLoadSystem : PersistentSingleton<SaveLoadSystem>
     {
-        [SerializeField] public GameData gameData;
+        public GameData gameData;
 
         IDataService dataService;
 
@@ -25,6 +38,12 @@ namespace Assets.Scripts
         {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+        }
+
+        private void Update()
+        {
+            //to find file path
+            //Debug.Log(Application.persistentDataPath);
         }
 
         public void NewGame()

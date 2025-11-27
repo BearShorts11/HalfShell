@@ -11,12 +11,12 @@ namespace Assets.Scripts
     {
         public T Deserialize<T>(string json)
         {
-            throw new NotImplementedException();
+            return JsonUtility.FromJson<T>(json);
         }
 
         public string Serialize<T>(T obj)
         {
-            throw new NotImplementedException();
+            return JsonUtility.ToJson(obj, true);
         }
     }
 }
