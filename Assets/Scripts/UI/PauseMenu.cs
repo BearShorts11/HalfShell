@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     public Slider FOVSlider;
     public TextMeshProUGUI FOV_val_txt;
 
-    string JsonFilePath = "Assets/JsonFiles/PlayerSettings.txt";
+    string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
     public enum Scene
     {

@@ -11,14 +11,14 @@ namespace Assets.Scripts
     [Serializable] public class GameData
     {
         public string Name;
-
         public string CurrentLevelName;
+        public PlayerData playerData;
     }
 
     //TODO: throw in own interface ISaveandBind
     public interface ISaveable
     {
-        SerializableGuid Id { get; set; }
+        public SerializableGuid Id { get; set; }
     }
 
     public interface IBind<TData> where TData : ISaveable
@@ -40,10 +40,48 @@ namespace Assets.Scripts
             dataService = new FileDataService(new JsonSerializer());
         }
 
-        private void Update()
+        private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+        private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            //to find file path
-            //Debug.Log(Application.persistentDataPath);
+            //returns early/does not bind in specific scenes
+            //add if necessary
+            if (scene.name == "TitleScreen") return;
+
+            Bind<Kerth, PlayerData>(gameData.playerData);
+        }
+
+
+        //single entity binding (one instance)
+        private void Bind<T, TData>(TData data) where T : MonoBehaviour, IBind<TData> where TData : ISaveable, new()
+        {
+            var entity = FindObjectsByType<T>(FindObjectsSortMode.None).FirstOrDefault();
+            if (entity != null)
+            {
+                if (data == null) data = new TData { Id = entity.Id };
+
+                entity.Bind(data);
+            }
+        }
+
+        //multiple entity binding (ex. enemies)
+        private void Bind<T, TData>(List<TData> datas) where T : MonoBehaviour, IBind<TData> where TData : ISaveable, new()
+        {
+            var entities = FindObjectsByType<T>(FindObjectsSortMode.None);
+
+            foreach (var entity in entities)
+            {
+                var data = datas.FirstOrDefault(d => d.Id == entity.Id);
+
+                if (data == null)
+                {
+                    data = new TData { Id = entity.Id };
+                    datas.Add(data);
+                }
+
+                entity.Bind(data);
+            }
         }
 
         public void NewGame()
@@ -51,7 +89,7 @@ namespace Assets.Scripts
             gameData = new GameData
             {
                 Name = "new game",
-                CurrentLevelName = "TitleScreen"
+                CurrentLevelName = "N Testing"
             };
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
@@ -61,9 +99,14 @@ namespace Assets.Scripts
         { 
             gameData = dataService.Load(saveName);
 
-            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "TitleScreen";
+            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
+
+            Debug.Log(gameData.playerData.Id.Part1);
+            Debug.Log(gameData.playerData.Id.Part2);
+            Debug.Log(gameData.playerData.Id.Part3);
+            Debug.Log(gameData.playerData.Id.Part4);
         }
 
         public void ReloadGame() => LoadGame(gameData.Name);

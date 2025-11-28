@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    private PlayerBehavior player;
+    public PlayerBehavior player;
 
     // The parent object for all static UI elements (Chamber/Load, HP Bar, etc)
     // Exclude crosshairs from this because it gets real disorienting

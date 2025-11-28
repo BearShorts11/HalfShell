@@ -124,6 +124,12 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    //any data that needs saved, pass as parameter & update
+    public void LoadData(Dictionary<ShellBase.ShellType, int> savedCounts) 
+    { 
+        AmmoCounts = savedCounts;  
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -397,7 +403,7 @@ public class PlayerShooting : MonoBehaviour
         //check if chamber IS NULL *NOT* == null, trying to reference chamber directly will always equate to null
         if (canFire == false || chamber is null)
         {
-            Debug.Log($"cannot fire: {canFire} or chamber is null");
+            //Debug.Log($"cannot fire: {canFire} or chamber is null");
             PlaySound(dryFireSound);
             return;
         }

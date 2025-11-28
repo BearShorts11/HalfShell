@@ -15,9 +15,11 @@ namespace Assets.Scripts
 
         public FileDataService(ISerializer serializer)
         {
+            /**
             //you'll prob have to search %appdata% in windows search bar to find it
             //contact nick if you can't cuz jesus christ it was a whole journey to find that fucking folder
             //will probably change
+             */
             this.dataPath = Application.persistentDataPath; //Debug.Log to find this file path
 
             this.fileExtension = ".json";
@@ -26,7 +28,8 @@ namespace Assets.Scripts
 
         private string GetPathToFile(string fileName)
         { 
-            return Path.Combine(dataPath, fileName);
+            //return Path.Combine(dataPath, fileName);
+            return Path.Combine(dataPath, string.Concat(fileName, fileExtension));
         }
 
 

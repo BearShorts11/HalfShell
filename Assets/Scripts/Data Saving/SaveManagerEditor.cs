@@ -7,7 +7,7 @@ namespace Assets.Scripts
     //https://github.com/adammyhre/Unity-Inventory-System/blob/master/Assets/_Project/Scripts/Persistence/Editor/SaveManagerEditor.cs
 
     [CustomEditor(typeof(SaveLoadSystem))]
-    public class SaveManagerEditor : UnityEditor.Editor
+    public class SaveManagerEditor : Editor
     {
         public override void OnInspectorGUI()
         {

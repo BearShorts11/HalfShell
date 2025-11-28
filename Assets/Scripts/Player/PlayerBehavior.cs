@@ -9,6 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using UnityEngine.Windows;
 using Unity.Cinemachine;
 using Assets.Scripts;
+using System;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -213,6 +214,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             Time.timeScale = 1;
         }
+
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -317,6 +319,21 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         NoMove();
 
         //display game over txt
+    }
+
+    public void SetHealth(float health)
+    { 
+        this.health = health;
+        if (UI is null) UI = FindFirstObjectByType<PlayerUI>();
+        UI.UpdateHP(health, maxHealth);
+
+        if(UI.player is null) UI.player = this;
+
+        UI.CheckHealth(); 
+    }
+    public void SetArmor(float armor)
+    { 
+        this.armor = armor;
     }
 
 }
