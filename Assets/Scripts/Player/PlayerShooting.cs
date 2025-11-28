@@ -133,6 +133,8 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseMenu.paused) return;
+
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
         if (Input.GetKeyDown(KeyCode.F) && !isInShellSelect && !pumped) 
         {
