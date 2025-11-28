@@ -18,7 +18,7 @@ public class ShellSelectionButton : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         anim = GetComponent<Animator>();
         player = FindFirstObjectByType<PlayerShooting>();
