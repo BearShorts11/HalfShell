@@ -209,11 +209,6 @@ public class PlayerShooting : MonoBehaviour
 
     private void PumpBack()
     {
-        if (isWaiting())
-        {
-            BufferLastFunction(nameof(PumpBack), waitTime);
-            return;
-        }
         if (isInShellSelect)
             return;
 
@@ -229,16 +224,10 @@ public class PlayerShooting : MonoBehaviour
         }
 
         chamber = null;
-        SetWaitTime(pumpBackTime);
         pumped = true;
     }
     private void PumpFWD()
     {
-        if (isWaiting())
-        {
-            BufferLastFunction(nameof(PumpFWD), waitTime);
-            return;
-        }
         if (isInShellSelect)
             return;
         //PlaySound(pumpForwardSound);
@@ -254,7 +243,6 @@ public class PlayerShooting : MonoBehaviour
             playerUI.ChamberUIOn(chamber);
         }
         if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
-        SetWaitTime(pumpFWDTime);
         pumped = false;
     }
 
@@ -417,8 +405,9 @@ public class PlayerShooting : MonoBehaviour
         {
             if (muzzleflash != null)
                 Instantiate(muzzleflash, shotgunMuzzleflashPos);
-            animator.SetInteger("Shoot_Variation", Random.Range(0, 3));
-            animator.SetTrigger("Fire");
+            //animator.SetInteger("Shoot_Variation", Random.Range(0, 3));
+            //animator.SetTrigger("Fire");
+            animator.CrossFade("Shoot", 0.1f);
 
             ShellBase shell = chamber;
             //MagazineUILoss();

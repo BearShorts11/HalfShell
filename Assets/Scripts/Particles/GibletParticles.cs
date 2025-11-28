@@ -51,7 +51,7 @@ public class GibletParticles : MonoBehaviour
                 gibRB = go.GetComponent<Rigidbody>();
                 if (gibRB == null) { Debug.LogError($"Rigid Body not found for {go}!"); continue; }
                 force.x = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y,minMaxForce.y));
-                force.y = Random.Range(minMaxForce.x, minMaxForce.y) * 2f;
+                force.y = Random.Range(minMaxForce.x, minMaxForce.y);
                 //force.y *= gibRB.mass <= 1 ? 1.2f : gibRB.mass;
                 force.z = Random.Range(Random.Range(-minMaxForce.x, minMaxForce.x), Random.Range(-minMaxForce.y, minMaxForce.y));
                 gibRB.AddForce(force, ForceMode.VelocityChange);
