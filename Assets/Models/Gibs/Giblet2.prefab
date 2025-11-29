@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6647990533365011417}
   - component: {fileID: -3810782574021197720}
   - component: {fileID: 6106159569317773348}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Giblet2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6358536709233360370}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: fa12b46656c03c5469ad82adc70b953f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923811e9fa97cdd4d985c833ec043ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 1
+  weight: 2
 --- !u!1001 &2506851640702931694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -213,9 +213,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3531520098489299586, guid: 2f6a7a8d4e4397a4b9ff41c4585aa90a, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5780901633099987192, guid: 2f6a7a8d4e4397a4b9ff41c4585aa90a, type: 3}
       propertyPath: m_Name
       value: Gib_Trail
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780901633099987192, guid: 2f6a7a8d4e4397a4b9ff41c4585aa90a, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
