@@ -11,7 +11,10 @@ public class BulletHoleDecal : MonoBehaviour
     {
         Destroy(this.gameObject, 30f);
         parent = transform.parent;
-
+        if (Decals.Length > 0 )
+        {
+            _decalProjector.material = Decals[Random.Range(0, Decals.Length)];
+        }
     }
 
     // Update is called once per frame
@@ -30,6 +33,8 @@ public class BulletHoleDecal : MonoBehaviour
     private float FadeDuration = 2f;
 
     private DecalProjector _decalProjector;
+
+    [SerializeField] private Material[] Decals;
 
     private void OnEnable()
     {
