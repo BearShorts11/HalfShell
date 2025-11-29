@@ -235,7 +235,8 @@ public class BreakableObject : MonoBehaviour, IDamageable
             float step = Time.deltaTime * pieceFadeSpeed;
             foreach (Renderer renderer in renderers)
             {
-                renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
+                if (renderer.bounds.size.sqrMagnitude != 0)
+                    renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
                 renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step;
             }
 
