@@ -122,6 +122,9 @@ public class PlayerShooting : MonoBehaviour
             ShellSelectionButton counter = button.GetComponent<ShellSelectionButton>();
             counter.UpdateAmmoCount();
         }
+
+        // Temporary, just to showcase that it exists. Delete when we get to the starting sequence.
+        animator.CrossFade("Draw_Inspect", 0f);
     }
 
     //any data that needs saved, pass as parameter & update
