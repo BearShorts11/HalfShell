@@ -2,6 +2,7 @@ using Assets.Scripts;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Kerth : MonoBehaviour, IBind<PlayerData>
 {
@@ -21,7 +22,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     {
         this.data = data;
         this.data.Id = Id;
-        transform.position = data.position;
+        transform.position = data.position; // WHY NO WORKY!?!?!?!
         transform.rotation = data.rotation;
 
         behavior.SetHealth(data.Health);

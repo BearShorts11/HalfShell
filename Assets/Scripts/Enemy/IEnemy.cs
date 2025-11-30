@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using Assets.Scripts;
+using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
 
 public class IEnemy : MonoBehaviour, IDamageable
 {
@@ -26,6 +28,11 @@ public class IEnemy : MonoBehaviour, IDamageable
     public bool SpawnAgro;
     protected State state;
     protected State startState = State.idle;
+
+    public List<Material> bloodSplatters = new List<Material>();
+    public GameObject BloodSplatterProjector;
+
+
     public enum State
     {
         idle,
@@ -80,7 +87,8 @@ public class IEnemy : MonoBehaviour, IDamageable
             state = State.dead;
     }
 
-    protected void Chase()
+    //move to melee script
+    protected virtual void Chase()
     {
         if (state == State.dead) return;
         if (agent != null)
@@ -106,6 +114,7 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
     }
 
+    //move to melee script
     protected IEnumerator Attack()
     {
         if (state == State.dead) yield break;
@@ -118,6 +127,7 @@ public class IEnemy : MonoBehaviour, IDamageable
         StartCoroutine(Cooldown(attackCooldownTime));
     }
 
+    //move to melee script
     protected IEnumerator Cooldown(float time)
     {
         if (state == State.dead) yield break;
@@ -156,6 +166,10 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
         SwitchStateOnDamage();
         StartCoroutine(DamageFlash());
+
+        GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+        splatter.GetComponent<DecalProjector>().material = bloodSplatters[Random.Range(0, bloodSplatters.Count)];
+        splatter.transform.Rotate(90, 0, 0);
 
     }
 

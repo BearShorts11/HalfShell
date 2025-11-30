@@ -18,7 +18,7 @@ namespace Assets.Scripts
     //TODO: throw in own interface ISaveandBind
     public interface ISaveable
     {
-        public SerializableGuid Id { get; set; }
+        public SerializableGuid Id { get; set; } //init not set
     }
 
     public interface IBind<TData> where TData : ISaveable
@@ -102,11 +102,6 @@ namespace Assets.Scripts
             if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
-
-            Debug.Log(gameData.playerData.Id.Part1);
-            Debug.Log(gameData.playerData.Id.Part2);
-            Debug.Log(gameData.playerData.Id.Part3);
-            Debug.Log(gameData.playerData.Id.Part4);
         }
 
         public void ReloadGame() => LoadGame(gameData.Name);

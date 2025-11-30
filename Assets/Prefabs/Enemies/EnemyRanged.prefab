@@ -159,6 +159,12 @@ MonoBehaviour:
   attackCooldownTime: 0.5
   damageCooldownTime: 1.5
   SpawnAgro: 0
+  bloodSplatters:
+  - {fileID: 2100000, guid: 9cf1f0369f61572479c6b51d07a6791e, type: 2}
+  - {fileID: 2100000, guid: d2b4d717b7268264ca3d65e44f7865c3, type: 2}
+  - {fileID: 2100000, guid: 3d140f9fa99f68641b4ead441d621fac, type: 2}
+  - {fileID: 2100000, guid: a7681e3c5353948429be0916d51e51d6, type: 2}
+  BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
   tempEnemDamage: {fileID: 2100000, guid: 3111c951a37f2ce46ac1b80947f63242, type: 2}
   shootingDistance: 30
@@ -167,6 +173,7 @@ MonoBehaviour:
   fireRate: 0.5
   turnSpeed: 5
   shootingPoints: []
+  followsPlayer: 0
 --- !u!195 &3725621020842838227
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -345,7 +352,10 @@ MonoBehaviour:
   defaultHealth: 40
   <Health>k__BackingField: 0
   isRemovable: 1
-  isBone: 0
+  isAttatchedToBone: 0
+  isBoneItself: 0
+  removableAfterDeath: 0
+  hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1.2
   damPctHealthOnRemove: 1

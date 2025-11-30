@@ -21,6 +21,7 @@ public class RangedEnemy : IEnemy
 
     public List<Transform> shootingPoints;
     private Transform currentPoint;
+    public bool followsPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -70,6 +71,11 @@ public class RangedEnemy : IEnemy
         //look towards/track player
         //find a way to restrict to only y rotation
         transform.LookAt(player.transform);
+    }
+
+    protected override void Chase()
+    {
+        //logic for moving
     }
 
     private void FindNewCover()
