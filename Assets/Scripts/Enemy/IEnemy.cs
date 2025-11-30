@@ -74,13 +74,15 @@ public class IEnemy : MonoBehaviour, IDamageable
         state = startState;
     }
 
-    void Update()
+    virtual public void Update()
     {
-        
+        if (Health <= 0)
+            state = State.dead;
     }
 
     protected void Chase()
     {
+        if (state == State.dead) return;
         if (agent != null)
         {
             agent.SetDestination(player.transform.position);
@@ -106,6 +108,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     protected IEnumerator Attack()
     {
+        if (state == State.dead) yield break;
         agent.isStopped = true;
         yield return new WaitForSeconds(attackTime);
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
@@ -117,6 +120,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     protected IEnumerator Cooldown(float time)
     {
+        if (state == State.dead) yield break;
         //this is how you do a full stop. for some reason just one of these does not work. all 3 however? yeah apparently that works
         //agent.speed = 0;
         //agent.isStopped = true;
@@ -145,29 +149,31 @@ public class IEnemy : MonoBehaviour, IDamageable
         //put in damage flash aka have a damange cooldown?
         Health -= damageAmt;
 
-        SwitchStateOnDamage();
-        StartCoroutine(DamageFlash());
-
         if (Health <= 0)
         {
             //Debug.Log("dead");
             state = State.dead; 
         }
+        SwitchStateOnDamage();
+        StartCoroutine(DamageFlash());
+
     }
 
     protected void SwitchStateOnDamage()
     {
+        if (state == State.dead)
+        {
+            StopAllCoroutines();
+            Destroy(this.gameObject, 10f);
+            return;
+        }
+
         //override depending on enemy type??
         if (state == State.idle || state == State.patrol) state = State.chasing;
         if (state == State.chasing)
         { 
             state = State.cooldown;
             StartCoroutine(Cooldown(damageCooldownTime));
-        }
-        else if (state == State.dead)
-        {
-            StopAllCoroutines();
-            Destroy(this.gameObject, 10f);
         }
     }
 

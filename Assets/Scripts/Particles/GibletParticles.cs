@@ -30,9 +30,9 @@ public class GibletParticles : MonoBehaviour
             for (int i = 0; i < gibsAmount; i++)
             {
                 gibObjects[i].SetActive(true);
-                rotation.x = Random.Range(-360f, 360f);
-                rotation.y = Random.Range(-360f, 360f);
-                rotation.z = Random.Range(-360f, 360f);
+                rotation.x = Random.Range(-90f, 90f);
+                rotation.y = Random.Range(-90f, 90f);
+                rotation.z = Random.Range(-90f, 90f);
                 //go = Instantiate(gibObjects[Random.Range(0,gibObjects.Length)],this.gameObject.transform.position, Quaternion.Euler(rotation));
                 go = gibObjects[i];
                 go.transform.parent = null;
@@ -56,7 +56,7 @@ public class GibletParticles : MonoBehaviour
                 force.x = Random.Range(Random.Range(-minMaxForce.y, -minMaxForce.x), Random.Range(minMaxForce.x,minMaxForce.y));
                 force.y = Random.Range(minMaxForce.x, minMaxForce.y) * 1.5f;
                 force.z = Random.Range(Random.Range(-minMaxForce.y, -minMaxForce.x), Random.Range(minMaxForce.x, minMaxForce.y));
-                gibRB.AddForce(force, ForceMode.VelocityChange);
+                gibRB.AddRelativeForce(force, ForceMode.VelocityChange);
                 gibRB.AddTorque(rotation*Random.Range(1,4));
                 Destroy(go, giblifetime);
             }

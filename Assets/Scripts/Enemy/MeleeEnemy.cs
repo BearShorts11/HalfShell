@@ -36,9 +36,12 @@ public class MeleeEnemy : IEnemy
     }
 
     // Update is called once per frame
-    void Update()
+    override public void Update()
     {
         AnimationController();
+
+        base.Update();
+        if (state == State.dead) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         //Debug.Log(state);
@@ -59,10 +62,13 @@ public class MeleeEnemy : IEnemy
                 Patrol();
                 break;
         }
+
     }
 
     private void Patrol()
     {
+        if (state == State.dead) return;
+
         agent.isStopped = false;
 
         if (Vector3.Distance(goalPatrolPoint, transform.position) <= foundTargetRadius)
@@ -86,6 +92,17 @@ public class MeleeEnemy : IEnemy
 
     private void AnimationController()
     {
+        //Controls Death
+        if (state == State.dead)
+        {
+            enemyLogic.enabled = false;
+            animator.enabled = false;
+            ragdollController.SetColliderState(true);
+            ragdollController.SetRigidbodyState(false);
+            ragdollController.ApplyForceToRagdoll();
+            return;
+        }
+
         //Controls Idle/Walking/Running 
         if (state == State.idle)
         {
@@ -120,14 +137,5 @@ public class MeleeEnemy : IEnemy
             animator.SetBool("Attacking", false);
         }
 
-        //Controls Death
-        if (state == State.dead)
-        {
-            enemyLogic.enabled = false;
-            animator.enabled = false;
-            ragdollController.SetColliderState(true);
-            ragdollController.SetRigidbodyState(false);
-            ragdollController.ApplyForceToRagdoll();
-        }
     }
 }
