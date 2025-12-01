@@ -26,6 +26,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float lookSpeed = 3f;
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
+    public bool startWithShotgun;
 
     private float sensitivityModifier = 1f;
     public const float DEFAULT_SENSITIVITY_MOD = 1f;
@@ -92,6 +93,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float BottomClamp = -90.0f;
     public float rotationVelocity;
 
+    private PlayerShooting playerShooting;
+    public GameObject ShotgunViewmodel;
 
     private bool isCurrentDeviceMouse
     {
@@ -120,12 +123,19 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         cameraInput = GetComponent<PlayerCameraInputs>();
 
         UI = FindFirstObjectByType<PlayerUI>();
+        playerShooting = FindFirstObjectByType<PlayerShooting>();
         LockCursor();
         ResumeTime();
         UI.UpdateHP(health, maxHealth);
         UI.UpdateMaxHP(maxHealth, maxHealth);
         UI.UpdateArmor(armor, maxArmor);
         UI.UpdateMaxArmor(armor, maxArmor);
+
+        if (!startWithShotgun)
+        {
+            playerShooting.enabled = false;
+            ShotgunViewmodel.SetActive(false);
+        }
     }
 
     private void LateUpdate()
@@ -334,6 +344,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public void SetArmor(float armor)
     { 
         this.armor = armor;
+    }
+
+    public void EquipShotgun()
+    {
+        playerShooting.enabled = true;
+        ShotgunViewmodel.SetActive(true);
     }
 
 }
