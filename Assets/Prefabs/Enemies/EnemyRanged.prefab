@@ -37,6 +37,7 @@ Transform:
   m_Children:
   - {fileID: 3363902994452441253}
   - {fileID: 6253675358710445604}
+  - {fileID: 838162119053520990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1250678291297311458
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 12
   gravity: 20
-  defaultHealth: 100
+  <maxHealth>k__BackingField: 120
   <Health>k__BackingField: 0
   damage: 10
   detectionRadius: 10
@@ -165,6 +166,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d140f9fa99f68641b4ead441d621fac, type: 2}
   - {fileID: 2100000, guid: a7681e3c5353948429be0916d51e51d6, type: 2}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
+  FullyGibbedParticle: {fileID: 5294962421360413842}
   tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
   tempEnemDamage: {fileID: 2100000, guid: 3111c951a37f2ce46ac1b80947f63242, type: 2}
   shootingDistance: 30
@@ -380,3 +382,70 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!1001 &2278215719631148863
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3214146041863294826}
+    m_Modifications:
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.90000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261874184350702509, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+      propertyPath: m_Name
+      value: PS_Gibbed
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+--- !u!4 &838162119053520990 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+  m_PrefabInstance: {fileID: 2278215719631148863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5294962421360413842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6261874184350702509, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
+  m_PrefabInstance: {fileID: 2278215719631148863}
+  m_PrefabAsset: {fileID: 0}

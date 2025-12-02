@@ -11,8 +11,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     public float gravity = 20f;
 
     [Tooltip("The max amount health set")]
-    public float defaultHealth = 50f; // Since you can't set default values in properties
-    public float maxHealth { get; set; }
+    [field: SerializeField]public float maxHealth { get; set; }=50f;
     [field: SerializeField] public float Health { get; set; }
     public float damage = 10f;
     public float detectionRadius = 10;
@@ -31,6 +30,10 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     public List<Material> bloodSplatters = new List<Material>();
     public GameObject BloodSplatterProjector;
+
+    public GameObject FullyGibbedParticle;
+
+
 
 
     public enum State
@@ -70,8 +73,6 @@ public class IEnemy : MonoBehaviour, IDamageable
         player = playerObject.GetComponent<PlayerBehavior>();
 
         animator = player.GetComponentInChildren<Animator>();
-
-        maxHealth = defaultHealth;
 
         Health = maxHealth;
 
@@ -130,7 +131,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     //move to melee script
     protected IEnumerator Cooldown(float time)
     {
-        if (state == State.dead) yield break;
+        //if (state == State.dead) yield break;
         //this is how you do a full stop. for some reason just one of these does not work. all 3 however? yeah apparently that works
         //agent.speed = 0;
         //agent.isStopped = true;
@@ -138,6 +139,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
 
         yield return new WaitForSeconds(time);
+        if (state == State.dead) yield break;
 
         agent.speed = walkSpeed;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
@@ -154,7 +156,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     }
 
     
-    public void Damage(float damageAmt)
+    virtual public void Damage(float damageAmt)
     {
         //put in damage flash aka have a damange cooldown?
         Health -= damageAmt;
@@ -164,9 +166,19 @@ public class IEnemy : MonoBehaviour, IDamageable
             //Debug.Log("dead");
             state = State.dead; 
         }
+
+        if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
+        { 
+            FullyGibbedParticle.SetActive(true);
+            FullyGibbedParticle.gameObject.transform.parent = null;
+            Destroy(this.gameObject);
+            return;
+        }
+
         SwitchStateOnDamage();
         StartCoroutine(DamageFlash());
 
+        if (BloodSplatterProjector == null) return; // Error prevention from having no blood splatter projector
         GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
         splatter.GetComponent<DecalProjector>().material = bloodSplatters[Random.Range(0, bloodSplatters.Count)];
         splatter.transform.Rotate(90, 0, 0);
@@ -177,6 +189,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     {
         if (state == State.dead)
         {
+            agent.enabled = false;
             StopAllCoroutines();
             Destroy(this.gameObject, 10f);
             return;

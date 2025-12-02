@@ -63,7 +63,7 @@ public class RagdollController : MonoBehaviour
 
         foreach (Rigidbody rigidbody in rigidbodies)
         {
-            rigidbody.AddExplosionForce(explosionForce, playerShooting.hitPosition, explosionRadius, explosionLift, ForceMode.Impulse);
+            rigidbody.AddExplosionForce(explosionForce, playerShooting.hitPosition, explosionRadius, explosionLift, ForceMode.Force);
         }
     }
 }

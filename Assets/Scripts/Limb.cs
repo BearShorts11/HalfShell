@@ -75,7 +75,7 @@ public class Limb : MonoBehaviour, IDamageable
             Health -= Damage;       // This limb can only lose health if it is removable (i.e decapitation, amputation, is a body armor, etc.)
                                     //  This also means that the health check in the last line will never return true
 
-        if (enemy  != null && enemy.Health > 0) enemy.Damage(Damage); // Pass the damage down to the enemy
+        if (enemy  != null) enemy.Damage(Damage); // Pass the damage down to the enemy
 
         if (Health <= 0f && (isRemovable || (enemy.Health <= 0 && removableAfterDeath)))
         {

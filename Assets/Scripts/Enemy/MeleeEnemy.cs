@@ -95,7 +95,7 @@ public class MeleeEnemy : IEnemy
         //Controls Death
         if (state == State.dead)
         {
-            enemyLogic.enabled = false;
+            //enemyLogic.enabled = false;
             animator.enabled = false;
             ragdollController.SetColliderState(true);
             ragdollController.SetRigidbodyState(false);
