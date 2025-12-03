@@ -90,6 +90,15 @@ public class MeleeEnemy : IEnemy
         }
     }
 
+    public override void Damage(float damageAmt)
+    {
+        if (state == State.dead)
+        {
+            ragdollController.ApplyForceToRagdoll(damageAmt);
+        }
+        base.Damage(damageAmt);
+    }
+
     private void AnimationController()
     {
         //Controls Death
@@ -99,7 +108,6 @@ public class MeleeEnemy : IEnemy
             animator.enabled = false;
             ragdollController.SetColliderState(true);
             ragdollController.SetRigidbodyState(false);
-            ragdollController.ApplyForceToRagdoll();
             return;
         }
 

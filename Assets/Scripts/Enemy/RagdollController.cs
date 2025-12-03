@@ -57,13 +57,16 @@ public class RagdollController : MonoBehaviour
         }
     }
 
-    public void ApplyForceToRagdoll()
+    public void ApplyForceToRagdoll(float Amount = 0)
     {
+        if (Amount == 0) Amount = explosionForce;
+        else Amount /= 3;
+
         Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
 
         foreach (Rigidbody rigidbody in rigidbodies)
         {
-            rigidbody.AddExplosionForce(explosionForce, playerShooting.hitPosition, explosionRadius, explosionLift, ForceMode.Force);
+            rigidbody.AddExplosionForce(Amount, playerShooting.hitPosition, explosionRadius, explosionLift, ForceMode.Impulse);
         }
     }
 }
