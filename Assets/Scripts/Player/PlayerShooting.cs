@@ -499,7 +499,6 @@ public class PlayerShooting : MonoBehaviour
             return; 
         }
 
-        //decal.transform.rotation = Quaternion.LookRotation(hit.normal);
         Quaternion normal = Quaternion.LookRotation(-hit.normal, Vector3.up);
         Quaternion rotation = Quaternion.Euler(0,0,Random.Range(0f,360f));
 

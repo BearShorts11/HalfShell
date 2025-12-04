@@ -202,8 +202,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         #endregion
 
 
-        //why this hanging out in the ether? -N
-        // ...I dunno -A
         characterController.Move(moveDirection * Time.deltaTime);
 
 
@@ -332,14 +330,14 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
     public void SetHealth(float health)
-    { 
+    {
         this.health = health;
         if (UI is null) UI = FindFirstObjectByType<PlayerUI>();
         UI.UpdateHP(health, maxHealth);
 
-        if(UI.player is null) UI.player = this;
+        if (UI.player is null) UI.player = this;
 
-        UI.CheckHealth(); 
+        UI.CheckHealth();
     }
     public void SetArmor(float armor)
     { 

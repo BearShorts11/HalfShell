@@ -99,7 +99,7 @@ namespace Assets.Scripts
         { 
             gameData = dataService.Load(saveName);
 
-            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
+            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "Bullshit";
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
         }
