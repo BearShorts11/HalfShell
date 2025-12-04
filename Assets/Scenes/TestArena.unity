@@ -12951,6 +12951,7 @@ MonoBehaviour:
   isRemovable: 1
   isAttatchedToBone: 0
   isBoneItself: 0
+  removableAfterDeath: 0
   hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
@@ -31976,7 +31977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0
   gravity: 20
-  defaultHealth: 1000
+  <maxHealth>k__BackingField: 50
   <Health>k__BackingField: 0
   damage: 0
   detectionRadius: 0
@@ -31985,6 +31986,9 @@ MonoBehaviour:
   attackCooldownTime: 0.5
   damageCooldownTime: 1.5
   SpawnAgro: 0
+  bloodSplatters: []
+  BloodSplatterProjector: {fileID: 0}
+  FullyGibbedParticle: {fileID: 0}
   tempEnemNormal: {fileID: 0}
   tempEnemDamage: {fileID: 0}
 --- !u!195 &752791554
@@ -37972,6 +37976,7 @@ MonoBehaviour:
   isRemovable: 0
   isAttatchedToBone: 0
   isBoneItself: 0
+  removableAfterDeath: 0
   hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
@@ -50371,6 +50376,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145689995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1370684016
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.77366036
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.441445
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.974865
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327640512855761229, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280142296935014499, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
+      propertyPath: m_Name
+      value: PostEffectController
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a705681792c9db049a7bb9714b7295e8, type: 3}
 --- !u!1001 &1371096759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55824,6 +55886,7 @@ MonoBehaviour:
   isRemovable: 1
   isAttatchedToBone: 0
   isBoneItself: 0
+  removableAfterDeath: 0
   hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 2
@@ -62829,6 +62892,7 @@ MonoBehaviour:
   isRemovable: 1
   isAttatchedToBone: 0
   isBoneItself: 0
+  removableAfterDeath: 0
   hasCollision: 0
   Gibs: {fileID: 0}
   damMult: 1
@@ -71145,6 +71209,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Infinite Ammo RB
       objectReference: {fileID: 0}
+    - target: {fileID: 9073625334466884082, guid: 3725d2e08aad7d241af55953a3a27011, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -71920,3 +71988,4 @@ SceneRoots:
   - {fileID: 597836988}
   - {fileID: 950294084}
   - {fileID: 873065930}
+  - {fileID: 1370684016}
