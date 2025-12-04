@@ -124,25 +124,25 @@ MonoBehaviour:
   active: 1
   scanlinesWeight:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.02
   noiseWeight:
     m_OverrideState: 1
     m_Value: 0
   screenBendX:
     m_OverrideState: 1
-    m_Value: 20
+    m_Value: 200
   screenBendY:
     m_OverrideState: 1
-    m_Value: 20
+    m_Value: 200
   vignetteAmount:
     m_OverrideState: 1
     m_Value: 0
   vignetteSize:
     m_OverrideState: 1
-    m_Value: 2.06
+    m_Value: 0
   vignetteRounding:
     m_OverrideState: 1
-    m_Value: 5.26
+    m_Value: 100
   vignetteSmoothing:
     m_OverrideState: 1
     m_Value: 0
@@ -157,31 +157,31 @@ MonoBehaviour:
     m_Value: 250
   chromaticRed:
     m_OverrideState: 1
-    m_Value: {x: 0.002, y: -0.002}
+    m_Value: {x: 0.00025, y: -0.0005}
   chromaticGreen:
     m_OverrideState: 1
-    m_Value: {x: -0.002, y: 0.002}
+    m_Value: {x: -0.0005, y: 0.00025}
   chromaticBlue:
     m_OverrideState: 1
     m_Value: {x: 0, y: 0}
   grilleOpacity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.5
   grilleCounterOpacity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.5
   grilleResolution:
     m_OverrideState: 1
-    m_Value: 640
+    m_Value: 480
   grilleCounterResolution:
     m_OverrideState: 1
-    m_Value: 380
+    m_Value: 270
   grilleUvRotation:
     m_OverrideState: 1
     m_Value: 90
   grilleBrightness:
     m_OverrideState: 1
-    m_Value: 16
+    m_Value: 256
   grilleUvMidPoint:
     m_OverrideState: 1
     m_Value: 0.5
@@ -280,7 +280,7 @@ MonoBehaviour:
     m_Value: 0
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.01
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -299,13 +299,13 @@ MonoBehaviour:
   active: 1
   widthPixelation:
     m_OverrideState: 1
-    m_Value: 512
+    m_Value: 428
   heightPixelation:
     m_OverrideState: 1
-    m_Value: 256
+    m_Value: 240
   colorPrecision:
     m_OverrideState: 1
-    m_Value: 1028
+    m_Value: 64
 --- !u!114 &-1103184823351686471
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -343,16 +343,16 @@ MonoBehaviour:
   active: 1
   patternIndex:
     m_OverrideState: 1
-    m_Value: 204
+    m_Value: 2
   ditherThreshold:
     m_OverrideState: 1
-    m_Value: 3.53
+    m_Value: 12
   ditherStrength:
     m_OverrideState: 1
-    m_Value: 1.37
+    m_Value: 1
   ditherScale:
     m_OverrideState: 1
-    m_Value: 4.67
+    m_Value: 0.15
 --- !u!114 &-481527927588478010
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -497,7 +497,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
+          inSlope: 0
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -507,7 +507,7 @@ MonoBehaviour:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0

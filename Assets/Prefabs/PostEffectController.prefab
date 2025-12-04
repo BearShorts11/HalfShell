@@ -74,9 +74,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
   isEnabled: 1
-  widthPixelation: 512
-  heightPixelation: 256
-  colorPrecision: 1028
+  widthPixelation: 428
+  heightPixelation: 240
+  colorPrecision: 64
 --- !u!114 &2552791382148852475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,10 +91,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
   isEnabled: 1
-  patternIndex: 204
-  ditherThreshold: 3.53
-  ditherStrength: 1.37
-  ditherScale: 4.67
+  patternIndex: 2
+  ditherThreshold: 12
+  ditherStrength: 1
+  ditherScale: 0.15
 --- !u!114 &919685822497134480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,25 +109,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
   isEnabled: 1
-  scanlinesWeight: 0
+  scanlinesWeight: 0.02
   noiseWeight: 0
-  screenBendX: 20
-  screenBendY: 20
+  screenBendX: 200
+  screenBendY: 200
   vignetteAmount: 0
-  vignetteSize: 2.06
-  vignetteRounding: 5.26
+  vignetteSize: 0
+  vignetteRounding: 100
   vignetteSmoothing: 0
   scanLinesDensity: 200
   scanLinesSpeed: -10
   noiseAmount: 250
-  chromaticRed: {x: 0.002, y: -0.002}
-  chromaticGreen: {x: -0.002, y: 0.002}
+  chromaticRed: {x: 0.00025, y: -0.0005}
+  chromaticGreen: {x: -0.0005, y: 0.00025}
   chromaticBlue: {x: 0, y: 0}
-  grilleOpacity: 0
-  grilleCounterOpacity: 0
-  grilleResolution: 640
-  grilleCounterResolution: 380
-  grilleBrightness: 16
+  grilleOpacity: 0.5
+  grilleCounterOpacity: 0.5
+  grilleResolution: 480
+  grilleCounterResolution: 270
+  grilleBrightness: 256
   grilleUvRotation: 90
   grilleUvMidPoint: 0.5
   grilleShift: {x: 1, y: 1, z: 1}
@@ -145,6 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsGlobal: 1
   priority: 1
-  blendDistance: 0
+  blendDistance: 1
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
