@@ -14,6 +14,7 @@ using System;
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
 // Edits/additions made to variables and values
+// Past Spetember 2025, the above statement is hardly true. -A
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerBehavior : MonoBehaviour, IDamageable
@@ -72,7 +73,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
 
-    private Vector3 moveDirection = Vector3.zero;
+    [SerializeField] private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
 
@@ -177,7 +178,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
         // Checks if the player is touching the ground. If not, applies the force of gravity to send them downward
-        if (!characterController.isGrounded)
+        if (!characterController.isGrounded && movementDirectionY > -15) //-15 ensures the player doens't keep adding downward velocity forever.
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
