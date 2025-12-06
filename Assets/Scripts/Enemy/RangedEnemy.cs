@@ -26,6 +26,8 @@ public class RangedEnemy : IEnemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
+
         Startup();
 
         if (shootingPoints.Count > 1)
@@ -38,6 +40,8 @@ public class RangedEnemy : IEnemy
     // Update is called once per frame
     void Update()
     {
+        AnimationController();
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         //Debug.Log(state);
 
@@ -128,6 +132,8 @@ public class RangedEnemy : IEnemy
 
     private void Shoot()
     {
+        animator.SetBool("Shooting", true);
+
         Transform gunChild = this.transform.GetChild(0);
         GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
         Vector3 playerCurrPos = player.transform.position;
@@ -143,5 +149,28 @@ public class RangedEnemy : IEnemy
         }
 
         RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
+        animator.SetBool("Shooting", false);
+    }
+
+    private void AnimationController()
+    {
+        //Controls Idle/Walking/Running 
+        if (state == State.idle)
+        {
+            animator.SetFloat("Speed", 0.0f);
+        }
+        else if (state == State.patrol)
+        {
+            animator.SetFloat("Speed", 0.5f);
+        }
+        else if (state == State.chasing)
+        {
+            animator.SetFloat("Speed", 1f);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0.0f);
+        }
+
     }
 }
