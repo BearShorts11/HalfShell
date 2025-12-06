@@ -37,7 +37,7 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 12.5
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -46,7 +46,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 5
 --- !u!114 &-8565697437747668144
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
   active: 1
   scanlinesWeight:
     m_OverrideState: 1
-    m_Value: 0.02
+    m_Value: 0
   noiseWeight:
     m_OverrideState: 1
     m_Value: 0
@@ -166,10 +166,10 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0}
   grilleOpacity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.1
   grilleCounterOpacity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.1
   grilleResolution:
     m_OverrideState: 1
     m_Value: 480
@@ -181,7 +181,7 @@ MonoBehaviour:
     m_Value: 90
   grilleBrightness:
     m_OverrideState: 1
-    m_Value: 256
+    m_Value: 100000
   grilleUvMidPoint:
     m_OverrideState: 1
     m_Value: 0.5
@@ -245,16 +245,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   type:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   intensity:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   response:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.8
   texture:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {fileID: 0}
 --- !u!114 &-2946922716992849977
 MonoBehaviour:
@@ -305,7 +305,7 @@ MonoBehaviour:
     m_Value: 240
   colorPrecision:
     m_OverrideState: 1
-    m_Value: 64
+    m_Value: 128
 --- !u!114 &-1103184823351686471
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -321,13 +321,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
   highlights:
     m_OverrideState: 1
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 100
 --- !u!114 &-758010384845797820
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -346,13 +346,13 @@ MonoBehaviour:
     m_Value: 2
   ditherThreshold:
     m_OverrideState: 1
-    m_Value: 12
+    m_Value: 18
   ditherStrength:
     m_OverrideState: 1
     m_Value: 1
   ditherScale:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 1
 --- !u!114 &-481527927588478010
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -448,10 +448,10 @@ MonoBehaviour:
     m_Value: 468
   noiseScale:
     m_OverrideState: 1
-    m_Value: 843
+    m_Value: 0
   noiseStrength:
     m_OverrideState: 1
-    m_Value: 0.029
+    m_Value: 0
 --- !u!114 &813629861817367561
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -701,11 +701,11 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 6
   dirtTexture:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {fileID: 0}
     dimension: 1
   dirtIntensity:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
 --- !u!114 &2578462174564835535
 MonoBehaviour:
@@ -940,7 +940,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   scale:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.01
 --- !u!114 &8772656644991795544
 MonoBehaviour:
   m_ObjectHideFlags: 3

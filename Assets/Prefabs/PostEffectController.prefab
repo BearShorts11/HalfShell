@@ -56,8 +56,8 @@ MonoBehaviour:
   fogFar: 81.3
   fogAltScale: 10
   fogThinning: 468
-  noiseScale: 843
-  noiseStrength: 0.029
+  noiseScale: 0
+  noiseStrength: 0
   fogColor: {r: 1, g: 1, b: 1, a: 0}
   ambientColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &5222839027966899495
@@ -76,7 +76,7 @@ MonoBehaviour:
   isEnabled: 1
   widthPixelation: 428
   heightPixelation: 240
-  colorPrecision: 64
+  colorPrecision: 128
 --- !u!114 &2552791382148852475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,9 +92,9 @@ MonoBehaviour:
   volumeProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
   isEnabled: 1
   patternIndex: 2
-  ditherThreshold: 12
+  ditherThreshold: 15
   ditherStrength: 1
-  ditherScale: 0.15
+  ditherScale: 1
 --- !u!114 &919685822497134480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeProfile: {fileID: 11400000, guid: 7bbe35cdf5d69e14abbb03eccedaa5bd, type: 2}
   isEnabled: 1
-  scanlinesWeight: 0.02
+  scanlinesWeight: 0
   noiseWeight: 0
   screenBendX: 200
   screenBendY: 200
@@ -123,11 +123,11 @@ MonoBehaviour:
   chromaticRed: {x: 0.00025, y: -0.0005}
   chromaticGreen: {x: -0.0005, y: 0.00025}
   chromaticBlue: {x: 0, y: 0}
-  grilleOpacity: 0.5
-  grilleCounterOpacity: 0.5
+  grilleOpacity: 0.1
+  grilleCounterOpacity: 0.1
   grilleResolution: 480
   grilleCounterResolution: 270
-  grilleBrightness: 256
+  grilleBrightness: 100000
   grilleUvRotation: 90
   grilleUvMidPoint: 0.5
   grilleShift: {x: 1, y: 1, z: 1}
