@@ -130,10 +130,12 @@ public class BreakableObject : MonoBehaviour, IDamageable
 
             for (int i = 0; i < hits; i++)
             {
+                if (fragmentHits[i].gameObject == this.gameObject || fragmentHits[i].gameObject.transform.root == this.gameObject) continue;
+                float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
                 // Breaks Objects
                 if (fragmentHits[i].TryGetComponent<BreakableObject>(out BreakableObject obj))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !obj.EXPLODED)
                     {
@@ -145,7 +147,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                 // Hurts Enemies
                 if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
@@ -153,10 +155,18 @@ public class BreakableObject : MonoBehaviour, IDamageable
                         enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
+                else if (fragmentHits[i].TryGetComponent<IDamageable>(out IDamageable damageable))
+                {
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                    {
+                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                        damageable.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                    }
+                }
                 // Hurts Player
                 if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
                     {
@@ -168,7 +178,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                 // Rigidbody Forces
                 if (fragmentHits[i].TryGetComponent<Rigidbody>(out Rigidbody rb))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
