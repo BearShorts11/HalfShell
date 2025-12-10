@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class AnimationEventHandler : MonoBehaviour
 {
-    private GameObject shellObject;
-    private Transform shellEjectionTransform;
+    [SerializeField] private GameObject[] bodyGroup;
+    [SerializeField] private Transform[] transformPoints;
 
     private void Start()
     {
-        shellObject = GameObject.Find("Shell");
-        shellEjectionTransform = GameObject.Find("Shell_Eject").transform;
-        //shellObject.SetActive(false);
     }
     //if this isn't used in the next few weeks can I get rid of this? -N
     // You may. -V
@@ -20,23 +17,22 @@ public class AnimationEventHandler : MonoBehaviour
     {
         RuntimeManager.PlayOneShotAttached(path, this.gameObject);
     }
-
-    #region Shotgun related animation event methods
     
     // will these work in the animation event once we have modular shells set up? -V
-    private void HideShellModel()
+    public void HideBodyGroup(int index)
     {
-        if (shellObject.activeSelf)
-            shellObject.SetActive(false);
-        //Debug.Log("Shell Invisible!");
+        if (bodyGroup.Length > 0)
+            bodyGroup[Mathf.Clamp(index, 0, bodyGroup.Length-1)].SetActive(false);
     }
-    private void ShowShellModel()
+    public void ShowBodyGroup(int index)
     {
-        if (!shellObject.activeSelf)
-            shellObject.SetActive(true);
-        //Debug.Log("Shell Visible!");
+        if (bodyGroup.Length > 0)
+            bodyGroup[Mathf.Clamp(index, 0, bodyGroup.Length-1)].SetActive(true);
     }
 
+
+
+    #region Shotgun related animation event methods
     public void EjectShell()
     {
         // TODO: Find a way to link this to the player shooting script and know what shell to eject based on what the shotgun just shot or what shell is sitting in the chamber
@@ -48,7 +44,7 @@ public class AnimationEventHandler : MonoBehaviour
     }
     private void EjectShell(GameObject shell)
     {
-        shell = Instantiate(shell, shellEjectionTransform.position, Quaternion.LookRotation(shellEjectionTransform.right));
+        shell = Instantiate(shell, transformPoints[0].position, Quaternion.LookRotation(transformPoints[0].right));
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.right * Random.Range(150f, 300f));
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
         shell.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-15f, 15f), Random.Range(30f, 50f), Random.Range(-5f,-5f)));
