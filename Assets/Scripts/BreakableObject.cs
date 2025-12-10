@@ -6,6 +6,7 @@ using System;
 using UnityEditor;
 using Unity.VisualScripting;
 using Assets.Scripts;
+using FMODUnity;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
@@ -54,6 +55,8 @@ public class BreakableObject : MonoBehaviour, IDamageable
     [SerializeField] private float explosionForce = 100;
 
     [SerializeField] private ParticleSystem explosionParticles;
+    [SerializeField] private EventReference explosionSound;
+
     private bool EXPLODED = false;
     // THE MOST IMPORTANT VARIBALE MAKE SURE THIS VARIABLE IS TRUE WHEN AN OBJECT BLOWS UP HOLY FUCK
     // MAKE SURE THIS VARIABLE IS TRUE PLEASE FOR THE LOVE OF GOD
@@ -116,10 +119,12 @@ public class BreakableObject : MonoBehaviour, IDamageable
         // Uses Overlap sphere to draw rays to all damageable objects within range
         // If it hits something with an HP value, it'll damage it (Enemies, Player, Breakables).
         // If it hits something with a rigidbody, it'll apply force.
-        if (explosive)
+        if (explosive && !EXPLODED)
         {
             if (explosionParticles != null) { explosionParticles.Play(); }
 
+            if (!explosionSound.IsNull) { RuntimeManager.PlayOneShot(explosionSound, this.gameObject.transform.position); }
+            
             EXPLODED = true;
             // DO NOT TOUCH THIS VARIABLE
             bool playerHurt = false;
