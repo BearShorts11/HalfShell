@@ -105,7 +105,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{1d8bcca9-6923-4b6f-84b2-edd202e08d56}">
 		<property name="volume">
-			<value>-1.5</value>
+			<value>-2.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{45050d4f-10e0-40e6-9ac6-4755edbea207}</destination>
@@ -165,6 +165,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{4718c677-2abd-4b56-a68c-81b6a683db9c}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="name">
 			<value>Fire</value>
 		</property>
@@ -229,7 +232,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{4797990a-7af9-4fb3-8dcd-980ae292b480}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-6</value>
 		</property>
 		<property name="name">
 			<value>Tail</value>
@@ -450,6 +453,9 @@
 		</property>
 		<property name="minimumDistance">
 			<value>5</value>
+		</property>
+		<property name="maximumDistance">
+			<value>35</value>
 		</property>
 		<property name="overrideRange">
 			<value>true</value>

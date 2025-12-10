@@ -21,7 +21,6 @@ public class AnimationEventHandler : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(path, this.gameObject);
     }
 
-
     #region Shotgun related animation event methods
     
     // will these work in the animation event once we have modular shells set up? -V
