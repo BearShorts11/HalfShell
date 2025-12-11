@@ -159,53 +159,27 @@ public class RangedEnemy : IEnemy
 
     public override void Damage(float damageAmt)
     {
-        gunAnimator.Play("Pistol Hit Reaction");
         if (state == State.dead)
         {
             ragdollController.ApplyForceToRagdoll(damageAmt);
         }
-        base.Damage(damageAmt);
+
+        if (agent.velocity.x > 0 ||  agent.velocity.z > 0)
+        {
+            gunAnimator.Play("Pistol Hit Running");
+        }
+        else
+        {
+            gunAnimator.Play("Pistol Hit Reaction");
+        }
+
+        base.Damage(damageAmt);   
     }
 
     private void AnimationController()
     {
-        //Controls Idle/Walking/Running 
-        if (state == State.idle)
-        {
-           gunAnimator.SetFloat("Speed", 0.0f);
-        }
-        else if (state == State.patrol)
-        {
-            //animator.SetFloat("Speed", 0.5f);
-        }
-        else if (state == State.chasing)
-        {
-            //animator.SetFloat("Speed", 1f);
-        }
-        else
-        {
-            //animator.SetFloat("Speed", 0.0f);
-        }
-
-        if (agent.velocity.z > 0)
-        {
-            gunAnimator.Play("Pistol Running");
-        }
-        else if(agent.velocity.z < 0)
-        {
-            gunAnimator.Play("Pistol Running Backwards");
-        }
-
-        if (agent.velocity.x > 0 && state == State.findCover)
-        {
-            //Debug.Log("Navmesh Move Right");
-            gunAnimator.Play("Pistol Strafe R");
-        }
-        else if (agent.velocity.x < 0 && state == State.findCover)
-        {
-            //Debug.Log("NavAgent Move Left");
-            gunAnimator.Play("Pistol Strafe L");
-        }
+        gunAnimator.SetFloat("Velocity X", agent.velocity.x);
+        gunAnimator.SetFloat("Velocity Y", agent.velocity.z);
 
         //Controls Death and Ragdoll
 

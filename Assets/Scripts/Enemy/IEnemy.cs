@@ -33,7 +33,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     public GameObject FullyGibbedParticle;
 
-
+    protected bool hit = false;
 
 
     public enum State
@@ -185,7 +185,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     }
 
-    protected void SwitchStateOnDamage()
+    public void SwitchStateOnDamage()
     {
         if (state == State.dead)
         {
@@ -194,6 +194,8 @@ public class IEnemy : MonoBehaviour, IDamageable
             Destroy(this.gameObject, 10f);
             return;
         }
+
+        
 
         //override depending on enemy type??
         if (state == State.idle || state == State.patrol) state = State.chasing;

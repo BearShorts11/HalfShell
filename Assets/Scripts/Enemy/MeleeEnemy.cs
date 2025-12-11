@@ -92,13 +92,15 @@ public class MeleeEnemy : IEnemy
 
     public override void Damage(float damageAmt)
     {
+        animator.SetFloat("Damage", damageAmt);
+        animator.SetBool("Hit", true);
         if (state == State.dead)
         {
             ragdollController.ApplyForceToRagdoll(damageAmt);
         }
         base.Damage(damageAmt);
-        animator.Play("HitReactionME");
     }
+
 
     private void AnimationController()
     {
@@ -113,34 +115,21 @@ public class MeleeEnemy : IEnemy
         }
 
         //Controls Idle/Walking/Running 
-        if (state == State.idle)
-        {
-            animator.SetFloat("Speed", 0.0f);
-        }
-        else if (state == State.patrol)
-        {
-            animator.SetFloat("Speed", 0.5f);
-        }
-        else if (state == State.chasing)
-        {
-            animator.SetFloat("Speed", 1f);
-            animator.Play("RunningME");
-        }
-        else
-        {
-            animator.SetFloat("Speed", 0.0f);
-        }
+        animator.SetFloat("VelocityX", agent.velocity.x);
+        animator.SetFloat("VelocityY", agent.velocity.z);
+
+        //Controls Hit Reaction
+
+        
 
         //Controls Attacking
         if (state == State.meleeAttack)
         {
             animator.SetBool("Attacking", true);
-            animator.Play("PunchingME");
         }
         else if (state == State.cooldown)
         {
             animator.SetBool("Attacking", false);
-            animator.SetBool("Recovering", true);
         }
         else
         {

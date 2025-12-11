@@ -158,7 +158,7 @@ MonoBehaviour:
   attackTime: 0.4
   attackCooldownTime: 0.5
   damageCooldownTime: 1
-  SpawnAgro: 0
+  SpawnAgro: 1
   bloodSplatters:
   - {fileID: 2100000, guid: d2b4d717b7268264ca3d65e44f7865c3, type: 2}
   - {fileID: 2100000, guid: 3d140f9fa99f68641b4ead441d621fac, type: 2}
@@ -1246,6 +1246,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 984c2b55e6b4810468a9f1071ae5579e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1655831028280138049}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 984c2b55e6b4810468a9f1071ae5579e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6094428743383625686}
     - targetCorrespondingSourceObject: {fileID: -8699787447509501512, guid: 984c2b55e6b4810468a9f1071ae5579e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5535522285917757747}
@@ -2027,6 +2030,18 @@ MonoBehaviour:
   explosionForce: 50
   explosionRadius: 5
   explosionLift: 0.2
+--- !u!114 &6094428743383625686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5055732664720133861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385ac5612829b3f408f16cb4a58e6d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5291379912727418997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8969417572210971711, guid: 984c2b55e6b4810468a9f1071ae5579e, type: 3}
