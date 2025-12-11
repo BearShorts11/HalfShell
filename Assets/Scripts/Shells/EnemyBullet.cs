@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public float speed = 200f;
+    public float speed = 150F;
     private Vector3 target;
     private float targetReached = 0.001f;
 

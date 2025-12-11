@@ -4,6 +4,7 @@ using System.Collections;
 using Assets.Scripts;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
+using Unity.Mathematics;
 
 public class IEnemy : MonoBehaviour, IDamageable
 {
@@ -28,8 +29,8 @@ public class IEnemy : MonoBehaviour, IDamageable
     protected State state;
     protected State startState = State.idle;
 
-    public List<Material> bloodSplatters = new List<Material>();
     public GameObject BloodSplatterProjector;
+    private Material[] decals;
 
     public GameObject FullyGibbedParticle;
 
@@ -80,6 +81,11 @@ public class IEnemy : MonoBehaviour, IDamageable
         agent.speed = walkSpeed;
 
         state = startState;
+
+        if (BloodSplatterProjector != null)
+        {
+            decals = BloodSplatterProjector.GetComponent<DecalFadeOut>().Decals;
+        }
     }
 
     virtual public void Update()
@@ -116,7 +122,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     }
 
     //move to melee script
-    protected IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         if (state == State.dead) yield break;
         agent.isStopped = true;
@@ -178,11 +184,13 @@ public class IEnemy : MonoBehaviour, IDamageable
         SwitchStateOnDamage();
         StartCoroutine(DamageFlash());
 
-        if (BloodSplatterProjector == null) return; // Error prevention from having no blood splatter projector
-        GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
-        splatter.GetComponent<DecalProjector>().material = bloodSplatters[Random.Range(0, bloodSplatters.Count)];
-        splatter.transform.Rotate(90, 0, 0);
+        if (BloodSplatterProjector != null)
+        { 
+            GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+            splatter.GetComponent<DecalProjector>().material = decals[UnityEngine.Random.Range(2, decals.Length)];
 
+            splatter.transform.Rotate(90, 0, 0);
+        }
     }
 
     public void SwitchStateOnDamage()
@@ -191,6 +199,8 @@ public class IEnemy : MonoBehaviour, IDamageable
         {
             agent.enabled = false;
             StopAllCoroutines();
+
+            StartCoroutine(SpawnDeathBloodPool());
             Destroy(this.gameObject, 10f);
             return;
         }
@@ -212,6 +222,18 @@ public class IEnemy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(.5f);
         gameObject.GetComponent<Renderer>().material = tempEnemNormal;
         yield return new WaitForSeconds(.5f);
+    }
+
+    protected IEnumerator SpawnDeathBloodPool()
+    { 
+        yield return new WaitForSeconds(1f);
+
+        if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
+        GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+        splatter.GetComponent<DecalProjector>().material = decals[0];
+        splatter.GetComponent<DecalProjector>().size = new Vector3(3, 3, 5);
+        splatter.transform.Rotate(90, 0, 0);
+
     }
 
     //can call from editor by right clicking script- for debugging

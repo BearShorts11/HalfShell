@@ -15,8 +15,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
 
     [SerializeField] PlayerData data;
 
-    //[SerializeField] PlayerBehavior behavior;
-    //[SerializeField] PlayerShooting shooting;
+    [SerializeField] PlayerBehavior behavior;
+    [SerializeField] PlayerShooting shooting;
 
     public void Bind(PlayerData data)
     {
@@ -25,8 +25,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         transform.position = data.position; // WHY NO WORKY!?!?!?!
         transform.rotation = data.rotation;
 
-        //behavior.SetHealth(data.Health);
-        //behavior.SetArmor(data.Armor);
+        behavior.SetHealth(data.Health);
+        behavior.SetArmor(data.Armor);
     }
 
     private void Update()
@@ -34,8 +34,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         data.position = transform.position;
         data.rotation = transform.rotation;
 
-        //data.Health = behavior.Health;
-        //data.Armor = behavior.Armor;
+        data.Health = behavior.Health;
+        data.Armor = behavior.Armor;
     }
 
 }

@@ -2,9 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class BulletHoleDecal : MonoBehaviour
+public class DecalFadeOut : MonoBehaviour
 {
     Transform parent;
+    public bool needsParent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,8 +21,12 @@ public class BulletHoleDecal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //kill if parent dies
-        if (parent is null) Destroy(this.gameObject);
+        //kill if parent dies- bullet holes only
+        if (needsParent && parent is null)
+        { 
+            Destroy(this.gameObject);
+            Debug.Log("destroyed decal- no parent");
+        }
     }
 
 
@@ -34,7 +39,7 @@ public class BulletHoleDecal : MonoBehaviour
 
     private DecalProjector _decalProjector;
 
-    [SerializeField] private Material[] Decals;
+    [SerializeField] public Material[] Decals;
 
     private void OnEnable()
     {

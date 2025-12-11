@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.AI;
+using static PixelCrushers.DialogueSystem.UnityGUI.GUIProgressBar;
 
 public class RangedEnemy : IEnemy
 {
@@ -22,7 +23,10 @@ public class RangedEnemy : IEnemy
 
     public List<Transform> shootingPoints;
     private Transform currentPoint;
+
     public bool followsPlayer;
+    public float minDistanceFromPlayer = 10f;
+    public float maxDistanceFromPlayer = 25f;
 
     private RagdollController ragdollController;
     private Animator gunAnimator;
@@ -35,10 +39,12 @@ public class RangedEnemy : IEnemy
 
         Startup();
 
-        if (shootingPoints.Count > 1)
+        if (followsPlayer) state = State.chasing;
+
+        else if (shootingPoints.Count > 1)
         {
-            GetNearestCover();
             state = State.findCover;
+            GetNearestCover();
         }
     }
 
@@ -60,6 +66,7 @@ public class RangedEnemy : IEnemy
                 }
                 break;
             case State.shoot:
+                if (followsPlayer) state = State.chasing;
                 if (Time.time >= nextTimeToFire)
                 {
                     nextTimeToFire = Time.time + 1f / fireRate;
@@ -68,9 +75,11 @@ public class RangedEnemy : IEnemy
                 break;
             case State.findCover:
                 NavigateToCover();
+                if (followsPlayer) state = State.chasing;
                 break;
             case State.chasing:
-                state = State.shoot;
+                if (followsPlayer == false) state = State.shoot;
+                Chase();
                 break;
         }
 
@@ -85,6 +94,23 @@ public class RangedEnemy : IEnemy
     protected override void Chase()
     {
         //logic for moving
+
+        if (Vector3.Distance(player.transform.position, this.transform.position) <= tooClose)
+        { 
+            //https://discussions.unity.com/t/random-point-within-circle-with-min-max-radius/724904/10
+            Vector3 randomDirection = (Random.insideUnitCircle * player.transform.position).normalized;
+            float randomDistance = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
+            Vector3 point = player.transform.position + randomDirection * randomDistance;
+        
+            agent.SetDestination(point);
+        }
+
+
+        if (Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + 1f / fireRate;
+            Shoot();
+        }
     }
 
     private void FindNewCover()
@@ -146,7 +172,7 @@ public class RangedEnemy : IEnemy
         //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);   
 
         float playerDistance = Vector3.Distance(transform.position, player.transform.position);
-        if (playerDistance <= tooClose && shootingPoints.Count > 1)
+        if (!followsPlayer && playerDistance <= tooClose && shootingPoints.Count > 1)
         {
             //Debug.Log("too close!");
             FindNewCover();
