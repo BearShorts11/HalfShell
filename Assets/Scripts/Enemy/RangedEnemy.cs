@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.AI;
 
 public class RangedEnemy : IEnemy
@@ -23,10 +24,14 @@ public class RangedEnemy : IEnemy
     private Transform currentPoint;
     public bool followsPlayer;
 
+    private RagdollController ragdollController;
+    private Animator gunAnimator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        animator = GetComponentInChildren<Animator>();
+        gunAnimator = GetComponentInChildren<Animator>();
+        ragdollController = GetComponentInChildren<RagdollController>();
 
         Startup();
 
@@ -57,7 +62,7 @@ public class RangedEnemy : IEnemy
             case State.shoot:
                 if (Time.time >= nextTimeToFire)
                 {
-                    nextTimeToFire = Time.time + 1f/fireRate;
+                    nextTimeToFire = Time.time + 1f / fireRate;
                     Shoot();
                 }
                 break;
@@ -67,14 +72,14 @@ public class RangedEnemy : IEnemy
             case State.chasing:
                 state = State.shoot;
                 break;
-            case State.dead:
-                Destroy(gameObject);
-                break;
         }
 
         //look towards/track player
         //find a way to restrict to only y rotation
-        transform.LookAt(player.transform);
+        if (state != State.dead)
+        {
+            transform.LookAt(player.transform);
+        }
     }
 
     protected override void Chase()
@@ -132,13 +137,13 @@ public class RangedEnemy : IEnemy
 
     private void Shoot()
     {
-        animator.SetBool("Shooting", true);
+        gunAnimator.Play("Pistol Shooting");
 
         Transform gunChild = this.transform.GetChild(0);
         GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
         Vector3 playerCurrPos = player.transform.position;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
-        //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);
+        //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);   
 
         float playerDistance = Vector3.Distance(transform.position, player.transform.position);
         if (playerDistance <= tooClose && shootingPoints.Count > 1)
@@ -149,7 +154,17 @@ public class RangedEnemy : IEnemy
         }
 
         RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
-        animator.SetBool("Shooting", false);
+        
+    }
+
+    public override void Damage(float damageAmt)
+    {
+        gunAnimator.Play("Pistol Hit Reaction");
+        if (state == State.dead)
+        {
+            ragdollController.ApplyForceToRagdoll(damageAmt);
+        }
+        base.Damage(damageAmt);
     }
 
     private void AnimationController()
@@ -157,19 +172,50 @@ public class RangedEnemy : IEnemy
         //Controls Idle/Walking/Running 
         if (state == State.idle)
         {
-            animator.SetFloat("Speed", 0.0f);
+           gunAnimator.SetFloat("Speed", 0.0f);
         }
         else if (state == State.patrol)
         {
-            animator.SetFloat("Speed", 0.5f);
+            //animator.SetFloat("Speed", 0.5f);
         }
         else if (state == State.chasing)
         {
-            animator.SetFloat("Speed", 1f);
+            //animator.SetFloat("Speed", 1f);
         }
         else
         {
-            animator.SetFloat("Speed", 0.0f);
+            //animator.SetFloat("Speed", 0.0f);
+        }
+
+        if (agent.velocity.z > 0)
+        {
+            gunAnimator.Play("Pistol Running");
+        }
+        else if(agent.velocity.z < 0)
+        {
+            gunAnimator.Play("Pistol Running Backwards");
+        }
+
+        if (agent.velocity.x > 0 && state == State.findCover)
+        {
+            //Debug.Log("Navmesh Move Right");
+            gunAnimator.Play("Pistol Strafe R");
+        }
+        else if (agent.velocity.x < 0 && state == State.findCover)
+        {
+            //Debug.Log("NavAgent Move Left");
+            gunAnimator.Play("Pistol Strafe L");
+        }
+
+        //Controls Death and Ragdoll
+
+        if (state == State.dead)
+        {
+            //enemyLogic.enabled = false;
+            gunAnimator.enabled = false;
+            ragdollController.SetColliderState(true);
+            ragdollController.SetRigidbodyState(false);
+            return;
         }
 
     }

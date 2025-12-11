@@ -97,6 +97,7 @@ public class MeleeEnemy : IEnemy
             ragdollController.ApplyForceToRagdoll(damageAmt);
         }
         base.Damage(damageAmt);
+        animator.Play("HitReactionME");
     }
 
     private void AnimationController()
@@ -123,6 +124,7 @@ public class MeleeEnemy : IEnemy
         else if (state == State.chasing)
         {
             animator.SetFloat("Speed", 1f);
+            animator.Play("RunningME");
         }
         else
         {
