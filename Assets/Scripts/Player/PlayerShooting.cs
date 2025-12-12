@@ -475,7 +475,7 @@ public class PlayerShooting : MonoBehaviour
         else if (hit.collider.gameObject.tag == "Breakable")
         {
             Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-            HitBreakable(hit, shell);
+            HitBreakable(hit, shell, shell.Type);
             SpawnBulletHole(hit);
         }
         else if (hit.collider.gameObject.GetComponent<ObjActivator>())
@@ -524,12 +524,16 @@ public class PlayerShooting : MonoBehaviour
         //}
     }
 
-    private void HitBreakable(RaycastHit hit, ShellBase shell)
+    private void HitBreakable(RaycastHit hit, ShellBase shell, ShellBase.ShellType shellType)
     {
         BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
         if (obj.destructionOveride == false) { obj.DestructionPos = gameObject.transform.position; }
 
-        if (obj != null) { obj.Damage(shell.Damage); }
+        if (obj != null) 
+        {
+            if (obj.shellSpecific && shellType != obj.targetShell) return;
+            obj.Damage(shell.Damage);
+        }
     }
 
     private void HitObjActivator(RaycastHit hit, ShellBase.ShellType shellType)

@@ -11,15 +11,16 @@ public class ObjActivator : MonoBehaviour
 
     private void Awake()
     {
-        IntialObj.SetActive(true);
-        SwapToObj.SetActive(false);
+        if (IntialObj != null) { IntialObj.SetActive(true); }
+        if (SwapToObj != null) { SwapToObj.SetActive(false); }
     }
+
     public void ObjSwap(ShellBase.ShellType shellType)
     {
         if (shellType == targetShell)
         {
-            IntialObj.SetActive(false);
-            SwapToObj.SetActive(true);
+            if (IntialObj != null) { IntialObj.SetActive(false); }
+            if (SwapToObj != null) { SwapToObj.SetActive(true); }
         }
     }
 }

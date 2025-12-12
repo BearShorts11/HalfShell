@@ -7,6 +7,7 @@ using UnityEditor;
 using Unity.VisualScripting;
 using Assets.Scripts;
 using FMODUnity;
+using static ShellBase;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
@@ -40,6 +41,10 @@ public class BreakableObject : MonoBehaviour, IDamageable
     [SerializeField] private float pieceShrinkMult = 1;
     [SerializeField] private float pieceDestroyDelay = 5f;
     [SerializeField] private float pieceSleepCheckDelay = 0.1f;
+
+    [Header("Shell Specific Interactions")]
+    [SerializeField] public bool shellSpecific;
+    [SerializeField] public ShellType targetShell;
 
     [Header("Explosive Object Settings")]
     [SerializeField] public bool explosive;
