@@ -30,6 +30,7 @@ public class RangedEnemy : IEnemy
 
     private RagdollController ragdollController;
     private Animator gunAnimator;
+    [SerializeField] ParticleSystem muzzleflash;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -170,6 +171,7 @@ public class RangedEnemy : IEnemy
         Vector3 playerCurrPos = player.transform.position;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
         //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);   
+        muzzleflash.Play(true);
 
         float playerDistance = Vector3.Distance(transform.position, player.transform.position);
         if (!followsPlayer && playerDistance <= tooClose && shootingPoints.Count > 1)
