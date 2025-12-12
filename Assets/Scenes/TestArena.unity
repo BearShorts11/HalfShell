@@ -37139,7 +37139,6 @@ MonoBehaviour:
   attackCooldownTime: 0.5
   damageCooldownTime: 1.5
   SpawnAgro: 0
-  bloodSplatters: []
   BloodSplatterProjector: {fileID: 0}
   FullyGibbedParticle: {fileID: 0}
   tempEnemNormal: {fileID: 0}
@@ -68749,11 +68748,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &1608578372 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5175454161512950739, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
-  m_PrefabInstance: {fileID: 686923992406527359}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1632675222
 Mesh:
   m_ObjectHideFlags: 0
@@ -81639,81 +81633,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &2042162205
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2042162206}
-  - component: {fileID: 2042162209}
-  - component: {fileID: 2042162208}
-  - component: {fileID: 2042162207}
-  m_Layer: 7
-  m_Name: StepDetector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2042162206
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042162205}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1608578372}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2042162207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042162205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0d4f85d04ea99244943c9f73e2f087c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!135 &2042162208
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042162205}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 512
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 503
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5000001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &2042162209
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042162205}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!43 &2043509431
 Mesh:
   m_ObjectHideFlags: 0
@@ -90232,10 +90151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5175454161512950739, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2042162206}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
 --- !u!1001 &2129207482511179993
