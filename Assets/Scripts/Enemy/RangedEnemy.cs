@@ -40,13 +40,13 @@ public class RangedEnemy : IEnemy
 
         Startup();
 
-        if (followsPlayer) state = State.chasing;
-
+        if (followsPlayer) state = State.idle;
         else if (shootingPoints.Count > 1)
         {
             state = State.findCover;
             GetNearestCover();
         }
+        else state = State.idle;
     }
 
     // Update is called once per frame
@@ -63,7 +63,8 @@ public class RangedEnemy : IEnemy
                 // Detetcts if the player is within detetction radius.
                 if (distanceToPlayer <= shootingDistance)
                 {
-                    state = State.shoot;
+                    if (followsPlayer) state = State.chasing;
+                    else state = State.shoot;
                 }
                 break;
             case State.shoot:
@@ -134,6 +135,8 @@ public class RangedEnemy : IEnemy
     {
         //new cover found
         //Debug.Log("Navigating");
+        if (currentPoint is null) return;
+
         if (Vector3.Distance(this.transform.position, currentPoint.position) < 2f)
         {
             state = State.idle;
