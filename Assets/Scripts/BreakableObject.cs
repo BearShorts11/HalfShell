@@ -122,7 +122,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
         if (undamagedPrefab != null) { undamagedPrefab.SetActive(false); }
         if (damagedPrefab != null) { damagedPrefab.SetActive(false); }
 
-        if (activator != null) { activator.ObjSwapNoShell(); }
+        if (activator != null && activator.enabled==true) { activator.ObjSwapNoShell(); }
 
 
         // Uses Overlap sphere to draw rays to all damageable objects within range
