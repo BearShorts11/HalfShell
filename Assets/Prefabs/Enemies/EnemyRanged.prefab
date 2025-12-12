@@ -137,11 +137,6 @@ MonoBehaviour:
   attackCooldownTime: 0.5
   damageCooldownTime: 1.5
   SpawnAgro: 0
-  bloodSplatters:
-  - {fileID: 2100000, guid: 9cf1f0369f61572479c6b51d07a6791e, type: 2}
-  - {fileID: 2100000, guid: d2b4d717b7268264ca3d65e44f7865c3, type: 2}
-  - {fileID: 2100000, guid: 3d140f9fa99f68641b4ead441d621fac, type: 2}
-  - {fileID: 2100000, guid: a7681e3c5353948429be0916d51e51d6, type: 2}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 5294962421360413842}
   tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
@@ -153,6 +148,9 @@ MonoBehaviour:
   turnSpeed: 5
   shootingPoints: []
   followsPlayer: 1
+  minDistanceFromPlayer: 10
+  maxDistanceFromPlayer: 25
+  muzzleflash: {fileID: 4686047804426605777}
 --- !u!195 &3725621020842838227
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2291,7 +2289,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33193656c0b44ee489e78bc7ef4fd8c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8320512052793161004}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33193656c0b44ee489e78bc7ef4fd8c0, type: 3}
 --- !u!4 &1968807206933875322 stripped
@@ -3422,4 +3423,75 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2362987570322063018, guid: 90e331a3d22349642a84f3ed2ace42ba, type: 3}
   m_PrefabInstance: {fileID: 8957902613624847530}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9127577501058295786
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1968807206933875322}
+    m_Modifications:
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0024
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0324
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1388
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585654835511407419, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976072022354080820, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+      propertyPath: m_Name
+      value: PS_Pistol_MuzzleFlash
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+--- !u!198 &4686047804426605777 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4585654835511407419, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+  m_PrefabInstance: {fileID: 9127577501058295786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8320512052793161004 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
+  m_PrefabInstance: {fileID: 9127577501058295786}
   m_PrefabAsset: {fileID: 0}
