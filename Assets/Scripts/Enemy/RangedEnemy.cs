@@ -169,7 +169,8 @@ public class RangedEnemy : IEnemy
     {
         gunAnimator.Play("Pistol Shooting");
 
-        Transform gunChild = this.transform.GetChild(0);
+        Transform gunChild = RecursiveFindChild(this.transform, "Pistol");
+        Debug.Log(gunChild == null);
         GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
         Vector3 playerCurrPos = player.transform.position;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
@@ -187,6 +188,28 @@ public class RangedEnemy : IEnemy
         RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
         
     }
+
+
+    Transform RecursiveFindChild(Transform parent, string childName)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == childName)
+            {
+                return child;
+            }
+            else
+            {
+                Transform found = RecursiveFindChild(child, childName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public override void Damage(float damageAmt)
     {
