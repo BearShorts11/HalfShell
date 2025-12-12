@@ -252,7 +252,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
             {
                 if (renderer.bounds.size.sqrMagnitude != 0)
                     renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
-                renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step;
+                //if (renderer.transform.localScale != Vector3.zero) { renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step; }
             }
 
             time += step;
