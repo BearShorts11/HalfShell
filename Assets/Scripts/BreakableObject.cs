@@ -45,6 +45,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
     [Header("Shell Specific Interactions")]
     [SerializeField] public bool shellSpecific;
     [SerializeField] public ShellType targetShell;
+    private ObjActivator activator;
 
     [Header("Explosive Object Settings")]
     [SerializeField] public bool explosive;
@@ -72,6 +73,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        activator = GetComponent<ObjActivator>();
         Health = maxHealth;
         destructionPos = this.gameObject.transform.position;
 
@@ -119,6 +121,8 @@ public class BreakableObject : MonoBehaviour, IDamageable
 
         if (undamagedPrefab != null) { undamagedPrefab.SetActive(false); }
         if (damagedPrefab != null) { damagedPrefab.SetActive(false); }
+
+        if (activator != null) { activator.ObjSwapNoShell(); }
 
 
         // Uses Overlap sphere to draw rays to all damageable objects within range
