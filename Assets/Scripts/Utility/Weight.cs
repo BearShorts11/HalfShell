@@ -21,7 +21,7 @@ public class Weight : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rb.IsSleeping() || rb.linearVelocity.y <= 0.001f) return;
+        if (rb.IsSleeping() || Mathf.Abs(rb.linearVelocity.y) <= 1f) return;
 
         rb.AddForce(Vector3.down * weight);
     }
