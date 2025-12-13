@@ -96,6 +96,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     private PlayerShooting playerShooting;
     public GameObject ShotgunViewmodel;
+    public GameObject ApollyonBark;
 
     private bool isCurrentDeviceMouse
     {
@@ -136,6 +137,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             playerShooting.enabled = false;
             ShotgunViewmodel.SetActive(false);
+            ApollyonBark.SetActive(false);
         }
     }
 
@@ -349,6 +351,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     {
         playerShooting.enabled = true;
         ShotgunViewmodel.SetActive(true);
+        ApollyonBark.SetActive(true) ;
     }
 
 }
