@@ -42,6 +42,11 @@ public class MeleeEnemy : IEnemy
 
         base.Update();
         if (state == State.dead) return;
+        if (Docile)
+        {
+            state = State.idle;
+            return;
+        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         //Debug.Log(state);

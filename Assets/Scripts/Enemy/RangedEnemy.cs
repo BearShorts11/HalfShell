@@ -56,6 +56,11 @@ public class RangedEnemy : IEnemy
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         //Debug.Log(state);
+        if (Docile)
+        {
+            state = State.idle;
+            return;
+        }
 
         switch (state)
         {

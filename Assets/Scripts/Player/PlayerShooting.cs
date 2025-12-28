@@ -54,6 +54,7 @@ public class PlayerShooting : MonoBehaviour
     private float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
+    private bool useShells = true; //toggle infinite shells
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
@@ -231,7 +232,7 @@ public class PlayerShooting : MonoBehaviour
         {
             playerUI.ChamberUIOff();
             ShellBase shell = chamber as ShellBase;
-            AmmoCounts[shell.Type]++;
+            if (useShells) AmmoCounts[shell.Type]++;
         }
 
         chamber = null;
@@ -355,7 +356,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.Add(slug);
             LoadMagUI(slug);
 
-            AmmoCounts[ShellBase.ShellType.Slug]--;
+            if (useShells) AmmoCounts[ShellBase.ShellType.Slug]--;
         }
     }
 
@@ -368,7 +369,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.Add(buck);
             LoadMagUI(buck);
 
-            AmmoCounts[ShellBase.ShellType.Buckshot]--;
+            if (useShells) AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
     }
 
@@ -601,4 +602,7 @@ public class PlayerShooting : MonoBehaviour
     {
         return Time.time < _WaitTime;
     }
+
+    public void InfiniteShells() => useShells = false;
+    public void UseShells() => useShells = true;
 }

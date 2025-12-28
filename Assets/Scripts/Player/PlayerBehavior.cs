@@ -10,6 +10,7 @@ using UnityEngine.Windows;
 using Unity.Cinemachine;
 using Assets.Scripts;
 using System;
+using Unity.VisualScripting;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -36,6 +37,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public const float DEFAULT_FOV_VALUE = 60f;
     public const string FOV_KEY = "FOV";
 
+    [SerializeField] private bool invincible;
     [SerializeField] private float health = 100f;
     public float maxHealth { get { return 100f; } }
     public float Health
@@ -289,6 +291,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //better way to do this? -N
     public void Damage(float damage)
     {
+        if (invincible) return;
+        {
+            
+        }
         if (health > 0)
         {
             if (armor > 0) 
@@ -353,5 +359,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         ShotgunViewmodel.SetActive(true);
         ApollyonBark.SetActive(true) ;
     }
+
+    public void Invincible() => invincible = true;
+    public void Mortal() => invincible = false;
 
 }

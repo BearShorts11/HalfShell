@@ -36,6 +36,8 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     protected bool hit = false;
 
+    public bool Docile = true;
+
 
     public enum State
     {
@@ -247,4 +249,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     public void Alert() => state = State.chasing;
     public State GetState() => state;
     public void SetStartState(State state) => this.startState = state;
+
+    public void MakeDocile() => Docile = true;
+    public void MakeAgro() => Docile = false;
 }
