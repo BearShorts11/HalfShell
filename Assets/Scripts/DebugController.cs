@@ -20,6 +20,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand<float> DAMAGE_AMT;
     public static DebugCommand<bool> INVINCIBILITY;
     public static DebugCommand<bool> USE_SHELLS;
+    public static DebugCommand<bool> ENEMIES_AGRO;
     public static DebugCommand<string> SET_SHELLTYPE_MAX;
     public static DebugCommand HELP;
 
@@ -62,6 +63,26 @@ public class DebugController : MonoBehaviour
             else shooting.InfiniteShells();
         });
 
+        ENEMIES_AGRO = new DebugCommand<bool>("enemies_agro", "toggles if enemies target player or stay idle", "enemies_agro <bool>", (x) =>
+        {
+            MeleeEnemy[] melees = FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None);
+
+            foreach (MeleeEnemy m in melees)
+            { 
+                if (x) m.MakeAgro();
+                else m.MakeDocile();
+            }
+
+            RangedEnemy[] rangeds = FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None);
+
+            foreach (RangedEnemy r in rangeds)
+            { 
+                if (x) r.MakeAgro();
+                else r.MakeDocile();
+            }
+
+        });
+
         SET_SHELLTYPE_MAX = new DebugCommand<string>("shelltype_max", "sets specified shell type to max", "shelltype_max <string>", (x) =>
         {
             ShellBase shell;
@@ -87,7 +108,7 @@ public class DebugController : MonoBehaviour
 
         commandList = new List<object>
         {
-            MAX_HEALTH, MAX_SLUGS, DAMAGE, DAMAGE_AMT, INVINCIBILITY, USE_SHELLS, SET_SHELLTYPE_MAX, HELP
+            MAX_HEALTH, MAX_SLUGS, DAMAGE, DAMAGE_AMT, INVINCIBILITY, USE_SHELLS, ENEMIES_AGRO, SET_SHELLTYPE_MAX, HELP
         };
     }
 
@@ -154,7 +175,9 @@ public class DebugController : MonoBehaviour
         
             DebugCommandBase commandBase = commandList[i] as DebugCommandBase;
 
-            if(input.Contains(commandBase.CommandId) )
+            if (commandBase is null) Debug.Log(i);
+
+            if(input.Contains(commandBase.CommandId))
             {
                 if (commandList[i] as DebugCommand != null) (commandList[i] as DebugCommand).Invoke();
                 else if (commandList[i] as DebugCommand<float> != null) (commandList[i] as DebugCommand<float>).Invoke(int.Parse(properties[1]));

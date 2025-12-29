@@ -36,7 +36,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     protected bool hit = false;
 
-    public bool Docile = true;
+    public bool Docile;
 
 
     public enum State
@@ -81,6 +81,8 @@ public class IEnemy : MonoBehaviour, IDamageable
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
+
+        Docile = false;
 
         state = startState;
 

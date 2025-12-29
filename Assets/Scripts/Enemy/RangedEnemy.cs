@@ -55,7 +55,7 @@ public class RangedEnemy : IEnemy
         AnimationController();
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        //Debug.Log(state);
+        Debug.Log(state);
         if (Docile)
         {
             state = State.idle;
