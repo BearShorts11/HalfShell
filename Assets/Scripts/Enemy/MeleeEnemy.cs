@@ -39,7 +39,7 @@ public class MeleeEnemy : IEnemy
     override public void Update()
     {
         AnimationController();
-        Debug.Log(Docile);
+       // Debug.Log(Docile);
         base.Update();
         if (state == State.dead) return;
         if (Docile)

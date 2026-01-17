@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8239735254898850221}
   - component: {fileID: 3256531511175847293}
   - component: {fileID: 3725621020842838227}
+  - component: {fileID: 7612800190896384274}
   m_Layer: 7
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -139,6 +140,7 @@ MonoBehaviour:
   SpawnAgro: 0
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 5294962421360413842}
+  Docile: 0
   tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
   tempEnemDamage: {fileID: 2100000, guid: 3111c951a37f2ce46ac1b80947f63242, type: 2}
   shootingDistance: 30
@@ -173,6 +175,39 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7612800190896384274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204181174462613249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abe41f093934ea4cbb573c8acb978a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepEvent:
+    Guid:
+      Data1: 1491408407
+      Data2: 1277627061
+      Data3: -1894988629
+      Data4: 176551979
+    Path: event:/Enemy/EnemyFootsteps
+  landEvent:
+    Guid:
+      Data1: 1785617940
+      Data2: 1321937162
+      Data3: -1949205631
+      Data4: 1455956970
+    Path: event:/Enemy/EnemyLandings
+  surfaceParameterName: SurfaceTerrain
+  stepInterval: 0.25
+  minMoveSpeed: 0.1
+  raycastDistance: 3.04
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &271593418312977336
 PrefabInstance:
   m_ObjectHideFlags: 0
