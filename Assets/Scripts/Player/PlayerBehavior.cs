@@ -107,6 +107,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     private float cinemachineTargetPitch;
     private const float threshold = 0.01f;
 
+
+    public bool IsInCombat;
+
     //game over sounds
     //public EventReference deathRemark;
     public EventReference dmgEfforts;
@@ -228,6 +231,11 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             Time.timeScale = 1;
         }
 
+
+        if(FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
+        else if(FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
+        else IsInCombat = false;
+        //add additional checks for cutscenes etc. here
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
