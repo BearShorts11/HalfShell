@@ -1,10 +1,13 @@
 using FMODUnity;
 using NUnit.Framework;
+using PixelCrushers;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.AI;
+using UnityEngine.Animations;
+using UnityEngine.Pool;
 using static PixelCrushers.DialogueSystem.UnityGUI.GUIProgressBar;
 
 public class RangedEnemy : IEnemy
@@ -32,6 +35,10 @@ public class RangedEnemy : IEnemy
     private Animator gunAnimator;
     [SerializeField] ParticleSystem muzzleflash;
 
+
+    private ObjectPool<GameObject> bulletPool;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +54,42 @@ public class RangedEnemy : IEnemy
             GetNearestCover();
         }
         else state = State.idle;
+
+        // Create a pool with the four core callbacks.
+        bulletPool = new ObjectPool<GameObject>(
+            createFunc: CreateItem,
+            actionOnGet: OnGet,
+            actionOnRelease: OnRelease,
+            actionOnDestroy: OnDestroyItem,
+            collectionCheck: true,   // helps catch double-release mistakes
+            defaultCapacity: 10,
+            maxSize: 50
+        );
     }
+
+    #region pool behaviors
+
+    private GameObject CreateItem()
+    { 
+        return Instantiate( bulletPrefab );
+    }
+
+    private void OnGet(GameObject bullet)
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void OnRelease(GameObject bullet)
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnDestroyItem(GameObject bullet)
+    { 
+        Destroy( gameObject );
+    }
+
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -176,7 +218,16 @@ public class RangedEnemy : IEnemy
 
         Transform gunChild = RecursiveFindChild(this.transform, "Pistol");
         Debug.Log(gunChild == null);
-        GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
+
+        //GameObject bullet = Instantiate(bulletPrefab, gunChild.position, gunChild.rotation);
+        //get object from the pool
+        GameObject bullet = bulletPool.Get();
+        //set transform to that of enemy's gun
+        bullet.transform.position = gunChild.position;
+        bullet.transform.rotation = gunChild.rotation;
+        //return to pool after 5s (aka deactivate)
+        StartCoroutine("ReturnAfter", bullet);
+
         Vector3 playerCurrPos = player.transform.position;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
         //Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);   
@@ -192,6 +243,13 @@ public class RangedEnemy : IEnemy
 
         RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
         
+    }
+
+    private IEnumerable ReturnAfter(GameObject bullet)
+    { 
+        yield return new WaitForSeconds(5f);
+        bulletPool.Release(bullet);
+
     }
 
     //https://stackoverflow.com/questions/33437244/find-children-of-children-of-a-gameobject

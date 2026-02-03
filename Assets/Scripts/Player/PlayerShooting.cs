@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerShooting : MonoBehaviour
@@ -18,6 +19,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject ApollyonBarks;
     public Vector3 hitPosition;
 
+    #region VFX
     public GameObject BulletHole;
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
@@ -25,6 +27,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private Transform      shotgunMuzzleflashPos;
 
     public Animator animator;
+    #endregion
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
@@ -88,6 +91,12 @@ public class PlayerShooting : MonoBehaviour
     private ShellBase chamber;
     public static bool canFire = true;
 
+    #region new input handling
+    public PlayerInput input;
+    bool rack_performed;
+    bool rack_cancled;
+    #endregion
+
     #region Sound variables
     //Sound variable
     public EventReference firingSound;
@@ -126,6 +135,8 @@ public class PlayerShooting : MonoBehaviour
 
         // Temporary, just to showcase that it exists. Delete when we get to the starting sequence.
         animator.CrossFade("Draw_Inspect", 0f);
+
+        input = GetComponent<PlayerInput>();
     }
 
     //any data that needs saved, pass as parameter & update
