@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 
 public class PlayerShooting : MonoBehaviour
@@ -27,6 +28,9 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private Transform      shotgunMuzzleflashPos;
 
     public Animator animator;
+
+    private ObjectPool<GameObject> bulletHolePool;
+
     #endregion
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
@@ -137,7 +141,41 @@ public class PlayerShooting : MonoBehaviour
         animator.CrossFade("Draw_Inspect", 0f);
 
         input = GetComponent<PlayerInput>();
+
+        bulletHolePool = new ObjectPool<GameObject>(
+            createFunc: CreateItem,
+            actionOnGet: OnGet,
+            actionOnRelease: OnRelease,
+            actionOnDestroy: OnDestroyItem,
+            collectionCheck: true,   // helps catch double-release mistakes
+            defaultCapacity: 100,
+            maxSize: 500
+        );
     }
+
+    #region pool behaviors
+
+    private GameObject CreateItem()
+    {
+        return Instantiate(BulletHole);
+    }
+
+    private void OnGet(GameObject bullet)
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void OnRelease(GameObject bullet)
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnDestroyItem(GameObject bullet)
+    {
+        Destroy(gameObject);
+    }
+
+    #endregion
 
     //any data that needs saved, pass as parameter & update
     public void LoadData(Dictionary<ShellBase.ShellType, int> savedCounts) 
@@ -514,7 +552,11 @@ public class PlayerShooting : MonoBehaviour
         Quaternion normal = Quaternion.LookRotation(-hit.normal, Vector3.up);
         Quaternion rotation = Quaternion.Euler(0,0,Random.Range(0f,360f));
 
-        GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), normal * rotation, hit.transform);
+        //GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), normal * rotation, hit.transform);
+        GameObject decal = bulletHolePool.Get();
+        decal.transform.position = hit.point + (hit.normal * 0.1f);
+        decal.transform.rotation = rotation * normal;
+        decal.transform.SetParent(hit.transform);
     }
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)

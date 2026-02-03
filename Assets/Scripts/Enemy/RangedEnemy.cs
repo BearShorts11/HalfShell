@@ -62,8 +62,8 @@ public class RangedEnemy : IEnemy
             actionOnRelease: OnRelease,
             actionOnDestroy: OnDestroyItem,
             collectionCheck: true,   // helps catch double-release mistakes
-            defaultCapacity: 10,
-            maxSize: 50
+            defaultCapacity: 5, //really enemy should never need more than like 3
+            maxSize: 8
         );
     }
 
