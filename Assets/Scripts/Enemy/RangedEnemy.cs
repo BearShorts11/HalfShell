@@ -34,6 +34,7 @@ public class RangedEnemy : IEnemy
     private RagdollController ragdollController;
     private Animator gunAnimator;
     [SerializeField] ParticleSystem muzzleflash;
+    public EventReference firingSound;
 
 
     private ObjectPool<GameObject> bulletPool;
@@ -241,7 +242,7 @@ public class RangedEnemy : IEnemy
             state = State.findCover;
         }
 
-        RuntimeManager.PlayOneShot("event:/Weapons/Enemies/Pistol/Pistol_Fire", this.gameObject.transform.position);
+        RuntimeManager.PlayOneShot(firingSound, this.gameObject.transform.position);
         
     }
 
