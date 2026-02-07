@@ -32,13 +32,6 @@ public class MusicManager : MonoBehaviour
     {
         SetupMusic();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void PlayMusic()
     {
         musicInstance.start();
@@ -49,17 +42,40 @@ public class MusicManager : MonoBehaviour
         musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
-    public void SetMusicStage(int StageID)
+    // In theory, changes to a new music. Currently Untested.
+    public void ChangeMusic(EventReference NewMusic)
     {
-        musicInstance.setParameterByName("Music_Stage", StageID);
+        StopMusic();
+        musicInstance.release();
+        musicToPlay = NewMusic;
+        musicInstance = RuntimeManager.CreateInstance(musicToPlay);
     }
 
+    /// <summary>
+    /// Changes a section of the music to a corresponding section based on specific phase specified via Number ID
+    /// (Ranges from 0 - 3, 3 being unused for now)
+    /// 0 - Calm? Not sure yet.
+    /// 1 - Combat
+    /// 2 - End (May stop the music from playing until ID is set to any number other than 2 and 3, then PlayStopMusic is called to play the music again.)
+    /// </summary>
+    /// <param name="PhaseID"></param>
+    public void SetMusicPhase(int PhaseID)
+    {
+        musicInstance.setParameterByName("Music_Stage", PhaseID);
+    }
+
+    /// <summary>
+    /// Starts or stops music playback based on the specified flag.
+    /// </summary>
+    /// <param name="bPlay">If true, starts music playback; if false, stops music playback.</param>
     public void PlayStopMusic(bool bPlay)
     {
         if (musicInstance.IsUnityNull()) return;
 
         PLAYBACK_STATE playbackState;
+
         musicInstance.getPlaybackState(out playbackState);
+
         if (!playbackState.Equals(PLAYBACK_STATE.STOPPED) && !bPlay)
             StopMusic();
         else if (playbackState.Equals(PLAYBACK_STATE.STOPPED) && bPlay)
