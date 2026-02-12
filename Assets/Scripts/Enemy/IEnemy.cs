@@ -51,10 +51,6 @@ public class IEnemy : MonoBehaviour, IDamageable
         dead
     }
 
-    //temporary materials to show that an enemy was damaged
-    public Material tempEnemNormal;
-    public Material tempEnemDamage;
-
     private void Awake()
     {
         if (SpawnAgro) startState = State.chasing;
@@ -115,13 +111,7 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
         else
         {
-            //lowkey don't need this
-
-            // Rotates to "look" at the player
-            Vector3 direction = (player.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+            Debug.Log("no agent stupid fucking bitch");
         }
     }
 
@@ -186,7 +176,6 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
 
         SwitchStateOnDamage();
-        StartCoroutine(DamageFlash());
 
         if (BloodSplatterProjector != null)
         { 
@@ -218,14 +207,6 @@ public class IEnemy : MonoBehaviour, IDamageable
             state = State.cooldown;
             StartCoroutine(Cooldown(damageCooldownTime));
         }
-    }
-
-    protected IEnumerator DamageFlash()
-    {
-        gameObject.GetComponent<Renderer>().material = tempEnemDamage;
-        yield return new WaitForSeconds(.5f);
-        gameObject.GetComponent<Renderer>().material = tempEnemNormal;
-        yield return new WaitForSeconds(.5f);
     }
 
     protected IEnumerator SpawnDeathBloodPool()
