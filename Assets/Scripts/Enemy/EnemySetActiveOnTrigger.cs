@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class EnemySetActiveOnTrigger : MonoBehaviour
 {
+    /// <summary>
+    /// add enemies in inspector to be effected by this trigger
+    /// </summary>
     public List<IEnemy> enemies = new List<IEnemy>();
 
     public GameObject GameObject;
+    /// <summary>
+    /// If checked, trigger will alert enemies to player's presence. If unchecked, will spawn enmies in 
+    /// </summary>
     public bool AlertInstead;
 
     private void Start()
     {
+        //if meant to be alerted, make sure they are active. If meant to be spawned, make sure they are inactive
             foreach (IEnemy e in enemies)
             { 
                 e.gameObject.SetActive(AlertInstead);
@@ -22,22 +29,21 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //yes, i can do e.Alert seperately & omit the first if check, but then at worst case it runs 2 foreach loops instead of 1
+            //alerts enemies
             if (AlertInstead)
             {
                 foreach (IEnemy e in enemies)
                 {
-                    //e.Alert();
+                    e.Alert();
                 }
             }
-            else 
+            else //otherwise spawns them in
             { 
                 foreach (IEnemy e in enemies)
                 {
                     GameObject o = e.gameObject;
                     o.SetActive(true);
                     //e.SetStartState(IEnemy.State.chasing);
-                    //Debug.Log(e.GetState());
                 }
             }
         }
@@ -50,6 +56,9 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     }
 
     //this is pretty resource intensive, no?
+    /// <summary>
+    /// removes dead/destoryed enemies from the list
+    /// </summary>
     private void CheckEnemies()
     {
         for (int i = 0; i < enemies.Count; i++)

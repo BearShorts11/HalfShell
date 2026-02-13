@@ -24,10 +24,10 @@ public class DeadState : IState
     {
         Debug.Log("Dead State");
 
-        Owner.agent.isStopped = true;
+        if (Owner.agent.isActiveAndEnabled) Owner.agent.isStopped = true;
 
         //handle death. comment out below line when ragdolling gets added back
-        Object.Destroy(Owner.gameObject);
+        Object.Destroy(Owner.gameObject, 10f);
         //call methods from owner to do all the things
         
     }

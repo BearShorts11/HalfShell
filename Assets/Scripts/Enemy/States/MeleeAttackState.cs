@@ -24,12 +24,15 @@ public class MeleeAttackState : IState
         Owner.agent.isStopped = true;
         attackTimer -= Time.deltaTime;
 
+        //attack timer gives time for the animation to play before doing damage
         if (attackTimer <= 0)
         {
+            //if player is still within attack range after the animation finished playing, player takes damage
             if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= Owner.attackRange)
             {
                 Owner.Player.Damage(((MeleeEnemy)Owner).damage);
             }
+            //automatically switch to cooldown after attack timer is done
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._cooldownState);
         }

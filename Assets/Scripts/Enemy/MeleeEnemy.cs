@@ -8,8 +8,9 @@ public class MeleeEnemy : IEnemy
         base.Startup();
 
         detectionRange = 10f;
-        attackRange = 3f;
-        attackTimer = 1f;
+        attackRange = 4f;
+        attackTimer = 0.5f;
+        attackCooldown = 1f;
         damage = 10f;
 
         agent.speed = 12f;

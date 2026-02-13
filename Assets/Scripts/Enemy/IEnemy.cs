@@ -1,7 +1,9 @@
 using Assets.Scripts;
+using System.Collections;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.UI.GridLayoutGroup;
 
 public abstract class IEnemy : MonoBehaviour, IDamageable
@@ -12,14 +14,20 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
     protected Animator animator;
     private RagdollController ragdollController;
 
+    public GameObject BloodSplatterProjector;
+    private Material[] decals;
+
 
     [Header("Designer Variables")]
     [SerializeField] public float detectionRange;
     [SerializeField] public float attackRange;
     [SerializeField] public float attackTimer;
     [SerializeField] public float damage;
-    [SerializeField] public float attackCooldown { get; protected set; }
-    [SerializeField] public float damageCooldown { get; protected set; }
+    /// <summary>
+    /// based on animation time
+    /// </summary>
+    [SerializeField] public float attackCooldown = 0.5f;
+    [SerializeField] public float damageCooldown = 1.5f;
 
 
     [Header("Health & Damage")]
@@ -53,6 +61,11 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
         animator = GetComponentInChildren<Animator>();
         ragdollController = GetComponentInChildren<RagdollController>();
 
+        if (BloodSplatterProjector != null)
+        {
+            decals = BloodSplatterProjector.GetComponent<DecalFadeOut>().Decals;
+        }
+
         Health = maxHealth;
     }
 
@@ -80,6 +93,15 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
         if (Health <= 0)
         {
             stateMachine.TransitionTo(stateMachine._deadState);
+            agent.enabled = false;
+
+            StartCoroutine(SpawnDeathBloodPool());
+        }
+
+        //move body if shot when dead
+        if (stateMachine.CurrentState == stateMachine._deadState)
+        {
+            ragdollController.ApplyForceToRagdoll(amount);
         }
 
         //make agro if damaged from far away
@@ -89,6 +111,25 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
         }
 
         //VFX
+        if (BloodSplatterProjector != null)
+        {
+            GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+            splatter.GetComponent<DecalProjector>().material = decals[UnityEngine.Random.Range(2, decals.Length)];
+
+            splatter.transform.Rotate(90, 0, 0);
+        }
+
+    }
+
+    protected IEnumerator SpawnDeathBloodPool()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
+        GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+        splatter.GetComponent<DecalProjector>().material = decals[0];
+        splatter.GetComponent<DecalProjector>().size = new Vector3(3, 3, 5);
+        splatter.transform.Rotate(90, 0, 0);
 
     }
 
@@ -123,7 +164,20 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
 
 
     //TODO
-    public virtual void MakeDocile() { }
+    /// <summary>
+    /// Enemy will not attack player and will remian idle
+    /// </summary>
+    public virtual void MakeDocile() => Docile = true;
+    /// <summary>
+    /// Enemy will attack player
+    /// </summary>
+    public virtual void MakeAgro() => Docile = false;
 
-    public virtual void MakeAgro() { }
+    /// <summary>
+    /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a base class if the "alerted" state is not "Chasing"
+    /// </summary>
+    public virtual void Alert() 
+    {
+        stateMachine.TransitionTo(stateMachine._chaseState);
+    }
 }

@@ -29,6 +29,7 @@ public class ChaseState : IState
 
         if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= attackRange)
         {
+            //differnt chase behaviors based on what subtype of enemy is chasing the player
             switch (Owner)
             {
                 case MeleeEnemy:
@@ -46,12 +47,3 @@ public class ChaseState : IState
         }
     }
 }
-
-//playing around with subclassing states based on specific enemy types... I think this is better...
-//public class JuggernautChaseState : ChaseState
-//{
-//    public JuggernautChaseState(WIPEnemy owner) : base(owner, )
-//    { 
-        
-//    }
-//}
