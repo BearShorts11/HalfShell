@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public interface IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
 
     public void Enter();
 

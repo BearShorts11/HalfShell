@@ -21,9 +21,9 @@ public class StateMachine
     public event Action<IState> stateChanged;
 
 
-    private WIPEnemy Owner;
+    private IEnemy Owner;
 
-    public StateMachine(WIPEnemy owner)
+    public StateMachine(IEnemy owner)
     { 
         Owner = owner;
 
@@ -34,7 +34,10 @@ public class StateMachine
         _deadState = new DeadState(owner);
     }
 
-    // set the starting state
+    /// <summary>
+    /// Set the starting state. ONLY pass THIS state machine's state fields as parameters
+    /// </summary>
+    /// <param name="state"></param>
     public void Initialize(IState state)
     {
         CurrentState = state;
@@ -46,7 +49,10 @@ public class StateMachine
     }
 
 
-    // exit this state and enter another
+    /// <summary>
+    /// Exit current state and enter another. ONLY pass THIS state machine's state fields as parameters
+    /// </summary>
+    /// <param name="nextState"></param>
     public void TransitionTo(IState nextState)
     {
         CurrentState.Exit();
@@ -62,13 +68,6 @@ public class StateMachine
     // allow the StateMachine to update this state
     public void Update()
     {
-        Debug.Log("updating state machine");
-
-        if (Owner.Health <= 0)
-        {
-            TransitionTo(_deadState);
-        }
-
         if (CurrentState != null)
         {
             CurrentState.Update();

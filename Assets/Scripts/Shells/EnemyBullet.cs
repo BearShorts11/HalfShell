@@ -31,7 +31,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
+            //other.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
         }
 
         Debug.Log(other.gameObject.name);

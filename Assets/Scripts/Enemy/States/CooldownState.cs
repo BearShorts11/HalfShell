@@ -1,13 +1,14 @@
 ﻿using System.Threading;
+using TMPro;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class CooldownState : IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
     private float timer;
 
-    public CooldownState(WIPEnemy owner)
+    public CooldownState(IEnemy owner)
     {
         this.Owner = owner;
         timer = 5f;
@@ -28,8 +29,8 @@ public class CooldownState : IState
         {
             switch (Owner)
             {
-                case WIPMeleeBasic:
-
+                case MeleeEnemy:
+                    //here just in case we want that immediate switch, but it should also work perfectly fine without this
                     //if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) < Owner.attackRange)
                     //{
                     //    Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
@@ -37,6 +38,7 @@ public class CooldownState : IState
                     //else
                     //{
                     //}
+                        Owner.agent.isStopped = false;
                         Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
 
                         break;

@@ -3,9 +3,9 @@ using UnityEditor;
 
 public class DeadState : IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
 
-    public DeadState(WIPEnemy owner)
+    public DeadState(IEnemy owner)
     { 
         this.Owner = owner;
     }
@@ -26,7 +26,7 @@ public class DeadState : IState
 
         Owner.agent.isStopped = true;
 
-        //handle death. 
+        //handle death. comment out below line when ragdolling gets added back
         Object.Destroy(Owner.gameObject);
         //call methods from owner to do all the things
         

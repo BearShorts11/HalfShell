@@ -3,11 +3,11 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class ChaseState : IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
 
     float attackRange;
 
-    public ChaseState(WIPEnemy owner)
+    public ChaseState(IEnemy owner)
     {
         Owner = owner;
         this.attackRange = owner.attackRange;
@@ -31,8 +31,9 @@ public class ChaseState : IState
         {
             switch (Owner)
             {
-                case WIPMeleeBasic:
+                case MeleeEnemy:
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
+                    Owner.agent.isStopped = true;
                     break;
                 default:
                     throw new System.Exception("case not covered: chase state");

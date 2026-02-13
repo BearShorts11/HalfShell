@@ -27,7 +27,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
             {
                 foreach (IEnemy e in enemies)
                 {
-                    e.Alert();
+                    //e.Alert();
                 }
             }
             else 
@@ -36,7 +36,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
                 {
                     GameObject o = e.gameObject;
                     o.SetActive(true);
-                    e.SetStartState(IEnemy.State.chasing);
+                    //e.SetStartState(IEnemy.State.chasing);
                     //Debug.Log(e.GetState());
                 }
             }

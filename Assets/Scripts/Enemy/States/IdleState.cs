@@ -2,11 +2,11 @@
 
 public class IdleState : IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
 
     private float detectionRange;
 
-    public IdleState(WIPEnemy owner)
+    public IdleState(IEnemy owner)
     {
         this.Owner = owner;
         this.detectionRange = owner.detectionRange;
@@ -24,14 +24,14 @@ public class IdleState : IState
 
         if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= detectionRange)
         {
-            Debug.Log("player detected");
+            //Debug.Log("player detected");
 
             //can do this, or can create subtypes of Idle class that specify a different next path
             //I think this is fine for pathing if the next path has the same behavior but if not the next other state should subclass a specified behavior for a specific enemy
             //ex. JuggernautChaseState vs. ChaseState would have different behaviors, but pathing to that can be done in this switch/case structure
             switch (Owner)
             {
-                case WIPMeleeBasic:
+                case MeleeEnemy:
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
                     break;
                 default:

@@ -1,16 +1,19 @@
 using Assets.Scripts;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public abstract class WIPEnemy : MonoBehaviour, IDamageable
 {
-    [Header("Object pieces")]
+    [Header("Object and Component pieces")]
     public PlayerBehavior Player;
-
     public NavMeshAgent agent;
+    protected Animator animator;
+    private RagdollController ragdollController;
 
 
-    [Header("idk what to call this but it needs seperating")]
+    [Header("Designer Variables")]
     [SerializeField] public float detectionRange;
     [SerializeField] public float attackRange;
     [SerializeField] public float attackTimer;
@@ -21,8 +24,12 @@ public abstract class WIPEnemy : MonoBehaviour, IDamageable
 
     [Header("Health & Damage")]
     public float Health { get; set; }
-
     public float maxHealth { get; set; } = 50f;
+
+
+    [Header("Behavior Changes")]
+    public bool SpawnAgro;
+    public bool Docile;
 
 
     [Header("States")]
@@ -36,11 +43,15 @@ public abstract class WIPEnemy : MonoBehaviour, IDamageable
 
     protected void Startup()
     {
-        stateMachine = new StateMachine(this);
-        stateMachine.Initialize(stateMachine._idleState);
+        //stateMachine = new StateMachine(this);
+
+        if(SpawnAgro) stateMachine.Initialize(stateMachine._chaseState);
+        else stateMachine.Initialize(stateMachine._idleState);
 
         Player = FindFirstObjectByType<PlayerBehavior>();
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
+        ragdollController = GetComponentInChildren<RagdollController>();
 
         Health = maxHealth;
     }
@@ -56,7 +67,18 @@ public abstract class WIPEnemy : MonoBehaviour, IDamageable
         Debug.Log("enemy damaged");
         Health -= amount;
 
+        if (Health <= 0)
+        {
+            stateMachine.TransitionTo(stateMachine._deadState);
+        }
+
+        //make agro if damaged from far away
+        if (stateMachine.CurrentState == stateMachine._idleState)
+        { 
+            stateMachine.TransitionTo(stateMachine._chaseState);
+        }
+
         //VFX
-        
+
     }
 }

@@ -3,10 +3,10 @@ using UnityEngine.AI;
 
 public class MeleeAttackState : IState
 {
-    public WIPEnemy Owner { get; set; }
+    public IEnemy Owner { get; set; }
     private float attackTimer;
 
-    public MeleeAttackState(WIPEnemy owner)
+    public MeleeAttackState(IEnemy owner)
     { 
         this.Owner = owner;
         attackTimer = owner.attackTimer;
@@ -14,8 +14,6 @@ public class MeleeAttackState : IState
 
     public void Enter()
     {
-        Debug.Log("entering melee attack state");
-        Debug.Log($"timer: {Owner.attackTimer}");
         attackTimer = Owner.attackTimer;
     }
 
@@ -30,7 +28,7 @@ public class MeleeAttackState : IState
         {
             if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= Owner.attackRange)
             {
-                Owner.Player.Damage(((WIPMeleeBasic)Owner).damage);
+                Owner.Player.Damage(((MeleeEnemy)Owner).damage);
             }
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._cooldownState);
