@@ -1,235 +1,128 @@
+using Assets.Scripts;
+using System.Collections;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
-using Assets.Scripts;
-using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
-using Unity.Mathematics;
+using static UnityEngine.UI.GridLayoutGroup;
 
-public class IEnemy : MonoBehaviour, IDamageable
+public abstract class IEnemy : MonoBehaviour, IDamageable
 {
-    public float walkSpeed = 12f;
-    public float gravity = 20f;
-
-    [Tooltip("The max amount health set")]
-    [field: SerializeField]public float maxHealth { get; set; }=50f;
-    [field: SerializeField] public float Health { get; set; }
-    public float damage = 10f;
-    public float detectionRadius = 10;
-    public float attackRaidus = 3f;
-    public float attackTime = 1f; //tied to attack anim time
-    public float attackCooldownTime = 0.5f;
-    public float damageCooldownTime = 1.5f;
-
-    protected PlayerBehavior player;
-    protected NavMeshAgent agent;
+    [Header("Object and Component pieces")]
+    public PlayerBehavior Player;
+    public NavMeshAgent agent;
     protected Animator animator;
-
-    public bool SpawnAgro;
-    protected State state;
-    protected State startState = State.idle;
+    private RagdollController ragdollController;
 
     public GameObject BloodSplatterProjector;
     private Material[] decals;
 
-    public GameObject FullyGibbedParticle;
 
-    protected bool hit = false;
+    [Header("Designer Variables")]
+    [SerializeField] public float detectionRange;
+    [SerializeField] public float attackRange;
+    [SerializeField] public float attackTimer;
+    [SerializeField] public float damage;
+    /// <summary>
+    /// based on animation time
+    /// </summary>
+    [SerializeField] public float attackCooldown = 0.5f;
+    [SerializeField] public float damageCooldown = 1.5f;
 
+
+    [Header("Health & Damage")]
+    public float Health { get; set; }
+    public float maxHealth { get; set; } = 50f;
+
+
+    [Header("Behavior Changes")]
+    public bool SpawnAgro;
     public bool Docile;
 
 
-    public enum State
+    [Header("States")]
+    public StateMachine stateMachine;
+
+
+    // Using awake and subclasses will use start so anything in Awake is done before subclasses reach start
+    void Awake()
     {
-        idle,
-        patrol,
-        chasing,
-        findCover,
-        meleeAttack,
-        shoot,
-        cooldown,
-        dead
     }
 
-    //temporary materials to show that an enemy was damaged
-    public Material tempEnemNormal;
-    public Material tempEnemDamage;
-
-    private void Awake()
-    {
-        if (SpawnAgro) startState = State.chasing;
-    }
-
-    // Initializes Enemy upon Start, giving them max health and grabbing the Player Object
-    void Start()
-    {
-        Startup();
-    }
-
-    /// <summary>
-    /// call from base classes in Start() so as to not copy/paste code
-    /// </summary>
     protected void Startup()
     {
-        Debug.Log("starting up");
-        GameObject playerObject = GameObject.Find("Player");
-        player = playerObject.GetComponent<PlayerBehavior>();
+        stateMachine = new StateMachine(this);
 
-        animator = player.GetComponentInChildren<Animator>();
+        if (SpawnAgro) stateMachine.Initialize(stateMachine._chaseState);
+        else stateMachine.Initialize(stateMachine._idleState);
 
-        Health = maxHealth;
-
+        Player = FindFirstObjectByType<PlayerBehavior>();
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = walkSpeed;
-
-        Docile = false;
-
-        state = startState;
+        animator = GetComponentInChildren<Animator>();
+        ragdollController = GetComponentInChildren<RagdollController>();
 
         if (BloodSplatterProjector != null)
         {
             decals = BloodSplatterProjector.GetComponent<DecalFadeOut>().Decals;
         }
+
+        Health = maxHealth;
     }
 
-    virtual public void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (Health <= 0)
-            state = State.dead;
+        
     }
 
-    //move to melee script
-    protected virtual void Chase()
+    protected void BaseUpdate()
     {
-        if (state == State.dead) return;
-        if (agent != null)
-        {
-            agent.SetDestination(player.transform.position);
+        stateMachine.Update();
 
-            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-            if (distanceToPlayer <= attackRaidus)
-            {
-                state = State.meleeAttack;
-                StartCoroutine(Attack());
-            }
-        }
-        else
-        {
-            //lowkey don't need this
-
-            // Rotates to "look" at the player
-            Vector3 direction = (player.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
-        }
+        HandleAnimation();
     }
 
-    //move to melee script
-    protected virtual IEnumerator Attack()
+    public void Damage(float amount)
     {
-        if (state == State.dead) yield break;
-        agent.isStopped = true;
-        yield return new WaitForSeconds(attackTime);
-        //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
-        //aka play damage anim to give the player a chance to dodge?
-        player.Damage(damage);
-        state = State.cooldown;
-        StartCoroutine(Cooldown(attackCooldownTime));
-    }
+        Debug.Log("enemy damaged");
+        Health -= amount;
 
-    //move to melee script
-    protected IEnumerator Cooldown(float time)
-    {
-        //if (state == State.dead) yield break;
-        //this is how you do a full stop. for some reason just one of these does not work. all 3 however? yeah apparently that works
-        //agent.speed = 0;
-        //agent.isStopped = true;
-        //agent.SetDestination(transform.position);
-
-
-        yield return new WaitForSeconds(time);
-        if (state == State.dead) yield break;
-
-        agent.speed = walkSpeed;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if (distanceToPlayer <= attackRaidus)
-        {
-            state = State.meleeAttack;
-            StartCoroutine(Attack());
-        }
-        else
-        {
-            agent.isStopped = false;
-            state = State.chasing;
-        }
-    }
-
-    
-    virtual public void Damage(float damageAmt)
-    {
-        //put in damage flash aka have a damange cooldown?
-        Health -= damageAmt;
+        animator.SetFloat("Damage", amount);
+        animator.SetBool("Hit", true);
 
         if (Health <= 0)
         {
-            //Debug.Log("dead");
-            state = State.dead; 
+            stateMachine.TransitionTo(stateMachine._deadState);
+            agent.enabled = false;
+
+            StartCoroutine(SpawnDeathBloodPool());
         }
 
-        if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
-        { 
-            FullyGibbedParticle.SetActive(true);
-            FullyGibbedParticle.gameObject.transform.parent = null;
-            Destroy(this.gameObject);
-            return;
+        //move body if shot when dead
+        if (stateMachine.CurrentState == stateMachine._deadState)
+        {
+            ragdollController.ApplyForceToRagdoll(amount);
         }
 
-        SwitchStateOnDamage();
-        StartCoroutine(DamageFlash());
+        //make agro if damaged from far away
+        if (stateMachine.CurrentState == stateMachine._idleState)
+        {
+            stateMachine.TransitionTo(stateMachine._chaseState);
+        }
 
+        //VFX
         if (BloodSplatterProjector != null)
-        { 
+        {
             GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
             splatter.GetComponent<DecalProjector>().material = decals[UnityEngine.Random.Range(2, decals.Length)];
 
             splatter.transform.Rotate(90, 0, 0);
         }
-    }
 
-    public void SwitchStateOnDamage()
-    {
-        if (state == State.dead)
-        {
-            agent.enabled = false;
-            StopAllCoroutines();
-
-            StartCoroutine(SpawnDeathBloodPool());
-            Destroy(this.gameObject, 10f);
-            return;
-        }
-
-        
-
-        //override depending on enemy type??
-        if (state == State.idle || state == State.patrol) state = State.chasing;
-        if (state == State.chasing)
-        { 
-            state = State.cooldown;
-            StartCoroutine(Cooldown(damageCooldownTime));
-        }
-    }
-
-    protected IEnumerator DamageFlash()
-    {
-        gameObject.GetComponent<Renderer>().material = tempEnemDamage;
-        yield return new WaitForSeconds(.5f);
-        gameObject.GetComponent<Renderer>().material = tempEnemNormal;
-        yield return new WaitForSeconds(.5f);
     }
 
     protected IEnumerator SpawnDeathBloodPool()
-    { 
+    {
         yield return new WaitForSeconds(1f);
 
         if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
@@ -240,18 +133,51 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     }
 
-    //can call from editor by right clicking script- for debugging
-    [ContextMenu("Damage")]
-    public void DamageTest()
+    protected void HandleAnimation()
     {
-        Damage(10f);
+        //Controls Death
+        if (stateMachine.CurrentState == stateMachine._deadState)
+        {
+            animator.enabled = false;
+            ragdollController.SetColliderState(true);
+            ragdollController.SetRigidbodyState(false);
+            return;
+        }
+
+        //Controls Idle/Walking/Running 
+        animator.SetFloat("VelocityX", agent.velocity.x);
+        animator.SetFloat("VelocityY", agent.velocity.z);
+
+
+        //Controls Attacking
+        switch (stateMachine.CurrentState)
+        {
+            case MeleeAttackState:
+                animator.SetBool("Attacking", true);
+                    break;
+            default:
+                animator.SetBool("Attacking", false);
+                break;
+        }
+
     }
 
-    public void SwitchState(State newState) => state = newState;
-    public void Alert() => state = State.chasing;
-    public State GetState() => state;
-    public void SetStartState(State state) => this.startState = state;
 
-    public void MakeDocile() => Docile = true;
-    public void MakeAgro() => Docile = false;
+    //TODO
+    /// <summary>
+    /// Enemy will not attack player and will remian idle
+    /// </summary>
+    public virtual void MakeDocile() => Docile = true;
+    /// <summary>
+    /// Enemy will attack player
+    /// </summary>
+    public virtual void MakeAgro() => Docile = false;
+
+    /// <summary>
+    /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a base class if the "alerted" state is not "Chasing"
+    /// </summary>
+    public virtual void Alert() 
+    {
+        stateMachine.TransitionTo(stateMachine._chaseState);
+    }
 }

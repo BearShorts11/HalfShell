@@ -65,21 +65,21 @@ public class DebugController : MonoBehaviour
 
         ENEMIES_AGRO = new DebugCommand<bool>("enemies_agro", "toggles if enemies target player or stay idle", "enemies_agro <bool>", (x) =>
         {
-            MeleeEnemy[] melees = FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None);
+            //MeleeEnemy[] melees = FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None);
 
-            foreach (MeleeEnemy m in melees)
-            { 
-                if (x) m.MakeAgro();
-                else m.MakeDocile();
-            }
+            //foreach (MeleeEnemy m in melees)
+            //{ 
+            //    if (x) m.MakeAgro();
+            //    else m.MakeDocile();
+            //}
 
-            RangedEnemy[] rangeds = FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None);
+            //RangedEnemy[] rangeds = FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None);
 
-            foreach (RangedEnemy r in rangeds)
-            { 
-                if (x) r.MakeAgro();
-                else r.MakeDocile();
-            }
+            //foreach (RangedEnemy r in rangeds)
+            //{ 
+            //    if (x) r.MakeAgro();
+            //    else r.MakeDocile();
+            //}
 
         });
 
