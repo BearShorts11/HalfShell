@@ -31,12 +31,12 @@ public class Limb : MonoBehaviour, IDamageable
     [Tooltip("Take extra damage based on Percentage of Max HP when this limb is removed (0 - No damage,  1 - Instant Kill)")]
     [SerializeField] [Range(0, 1)] private float damPctHealthOnRemove = 0f; // Take extra damage based on enemy max health upon removing this limb
 
-    private IEnemy enemy;
+    private Enemy enemy;
     private Collider coll;
 
     void Awake()
     {
-        enemy = GetComponentInParent<IEnemy>();
+        enemy = GetComponentInParent<Enemy>();
         if (enemy == null)
             Debug.LogError("Error! Enemy script not detected! Is this Game Object a child of the Enemy Game Object?");
         coll = this.gameObject.GetComponent<Collider>();

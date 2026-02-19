@@ -7,7 +7,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     /// <summary>
     /// add enemies in inspector to be effected by this trigger
     /// </summary>
-    public List<IEnemy> enemies = new List<IEnemy>();
+    public List<Enemy> enemies = new List<Enemy>();
 
     public GameObject GameObject;
     /// <summary>
@@ -18,7 +18,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     private void Start()
     {
         //if meant to be alerted, make sure they are active. If meant to be spawned, make sure they are inactive
-            foreach (IEnemy e in enemies)
+            foreach (Enemy e in enemies)
             { 
                 e.gameObject.SetActive(AlertInstead);
             }
@@ -32,18 +32,17 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
             //alerts enemies
             if (AlertInstead)
             {
-                foreach (IEnemy e in enemies)
+                foreach (Enemy e in enemies)
                 {
                     e.Alert();
                 }
             }
             else //otherwise spawns them in
             { 
-                foreach (IEnemy e in enemies)
+                foreach (Enemy e in enemies)
                 {
                     GameObject o = e.gameObject;
                     o.SetActive(true);
-                    //e.SetStartState(IEnemy.State.chasing);
                 }
             }
         }
@@ -51,7 +50,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
 
     private void Update()
     {
-        CheckEnemies();
+        CheckValidEnemies();
         if (enemies.Count == 0) GameObject.SetActive(false);
     }
 
@@ -59,7 +58,7 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     /// <summary>
     /// removes dead/destoryed enemies from the list
     /// </summary>
-    private void CheckEnemies()
+    private void CheckValidEnemies()
     {
         for (int i = 0; i < enemies.Count; i++)
         {

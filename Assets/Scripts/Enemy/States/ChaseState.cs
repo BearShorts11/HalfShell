@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 using static UnityEngine.UI.GridLayoutGroup;
 
-public class ChaseState : IState
+/// <summary>
+/// Handles enemy chase behavior: state where enemy will close distance between itself and the player until it is within attacking distance
+/// </summary>
+public class ChaseState : State
 {
-    public IEnemy Owner { get; set; }
+    //public IEnemy Owner { get; private set; }
 
     float attackRange;
 
-    public ChaseState(IEnemy owner)
+    public ChaseState(Enemy owner)
     {
         Owner = owner;
         this.attackRange = owner.attackRange;
     }
 
-    public void Enter()
+    public override void Enter()
     {
         this.attackRange = Owner.attackRange;
     }
 
-    public void Exit()
+    public override void Exit()
     {
         
     }
 
-    public void Update()
+    public override void Update()
     {
         Debug.Log("Chase State");
 

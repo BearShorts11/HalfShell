@@ -159,7 +159,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     }
                 }
                 // Hurts Enemies
-                if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
+                if (fragmentHits[i].TryGetComponent<Enemy>(out Enemy enemy))
                 {
                     //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 

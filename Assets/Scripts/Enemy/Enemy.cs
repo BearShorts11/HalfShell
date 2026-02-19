@@ -6,29 +6,27 @@ using UnityEngine.AI;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.UI.GridLayoutGroup;
 
-public abstract class IEnemy : MonoBehaviour, IDamageable
+public abstract class Enemy : MonoBehaviour, IDamageable
 {
     [Header("Object and Component pieces")]
     public PlayerBehavior Player;
     public NavMeshAgent agent;
-    protected Animator animator;
-    private RagdollController ragdollController;
+    public Animator animator;
+    public RagdollController ragdollController;
 
     public GameObject BloodSplatterProjector;
     private Material[] decals;
 
-
     [Header("Designer Variables")]
-    [SerializeField] public float detectionRange;
-    [SerializeField] public float attackRange;
-    [SerializeField] public float attackTimer;
-    [SerializeField] public float damage;
+    [SerializeField] public float detectionRange = 10f;
+    [SerializeField] public float attackRange = 4f;
     /// <summary>
-    /// based on animation time
+    /// Attack animation time. Used to determine when to switch out of the attack state and when to check if the player should be damaged or not. 
     /// </summary>
+    [SerializeField] public float attackTimer = 0.5f;
+    [SerializeField] public float damage;
     [SerializeField] public float attackCooldown = 0.5f;
     [SerializeField] public float damageCooldown = 1.5f;
-
 
     [Header("Health & Damage")]
     public float Health { get; set; }
@@ -63,6 +61,7 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
 
         if (BloodSplatterProjector != null)
         {
+            //different blood splatter images for variation in art. copied from the projector to here so as to not makes tons of GetComponenet calls
             decals = BloodSplatterProjector.GetComponent<DecalFadeOut>().Decals;
         }
 
@@ -75,6 +74,10 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
         
     }
 
+    /// <summary>
+    /// Update method to be called from sub classes's Update method. For some reason Unity's MonoBehaviour Update does not run from a subclass (at least in my testing) 
+    /// so anything that needs to be ran from update is called from this method in a sub class's MonoBehaviour Update() instead. 
+    /// </summary>
     protected void BaseUpdate()
     {
         stateMachine.Update();
@@ -84,7 +87,9 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
 
     public void Damage(float amount)
     {
-        Debug.Log("enemy damaged");
+        //Damage is not it's own state because what Damage does depends on what state the enemy WAS in or IS CURRENTLY in
+        //ex. damaging a dead enemy is going to be different from damaging a chasing enemy from damaging an idling enemy
+
         Health -= amount;
 
         animator.SetFloat("Damage", amount);
@@ -98,16 +103,21 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
             StartCoroutine(SpawnDeathBloodPool());
         }
 
-        //move body if shot when dead
         if (stateMachine.CurrentState == stateMachine._deadState)
         {
+            //move body if shot when dead
             ragdollController.ApplyForceToRagdoll(amount);
         }
-
-        //make agro if damaged from far away
-        if (stateMachine.CurrentState == stateMachine._idleState)
+        else if (stateMachine.CurrentState == stateMachine._idleState)
         {
+            //make agro if damaged from far away
             stateMachine.TransitionTo(stateMachine._chaseState);
+        }
+        else if (stateMachine.CurrentState == stateMachine._chaseState)
+        {
+            //pause enemy when damaging it
+            stateMachine._cooldownState.SetCooldownTime(damageCooldown);
+            stateMachine.TransitionTo(stateMachine._cooldownState);
         }
 
         //VFX
@@ -123,6 +133,7 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
 
     protected IEnumerator SpawnDeathBloodPool()
     {
+        //lets the enemy die & ragdoll before spawning a pool in
         yield return new WaitForSeconds(1f);
 
         if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
@@ -135,30 +146,30 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
 
     protected void HandleAnimation()
     {
-        //Controls Death
-        if (stateMachine.CurrentState == stateMachine._deadState)
-        {
-            animator.enabled = false;
-            ragdollController.SetColliderState(true);
-            ragdollController.SetRigidbodyState(false);
-            return;
-        }
+        ////Controls Death
+        //if (stateMachine.CurrentState == stateMachine._deadState)
+        //{
+        //    animator.enabled = false;
+        //    ragdollController.SetColliderState(true);
+        //    ragdollController.SetRigidbodyState(false);
+        //    return;
+        //}
 
         //Controls Idle/Walking/Running 
         animator.SetFloat("VelocityX", agent.velocity.x);
         animator.SetFloat("VelocityY", agent.velocity.z);
 
 
-        //Controls Attacking
-        switch (stateMachine.CurrentState)
-        {
-            case MeleeAttackState:
-                animator.SetBool("Attacking", true);
-                    break;
-            default:
-                animator.SetBool("Attacking", false);
-                break;
-        }
+        ////Controls Attacking
+        //switch (stateMachine.CurrentState)
+        //{
+        //    case MeleeAttackState:
+        //        animator.SetBool("Attacking", true);
+        //            break;
+        //    default:
+        //        animator.SetBool("Attacking", false);
+        //        break;
+        //}
 
     }
 
@@ -174,7 +185,7 @@ public abstract class IEnemy : MonoBehaviour, IDamageable
     public virtual void MakeAgro() => Docile = false;
 
     /// <summary>
-    /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a base class if the "alerted" state is not "Chasing"
+    /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a sub class if the "alerted" state is not "Chasing"
     /// </summary>
     public virtual void Alert() 
     {

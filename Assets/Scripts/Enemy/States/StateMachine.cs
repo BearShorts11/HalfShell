@@ -5,25 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// Handles logic for switching enemy states
+/// </summary>
 public class StateMachine
 {
     //From: https://learn.unity.com/tutorial/develop-a-modular-flexible-codebase-with-the-state-programming-pattern
     //And: https://gameprogrammingpatterns.com/state.html 
 
-    public IState CurrentState { get; private set; }
+    /// <summary>
+    /// The current state of the state machine
+    /// </summary>
+    public State CurrentState { get; private set; }
 
+    //instances of each possible state
     public IdleState _idleState;
     public ChaseState _chaseState;
     public MeleeAttackState _meleeAttackState;
     public DeadState _deadState;
     public CooldownState _cooldownState;
-    
-    public event Action<IState> stateChanged;
 
+    private Enemy Owner;
 
-    private IEnemy Owner;
-
-    public StateMachine(IEnemy owner)
+    public StateMachine(Enemy owner)
     { 
         Owner = owner;
 
@@ -38,34 +42,26 @@ public class StateMachine
     /// Set the starting state. ONLY pass THIS state machine's state fields as parameters
     /// </summary>
     /// <param name="state"></param>
-    public void Initialize(IState state)
+    public void Initialize(State state)
     {
         CurrentState = state;
         state.Enter();
-
-
-        // notify other objects that state has changed
-        stateChanged?.Invoke(state);
     }
-
 
     /// <summary>
     /// Exit current state and enter another. ONLY pass THIS state machine's state fields as parameters
     /// </summary>
     /// <param name="nextState"></param>
-    public void TransitionTo(IState nextState)
+    public void TransitionTo(State nextState)
     {
         CurrentState.Exit();
         CurrentState = nextState;
         nextState.Enter();
-
-
-        // notify other objects that state has changed
-        stateChanged?.Invoke(nextState);
     }
 
-
-    // allow the StateMachine to update this state
+    /// <summary>
+    /// Allows state machine to update the current state
+    /// </summary>
     public void Update()
     {
         if (CurrentState != null)

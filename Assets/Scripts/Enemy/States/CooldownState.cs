@@ -3,53 +3,44 @@ using TMPro;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
-public class CooldownState : IState
+/// <summary>
+/// Handles enemy cooldown behavior: state where the enemy will stop and pause before continuing to the next action
+/// </summary>
+public class CooldownState : State
 {
-    public IEnemy Owner { get; set; }
     private float timer;
 
-    public CooldownState(IEnemy owner)
+    public CooldownState(Enemy owner)
     {
         this.Owner = owner;
         timer = 5f;
     }
 
-    public void Enter()
+    public override void Enter()
     {
         //call setcooldowntime?? or make transitioning state handle?
     }
 
     //called by state machine Update, then called from Owner object in Monobehavior Update
-    public void Update()
+    public override void Update()
     {
-        Debug.Log("Cooldow State");
         timer -= Time.deltaTime;
 
         if (timer <= 0)
         {
             switch (Owner)
             {
-                case MeleeEnemy:
-                    //here just in case we want that immediate switch, but it should also work perfectly fine without this
-                    //if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) < Owner.attackRange)
-                    //{
-                    //    Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
-                    //}
-                    //else
-                    //{
-                    //}
-                        Owner.agent.isStopped = false;
-                        Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
-
+                case RangedEnemy:
                         break;
                 default:
-                    throw new System.Exception("no case defined: cooldown");
+                        Owner.agent.isStopped = false;
+                        Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
                     break;
             }
         }
     }
 
-    public void Exit()
+    public override void Exit()
     {
         
     }

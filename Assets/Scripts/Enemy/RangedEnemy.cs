@@ -10,7 +10,7 @@ using UnityEngine.Animations;
 using UnityEngine.Pool;
 using static PixelCrushers.DialogueSystem.UnityGUI.GUIProgressBar;
 
-public class RangedEnemy : IEnemy
+public class RangedEnemy : Enemy
 {
     //[SerializeField] private float shootingDistance = 25;
     //[SerializeField] private float tooClose = 10f;
