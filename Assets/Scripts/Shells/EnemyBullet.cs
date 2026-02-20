@@ -40,7 +40,6 @@ public class EnemyBullet : MonoBehaviour
             {
                 hitSomething = true; //prevents double hit issue
                 other.GetComponent<IDamageable>().TakeDamage(GetComponentInParent<Enemy>().damage);
-                Debug.Log("HIT PLAYER");
             }
         }
 

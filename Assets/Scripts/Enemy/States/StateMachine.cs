@@ -21,7 +21,6 @@ public class StateMachine
     //instances of each possible state
     public IdleState _idleState;
     public ChaseState _chaseState;
-    public FindFirePointState _findFirePointState;
     public MeleeAttackState _meleeAttackState;
     public ShootState _shootState;
     public DeadState _deadState;
@@ -38,7 +37,6 @@ public class StateMachine
         _shootState = new ShootState(owner);
         _cooldownState = new CooldownState(owner);
         _chaseState = new ChaseState(owner);
-        _findFirePointState = new FindFirePointState(owner);
         _idleState = new IdleState(owner);
         _deadState = new DeadState(owner);
         _docileState = new DocileState(owner);

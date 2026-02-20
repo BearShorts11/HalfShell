@@ -21,8 +21,6 @@ public class IdleState : State
 
     public override void Update()
     {
-        Debug.Log("idle state");
-
         if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= detectionRange)
         {
             //can do this, or can create subtypes of Idle class that specify a different next path
@@ -31,10 +29,11 @@ public class IdleState : State
             switch (Owner)
             {
                 case RangedEnemy:
-                    //Owner.stateMachine.TransitionTo();
+                    //check if using fire points and has them
                     if ((Owner as RangedEnemy).UseFirePoints)
                     {
-                        
+                        //go directly to shooting, handles movement to points
+                        Owner.stateMachine.TransitionTo(Owner.stateMachine._shootState);
                     }
                     else
                     { 

@@ -28,8 +28,6 @@ public class ChaseState : State
 
     public override void Update()
     {
-        Debug.Log("chasing state");
-
         float distanceFromPlayer = Vector3.Distance(Owner.transform.position, Owner.Player.transform.position);
         if (distanceFromPlayer <= attackRange)
         {
@@ -46,7 +44,7 @@ public class ChaseState : State
             }
         }
         else if ((Owner is RangedEnemy) && distanceFromPlayer > Owner.detectionRange)
-        { 
+        {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
         }
         else

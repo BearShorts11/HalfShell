@@ -513,7 +513,6 @@ public class PlayerShooting : MonoBehaviour
 
     private void DoHit(RaycastHit hit, ShellBase shell)
     {
-        Debug.Log("hit successful");
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
         if (hit.collider.gameObject.tag == "Enemy")

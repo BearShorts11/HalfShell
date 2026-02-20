@@ -8,6 +8,13 @@ public class ShootState : State
     /// </summary>
     private RangedEnemy OwnerAsRanged;
 
+    /// <summary>
+    /// If using fire points, holds the current point enemy is at or pathing to
+    /// </summary>
+    private Transform currentPoint;
+
+    private bool foundNewPoint;
+
     public ShootState(Enemy owner)
     {
         this.Owner = owner;
@@ -16,6 +23,7 @@ public class ShootState : State
 
     public override void Enter()
     {
+        if (Owner is RangedEnemy && OwnerAsRanged.UseFirePoints) GetNearestFirePoint();
     }
 
     public override void Exit()
@@ -24,10 +32,8 @@ public class ShootState : State
 
     public override void Update()
     {
-        Debug.Log("shooting state");
-
         //state changes
-        if (Vector3.Distance(Owner.Player.transform.position, Owner.transform.position) > Owner.attackRange)
+        if (!OwnerAsRanged.UseFirePoints && Vector3.Distance(Owner.Player.transform.position, Owner.transform.position) > Owner.attackRange)
         {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
             return;
@@ -40,13 +46,22 @@ public class ShootState : State
                 //logic for moving
                 if (Vector3.Distance(Owner.Player.transform.position, Owner.transform.position) <= OwnerAsRanged.tooCloseRange)
                 {
-                    //Solution from https://discussions.unity.com/t/random-point-within-circle-with-min-max-radius/724904/10
-                    Vector3 randomDirection = (Random.insideUnitCircle * Owner.Player.transform.position).normalized;
-                    float randomDistance = Random.Range(OwnerAsRanged.tooCloseRange, OwnerAsRanged.maxDistanceFromPlayer);
-                    Vector3 point = Owner.Player.transform.position + randomDirection * randomDistance;
+                    if (OwnerAsRanged.UseFirePoints)
+                    {
+                        //Debug.Log($"found new point {foundNewPoint}");
+                        if (!foundNewPoint) FindNewFirePoint();
+                    }
+                    else
+                    { 
+                        //Solution from https://discussions.unity.com/t/random-point-within-circle-with-min-max-radius/724904/10
+                        Vector3 randomDirection = (Random.insideUnitCircle * Owner.Player.transform.position).normalized;
+                        float randomDistance = Random.Range(OwnerAsRanged.tooCloseRange, OwnerAsRanged.maxDistanceFromPlayer);
+                        Vector3 point = Owner.Player.transform.position + randomDirection * randomDistance;
 
-                    Owner.agent.SetDestination(point);
+                        Owner.agent.SetDestination(point);
+                    }
                 }
+
                 break;
             default:
                 //no movement- for sniper
@@ -81,5 +96,66 @@ public class ShootState : State
 
         RuntimeManager.PlayOneShot(OwnerAsRanged.firingSound, Owner.transform.position);
 
+    }
+
+    /// <summary>
+    /// Finds a random fire point and navigates to it
+    /// </summary>
+    private void FindNewFirePoint()
+    {
+        Transform newPoint = OwnerAsRanged.FirePoints[Random.Range(0, OwnerAsRanged.FirePoints.Count)];
+        while (newPoint.position == currentPoint.position)
+        {
+            newPoint = OwnerAsRanged.FirePoints[Random.Range(0, OwnerAsRanged.FirePoints.Count)];
+        }
+        //Debug.Log($"found new point: {newPoint.name}");
+        currentPoint = newPoint;
+        foundNewPoint = true;
+        //navigate to cover
+        NavigateToCover();
+    }
+
+    private void NavigateToCover()
+    {
+        if (currentPoint is null) return;
+        
+        foundNewPoint = false;
+
+        if (Vector3.Distance(Owner.transform.position, currentPoint.position) <= 3f)
+        {
+            //Debug.Log("at point");
+            return;
+        }
+
+        //Debug.Log("Navigating to point");
+        Owner.agent.SetDestination(currentPoint.position);
+    }
+
+    /// <summary>
+    /// Gets the nearest fire point and navigates to it
+    /// </summary>
+    private void GetNearestFirePoint()
+    {
+        //Debug.Log("Finding nearest point");
+
+        int index = 0;
+        float currentClosest = Vector3.Distance(Owner.transform.position, OwnerAsRanged.FirePoints[0].position);
+        for (int i = 1; i < OwnerAsRanged.FirePoints.Count; i++)
+        {
+            if (OwnerAsRanged.FirePoints[i] is null)
+            {
+                Debug.Log("ERROR: fill up your shooting points list (empty/null space)");
+                continue;
+            }
+
+            float currDistance = Vector3.Distance(Owner.transform.position, OwnerAsRanged.FirePoints[i].position);
+            if (currDistance < currentClosest)
+            {
+                index = i;
+                currentClosest = currDistance;
+            }
+        }
+        currentPoint = OwnerAsRanged.FirePoints[index];
+        NavigateToCover();
     }
 }
