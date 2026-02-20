@@ -43,12 +43,12 @@ public class DebugController : MonoBehaviour
 
         DAMAGE = new DebugCommand("damage", "damage the player by 10HP", "damage", () =>
         {
-            player.Damage(10);
+            player.TakeDamage(10);
         });
 
         DAMAGE_AMT = new DebugCommand<float>("dmg_amount", "damage the player by amount specified", "dmg_amount <float>", (x) =>
         {
-            player.Damage(x);
+            player.TakeDamage(x);
         });
 
         INVINCIBILITY = new DebugCommand<bool>("invincibility_set", "sets the player invincible (no damage) according to bool", "invincibility_set <bool>", (x) =>

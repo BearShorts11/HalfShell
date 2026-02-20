@@ -19,7 +19,6 @@ public class OLDRangedBasic : OLDIEnemy
     /// fire rate is shots per second
     /// </summary>
     [SerializeField] private float fireRate = 0.5f;
-    [SerializeField] private float turnSpeed = 5f;
     private float nextTimeToFire = 0;
 
     public static float gunDamage = 5f;
@@ -275,7 +274,7 @@ public class OLDRangedBasic : OLDIEnemy
     }
 
 
-    public override void Damage(float damageAmt)
+    public override void TakeDamage(float damageAmt)
     {
         if (state == State.dead)
         {
@@ -291,7 +290,7 @@ public class OLDRangedBasic : OLDIEnemy
             gunAnimator.Play("Pistol Hit Reaction");
         }
 
-        base.Damage(damageAmt);
+        base.TakeDamage(damageAmt);
     }
 
     private void AnimationController()

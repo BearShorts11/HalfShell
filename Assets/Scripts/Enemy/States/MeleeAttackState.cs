@@ -41,7 +41,7 @@ public class MeleeAttackState : State
 
             if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= Owner.attackRange)
             {
-                Owner.Player.Damage(((MeleeEnemy)Owner).damage);
+                Owner.Player.TakeDamage(((MeleeEnemy)Owner).damage);
             }
             //automatically switch to cooldown after attack timer is done
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);

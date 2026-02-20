@@ -21,6 +21,8 @@ public class IdleState : State
 
     public override void Update()
     {
+        Debug.Log("idle state");
+
         if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= detectionRange)
         {
             //can do this, or can create subtypes of Idle class that specify a different next path
@@ -29,6 +31,15 @@ public class IdleState : State
             switch (Owner)
             {
                 case RangedEnemy:
+                    //Owner.stateMachine.TransitionTo();
+                    if ((Owner as RangedEnemy).UseFirePoints)
+                    {
+                        
+                    }
+                    else
+                    { 
+                        Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
+                    }
                     break;
                 default:
                     //default case is Melee behavior

@@ -6,15 +6,6 @@ public class MeleeEnemy : Enemy
     void Start()
     {
         base.Startup();
-
-        detectionRange = 10f;
-        attackRange = 4f;
-        attackTimer = 0.5f;
-        attackCooldown = 1f;
-        damage = 10f;
-
-        agent.speed = 12f;
-        agent.acceleration = 10f;
     }
 
     // Update is called once per frame

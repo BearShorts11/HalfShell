@@ -66,7 +66,7 @@ public class Limb : MonoBehaviour, IDamageable
         if (enemy.Health <= 0 && coll.enabled) hasCollision = false ? coll.isTrigger = true ? coll.enabled = true : coll.enabled = false : coll.enabled = true;
     }
 
-    public void Damage(float Damage) // Should be called by the shotgun or any other source that would damage this
+    public void TakeDamage(float Damage) // Should be called by the shotgun or any other source that would damage this
     {
         if (Health <= 0f) return; // Do not run the code if the limb is already at 0 health! Fixes the strange issue of this funciton being called multiple times from being hit by a half shell (Multi-hit, so it makes sense that it would do that I guess?) 
         Damage *= damMult;
@@ -82,12 +82,12 @@ public class Limb : MonoBehaviour, IDamageable
             Health = Mathf.Clamp(enemy.Health - Damage, maxHealth * .25f, enemy.maxHealth);
         }
 
-        if (enemy  != null) enemy.Damage(Damage); // Pass the damage down to the enemy
+        if (enemy  != null) enemy.TakeDamage(Damage); // Pass the damage down to the enemy
 
         if (Health <= 0f && (isRemovable || (enemy.Health <= 0 && removableAfterDeath)))
         {
             // Check again just incase (Since the enemy took damage prior to this check, include the damage here to consider how much the enemy had prior)
-            if (enemy != null && enemy.Health + Damage > 0 && damPctHealthOnRemove > 0) enemy.Damage(enemy.maxHealth * damPctHealthOnRemove);
+            if (enemy != null && enemy.Health + Damage > 0 && damPctHealthOnRemove > 0) enemy.TakeDamage(enemy.maxHealth * damPctHealthOnRemove);
             if (isAttatchedToBone) {
                 if (isBoneItself)
                     transform.localScale = Vector3.zero;

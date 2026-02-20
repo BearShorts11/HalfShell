@@ -28,23 +28,28 @@ public class ChaseState : State
 
     public override void Update()
     {
-        Debug.Log("Chase State");
+        Debug.Log("chasing state");
 
-        if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= attackRange)
+        float distanceFromPlayer = Vector3.Distance(Owner.transform.position, Owner.Player.transform.position);
+        if (distanceFromPlayer <= attackRange)
         {
             //differnt chase behaviors based on what subtype of enemy is chasing the player
             switch (Owner)
             {
-                case MeleeEnemy:
-                    Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
-                    Owner.agent.isStopped = true;
+                case RangedEnemy:
+                    Owner.stateMachine.TransitionTo(Owner.stateMachine._shootState);
                     break;
                 default:
-                    throw new System.Exception("case not covered: chase state");
+                    Owner.agent.isStopped = true;
+                    Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
                     break;
             }
         }
-        else 
+        else if ((Owner is RangedEnemy) && distanceFromPlayer > Owner.detectionRange)
+        { 
+            Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
+        }
+        else
         {
             Owner.agent.SetDestination(Owner.Player.transform.position);
         }

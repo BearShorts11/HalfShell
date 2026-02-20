@@ -564,7 +564,7 @@ public class PlayerShooting : MonoBehaviour
         //Debug.Log(hit.transform.name);
         
         if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
-            damageable.Damage(shell.ScaleDamage(hit));
+            damageable.TakeDamage(shell.ScaleDamage(hit));
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();
         //if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
@@ -586,7 +586,7 @@ public class PlayerShooting : MonoBehaviour
         if (obj != null) 
         {
             if (obj.shellSpecific && shellType != obj.targetShell) return;
-            obj.Damage(shell.Damage);
+            obj.TakeDamage(shell.Damage);
         }
     }
 

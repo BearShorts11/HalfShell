@@ -105,7 +105,7 @@ public class EnemyBehavior : MonoBehaviour
     IEnumerator Attack()
     {
         agent.isStopped = true;
-        player.Damage(damage);
+        player.TakeDamage(damage);
         yield return new WaitForSeconds(attackTime);
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
         //aka play damage anim to give the player a chance to dodge?

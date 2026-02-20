@@ -95,7 +95,7 @@ public class OLDMeleeBasic : OLDIEnemy
         }
     }
 
-    public override void Damage(float damageAmt)
+    public override void TakeDamage(float damageAmt)
     {
         animator.SetFloat("Damage", damageAmt);
         animator.SetBool("Hit", true);
@@ -103,7 +103,7 @@ public class OLDMeleeBasic : OLDIEnemy
         {
             ragdollController.ApplyForceToRagdoll(damageAmt);
         }
-        base.Damage(damageAmt);
+        base.TakeDamage(damageAmt);
     }
 
 

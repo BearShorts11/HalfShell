@@ -62,7 +62,7 @@ public abstract class WIPEnemy : MonoBehaviour, IDamageable
         stateMachine.Update();
     }
 
-    public void Damage(float amount)
+    public void TakeDamage(float amount)
     {
         Debug.Log("enemy damaged");
         Health -= amount;

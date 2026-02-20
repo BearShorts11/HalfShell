@@ -127,39 +127,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db0420913d689147b9e2f2343d0d42d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 3
-  gravity: 20
-  <maxHealth>k__BackingField: 50
-  <Health>k__BackingField: 0
-  damage: 25
-  detectionRadius: 300
-  attackRaidus: 300
-  attackTime: 5
-  attackCooldownTime: 8
-  damageCooldownTime: 3
-  SpawnAgro: 0
+  Player: {fileID: 0}
+  agent: {fileID: 0}
+  animator: {fileID: 0}
+  ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
-  FullyGibbedParticle: {fileID: 5294962421360413842}
+  movementSpeed: 12
+  detectionRange: 25
+  attackRange: 20
+  attackTimer: 0.5
+  damage: 15
+  attackCooldown: 0.5
+  damageCooldown: 1.5
+  SpawnAgro: 0
   Docile: 0
-  tempEnemNormal: {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
-  tempEnemDamage: {fileID: 2100000, guid: 3111c951a37f2ce46ac1b80947f63242, type: 2}
-  shootingDistance: 600
-  tooClose: 15
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
-  fireRate: 0.125
-  turnSpeed: 5
-  shootingPoints: []
-  followsPlayer: 1
-  minDistanceFromPlayer: 10
-  maxDistanceFromPlayer: 500
-  muzzleflash: {fileID: 2348306862388933869}
+  tooCloseRange: 10
+  fireRate: 0.25
+  UseFirePoints: 0
+  FirePoints: []
+  maxDistanceFromPlayer: 20
+  muzzleflash: {fileID: 0}
   firingSound:
     Guid:
-      Data1: -93010656
-      Data2: 1250734305
-      Data3: 237955007
-      Data4: -1625331744
-    Path: event:/Weapons/Enemies/SniperRifle/Sniper_Fire
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!195 &3725621020842838227
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2339,11 +2334,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 996367268126053062, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
   m_PrefabInstance: {fileID: 2248800761124767702}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &2348306862388933869 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4585654835511407419, guid: bf43034937b63f847ab6722a3266c69f, type: 3}
-  m_PrefabInstance: {fileID: 2248800761124767702}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2278215719631148863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2404,11 +2394,6 @@ PrefabInstance:
 --- !u!4 &838162119053520990 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1458068012242102113, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
-  m_PrefabInstance: {fileID: 2278215719631148863}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5294962421360413842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6261874184350702509, guid: 15f0aee5ab525ed4eae98420b8c6eba3, type: 3}
   m_PrefabInstance: {fileID: 2278215719631148863}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3342391136973221304

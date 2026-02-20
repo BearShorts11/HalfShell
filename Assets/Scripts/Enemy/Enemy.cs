@@ -18,14 +18,24 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     private Material[] decals;
 
     [Header("Designer Variables")]
+    [SerializeField] public float movementSpeed = 12f;
     [SerializeField] public float detectionRange = 10f;
     [SerializeField] public float attackRange = 4f;
+
     /// <summary>
     /// Attack animation time. Used to determine when to switch out of the attack state and when to check if the player should be damaged or not. 
     /// </summary>
     [SerializeField] public float attackTimer = 0.5f;
-    [SerializeField] public float damage;
+    [SerializeField] public float damage = 10f;
+
+    /// <summary>
+    /// cooldown time after enemy attacks
+    /// </summary>
     [SerializeField] public float attackCooldown = 0.5f;
+
+    /// <summary>
+    /// cooldown time after enemy is damaged
+    /// </summary>
     [SerializeField] public float damageCooldown = 1.5f;
 
     [Header("Health & Damage")]
@@ -34,18 +44,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
 
     [Header("Behavior Changes")]
-    public bool SpawnAgro;
     public bool Docile;
+
+    /// <summary>
+    /// spawns the enemy persuing chasing the player
+    /// </summary>
+    public bool SpawnAgro;
 
 
     [Header("States")]
     public StateMachine stateMachine;
-
-
-    // Using awake and subclasses will use start so anything in Awake is done before subclasses reach start
-    void Awake()
-    {
-    }
 
     protected void Startup()
     {
@@ -66,12 +74,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
 
         Health = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        agent.speed = movementSpeed;
+        agent.acceleration = 10f;
     }
 
     /// <summary>
@@ -85,7 +89,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         HandleAnimation();
     }
 
-    public void Damage(float amount)
+    public virtual void TakeDamage(float amount)
     {
         //Damage is not it's own state because what Damage does depends on what state the enemy WAS in or IS CURRENTLY in
         //ex. damaging a dead enemy is going to be different from damaging a chasing enemy from damaging an idling enemy
@@ -146,44 +150,28 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected void HandleAnimation()
     {
-        ////Controls Death
-        //if (stateMachine.CurrentState == stateMachine._deadState)
-        //{
-        //    animator.enabled = false;
-        //    ragdollController.SetColliderState(true);
-        //    ragdollController.SetRigidbodyState(false);
-        //    return;
-        //}
-
         //Controls Idle/Walking/Running 
         animator.SetFloat("VelocityX", agent.velocity.x);
         animator.SetFloat("VelocityY", agent.velocity.z);
-
-
-        ////Controls Attacking
-        //switch (stateMachine.CurrentState)
-        //{
-        //    case MeleeAttackState:
-        //        animator.SetBool("Attacking", true);
-        //            break;
-        //    default:
-        //        animator.SetBool("Attacking", false);
-        //        break;
-        //}
-
     }
 
 
     //TODO
     /// <summary>
-    /// Enemy will not attack player and will remian idle
+    /// Enemy will not attack player and will remian idle. Gets called from Debug Command ONLY
     /// </summary>
-    public virtual void MakeDocile() => Docile = true;
+    public virtual void MakeDocile()
+    {
+        stateMachine.TransitionTo(stateMachine._docileState);
+    }
     /// <summary>
-    /// Enemy will attack player
+    /// Enemy will attack player. Gets called from Debug Command ONLY
     /// </summary>
-    public virtual void MakeAgro() => Docile = false;
-
+    public virtual void MakeAgro()
+    { 
+        stateMachine.TransitionTo(stateMachine._idleState);
+        
+    }
     /// <summary>
     /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a sub class if the "alerted" state is not "Chasing"
     /// </summary>

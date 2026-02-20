@@ -122,7 +122,7 @@ public class OLDIEnemy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(attackTime);
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
         //aka play damage anim to give the player a chance to dodge?
-        player.Damage(damage);
+        player.TakeDamage(damage);
         state = State.cooldown;
         StartCoroutine(Cooldown(attackCooldownTime));
     }
@@ -155,7 +155,7 @@ public class OLDIEnemy : MonoBehaviour, IDamageable
     }
 
 
-    virtual public void Damage(float damageAmt)
+    virtual public void TakeDamage(float damageAmt)
     {
         //put in damage flash aka have a damange cooldown?
         Health -= damageAmt;
@@ -224,7 +224,7 @@ public class OLDIEnemy : MonoBehaviour, IDamageable
     [ContextMenu("Damage")]
     public void DamageTest()
     {
-        Damage(10f);
+        TakeDamage(10f);
     }
 
     public void SwitchState(State newState) => state = newState;

@@ -31,7 +31,7 @@ public class Trigger_Hurt : MonoBehaviour
                 timeToNextDamage = Time.time + damageInterval;
                 if (damageable != null)
                 {
-                    damageable.Damage(damage);
+                    damageable.TakeDamage(damage);
                 }
             }
         }

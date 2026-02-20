@@ -86,7 +86,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
         if (explosive) { fragmentHits = new Collider[fragments]; }
     }
 
-    public void Damage(float damageAmt)
+    public void TakeDamage(float damageAmt)
     {
         Health -= damageAmt;
 
@@ -155,7 +155,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
                         obj.DestructionPos = explodePos;
-                        obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        obj.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 // Hurts Enemies
@@ -166,7 +166,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        enemy.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 else if (fragmentHits[i].TryGetComponent<IDamageable>(out IDamageable damageable))
@@ -174,7 +174,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        damageable.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        damageable.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 // Hurts Player
@@ -185,7 +185,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        player.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                         playerHurt = true;
                     }
                 }
