@@ -54,32 +54,4 @@ public class RangedEnemy : Enemy
 
         base.TakeDamage(amount);
     }
-
-    //https://stackoverflow.com/questions/33437244/find-children-of-children-of-a-gameobject
-    /// <summary>
-    /// Finds the child of the given Transform of the given name. Used to find the Pistol object for this enemy in order to spawn a bullet accurately
-    /// where the gun object is. 
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <param name="childName"></param>
-    /// <returns></returns>
-    public Transform RecursiveFindChild(Transform parent, string childName)
-    {
-        foreach (Transform child in parent)
-        {
-            if (child.name == childName)
-            {
-                return child;
-            }
-            else
-            {
-                Transform found = RecursiveFindChild(child, childName);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-        }
-        return null;
-    }
 }

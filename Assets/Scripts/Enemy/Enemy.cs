@@ -41,6 +41,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("Health & Damage")]
     public float Health { get; set; }
     public float maxHealth { get; set; } = 50f;
+    public bool Dead { get; private set; }
 
 
     [Header("Behavior Changes")]
@@ -99,14 +100,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         animator.SetFloat("Damage", amount);
         animator.SetBool("Hit", true);
 
-        if (Health <= 0)
+        //checking for dead prevents this from firing every time the enemy is shot after death
+        if (Health <= 0 & Dead == false)
         {
             stateMachine.TransitionTo(stateMachine._deadState);
             agent.enabled = false;
+            Dead = true;
 
             StartCoroutine(SpawnDeathBloodPool());
         }
 
+        //behavior based on state
         if (stateMachine.CurrentState == stateMachine._deadState)
         {
             //move body if shot when dead
@@ -148,6 +152,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     }
 
+    /// <summary>
+    /// Handles run/walking animations
+    /// </summary>
     protected void HandleAnimation()
     {
         //Controls Idle/Walking/Running 
@@ -164,6 +171,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         stateMachine.TransitionTo(stateMachine._docileState);
     }
+
     /// <summary>
     /// Enemy will attack player. Gets called from Debug Command ONLY
     /// </summary>
@@ -172,11 +180,40 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         stateMachine.TransitionTo(stateMachine._idleState);
         
     }
+
     /// <summary>
     /// Alert this enemy to the player's presence. Transition to state after Idle. Override in a sub class if the "alerted" state is not "Chasing"
     /// </summary>
     public virtual void Alert() 
     {
         stateMachine.TransitionTo(stateMachine._chaseState);
+    }
+
+    //https://stackoverflow.com/questions/33437244/find-children-of-children-of-a-gameobject
+    /// <summary>
+    /// Finds the child of the given Transform of the given name. Used to find the Pistol object for this enemy in order to spawn a bullet accurately
+    /// where the gun object is. 
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="childName"></param>
+    /// <returns></returns>
+    public Transform RecursiveFindChild(Transform parent, string childName)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == childName)
+            {
+                return child;
+            }
+            else
+            {
+                Transform found = RecursiveFindChild(child, childName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+        }
+        return null;
     }
 }
