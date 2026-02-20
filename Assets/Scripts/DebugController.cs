@@ -43,12 +43,12 @@ public class DebugController : MonoBehaviour
 
         DAMAGE = new DebugCommand("damage", "damage the player by 10HP", "damage", () =>
         {
-            player.Damage(10);
+            player.TakeDamage(10);
         });
 
         DAMAGE_AMT = new DebugCommand<float>("dmg_amount", "damage the player by amount specified", "dmg_amount <float>", (x) =>
         {
-            player.Damage(x);
+            player.TakeDamage(x);
         });
 
         INVINCIBILITY = new DebugCommand<bool>("invincibility_set", "sets the player invincible (no damage) according to bool", "invincibility_set <bool>", (x) =>
@@ -65,21 +65,21 @@ public class DebugController : MonoBehaviour
 
         ENEMIES_AGRO = new DebugCommand<bool>("enemies_agro", "toggles if enemies target player or stay idle", "enemies_agro <bool>", (x) =>
         {
-            MeleeEnemy[] melees = FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None);
+            //MeleeEnemy[] melees = FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None);
 
-            foreach (MeleeEnemy m in melees)
-            { 
-                if (x) m.MakeAgro();
-                else m.MakeDocile();
-            }
+            //foreach (MeleeEnemy m in melees)
+            //{ 
+            //    if (x) m.MakeAgro();
+            //    else m.MakeDocile();
+            //}
 
-            RangedEnemy[] rangeds = FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None);
+            //RangedEnemy[] rangeds = FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None);
 
-            foreach (RangedEnemy r in rangeds)
-            { 
-                if (x) r.MakeAgro();
-                else r.MakeDocile();
-            }
+            //foreach (RangedEnemy r in rangeds)
+            //{ 
+            //    if (x) r.MakeAgro();
+            //    else r.MakeDocile();
+            //}
 
         });
 

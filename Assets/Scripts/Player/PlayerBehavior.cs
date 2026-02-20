@@ -297,7 +297,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
     //better way to do this? -N
-    public void Damage(float damage)
+    public void TakeDamage(float damage)
     {
         if (invincible) return;
         {

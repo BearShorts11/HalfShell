@@ -3,7 +3,7 @@ using UnityEngine;
 public class DeathDetector : MonoBehaviour
 {
     [SerializeField][Tooltip("Killable Enemy(s) that enable or disable an object.")]
-    private IEnemy TargetEnemy;
+    private Enemy TargetEnemy;
     private GameObject toggledObject;
 
     private bool enemyKilled = false;

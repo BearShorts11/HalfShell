@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using Unity.Mathematics;
 
-public class IEnemy : MonoBehaviour, IDamageable
+public class OLDIEnemy : MonoBehaviour, IDamageable
 {
     public float walkSpeed = 12f;
     public float gravity = 20f;
 
     [Tooltip("The max amount health set")]
-    [field: SerializeField]public float maxHealth { get; set; }=50f;
+    [field: SerializeField] public float maxHealth { get; set; } = 50f;
     [field: SerializeField] public float Health { get; set; }
     public float damage = 10f;
     public float detectionRadius = 10;
@@ -34,7 +34,7 @@ public class IEnemy : MonoBehaviour, IDamageable
 
     public GameObject FullyGibbedParticle;
 
-    protected bool hit = false;
+    //protected bool hit = false;
 
     public bool Docile;
 
@@ -50,10 +50,6 @@ public class IEnemy : MonoBehaviour, IDamageable
         cooldown,
         dead
     }
-
-    //temporary materials to show that an enemy was damaged
-    public Material tempEnemNormal;
-    public Material tempEnemDamage;
 
     private void Awake()
     {
@@ -71,7 +67,6 @@ public class IEnemy : MonoBehaviour, IDamageable
     /// </summary>
     protected void Startup()
     {
-        Debug.Log("starting up");
         GameObject playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
 
@@ -115,13 +110,7 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
         else
         {
-            //lowkey don't need this
-
-            // Rotates to "look" at the player
-            Vector3 direction = (player.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+            Debug.Log("no agent stupid fucking bitch");
         }
     }
 
@@ -133,7 +122,7 @@ public class IEnemy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(attackTime);
         //could put damage here, recheck if player is within attack distance to see if they actually get damaged or not
         //aka play damage anim to give the player a chance to dodge?
-        player.Damage(damage);
+        player.TakeDamage(damage);
         state = State.cooldown;
         StartCoroutine(Cooldown(attackCooldownTime));
     }
@@ -165,8 +154,8 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
     }
 
-    
-    virtual public void Damage(float damageAmt)
+
+    virtual public void TakeDamage(float damageAmt)
     {
         //put in damage flash aka have a damange cooldown?
         Health -= damageAmt;
@@ -174,11 +163,11 @@ public class IEnemy : MonoBehaviour, IDamageable
         if (Health <= 0)
         {
             //Debug.Log("dead");
-            state = State.dead; 
+            state = State.dead;
         }
 
         if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
-        { 
+        {
             FullyGibbedParticle.SetActive(true);
             FullyGibbedParticle.gameObject.transform.parent = null;
             Destroy(this.gameObject);
@@ -186,10 +175,9 @@ public class IEnemy : MonoBehaviour, IDamageable
         }
 
         SwitchStateOnDamage();
-        StartCoroutine(DamageFlash());
 
         if (BloodSplatterProjector != null)
-        { 
+        {
             GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
             splatter.GetComponent<DecalProjector>().material = decals[UnityEngine.Random.Range(2, decals.Length)];
 
@@ -209,27 +197,19 @@ public class IEnemy : MonoBehaviour, IDamageable
             return;
         }
 
-        
+
 
         //override depending on enemy type??
         if (state == State.idle || state == State.patrol) state = State.chasing;
         if (state == State.chasing)
-        { 
+        {
             state = State.cooldown;
             StartCoroutine(Cooldown(damageCooldownTime));
         }
     }
 
-    protected IEnumerator DamageFlash()
-    {
-        gameObject.GetComponent<Renderer>().material = tempEnemDamage;
-        yield return new WaitForSeconds(.5f);
-        gameObject.GetComponent<Renderer>().material = tempEnemNormal;
-        yield return new WaitForSeconds(.5f);
-    }
-
     protected IEnumerator SpawnDeathBloodPool()
-    { 
+    {
         yield return new WaitForSeconds(1f);
 
         if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
@@ -244,7 +224,7 @@ public class IEnemy : MonoBehaviour, IDamageable
     [ContextMenu("Damage")]
     public void DamageTest()
     {
-        Damage(10f);
+        TakeDamage(10f);
     }
 
     public void SwitchState(State newState) => state = newState;

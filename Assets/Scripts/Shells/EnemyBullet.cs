@@ -9,10 +9,15 @@ public class EnemyBullet : MonoBehaviour
     private Vector3 target;
     private float targetReached = 0.001f;
 
+    /// <summary>
+    /// Prevents a double hit issue where it would damage the player twice
+    /// </summary>
+    private bool hitSomething;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Destroy(this.gameObject, 5f);
+        Destroy(this.gameObject, 5f);
         if (target != null) transform.LookAt(target);
     }
 
@@ -31,19 +36,18 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
+            if (transform.parent is not null && !hitSomething)
+            {
+                hitSomething = true; //prevents double hit issue
+                other.GetComponent<IDamageable>().TakeDamage(GetComponentInParent<Enemy>().damage);
+            }
         }
 
-        Debug.Log(other.gameObject.name);
         Destroy(this.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    collision.gameObject.GetComponent<IDamageable>().Damage(RangedEnemy.gunDamage);
-        //}
         Destroy(this.gameObject);
     }
 
