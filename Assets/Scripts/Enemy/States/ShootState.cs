@@ -13,7 +13,10 @@ public class ShootState : State
     /// </summary>
     private Transform currentPoint;
 
-    private bool foundNewPoint;
+    /// <summary>
+    /// Checks wether or not the enemy has found a new point to navigate to. Avoids continuous checks that leave the enemy stuck bouncing between points. 
+    /// </summary>
+    private bool foundNextPoint;
 
     public ShootState(Enemy owner)
     {
@@ -32,10 +35,16 @@ public class ShootState : State
 
     public override void Update()
     {
+        float distanceFromPlayer = Vector3.Distance(Owner.Player.transform.position, Owner.transform.position);
         //state changes
-        if (!OwnerAsRanged.UseFirePoints && Vector3.Distance(Owner.Player.transform.position, Owner.transform.position) > Owner.attackRange)
+        if (!OwnerAsRanged.UseFirePoints && distanceFromPlayer > Owner.attackRange)
         {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
+            return;
+        }
+        if (distanceFromPlayer > Owner.detectionRange)
+        {
+            Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
             return;
         }
 
@@ -44,12 +53,13 @@ public class ShootState : State
         {
             case RangedEnemy:
                 //logic for moving
-                if (Vector3.Distance(Owner.Player.transform.position, Owner.transform.position) <= OwnerAsRanged.tooCloseRange)
+                if (distanceFromPlayer <= OwnerAsRanged.tooCloseRange)
                 {
                     if (OwnerAsRanged.UseFirePoints)
                     {
                         //Debug.Log($"found new point {foundNewPoint}");
-                        if (!foundNewPoint) FindNewFirePoint();
+                        //checks if found a new point yet, avoids continuously finding a new point causing "paralysis"
+                        if (!foundNextPoint) FindNewFirePoint();
                     }
                     else
                     { 
@@ -104,22 +114,27 @@ public class ShootState : State
     private void FindNewFirePoint()
     {
         Transform newPoint = OwnerAsRanged.FirePoints[Random.Range(0, OwnerAsRanged.FirePoints.Count)];
+        //makes sure new point is not the same one that the enemy is currently at
         while (newPoint.position == currentPoint.position)
         {
             newPoint = OwnerAsRanged.FirePoints[Random.Range(0, OwnerAsRanged.FirePoints.Count)];
         }
         //Debug.Log($"found new point: {newPoint.name}");
         currentPoint = newPoint;
-        foundNewPoint = true;
+        foundNextPoint = true; //found a new point
         //navigate to cover
         NavigateToCover();
     }
 
+    /// <summary>
+    /// Navigates enemy navmesh agent to current point
+    /// </summary>
     private void NavigateToCover()
     {
         if (currentPoint is null) return;
         
-        foundNewPoint = false;
+        //now that the enemy is moving away from the last point, it has not found a new next point to move to
+        foundNextPoint = false;
 
         if (Vector3.Distance(Owner.transform.position, currentPoint.position) <= 3f)
         {
@@ -144,6 +159,7 @@ public class ShootState : State
         {
             if (OwnerAsRanged.FirePoints[i] is null)
             {
+                //won't let you choose a null point/empty space in the list
                 Debug.Log("ERROR: fill up your shooting points list (empty/null space)");
                 continue;
             }
