@@ -171,22 +171,24 @@ public class BreakableObject : MonoBehaviour, IDamageable
                 }
                 else if (fragmentHits[i].TryGetComponent<IDamageable>(out IDamageable damageable))
                 {
+                    // Hurts Player
+                    if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                    {
+                        //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                        if (playerHurt) continue;
+
+                        if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                        {
+                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                            player.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                            playerHurt = true;
+                            continue;
+                        }
+                    }
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
                         damageable.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                    }
-                }
-                // Hurts Player
-                if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
-                {
-                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
-
-                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
-                    {
-                        Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        player.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                        playerHurt = true;
                     }
                 }
                 // Rigidbody Forces
