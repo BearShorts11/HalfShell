@@ -16,6 +16,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public GameObject BloodSplatterProjector;
     private Material[] decals;
+    public GameObject FullyGibbedParticle;
 
     [Header("Designer Variables")]
     [SerializeField] public float movementSpeed = 12f;
@@ -137,6 +138,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             splatter.transform.Rotate(90, 0, 0);
         }
 
+        if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
+        {
+            FullyGibbedParticle.SetActive(true);
+            FullyGibbedParticle.gameObject.transform.parent = null;
+            Destroy(this.gameObject);
+            return;
+        }
     }
 
     protected IEnumerator SpawnDeathBloodPool()
@@ -158,8 +166,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected void HandleAnimation()
     {
         //Controls Idle/Walking/Running 
-        animator.SetFloat("VelocityX", agent.velocity.x);
-        animator.SetFloat("VelocityY", agent.velocity.z);
+        animator.SetFloat("Velocity X", agent.velocity.x);
+        animator.SetFloat("Velocity Y", agent.velocity.z);
     }
 
 

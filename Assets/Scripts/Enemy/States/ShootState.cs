@@ -102,7 +102,7 @@ public class ShootState : State
 
         Vector3 playerCurrPos = Owner.Player.transform.position;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);  
-        //OwnerAsRanged.muzzleflash.Play(true); //VINH muzzleFlash isn't assigned and I don't know where to find it
+        OwnerAsRanged.muzzleflash.Play(true);
 
         RuntimeManager.PlayOneShot(OwnerAsRanged.firingSound, Owner.transform.position);
 

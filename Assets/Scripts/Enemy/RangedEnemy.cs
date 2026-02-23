@@ -26,7 +26,8 @@ public class RangedEnemy : Enemy
     public float maxDistanceFromPlayer = 25f;
 
     [Header("VFX/Sounds")]
-    //public ParticleSystem muzzleflash;
+    // Muzzleflash must be assigned in the Unity Editor as an existing game object in the enemy prefab -V
+    public ParticleSystem muzzleflash;
     public EventReference firingSound;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
