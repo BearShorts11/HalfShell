@@ -11,6 +11,10 @@ namespace Assets.Scripts
         public float Health { get; set; }
         public float maxHealth { get; }
 
-        public void Damage(float amount);
+        /// <summary>
+        /// Damages this object. Called from other scripts when damage to this should occur. 
+        /// </summary>
+        /// <param name="amount"></param>
+        public void TakeDamage(float amount);
     }
 }

@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class EnemySetActiveOnTrigger : MonoBehaviour
 {
-    public List<IEnemy> enemies = new List<IEnemy>();
+    /// <summary>
+    /// add enemies in inspector to be effected by this trigger
+    /// </summary>
+    public List<Enemy> enemies = new List<Enemy>();
 
     public GameObject GameObject;
+    /// <summary>
+    /// If checked, trigger will alert enemies to player's presence. If unchecked, will spawn enmies in 
+    /// </summary>
     public bool AlertInstead;
 
     private void Start()
     {
-            foreach (IEnemy e in enemies)
+        //if meant to be alerted, make sure they are active. If meant to be spawned, make sure they are inactive
+            foreach (Enemy e in enemies)
             { 
                 e.gameObject.SetActive(AlertInstead);
             }
@@ -22,22 +29,20 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //yes, i can do e.Alert seperately & omit the first if check, but then at worst case it runs 2 foreach loops instead of 1
+            //alerts enemies
             if (AlertInstead)
             {
-                foreach (IEnemy e in enemies)
+                foreach (Enemy e in enemies)
                 {
                     e.Alert();
                 }
             }
-            else 
+            else //otherwise spawns them in
             { 
-                foreach (IEnemy e in enemies)
+                foreach (Enemy e in enemies)
                 {
                     GameObject o = e.gameObject;
                     o.SetActive(true);
-                    e.SetStartState(IEnemy.State.chasing);
-                    //Debug.Log(e.GetState());
                 }
             }
         }
@@ -45,12 +50,15 @@ public class EnemySetActiveOnTrigger : MonoBehaviour
 
     private void Update()
     {
-        CheckEnemies();
+        CheckValidEnemies();
         if (enemies.Count == 0) GameObject.SetActive(false);
     }
 
     //this is pretty resource intensive, no?
-    private void CheckEnemies()
+    /// <summary>
+    /// removes dead/destoryed enemies from the list
+    /// </summary>
+    private void CheckValidEnemies()
     {
         for (int i = 0; i < enemies.Count; i++)
         {

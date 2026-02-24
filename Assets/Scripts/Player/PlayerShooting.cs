@@ -6,6 +6,8 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 
 public class PlayerShooting : MonoBehaviour
@@ -18,6 +20,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject ApollyonBarks;
     public Vector3 hitPosition;
 
+    #region VFX
     public GameObject BulletHole;
     [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
@@ -25,6 +28,10 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private Transform      shotgunMuzzleflashPos;
 
     public Animator animator;
+
+    private ObjectPool<GameObject> bulletHolePool;
+
+    #endregion
 
     //Add [SerializeField] in front of anything that needs tweaking/balancing
 
@@ -54,6 +61,7 @@ public class PlayerShooting : MonoBehaviour
     private float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
+    private bool useShells = true; //toggle infinite shells
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
@@ -86,6 +94,12 @@ public class PlayerShooting : MonoBehaviour
     private Stack<ShellBase> magazine = new Stack<ShellBase>();
     private ShellBase chamber;
     public static bool canFire = true;
+
+    #region new input handling
+    public PlayerInput input;
+    bool rack_performed;
+    bool rack_cancled;
+    #endregion
 
     #region Sound variables
     //Sound variable
@@ -125,7 +139,43 @@ public class PlayerShooting : MonoBehaviour
 
         // Temporary, just to showcase that it exists. Delete when we get to the starting sequence.
         animator.CrossFade("Draw_Inspect", 0f);
+
+        input = GetComponent<PlayerInput>();
+
+        bulletHolePool = new ObjectPool<GameObject>(
+            createFunc: CreateItem,
+            actionOnGet: OnGet,
+            actionOnRelease: OnRelease,
+            actionOnDestroy: OnDestroyItem,
+            collectionCheck: true,   // helps catch double-release mistakes
+            defaultCapacity: 100,
+            maxSize: 500
+        );
     }
+
+    #region pool behaviors
+
+    private GameObject CreateItem()
+    {
+        return Instantiate(BulletHole);
+    }
+
+    private void OnGet(GameObject bullet)
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void OnRelease(GameObject bullet)
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnDestroyItem(GameObject bullet)
+    {
+        Destroy(gameObject);
+    }
+
+    #endregion
 
     //any data that needs saved, pass as parameter & update
     public void LoadData(Dictionary<ShellBase.ShellType, int> savedCounts) 
@@ -150,7 +200,7 @@ public class PlayerShooting : MonoBehaviour
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
         //Debug only DO NOT LEAVE IN FINAL GAME
-        if (Input.GetKeyDown(KeyCode.O)) AmmoCounts[ShellBase.ShellType.Slug] = (new Slug()).MaxHolding;
+        //if (Input.GetKeyDown(KeyCode.O)) AmmoCounts[ShellBase.ShellType.Slug] = (new Slug()).MaxHolding;
 
         //racking
         if (Input.GetButtonDown("Fire2"))
@@ -231,7 +281,7 @@ public class PlayerShooting : MonoBehaviour
         {
             playerUI.ChamberUIOff();
             ShellBase shell = chamber as ShellBase;
-            AmmoCounts[shell.Type]++;
+            if (useShells) AmmoCounts[shell.Type]++;
         }
 
         chamber = null;
@@ -326,14 +376,14 @@ public class PlayerShooting : MonoBehaviour
                     if (animator.GetCurrentAnimatorStateInfo(0).IsName("Empty_InsertShell") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped"))
                     {
                         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload_Pumped"))
-                            animator.CrossFade("Idle_QuickReload_Pumped", 0.1f);
+                            animator.CrossFade("Idle_QuickReload_Pumped", 0.02f);
                         else
                             animator.CrossFade("Idle_QuickReload_Pumped", 0.05f, 0, 0.08f);
                     }
                     else
                     {
                         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle_QuickReload"))
-                            animator.CrossFade("Idle_QuickReload", 0.1f);
+                            animator.CrossFade("Idle_QuickReload", 0.02f);
                         else
                             animator.CrossFade("Idle_QuickReload", 0.05f, 0, 0.08f);
                     }
@@ -355,7 +405,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.Add(slug);
             LoadMagUI(slug);
 
-            AmmoCounts[ShellBase.ShellType.Slug]--;
+            if (useShells) AmmoCounts[ShellBase.ShellType.Slug]--;
         }
     }
 
@@ -368,7 +418,7 @@ public class PlayerShooting : MonoBehaviour
             magUI.Add(buck);
             LoadMagUI(buck);
 
-            AmmoCounts[ShellBase.ShellType.Buckshot]--;
+            if (useShells) AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
     }
 
@@ -463,7 +513,6 @@ public class PlayerShooting : MonoBehaviour
 
     private void DoHit(RaycastHit hit, ShellBase shell)
     {
-        Debug.Log("hit successful");
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
         if (hit.collider.gameObject.tag == "Enemy")
@@ -475,7 +524,7 @@ public class PlayerShooting : MonoBehaviour
         else if (hit.collider.gameObject.tag == "Breakable")
         {
             Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
-            HitBreakable(hit, shell);
+            HitBreakable(hit, shell, shell.Type);
             SpawnBulletHole(hit);
         }
         else if (hit.collider.gameObject.GetComponent<ObjActivator>())
@@ -502,7 +551,11 @@ public class PlayerShooting : MonoBehaviour
         Quaternion normal = Quaternion.LookRotation(-hit.normal, Vector3.up);
         Quaternion rotation = Quaternion.Euler(0,0,Random.Range(0f,360f));
 
-        GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), normal * rotation, hit.transform);
+        //GameObject decal = Instantiate(BulletHole, hit.point + (hit.normal * 0.1f), normal * rotation, hit.transform);
+        GameObject decal = bulletHolePool.Get();
+        decal.transform.position = hit.point + (hit.normal * 0.1f);
+        decal.transform.rotation = rotation * normal;
+        decal.transform.SetParent(hit.transform);
     }
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
@@ -510,7 +563,7 @@ public class PlayerShooting : MonoBehaviour
         //Debug.Log(hit.transform.name);
         
         if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
-            damageable.Damage(shell.ScaleDamage(hit));
+            damageable.TakeDamage(shell.ScaleDamage(hit));
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();
         //if (eLimb != null) { eLimb.TakeDamage(shell.ScaleDamage(hit)); return; } // If it detects a limb was hit here, stop at this point since the limb script already calls the damage method to the enemy script
@@ -524,12 +577,16 @@ public class PlayerShooting : MonoBehaviour
         //}
     }
 
-    private void HitBreakable(RaycastHit hit, ShellBase shell)
+    private void HitBreakable(RaycastHit hit, ShellBase shell, ShellBase.ShellType shellType)
     {
         BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
         if (obj.destructionOveride == false) { obj.DestructionPos = gameObject.transform.position; }
 
-        if (obj != null) { obj.Damage(shell.Damage); }
+        if (obj != null) 
+        {
+            if (obj.shellSpecific && shellType != obj.targetShell) return;
+            obj.TakeDamage(shell.Damage);
+        }
     }
 
     private void HitObjActivator(RaycastHit hit, ShellBase.ShellType shellType)
@@ -597,4 +654,7 @@ public class PlayerShooting : MonoBehaviour
     {
         return Time.time < _WaitTime;
     }
+
+    public void InfiniteShells() => useShells = false;
+    public void UseShells() => useShells = true;
 }

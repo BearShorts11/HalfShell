@@ -6,6 +6,8 @@ using System;
 using UnityEditor;
 using Unity.VisualScripting;
 using Assets.Scripts;
+using FMODUnity;
+using static ShellBase;
 
 // Modified upon tutorial by LlamAcademy: https://youtu.be/3OWeCDr1RUs?si=y8uktvka04yluJHy
 
@@ -40,6 +42,11 @@ public class BreakableObject : MonoBehaviour, IDamageable
     [SerializeField] private float pieceDestroyDelay = 5f;
     [SerializeField] private float pieceSleepCheckDelay = 0.1f;
 
+    [Header("Shell Specific Interactions")]
+    [SerializeField] public bool shellSpecific;
+    [SerializeField] public ShellType targetShell;
+    private ObjActivator activator;
+
     [Header("Explosive Object Settings")]
     [SerializeField] public bool explosive;
     [SerializeField] private int fragments = 25;
@@ -54,6 +61,8 @@ public class BreakableObject : MonoBehaviour, IDamageable
     [SerializeField] private float explosionForce = 100;
 
     [SerializeField] private ParticleSystem explosionParticles;
+    [SerializeField] private EventReference explosionSound;
+
     private bool EXPLODED = false;
     // THE MOST IMPORTANT VARIBALE MAKE SURE THIS VARIABLE IS TRUE WHEN AN OBJECT BLOWS UP HOLY FUCK
     // MAKE SURE THIS VARIABLE IS TRUE PLEASE FOR THE LOVE OF GOD
@@ -64,6 +73,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        activator = GetComponent<ObjActivator>();
         Health = maxHealth;
         destructionPos = this.gameObject.transform.position;
 
@@ -76,7 +86,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
         if (explosive) { fragmentHits = new Collider[fragments]; }
     }
 
-    public void Damage(float damageAmt)
+    public void TakeDamage(float damageAmt)
     {
         Health -= damageAmt;
 
@@ -112,14 +122,18 @@ public class BreakableObject : MonoBehaviour, IDamageable
         if (undamagedPrefab != null) { undamagedPrefab.SetActive(false); }
         if (damagedPrefab != null) { damagedPrefab.SetActive(false); }
 
+        if (activator != null && activator.enabled==true) { activator.ObjSwapNoShell(); }
+
 
         // Uses Overlap sphere to draw rays to all damageable objects within range
         // If it hits something with an HP value, it'll damage it (Enemies, Player, Breakables).
         // If it hits something with a rigidbody, it'll apply force.
-        if (explosive)
+        if (explosive && !EXPLODED)
         {
             if (explosionParticles != null) { explosionParticles.Play(); }
 
+            if (!explosionSound.IsNull) { RuntimeManager.PlayOneShot(explosionSound, this.gameObject.transform.position); }
+            
             EXPLODED = true;
             // DO NOT TOUCH THIS VARIABLE
             bool playerHurt = false;
@@ -130,45 +144,57 @@ public class BreakableObject : MonoBehaviour, IDamageable
 
             for (int i = 0; i < hits; i++)
             {
+                if (fragmentHits[i].gameObject == this.gameObject || fragmentHits[i].gameObject.transform.root == this.gameObject) continue;
+                float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
                 // Breaks Objects
                 if (fragmentHits[i].TryGetComponent<BreakableObject>(out BreakableObject obj))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !obj.EXPLODED)
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
                         obj.DestructionPos = explodePos;
-                        obj.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        obj.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 // Hurts Enemies
-                if (fragmentHits[i].TryGetComponent<IEnemy>(out IEnemy enemy))
+                if (fragmentHits[i].TryGetComponent<Enemy>(out Enemy enemy))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        enemy.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                        enemy.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
-                // Hurts Player
-                if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                else if (fragmentHits[i].TryGetComponent<IDamageable>(out IDamageable damageable))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    // Hurts Player
+                    if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                    {
+                        //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                        if (playerHurt) continue;
 
-                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value) && !playerHurt)
+                        if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
+                        {
+                            Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                            player.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
+                            playerHurt = true;
+                            continue;
+                        }
+                    }
+                    if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
-                        player.Damage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
-                        playerHurt = true;
+                        damageable.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 // Rigidbody Forces
                 if (fragmentHits[i].TryGetComponent<Rigidbody>(out Rigidbody rb))
                 {
-                    float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
+                    //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
 
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
@@ -237,7 +263,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
             {
                 if (renderer.bounds.size.sqrMagnitude != 0)
                     renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
-                renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step;
+                //if (renderer.transform.localScale != Vector3.zero) { renderer.transform.localScale = renderer.transform.localScale - new Vector3(pieceShrinkMult, pieceShrinkMult, pieceShrinkMult) * step; }
             }
 
             time += step;

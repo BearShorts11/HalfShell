@@ -18,7 +18,7 @@ namespace Assets.Scripts
         public Vector3 position;
         public Quaternion rotation;
 
-        //public float Health;
-        //public float Armor;
+        public float Health;
+        public float Armor;
     }
 }

@@ -51,7 +51,7 @@ public class AnimatorClipHandler : StateMachineBehaviour
         }
         else
         {
-            animator.Play(nextAnimName);
+            animator.CrossFade(nextAnimName, 0f);
         }
     }
 

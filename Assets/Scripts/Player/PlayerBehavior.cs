@@ -10,6 +10,7 @@ using UnityEngine.Windows;
 using Unity.Cinemachine;
 using Assets.Scripts;
 using System;
+using Unity.VisualScripting;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -36,6 +37,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public const float DEFAULT_FOV_VALUE = 60f;
     public const string FOV_KEY = "FOV";
 
+    [SerializeField] private bool invincible;
     [SerializeField] private float health = 100f;
     public float maxHealth { get { return 100f; } }
     public float Health
@@ -96,6 +98,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     private PlayerShooting playerShooting;
     public GameObject ShotgunViewmodel;
+    public GameObject ApollyonBark;
 
     private bool isCurrentDeviceMouse
     {
@@ -103,6 +106,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
     private float cinemachineTargetPitch;
     private const float threshold = 0.01f;
+
+
+    public bool IsInCombat;
 
     //game over sounds
     //public EventReference deathRemark;
@@ -136,6 +142,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             playerShooting.enabled = false;
             ShotgunViewmodel.SetActive(false);
+            ApollyonBark.SetActive(false);
         }
     }
 
@@ -224,6 +231,11 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             Time.timeScale = 1;
         }
 
+
+        if(FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
+        else if(FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
+        else IsInCombat = false;
+        //add additional checks for cutscenes etc. here
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -285,8 +297,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
     //better way to do this? -N
-    public void Damage(float damage)
+    public void TakeDamage(float damage)
     {
+        if (invincible) return;
+        {
+            
+        }
         if (health > 0)
         {
             if (armor > 0) 
@@ -349,6 +365,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     {
         playerShooting.enabled = true;
         ShotgunViewmodel.SetActive(true);
+        ApollyonBark.SetActive(true) ;
     }
+
+    public void Invincible() => invincible = true;
+    public void Mortal() => invincible = false;
 
 }
