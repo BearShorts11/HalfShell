@@ -3,6 +3,7 @@ using System.Collections;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.UI.GridLayoutGroup;
 
@@ -57,6 +58,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("States")]
     public StateMachine stateMachine;
 
+    [Header("Unity Event Stuff")]
+    [SerializeField] public UnityEvent OnDeath;
+
     protected void Startup()
     {
         stateMachine = new StateMachine(this);
@@ -108,6 +112,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             stateMachine.TransitionTo(stateMachine._deadState);
             agent.enabled = false;
             Dead = true;
+            //OnDeath?.Invoke();
 
             StartCoroutine(SpawnDeathBloodPool());
         }
@@ -224,5 +229,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             }
         }
         return null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

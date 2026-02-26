@@ -22,6 +22,8 @@ public class DeadState : State
         Owner.ragdollController.SetColliderState(true);
         Owner.ragdollController.SetRigidbodyState(false);
 
+        Owner.OnDeath?.Invoke();
+
 
         //handle enemy drops
         if (Owner.Player.Health <= 25)

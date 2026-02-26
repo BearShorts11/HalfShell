@@ -70,7 +70,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
     // YOU WILL BRICK YOUR COMPUTER AND THE ENTIRE PROJECT IF IT IS FALSE WHEN AN OBJECT EXPLODES
     // THAT'S WHY ITS IN ALL CAPS
 
-    //[Header("Unity Event Stuff")]
+    [Header("Unity Event Stuff")]
     [SerializeField] public UnityEvent OnDeath;
 
 
