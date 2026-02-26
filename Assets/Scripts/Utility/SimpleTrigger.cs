@@ -5,11 +5,18 @@ using System.Collections.Generic;
 
 public class SimpleTrigger : MonoBehaviour
 {
+    [Header("Enter Collider Triggers")]
     public List<string> onTriggerEnterTag;
     public List<UnityEvent> onTriggerEnter;
 
+    [Header("Exit Collider Triggers")]
     public List<string> onTriggerExitTag;
     public List<UnityEvent> onTriggerExit;
+
+    [Header("Kill All of... Triggers")]
+    public int InitEnemyCounter;
+    public int EnemyDeathsCounter;
+    public List<UnityEvent> onKillAll;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -32,6 +39,16 @@ public class SimpleTrigger : MonoBehaviour
         for (int i = 0; i < onTriggerExit.Count; i++)
         {
             if (other.CompareTag(onTriggerExitTag[i])) { onTriggerExit[i].Invoke(); }
+        }
+    }
+
+    public void ArenaKillCounter(int value)
+    {
+        EnemyDeathsCounter += value;
+
+        if (EnemyDeathsCounter >= InitEnemyCounter)
+        {
+            for (int i = 0; i < onKillAll.Count; i++) { onKillAll[i].Invoke(); }
         }
     }
 }
