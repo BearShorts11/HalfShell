@@ -106,7 +106,13 @@ namespace Assets.Scripts
 
         public void ReloadGame() => LoadGame(gameData.Name);
 
-        public void SaveGame() => dataService.Save(gameData);
+        public void SaveGame()
+        {
+            //this is messy but it's all I can think to do
+            FindFirstObjectByType<Kerth>().OnSave();
+
+            dataService.Save(gameData);
+        }
 
         public void DeleteGame(string saveName) => dataService.Delete(saveName);
 

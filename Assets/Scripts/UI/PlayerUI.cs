@@ -35,6 +35,12 @@ public class PlayerUI : MonoBehaviour
     void Start()
     {
         player = FindFirstObjectByType<PlayerBehavior>();
+
+        PlayerShooting gun = FindFirstObjectByType<PlayerShooting>();
+        if (gun.Chamber is not null)
+        {
+            ChamberUIOn(gun.Chamber);
+        }
     }
 
     // Update is called once per frame

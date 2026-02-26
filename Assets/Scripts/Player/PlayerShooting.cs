@@ -91,8 +91,8 @@ public class PlayerShooting : MonoBehaviour
     List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
-    private Stack<ShellBase> magazine = new Stack<ShellBase>();
-    private ShellBase chamber;
+    public Stack<ShellBase> Magazine { get; private set; }
+    public ShellBase Chamber { get; private set; }
     public static bool canFire = true;
 
     #region new input handling
@@ -115,6 +115,8 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Magazine = new Stack<ShellBase>();
+
         AmmoCounts[ShellBase.ShellType.Buckshot] = startingBuckshot; // Should be 0 but wtv
         AmmoCounts[ShellBase.ShellType.HalfShell] = startingHalfShells;
         AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
@@ -225,8 +227,8 @@ public class PlayerShooting : MonoBehaviour
         }
 
 
-        float magCount = magazine.Count;
-        playerUI.SwitchCrosshairUI(chamber, magCount);
+        float magCount = Magazine.Count;
+        playerUI.SwitchCrosshairUI(Chamber, magCount);
 
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
@@ -277,14 +279,14 @@ public class PlayerShooting : MonoBehaviour
         animator.CrossFade("Pump_Backwards", 0.15f);
         canFire = false;
 
-        if (chamber is not null)
+        if (Chamber is not null)
         {
             playerUI.ChamberUIOff();
-            ShellBase shell = chamber as ShellBase;
+            ShellBase shell = Chamber as ShellBase;
             if (useShells) AmmoCounts[shell.Type]++;
         }
 
-        chamber = null;
+        Chamber = null;
         pumped = true;
     }
     private void PumpFWD()
@@ -293,15 +295,15 @@ public class PlayerShooting : MonoBehaviour
             return;
         //PlaySound(pumpForwardSound);
         animator.CrossFade("Pump_Fwd", 0.15f);
-        if (magazine.Count > 0)
+        if (Magazine.Count > 0)
         {
-            chamber = magazine.Pop();
-            float size = chamber.Size;
-            MagLoss(chamber.Size);
+            Chamber = Magazine.Pop();
+            float size = Chamber.Size;
+            MagLoss(Chamber.Size);
             magUI.RemoveAt(magUI.Count - 1);
             MagazineUILoss();
             //temporary based on current UI
-            playerUI.ChamberUIOn(chamber);
+            playerUI.ChamberUIOn(Chamber);
         }
         if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         pumped = false;
@@ -352,7 +354,7 @@ public class PlayerShooting : MonoBehaviour
     {
         if (CanLoad(shell))
         {
-            magazine.Push(shell);
+            Magazine.Push(shell);
             float size = shell.Size;
             currentCapacity += size;
 
@@ -456,7 +458,7 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         //check if chamber IS NULL *NOT* == null, trying to reference chamber directly will always equate to null
-        if (canFire == false || chamber is null)
+        if (canFire == false || Chamber is null)
         {
             //Debug.Log($"cannot fire: {canFire} or chamber is null");
             PlaySound(dryFireSound);
@@ -470,9 +472,9 @@ public class PlayerShooting : MonoBehaviour
             //animator.SetTrigger("Fire");
             animator.CrossFade("Shoot", 0.1f);
 
-            ShellBase shell = chamber;
+            ShellBase shell = Chamber;
             //MagazineUILoss();
-            chamber = null;
+            Chamber = null;
             playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
@@ -602,7 +604,7 @@ public class PlayerShooting : MonoBehaviour
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (currentCapacity < totalCapacity)
-            Destroy(magazineUI.transform.GetChild(magazine.Count).gameObject);
+            Destroy(magazineUI.transform.GetChild(Magazine.Count).gameObject);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
 
@@ -628,7 +630,48 @@ public class PlayerShooting : MonoBehaviour
         UIshell.SetActive(true);
     }
 
-    public bool ShellInChamber() => chamber is not null;
+    public bool ShellInChamber() => Chamber is not null;
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Recieves a stack of ints and converts them to shells
+    /// </summary>
+    public void SetMagazine(Stack<int> reversedMagazine)
+    {
+        if (reversedMagazine is null) return;
+
+        while (reversedMagazine.Count > 0)
+        { 
+            //casting for clarity
+            ShellBase.ShellType type = (ShellBase.ShellType)reversedMagazine.Pop();
+
+            switch (type)
+            {
+                case ShellBase.ShellType.HalfShell:
+                    LoadMagazine(new HalfShell());
+                    break;
+                case ShellBase.ShellType.Slug:
+                    LoadMagazine(new Slug());
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Sets what is in the chamber
+    /// </summary>
+    public void SetChamber(ShellBase shell)
+    { 
+        if (shell is not null)
+        { 
+            Chamber = shell;
+            if (playerUI is not null) playerUI.ChamberUIOn(Chamber);
+        }
+    }
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Sets AmmoCounts
+    /// </summary>
+    public void SetAmmoCounts(Dictionary<ShellBase.ShellType, int> ammoCounts) => this.AmmoCounts = ammoCounts;
 
     private void BufferLastFunction(string methodName, float time)
     {

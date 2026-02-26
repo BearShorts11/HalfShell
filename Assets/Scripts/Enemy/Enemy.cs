@@ -91,6 +91,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         HandleAnimation();
     }
 
+    //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
     public virtual void TakeDamage(float amount)
     {
         //Damage is not it's own state because what Damage does depends on what state the enemy WAS in or IS CURRENTLY in
