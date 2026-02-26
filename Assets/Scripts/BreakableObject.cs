@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Linq;
 using System;
 using UnityEditor;
@@ -69,6 +70,10 @@ public class BreakableObject : MonoBehaviour, IDamageable
     // YOU WILL BRICK YOUR COMPUTER AND THE ENTIRE PROJECT IF IT IS FALSE WHEN AN OBJECT EXPLODES
     // THAT'S WHY ITS IN ALL CAPS
 
+    //[Header("Unity Event Stuff")]
+    [SerializeField] public UnityEvent OnDeath;
+
+
 
     private void Awake()
     {
@@ -116,6 +121,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
 
         isBroken = true;
         Destroy(GetComponent<Collider>());
+        OnDeath?.Invoke();
 
         if (Particles != null) { Particles.Play(); }
 
