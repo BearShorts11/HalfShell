@@ -22,13 +22,16 @@ namespace Assets.Scripts
         public float Armor;
 
         //PlayerShooting data
-        public Dictionary<ShellBase.ShellType, int> AmmoCounts;
+        /// <summary>
+        /// array index refers to shell type enum value, array value refers to ammo count for shell type
+        /// </summary>
+        public int[] AmmoCounts;
         /// <summary>
         /// because *stacks* magazine is saved in reversed order and loaded in correct order. 
         /// Saved as ints to reference shell type in ShellBase.ShellType enum. 
         /// Cannot save custom objects directly
         /// </summary>
-        public Stack<int> ReversedMagazine;
+        public int[] ReversedMagazine;
         /// <summary>
         /// holds enum number of shell type
         /// </summary>

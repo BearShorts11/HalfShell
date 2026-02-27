@@ -91,7 +91,7 @@ public class PlayerShooting : MonoBehaviour
     List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
-    public Stack<ShellBase> Magazine { get; private set; }
+    public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
     public ShellBase Chamber { get; private set; }
     public static bool canFire = true;
 
@@ -115,8 +115,6 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Magazine = new Stack<ShellBase>();
-
         AmmoCounts[ShellBase.ShellType.Buckshot] = startingBuckshot; // Should be 0 but wtv
         AmmoCounts[ShellBase.ShellType.HalfShell] = startingHalfShells;
         AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
@@ -179,15 +177,11 @@ public class PlayerShooting : MonoBehaviour
 
     #endregion
 
-    //any data that needs saved, pass as parameter & update
-    public void LoadData(Dictionary<ShellBase.ShellType, int> savedCounts) 
-    { 
-        AmmoCounts = savedCounts;  
-    }
 
     // Update is called once per frame
     void Update()
     {
+
         if (PauseMenu.paused) return;
 
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
@@ -331,8 +325,14 @@ public class PlayerShooting : MonoBehaviour
         //can always use half shells
         if (shell.Type == ShellBase.ShellType.HalfShell && currentCapacity + size <= totalCapacity) return true;
 
+        if (isWaiting() && !SetFromLoad)
+        {
+            PlaySound(fullyLoadedSound); //some kind of feedback for number key users
+            return false;
+        }
+
         //check dictionary
-        if (AmmoCounts[shell.Type] <= 0 || isWaiting())
+        if (AmmoCounts[shell.Type] <= 0)
         {
             PlaySound(fullyLoadedSound); //some kind of feedback for number key users
             return false;
@@ -352,11 +352,20 @@ public class PlayerShooting : MonoBehaviour
 
     public void LoadMagazine(ShellBase shell)
     {
+        //prevents load errors
+        if (Magazine is null) Magazine = new Stack<ShellBase>();
+
         if (CanLoad(shell))
         {
             Magazine.Push(shell);
             float size = shell.Size;
             currentCapacity += size;
+
+            //prevents load errors
+            if ( spaceLeftText is null)
+            { 
+                spaceLeftText = GameObject.Find("CanLoadShells").GetComponent<TextMeshProUGUI>();
+            }
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
@@ -443,7 +452,7 @@ public class PlayerShooting : MonoBehaviour
         if (AmmoCounts[shell.Type] < shell.MaxHolding)
         { 
             AmmoCounts[shell.Type] += ammoCount;
-            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding;
+            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding; //Mathf.clamp?
             return true;
         }
         return false;
@@ -635,26 +644,30 @@ public class PlayerShooting : MonoBehaviour
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Recieves a stack of ints and converts them to shells
     /// </summary>
-    public void SetMagazine(Stack<int> reversedMagazine)
+    public void SetMagazine(int[] reversedMagazine)
     {
+        SetFromLoad = true;
         if (reversedMagazine is null) return;
 
-        while (reversedMagazine.Count > 0)
+        for (int i = reversedMagazine.Length - 1; i >= 0; i--)
         { 
             //casting for clarity
-            ShellBase.ShellType type = (ShellBase.ShellType)reversedMagazine.Pop();
+            ShellBase.ShellType type = (ShellBase.ShellType)reversedMagazine[i];
 
             switch (type)
             {
                 case ShellBase.ShellType.HalfShell:
-                    LoadMagazine(new HalfShell());
+                    AddHalfShell();
                     break;
                 case ShellBase.ShellType.Slug:
-                    LoadMagazine(new Slug());
+                    AmmoCounts[ShellBase.ShellType.Slug]++; //add slug/load mag needs 
+                    AddSlug();
                     break;
             }
         }
+        SetFromLoad = false;
     }
+    bool SetFromLoad;
 
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Sets what is in the chamber
@@ -671,7 +684,17 @@ public class PlayerShooting : MonoBehaviour
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Sets AmmoCounts
     /// </summary>
-    public void SetAmmoCounts(Dictionary<ShellBase.ShellType, int> ammoCounts) => this.AmmoCounts = ammoCounts;
+    public void SetAmmoCounts(int[] ammoCounts)
+    {
+        if (ammoCounts is null || ammoCounts.Length == 0) return;
+
+        //this fires before Start() meaning that they get reset...
+        //still keeping both in just in case
+        startingSlugs = ammoCounts[(int)ShellBase.ShellType.Slug];
+
+        this.AmmoCounts[ShellBase.ShellType.HalfShell] = ammoCounts[(int)ShellBase.ShellType.HalfShell];
+        this.AmmoCounts[ShellBase.ShellType.Slug] = ammoCounts[(int)ShellBase.ShellType.Slug];
+    }
 
     private void BufferLastFunction(string methodName, float time)
     {

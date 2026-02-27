@@ -20,6 +20,12 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     [SerializeField] PlayerBehavior behavior;
     [SerializeField] PlayerShooting shooting;
 
+    private void Start()
+    {
+        //number based on shell type enum, can't think of a better way to do this right now
+        data.AmmoCounts = new int[6];
+    }
+
     public void Bind(PlayerData data)
     {
         this.data = data;
@@ -30,7 +36,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         behavior.SetHealth(data.Health);
         behavior.SetArmor(data.Armor);
 
-        //shooting.SetAmmoCounts(data.AmmoCounts);
+        shooting.SetAmmoCounts(data.AmmoCounts);
         shooting.SetMagazine(data.ReversedMagazine);
         shooting.SetChamber(ConvertNumToShell());
     }
@@ -44,8 +50,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         data.Armor = behavior.Armor;
 
         //shooting data
-        data.AmmoCounts = shooting.AmmoCounts;
-
+        data.AmmoCounts[(int)ShellBase.ShellType.HalfShell] = shooting.AmmoCounts[ShellBase.ShellType.HalfShell];
+        data.AmmoCounts[(int)ShellBase.ShellType.Slug] = shooting.AmmoCounts[ShellBase.ShellType.Slug];
         if (shooting.Chamber is not null) data.Chamber = (int)shooting.Chamber.Type;
         else data.Chamber = default;
     }
@@ -70,13 +76,17 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     /// </summary>
     public void OnSave()
     {
-        if (data.ReversedMagazine is null) data.ReversedMagazine = new Stack<int>();
+        data.ReversedMagazine = new int[shooting.Magazine.Count];
+        int index = 0;
 
-        Stack<ShellBase> reserve = new Stack<ShellBase>();
+        //stores shells from shooting.mag before putting them back in shooting.mag
+        Stack<ShellBase> reserve = new Stack<ShellBase>(); 
+
         while (shooting.Magazine.Count > 0)
         { 
             ShellBase shell = shooting.Magazine.Pop();
-            data.ReversedMagazine.Push((int)(shell.Type));
+            data.ReversedMagazine[index] = ((int)(shell.Type));
+            index++;
             reserve.Push(shell);
         }
 
