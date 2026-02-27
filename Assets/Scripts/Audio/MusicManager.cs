@@ -11,6 +11,8 @@ public class MusicManager : MonoBehaviour
 
     public EventInstance musicInstance { get; private set;}
 
+    [SerializeField] private bool bPlayOnStart;
+
     private void Awake()
     {
         if (instance != null)
@@ -31,6 +33,8 @@ public class MusicManager : MonoBehaviour
     void Start()
     {
         SetupMusic();
+        if (bPlayOnStart)
+            PlayMusic();
     }
     private void PlayMusic()
     {
@@ -80,5 +84,10 @@ public class MusicManager : MonoBehaviour
             StopMusic();
         else if (playbackState.Equals(PLAYBACK_STATE.STOPPED) && bPlay)
             PlayMusic();
+    }
+
+    private void OnDestroy()
+    {
+        musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 }
