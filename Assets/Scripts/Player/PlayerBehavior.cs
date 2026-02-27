@@ -111,7 +111,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public bool IsInCombat;
 
     //game over sounds
-    //public EventReference deathRemark;
+    public EventReference deathRemark;
     public EventReference dmgEfforts;
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
@@ -340,7 +340,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void OnDeath()
     {
-        //PlaySound(deathRemark);
+        PlaySound(deathRemark);
         NoMove();
 
         //display game over txt
