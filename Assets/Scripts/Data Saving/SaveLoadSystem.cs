@@ -13,6 +13,8 @@ namespace Assets.Scripts
         public string Name;
         public string CurrentLevelName;
         public PlayerData playerData;
+        //public EnemyData enemyData;
+        //public SceneData sceneData;
     }
 
     //TODO: throw in own interface ISaveandBind
@@ -38,6 +40,8 @@ namespace Assets.Scripts
         {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+
+            Checkpoint.SaveGame.AddListener(SaveGame);
         }
 
         private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
@@ -50,6 +54,8 @@ namespace Assets.Scripts
             if (scene.name == "TitleScreen") return;
 
             Bind<Kerth, PlayerData>(gameData.playerData);
+            //Bind<Fiend, EnemyData>(gameData.enemyData);
+            //Bind<ObjectManager, SceneData>(gameData.sceneData);
         }
 
 
@@ -99,17 +105,25 @@ namespace Assets.Scripts
         { 
             gameData = dataService.Load(saveName);
 
-            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "Bullshit";
+            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
         }
 
-        public void ReloadGame() => LoadGame(gameData.Name);
+        public void ReloadGame()
+        {
+            FindFirstObjectByType<ObjectManager>().OnReload();
+
+            LoadGame(gameData.Name);
+        }
 
         public void SaveGame()
         {
+            Debug.Log("game saved");
+
             //this is messy but it's all I can think to do
             FindFirstObjectByType<Kerth>().OnSave();
+            //FindFirstObjectByType<ObjectManager>().OnSave();
 
             dataService.Save(gameData);
         }

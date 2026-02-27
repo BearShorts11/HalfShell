@@ -17,26 +17,27 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
     }
 
     [SerializeField] EnemyData data;
-    [SerializeField] Enemy fiend;
+    [SerializeField] Enemy enemy;
 
     public void Bind(EnemyData data)
     {
         this.data = data;
         this.data.Id = Id;
         transform.position = data.position;
-        fiend.stateMachine.TransitionTo(ConvertStringToState(data.State));
+        enemy.Health = data.Health;
+        if(enemy.stateMachine is not null) enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
     }
 
     private void Update()
     {
         data.position = transform.position;
-        data.Health = fiend.Health;
+        data.Health = enemy.Health;
         data.State = ConvertStateToString();
     }
 
     private string ConvertStateToString()
     {
-        switch (fiend.stateMachine.CurrentState)
+        switch (enemy.stateMachine.CurrentState)
         {
             case ChaseState:
                 return "ChaseState";
@@ -58,22 +59,25 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
 
     private State ConvertStringToState(string state)
     {
+        if (enemy is null) return null;
+        if (enemy.stateMachine is null) return null;
+
         switch (state)
         {
             case "ChaseState":
-                return fiend.stateMachine._chaseState;
+                return enemy.stateMachine._chaseState;
             case "CooldownState":
-                return fiend.stateMachine._cooldownState;
+                return enemy.stateMachine._cooldownState;
             case "DeadState":
-                return fiend.stateMachine._deadState;
+                return enemy.stateMachine._deadState;
             case "DocileState":
-                return fiend.stateMachine._docileState;
+                return enemy.stateMachine._docileState;
             case "MeleeAttackState":
-                return fiend.stateMachine._meleeAttackState;
+                return enemy.stateMachine._meleeAttackState;
             case "ShootState":
-                return fiend.stateMachine._shootState;
+                return enemy.stateMachine._shootState;
             default:
-                return fiend.stateMachine._idleState;
+                return enemy.stateMachine._idleState;
         }
     }
 }

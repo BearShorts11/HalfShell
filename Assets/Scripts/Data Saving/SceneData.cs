@@ -18,6 +18,11 @@ public class SceneData : ISaveable
         set { _id = value; }
     }
 
-    public Fiend[] EnemiesInScene;
+    /// <summary>
+    /// Used to determine if the scene has been loaded once before or not. 
+    /// Used to determine which enemies should be in the scene or not on reloading.
+    /// </summary>
+    public bool FirstSaveHappened;
+    public SerializableGuid[] EnemiesInScene;
     //public IPickup[] PickupsInScene;
 }

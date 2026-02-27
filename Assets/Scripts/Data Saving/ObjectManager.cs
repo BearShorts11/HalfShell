@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,30 +22,50 @@ public class ObjectManager : MonoBehaviour, IBind<SceneData>
     {
         this.data = data;
         this.data.Id = Id;
-
-        Fiend[] enemiesOnReaload = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
-        //IPickup[] pickupsOnReload = FindObjectsByType<IPickup>(FindObjectsSortMode.None);
-
-        //if the fiend currently in the scene was not in the scene at the time of the last save,
-        //that means the enemy was already killed, and should not be in the scene
-        foreach (Fiend f in enemiesOnReaload)
-        {
-            bool wasInScene = false;
-            foreach (Fiend fiend in data.EnemiesInScene)
-            { 
-                if (fiend.Id == f.Id) wasInScene = true;
-            }
-            if (!wasInScene) Destroy(f.gameObject);
-        }
-
-        //same for pickups
-        
+        this.data.EnemiesInScene = data.EnemiesInScene;
+        if(data.FirstSaveHappened) OnReload();
     }
 
     private void Update()
     {
-        data.EnemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
-        //data.PickupsInScene = FindObjectsByType<IPickup>(FindObjectsSortMode.None);
+
+    }
+
+    public void OnSave()
+    {
+        Fiend[] enemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
+
+        data.EnemiesInScene = new SerializableGuid[enemiesInScene.Length];
+
+        for (int i = 0; i < enemiesInScene.Length; i++)
+        {
+            data.EnemiesInScene[i] = enemiesInScene[i].Id;
+        }
+
+        data.FirstSaveHappened = true;
+    }
+
+    public void OnReload()
+    {
+        Fiend[] enemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
+
+        data.EnemiesInScene = new SerializableGuid[enemiesInScene.Length];
+
+        for (int i = 0; i < enemiesInScene.Length; i++)
+        {
+            bool inScene = false;
+
+            for (int j = 0; j < data.EnemiesInScene.Length; j++)
+            {
+                //prevents error after destroying
+                if (enemiesInScene[i] is null) break;
+
+                if (enemiesInScene[i].Id == data.EnemiesInScene[j]) inScene = true;
+            }
+
+            if (!inScene) Destroy(enemiesInScene[i].gameObject);
+        }
+
     }
 
 }
