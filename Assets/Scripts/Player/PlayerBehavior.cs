@@ -113,6 +113,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //game over sounds
     public EventReference deathRemark;
     public EventReference dmgEfforts;
+    public EventReference degrade;
+    public EventReference Support;
+    public EventReference Idle;
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
     /// Plays a sound from the game object that this script is attached to, in this case, the player
