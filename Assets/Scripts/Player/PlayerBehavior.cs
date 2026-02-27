@@ -365,7 +365,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     {
         playerShooting.enabled = true;
         ShotgunViewmodel.SetActive(true);
-        ApollyonBark.SetActive(true) ;
+        //ApollyonBark.SetActive(true) ; To be enabled after Tutorial Sequence.
     }
 
     public void Invincible() => invincible = true;
