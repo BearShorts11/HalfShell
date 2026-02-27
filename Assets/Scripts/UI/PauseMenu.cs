@@ -1,5 +1,7 @@
 //using UnityEditor;
 //using UnityEditor.SearchService;
+using FMOD.Studio;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +19,12 @@ public class PauseMenu : MonoBehaviour
     public Slider SensitivitySlider; 
     public Slider FOVSlider;
     public TextMeshProUGUI FOV_val_txt;
+
+    // Volume Editing Properties
+    public Bus masterBus;
+    public Bus soundBus;
+    public Bus musicBus;
+    public Bus dialogueBus; //UNIMPLEMENTED
 
     string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
@@ -36,6 +44,16 @@ public class PauseMenu : MonoBehaviour
         if (paused) { Pause(); }
 
         FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange();  });
+        
+        // These are all Sound Groups that can be edited for mastering
+        masterBus = RuntimeManager.GetBus("bus:/");
+        soundBus = RuntimeManager.GetBus("bus:/SFX");
+        musicBus = RuntimeManager.GetBus("bus:/Music");
+        dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
+        // For each bus that has their volume updated
+        // They can be run through a method that updates them
+        // Each that have their volume adjusted should be adjusted with this
+        // code: [groupName]Bus.SetVolume(floatValue/float property);
     }
 
     // Update is called once per frame
