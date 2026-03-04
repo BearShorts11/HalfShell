@@ -526,6 +526,8 @@ public class PlayerShooting : MonoBehaviour
     {
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
+        if (hit.collider.gameObject.tag == "Player") return; // I'm suspecting the player capsule is blocking the bullets when sprinting + backpedaling, especially when looking at the playtest footage
+
         if (hit.collider.gameObject.tag == "Enemy")
         {
             hitPosition = hit.point;
