@@ -144,6 +144,9 @@ MonoBehaviour:
   damageCooldown: 1.5
   Docile: 0
   SpawnAgro: 0
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   tooCloseRange: 10
   fireRate: 0.25
@@ -2430,6 +2433,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3214146041863294826}
     m_Modifications:
+    - target: {fileID: 551782608195310464, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+      propertyPath: ammoType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 551782608195310464, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
       propertyPath: regainAmount
       value: 2
