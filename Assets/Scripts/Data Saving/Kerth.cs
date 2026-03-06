@@ -1,9 +1,6 @@
 using Assets.Scripts;
 using System;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 
 public class Kerth : MonoBehaviour, IBind<PlayerData>

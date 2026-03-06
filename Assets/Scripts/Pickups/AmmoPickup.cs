@@ -44,7 +44,7 @@ public class AmmoPickup : IPickup
                 }
 
                 // More to be added here when Ammo Maximums are added -A
-                if (!infinite) { Destroy(gameObject); }
+                if (!infinite) { base.OnPickup(); Destroy(gameObject); }
             }
         }
     }

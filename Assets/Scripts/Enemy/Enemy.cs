@@ -43,7 +43,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("Health & Damage")]
     public float Health { get; set; }
     public float maxHealth { get; set; } = 50f;
-    public bool Dead { get; private set; }
+    public bool Dead { get; set; }
 
 
     [Header("Behavior Changes")]
@@ -113,6 +113,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             agent.enabled = false;
             Dead = true;
             //OnDeath?.Invoke();
+
+            ObjectManager manager = FindFirstObjectByType<ObjectManager>();
+            if (manager is not null)
+            { 
+                manager.PickedUpObject(GetComponent<Fiend>().Id);
+            }
 
             StartCoroutine(SpawnDeathBloodPool());
         }
@@ -238,4 +244,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+
+    public void SetHealth(float health) => Health = health;
 }

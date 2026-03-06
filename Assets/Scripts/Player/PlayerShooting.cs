@@ -277,7 +277,7 @@ public class PlayerShooting : MonoBehaviour
         {
             playerUI.ChamberUIOff();
             ShellBase shell = Chamber as ShellBase;
-            if (useShells) AmmoCounts[shell.Type]++;
+            if (useShells && AmmoCounts[shell.Type] < shell.MaxHolding) AmmoCounts[shell.Type]++;
         }
 
         Chamber = null;

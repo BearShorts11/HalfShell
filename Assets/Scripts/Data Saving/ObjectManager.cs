@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class ObjectManager : MonoBehaviour, IBind<SceneData>
@@ -22,50 +19,41 @@ public class ObjectManager : MonoBehaviour, IBind<SceneData>
     {
         this.data = data;
         this.data.Id = Id;
-        this.data.EnemiesInScene = data.EnemiesInScene;
-        if(data.FirstSaveHappened) OnReload();
-    }
-
-    private void Update()
-    {
-
     }
 
     public void OnSave()
     {
-        Fiend[] enemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
-
-        data.EnemiesInScene = new SerializableGuid[enemiesInScene.Length];
-
-        for (int i = 0; i < enemiesInScene.Length; i++)
-        {
-            data.EnemiesInScene[i] = enemiesInScene[i].Id;
-        }
-
-        data.FirstSaveHappened = true;
+        
     }
 
     public void OnReload()
     {
-        Fiend[] enemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
-
-        data.EnemiesInScene = new SerializableGuid[enemiesInScene.Length];
-
-        for (int i = 0; i < enemiesInScene.Length; i++)
+        IPickup[] pickupsInScene = FindObjectsByType<IPickup>(FindObjectsSortMode.None);
+        for (int i = 0; i < pickupsInScene.Length; i++)
         {
-            bool inScene = false;
-
-            for (int j = 0; j < data.EnemiesInScene.Length; j++)
+            foreach (SerializableGuid id in data.PickedUpObjects)
             {
-                //prevents error after destroying
-                if (enemiesInScene[i] is null) break;
-
-                if (enemiesInScene[i].Id == data.EnemiesInScene[j]) inScene = true;
+                if (pickupsInScene[i].Id == id) Destroy(pickupsInScene[i].gameObject);
             }
-
-            if (!inScene) Destroy(enemiesInScene[i].gameObject);
         }
 
+        Fiend[] enemiesInScene = FindObjectsByType<Fiend>(FindObjectsSortMode.None);
+        for (int i = 0; i < enemiesInScene.Length; i++)
+        {
+            foreach (SerializableGuid id in data.DeadEnemies)
+            {
+                if (enemiesInScene[i].Id == id) Destroy(enemiesInScene[i].gameObject);
+            }
+        }
     }
 
+    public void PickedUpObject(SerializableGuid id)
+    { 
+        data.PickedUpObjects.Add(id);  
+    }
+
+    public void DeadEnemy(SerializableGuid id)
+    { 
+        data.DeadEnemies.Add(id);
+    }
 }

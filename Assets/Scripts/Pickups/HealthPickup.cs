@@ -29,6 +29,7 @@ public class HealthPickup : IPickup
             UI.UpdateHP(Player.Health, Player.maxHealth);
             UI.CheckHealth();
 
+            base.OnPickup();
             Destroy(gameObject);
         }
     }

@@ -26,6 +26,7 @@ public class ArmorPickup : IPickup
             Player.Armor += regainAmount;
             UI.UpdateArmor(Player.Armor, Player.MaxArmor);
 
+            base.OnPickup();
             Destroy(gameObject);
         }
     }

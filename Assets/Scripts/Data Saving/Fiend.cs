@@ -1,10 +1,5 @@
 ﻿using Assets.Scripts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class Fiend : MonoBehaviour, IBind<EnemyData>
@@ -24,8 +19,14 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
         this.data = data;
         this.data.Id = Id;
         transform.position = data.position;
-        enemy.Health = data.Health;
-        if(enemy.stateMachine is not null) enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
+        enemy.SetHealth(data.Health);
+
+        if (enemy.stateMachine is not null)
+        { 
+            enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
+        }
+        if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState) Destroy(this.gameObject);
+
     }
 
     private void Update()

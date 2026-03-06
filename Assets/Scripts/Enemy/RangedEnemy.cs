@@ -30,8 +30,7 @@ public class RangedEnemy : Enemy
     public ParticleSystem muzzleflash;
     public EventReference firingSound;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         base.Startup();
     }

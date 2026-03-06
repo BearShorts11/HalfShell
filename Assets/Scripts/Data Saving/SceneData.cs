@@ -1,14 +1,12 @@
 ﻿using Assets.Scripts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
 /// Holds which enemies and pickups are currently in the scene
 /// </summary>
+[Serializable]
 public class SceneData : ISaveable
 {
     [SerializeField] private SerializableGuid _id;
@@ -18,11 +16,7 @@ public class SceneData : ISaveable
         set { _id = value; }
     }
 
-    /// <summary>
-    /// Used to determine if the scene has been loaded once before or not. 
-    /// Used to determine which enemies should be in the scene or not on reloading.
-    /// </summary>
-    public bool FirstSaveHappened;
-    public SerializableGuid[] EnemiesInScene;
-    //public IPickup[] PickupsInScene;
+    //public SerializableGuid[] EnemiesInScene;
+    public List<SerializableGuid> PickedUpObjects;
+    public List<SerializableGuid> DeadEnemies;
 }

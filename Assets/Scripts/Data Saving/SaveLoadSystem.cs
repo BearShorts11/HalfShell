@@ -13,8 +13,9 @@ namespace Assets.Scripts
         public string Name;
         public string CurrentLevelName;
         public PlayerData playerData;
-        //public EnemyData enemyData;
-        //public SceneData sceneData;
+        public List<EnemyData> enemyData;
+        public List<PickupData> pickupData;
+        public SceneData sceneData;
     }
 
     //TODO: throw in own interface ISaveandBind
@@ -54,8 +55,11 @@ namespace Assets.Scripts
             if (scene.name == "TitleScreen") return;
 
             Bind<Kerth, PlayerData>(gameData.playerData);
-            //Bind<Fiend, EnemyData>(gameData.enemyData);
-            //Bind<ObjectManager, SceneData>(gameData.sceneData);
+            Bind<Fiend, EnemyData>(gameData.enemyData);
+            Bind<IPickup, PickupData>(gameData.pickupData);
+            Bind<ObjectManager, SceneData>(gameData.sceneData);
+
+            FindFirstObjectByType<ObjectManager>().OnReload();
         }
 
 
@@ -123,7 +127,7 @@ namespace Assets.Scripts
 
             //this is messy but it's all I can think to do
             FindFirstObjectByType<Kerth>().OnSave();
-            //FindFirstObjectByType<ObjectManager>().OnSave();
+            FindFirstObjectByType<ObjectManager>().OnSave();
 
             dataService.Save(gameData);
         }
