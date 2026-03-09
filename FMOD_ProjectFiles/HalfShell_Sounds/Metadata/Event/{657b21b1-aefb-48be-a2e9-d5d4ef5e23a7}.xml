@@ -40,7 +40,8 @@
 	<object class="MasterTrack" id="{8b21a15f-4776-4d65-a45e-7a1602e33833}">
 		<relationship name="modules">
 			<destination>{c82200da-866b-494a-9d6a-045fdb64f241}</destination>
-			<destination>{ac63ad58-d311-4711-a0e8-3f20d6c0fb3f}</destination>
+			<destination>{4726c674-d61b-43f3-9b3f-d0d823eeceb8}</destination>
+			<destination>{5367b804-8d80-4baa-8e8d-9667c82bc38a}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{7490501c-c7fa-43ab-82fc-3093308e1ea9}</destination>
@@ -62,7 +63,8 @@
 	<object class="Timeline" id="{85fe45e6-424e-4d1b-b301-0c6c3836a54f}">
 		<relationship name="modules">
 			<destination>{c82200da-866b-494a-9d6a-045fdb64f241}</destination>
-			<destination>{ac63ad58-d311-4711-a0e8-3f20d6c0fb3f}</destination>
+			<destination>{4726c674-d61b-43f3-9b3f-d0d823eeceb8}</destination>
+			<destination>{5367b804-8d80-4baa-8e8d-9667c82bc38a}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{7490501c-c7fa-43ab-82fc-3093308e1ea9}">
@@ -78,21 +80,38 @@
 	</object>
 	<object class="SingleSound" id="{c82200da-866b-494a-9d6a-045fdb64f241}">
 		<property name="length">
-			<value>8.8231972789115645</value>
+			<value>1.5</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{e4a06681-4793-473f-a15a-d4e3ae9e7358}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{ac63ad58-d311-4711-a0e8-3f20d6c0fb3f}">
+	<object class="SingleSound" id="{4726c674-d61b-43f3-9b3f-d0d823eeceb8}">
 		<property name="start">
-			<value>8.8231972789115645</value>
+			<value>3</value>
 		</property>
 		<property name="length">
-			<value>24.463038548752834</value>
+			<value>2.6828860325566413</value>
+		</property>
+		<property name="timelockedOffset">
+			<value>1.3644584242602651</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{1d7e2b61-d201-49d0-8fb8-76bddc3ed723}</destination>
+			<destination>{e4a06681-4793-473f-a15a-d4e3ae9e7358}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{5367b804-8d80-4baa-8e8d-9667c82bc38a}">
+		<property name="start">
+			<value>7</value>
+		</property>
+		<property name="length">
+			<value>5.2064590855470421</value>
+		</property>
+		<property name="timelockedOffset">
+			<value>3.6167381933645224</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{e4a06681-4793-473f-a15a-d4e3ae9e7358}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{2b7b454b-f762-4ca6-95c5-1b4aed96a1eb}">
