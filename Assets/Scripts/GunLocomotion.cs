@@ -6,6 +6,7 @@ public class GunLocomotion : MonoBehaviour
 {
 
     public PlayerBehavior playerBehavior;
+    private bool isRunning;
 
     [Header("Weapon Sway")]
     public float step = 0.01f;
@@ -21,6 +22,9 @@ public class GunLocomotion : MonoBehaviour
     float smoothRot = 12f;
 
     [Header("Weapon Bobbing")]
+    public float walkBobAmount;
+    public float runBobAmount;
+
     public float speedCurve;
     float curveSin { get => Mathf.Sin(speedCurve); }
     float curveCos { get => Mathf.Cos(speedCurve); }
@@ -28,8 +32,6 @@ public class GunLocomotion : MonoBehaviour
     public Vector3 travelLimit = Vector3.one * 0.025f;
     public Vector3 bobLimit = Vector3.one * 0.01f;
     Vector3 bobPosition;
-
-    public float bobAmount;
 
     [Header("Bob Rotation")]
     public Vector3 multiplier;
@@ -67,6 +69,7 @@ public class GunLocomotion : MonoBehaviour
         lookInput.x = Input.GetAxis("Mouse X");
         lookInput.y = Input.GetAxis("Mouse Y");
 
+        isRunning = Input.GetKey(KeyCode.LeftShift);
     }
 
 
@@ -95,7 +98,15 @@ public class GunLocomotion : MonoBehaviour
 
     void BobOffset()
     {
-        speedCurve += Time.deltaTime * (playerBehavior.characterController.isGrounded ? walkInput.magnitude * bobAmount : 1f) + 0.01f;
+        if(isRunning)
+        {
+            speedCurve += Time.deltaTime * (playerBehavior.characterController.isGrounded ? walkInput.magnitude * runBobAmount : 1f) + 0.01f;
+        }
+        else
+        {
+            speedCurve += Time.deltaTime * (playerBehavior.characterController.isGrounded ? walkInput.magnitude * walkBobAmount : 1f) + 0.01f;
+        }
+
 
         bobPosition.x = (curveCos * bobLimit.x * (playerBehavior.characterController.isGrounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
         bobPosition.y = (curveSin * bobLimit.y) - (Input.GetAxis("Vertical") * travelLimit.y);
