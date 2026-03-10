@@ -77,7 +77,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     [SerializeField] private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
-    private CharacterController characterController;
+    public CharacterController characterController;
 
     private bool canMove = true;
     private static bool canLook = true;

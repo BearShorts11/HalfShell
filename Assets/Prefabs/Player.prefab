@@ -258,14 +258,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c658b31219378b4eb4c0a87ee916aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBehavior: {fileID: 1584785158103645611}
+  step: 0.01
+  maxStepDistance: 0.06
+  rotationStep: 4
+  maxRotationStep: 5
   smooth: 8
-  swayMultiplier: 4
-  effectIntensity: 0.04
-  effectIntensityX: 1
-  effectSpeed: 4
-  sprintEffectIntensity: 0.08
-  sprintEffectIntensityX: 1
-  sprintEffectSpeed: 7
+  speedCurve: 0
+  travelLimit: {x: 0.025, y: 0.025, z: 0.025}
+  bobLimit: {x: 0.01, y: 0.01, z: 0.01}
+  bobAmount: 5
+  multiplier: {x: 2, y: 1, z: 1}
 --- !u!114 &8019770363139407577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +311,7 @@ Transform:
   m_GameObject: {fileID: 4275438011113338175}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.65000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0.649999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -593,6 +596,7 @@ MonoBehaviour:
   health: 100
   armor: 0
   moveDirection: {x: 0, y: 0, z: 0}
+  characterController: {fileID: 0}
   SlowedTime: 0.1
   playerCinemachineCamera: {fileID: 3181911189500020457}
   CinemachineCameraTarget: {fileID: 9124881526004739986}
@@ -966,7 +970,7 @@ Transform:
   m_GameObject: {fileID: 6719948019014343288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6500001, z: 0}
+  m_LocalPosition: {x: 0, y: 0.649999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
