@@ -362,6 +362,11 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public void SetArmor(float armor)
     { 
         this.armor = armor;
+
+        if (UI is null) UI = FindFirstObjectByType<PlayerUI>();
+        UI.UpdateArmor(armor, MaxArmor);
+
+        if (UI.player is null) UI.player = this;
     }
 
     public void EquipShotgun()

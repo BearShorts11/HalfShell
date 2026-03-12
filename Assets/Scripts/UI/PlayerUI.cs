@@ -46,18 +46,6 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TESTING INPUTS 
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    player.Damage(10f);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.X))
-        //{
-        //    player.Health += 10;
-        //    UpdateHP(player.Health, player.maxHealth);
-        //    CheckHealth();
-        //}
     }
 
 
