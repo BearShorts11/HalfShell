@@ -19,7 +19,8 @@ public abstract class ShellBase : MonoBehaviour
         Slug = 2,
         Buckshot = 3,
         BeanBag = 4,
-        BMG = 5
+        BMG = 5,
+        Incindiary = 6
     }
 
     protected ShellType type;
