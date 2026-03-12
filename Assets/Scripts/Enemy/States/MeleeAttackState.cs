@@ -10,6 +10,7 @@ public class MeleeAttackState : State
     /// Attack animation length. Determines when to switch states and when to check if the player is still in range for an attack or not
     /// </summary>
     private float attackTimer;
+    private bool hitPlayer;
 
     public MeleeAttackState(Enemy owner)
     { 
@@ -22,6 +23,7 @@ public class MeleeAttackState : State
         attackTimer = Owner.attackTimer;
         Owner.agent.isStopped = true;
         Owner.animator.SetBool("Attacking", true);
+        hitPlayer = false;
     }
 
     public override void Update()
@@ -38,11 +40,12 @@ public class MeleeAttackState : State
              *  you could turn on a collider for whatever frames of the attack animation look like they are dealing damage, and check if that collider is intersecting the player.
              *  If you did that, I would consider using animation events instead of trying to time it so that you can have a visual inspector to know which frames should deal damage.
              */
-
-            if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) <= Owner.attackRange)
-            {
+            if ((Owner as MeleeEnemy).PlayerInTrigger && !hitPlayer)
+            { 
                 Owner.Player.TakeDamage(((MeleeEnemy)Owner).damage);
+                hitPlayer = true;
             }
+                
             //automatically switch to cooldown after attack timer is done
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._cooldownState);
