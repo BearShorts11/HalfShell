@@ -2,7 +2,7 @@ using Assets.Scripts;
 using System;
 using UnityEngine;
 
-public class IPickup : MonoBehaviour, IBind<PickupData>
+public abstract class IPickup : MonoBehaviour, IBind<PickupData>
 {
     public int regainAmount;
     public bool infinite;
@@ -15,6 +15,16 @@ public class IPickup : MonoBehaviour, IBind<PickupData>
     public PlayerBehavior Player { get { return player; } set { player = value; } }
     public PlayerShooting Gun { get { return gun; } set { gun = value; } }
     public PlayerUI UI { get { return ui; } set { ui = value; } }
+
+    public enum PickupType
+    { 
+        Ammo = 0,
+        Armor = 1,
+        Health = 2,
+        Shotgun = 3
+    }
+    public PickupType Type;
+    [SerializeField] bool isBig;
 
     //data saving
     [SerializeField] public PickupData data;
@@ -32,24 +42,48 @@ public class IPickup : MonoBehaviour, IBind<PickupData>
         gun = FindFirstObjectByType<PlayerShooting>();
         ui = FindFirstObjectByType<PlayerUI>();
 
-        if (!data.Saved && !data.FirstBind) Destroy(this.gameObject);
+        //if (!data.Saved && !data.FirstBind) Destroy(this.gameObject);
     }
 
     public void Rotate() => transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
 
     public void Bind(PickupData data)
     {
-        this.data = data;
-        this.data.Id = Id;
-        this.data.Saved = data.Saved;
+        if (this.data.FirstBind)
+        {
+            this.data.position = this.transform.position;
+            this.data.rotation = this.transform.rotation;
+            this.data.Type = (int)this.Type;
+            this.data.IsBig = this.isBig;
+
+            this.data.FirstBind = false;
+        }
+        else
+        { 
+            this.transform.position = data.position;
+            this.transform.rotation = data.rotation;
+        }
+
+    }
+
+    protected void BaseUpdate()
+    {
+        this.data.position = this.transform.position;
+        this.data.rotation = this.transform.rotation;
     }
 
     public void OnPickup()
     {
-        ObjectManager manager = FindFirstObjectByType<ObjectManager>();
-        if (manager is null) return;
+        //ObjectManager manager = FindFirstObjectByType<ObjectManager>();
+        //if (manager is null) return;
 
-        manager.PickedUpObject(this.Id);
+        //manager.PickedUpObject(this.Id);
+
+        Kerth k = FindFirstObjectByType<Kerth>();
+        if (k is not null)
+        {
+            k.PickedUpObject(this.data);
+        }
     }
 
 }

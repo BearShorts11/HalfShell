@@ -1,5 +1,6 @@
 //using UnityEditor;
 //using UnityEditor.SearchService;
+using Assets.Scripts;
 using FMOD.Studio;
 using FMODUnity;
 using TMPro;

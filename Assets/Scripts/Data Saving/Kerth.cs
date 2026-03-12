@@ -17,6 +17,15 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     [SerializeField] PlayerBehavior behavior;
     [SerializeField] PlayerShooting shooting;
 
+    [SerializeField] GameObject BigHealth;
+    [SerializeField] GameObject SmallHealth;
+    [SerializeField] GameObject BigAmmo;
+    [SerializeField] GameObject SmallAmmo;
+    [SerializeField] GameObject BigArmor;
+    [SerializeField] GameObject SmallArmor;
+
+    private List<PickupData> pickupsSinceLastSave = new List<PickupData>();
+
     private void Start()
     {
         //number based on shell type enum, can't think of a better way to do this right now
@@ -27,8 +36,12 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     {
         this.data = data;
         this.data.Id = Id;
+
+        //in order to actually move the character you have to disable the character controller
+        if(behavior.characterController != null) behavior.characterController.enabled = false;
         transform.position = data.position;
         transform.rotation = data.rotation;
+        if (behavior.characterController != null) behavior.characterController.enabled = true;
 
         behavior.SetHealth(data.Health);
         behavior.SetArmor(data.Armor);
@@ -61,10 +74,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
                 return new HalfShell();
             case 2:
                 return new Slug();
-                break;
             default:
                 return null;
-                break;
         }
     }
 
@@ -92,6 +103,34 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         {
             shooting.Magazine.Push(reserve.Pop());
         }
+
+        pickupsSinceLastSave.Clear();
     }
 
+    public void OnReload()
+    {
+        foreach (PickupData data in pickupsSinceLastSave)
+        {
+            switch (data.Type)
+            {
+                case 0:
+                    if (data.IsBig) Instantiate(BigAmmo, data.position, data.rotation);
+                    else Instantiate(SmallAmmo, data.position, data.rotation);
+                        break;
+                case 1:
+                    if (data.IsBig) Instantiate(BigArmor, data.position, data.rotation);
+                    else Instantiate(SmallArmor, data.position, data.rotation);
+                    break;
+                case 2:
+                    if (data.IsBig) Instantiate(BigHealth, data.position, data.rotation);
+                    else Instantiate(SmallHealth, data.position, data.rotation);
+                    break;
+            }
+        }
+    }
+
+    public void PickedUpObject(PickupData data)
+    { 
+        pickupsSinceLastSave.Add(data);
+    }
 }

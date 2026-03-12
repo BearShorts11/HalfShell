@@ -9,12 +9,14 @@ public class ArmorPickup : IPickup
     {
         Player = FindFirstObjectByType<PlayerBehavior>();
         UI = FindFirstObjectByType<PlayerUI>();
+        this.Type = PickupType.Armor;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (rotate) { Rotate(); }
+        base.BaseUpdate();
     }
 
     public void OnTriggerEnter(Collider other)

@@ -111,7 +111,12 @@ namespace Assets.Scripts
 
             if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
 
-            SceneManager.LoadScene(gameData.CurrentLevelName);
+            //SceneManager.LoadScene(gameData.CurrentLevelName);
+
+            Bind<Kerth, PlayerData>(gameData.playerData);
+            Bind<Fiend, EnemyData>(gameData.enemyData);
+
+            FindFirstObjectByType<Kerth>().OnReload();
         }
 
         public void ReloadGame()

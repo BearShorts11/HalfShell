@@ -11,12 +11,14 @@ public class HealthPickup : IPickup
     {
         Player = FindFirstObjectByType<PlayerBehavior>();
         UI = FindFirstObjectByType<PlayerUI>();
+        this.Type = PickupType.Health;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (rotate) { Rotate(); }
+        base.BaseUpdate();
     }
 
     public void OnTriggerEnter(Collider other)

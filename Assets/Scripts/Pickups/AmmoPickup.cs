@@ -14,12 +14,14 @@ public class AmmoPickup : IPickup
     {
         Gun = FindFirstObjectByType<PlayerShooting>();
         UI = FindFirstObjectByType<PlayerUI>();
+        this.Type = PickupType.Ammo;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (rotate) { Rotate(); }
+        base.BaseUpdate();
     }
 
     public void OnTriggerEnter(Collider other)

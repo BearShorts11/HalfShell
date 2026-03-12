@@ -12,6 +12,10 @@ public class PickupData : ISaveable
         set { _id = value; }
     }
 
-    public bool Saved = false;
+    public Vector3 position;
+    public Quaternion rotation;
     public bool FirstBind = true;
+    public int Type;
+    public bool IsBig;
+    //add amt?
 }
