@@ -127,6 +127,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
                     break;
             }
         }
+
+        pickupsSinceLastSave.Clear();
     }
 
     public void PickedUpObject(PickupData data)
