@@ -3225,6 +3225,10 @@ MonoBehaviour:
         value: 
         type: 0
         typeString: CustomFieldType_Text
+      - title: Response Menu Sequence
+        value: LeaveDialogue()
+        type: 0
+        typeString: 
       conversationID: 11
       isRoot: 0
       isGroup: 0
@@ -3241,7 +3245,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 627
-        y: 161
+        y: 159
         width: 160
         height: 30
     - id: 4
@@ -3271,7 +3275,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonVoid_ApoExplSelf);
+        value: 'FMODWait(event, event:/Dialogue/apollyonVoid_ApoExplSelf);
 
 '
         type: 0
@@ -3328,7 +3332,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonVoid_ApoExplMis);
+        value: 'FMODWait(event, event:/Dialogue/apollyonVoid_ApoExplMis);
 
 '
         type: 0
@@ -3403,8 +3407,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 640
-        y: 232
+        x: 413
+        y: 300
         width: 160
         height: 30
     entryGroups: []

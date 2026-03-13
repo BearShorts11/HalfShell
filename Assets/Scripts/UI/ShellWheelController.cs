@@ -23,14 +23,14 @@ public class ShellWheelController : MonoBehaviour
 
         if (PauseMenu.paused != true)
         {
-            if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
                 PlayerBehavior.UnlockCursor();
                 PlayerBehavior.SlowMoActive = true;
                 shellWheelSelected = true;
             }
 
-            if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
+            if (Input.GetKeyUp(KeyCode.Tab))
             {
                 PlayerBehavior.LockCursor();
                 PlayerBehavior.SlowMoActive = false;

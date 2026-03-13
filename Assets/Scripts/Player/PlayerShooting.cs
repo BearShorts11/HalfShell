@@ -137,9 +137,7 @@ public class PlayerShooting : MonoBehaviour
             counter.UpdateAmmoCount();
         }
 
-        // Temporary, just to showcase that it exists. Delete when we get to the starting sequence.
-        animator.CrossFade("Draw_Inspect", 0f);
-
+        
         input = GetComponent<PlayerInput>();
 
         bulletHolePool = new ObjectPool<GameObject>(
@@ -185,7 +183,7 @@ public class PlayerShooting : MonoBehaviour
         if (PauseMenu.paused) return;
 
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
-        if (Input.GetKeyDown(KeyCode.F) && !isInShellSelect && !pumped) 
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isInShellSelect && !pumped) 
         {
             lookingAtGun = !lookingAtGun;
             ShellWheelController.shellWheelDisabled = !ShellWheelController.shellWheelDisabled;
@@ -210,12 +208,12 @@ public class PlayerShooting : MonoBehaviour
 
         animator.speed = Time.timeScale < 1 ? 1 / Time.timeScale : 1;
         // Can someone set a button name for these? - V  
-        if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl) ) 
+        if (Input.GetKeyDown(KeyCode.Tab)) 
         {
             GunRaise();
             if (lookingAtGun) lookingAtGun = false;
         }
-        if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             GunLower();
         }
@@ -231,7 +229,7 @@ public class PlayerShooting : MonoBehaviour
         
     }
 
-    private void LookAtGun(bool looking)
+    public void LookAtGun(bool looking)
     {
         if (looking) animator.CrossFade("Idle_Goto_LookAtFace", 0.1f);
         else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
@@ -369,7 +367,7 @@ public class PlayerShooting : MonoBehaviour
 
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
-            if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl)) 
+            if (Input.GetKey(KeyCode.Tab)) 
             {
                 //animator.CrossFade("reload_loop", 0.01f);
                 animator.SetTrigger("LoadShell");
@@ -725,4 +723,9 @@ public class PlayerShooting : MonoBehaviour
 
     public void InfiniteShells() => useShells = false;
     public void UseShells() => useShells = true;
+
+    public void GunInspect()
+    {
+        animator.CrossFade("Draw_Inspect", 0f); //this plays Inspector Anim
+    }
 }
