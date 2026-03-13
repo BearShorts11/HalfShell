@@ -7,6 +7,7 @@ public class GunLocomotion : MonoBehaviour
 
     public PlayerBehavior playerBehavior;
     private bool isRunning;
+    private bool isJumping;
 
     [Header("Weapon Sway")]
     public float step = 0.01f;
@@ -20,6 +21,9 @@ public class GunLocomotion : MonoBehaviour
 
     public float smooth = 10f;
     float smoothRot = 12f;
+
+    [Header("Jump Sway")]
+    public float jumpSwayAmount;
 
     [Header("Weapon Bobbing")]
     public float walkBobAmount;
@@ -70,6 +74,7 @@ public class GunLocomotion : MonoBehaviour
         lookInput.y = Input.GetAxis("Mouse Y");
 
         isRunning = Input.GetKey(KeyCode.LeftShift);
+        isJumping = Input.GetKey(KeyCode.Space);
     }
 
 
@@ -88,6 +93,15 @@ public class GunLocomotion : MonoBehaviour
         invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
         invertLook.y = Mathf.Clamp(invertLook.y, -maxRotationStep, maxRotationStep);
         swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
+
+        if (playerBehavior.inAir )
+        {
+            swayEulerRot = new Vector3(invertLook.y + jumpSwayAmount, invertLook.x, invertLook.x);
+        }
+        else
+        {
+            swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
+        }
     }
 
     private void CompositePositionRotation()

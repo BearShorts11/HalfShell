@@ -75,12 +75,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
 
-    [SerializeField] private Vector3 moveDirection = Vector3.zero;
+    [SerializeField] public Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     public CharacterController characterController;
 
     private bool canMove = true;
     private static bool canLook = true;
+
 
     public float SlowedTime = 0.1f;
     public static bool SlowMoActive = false;
@@ -109,6 +110,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
     public bool IsInCombat;
+    public bool inAir;
 
     //game over sounds
     public EventReference deathRemark;
@@ -190,7 +192,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         // Checks if the player is touching the ground. If not, applies the force of gravity to send them downward
         if (!characterController.isGrounded && movementDirectionY > -15) //-15 ensures the player doens't keep adding downward velocity forever.
         {
+            inAir = true;
             moveDirection.y -= gravity * Time.deltaTime;
+        }
+        else
+        {
+            inAir = false;
         }
 
         #region crouching input (CURRENTLY UNSUED) 
