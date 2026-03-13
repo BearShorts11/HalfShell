@@ -57,9 +57,6 @@ namespace Assets.Scripts
             Bind<Kerth, PlayerData>(gameData.playerData);
             Bind<Fiend, EnemyData>(gameData.enemyData);
             Bind<IPickup, PickupData>(gameData.pickupData);
-            Bind<ObjectManager, SceneData>(gameData.sceneData);
-
-            FindFirstObjectByType<ObjectManager>().OnReload();
         }
 
 
@@ -121,18 +118,13 @@ namespace Assets.Scripts
 
         public void ReloadGame()
         {
-            FindFirstObjectByType<ObjectManager>().OnReload();
-
             LoadGame(gameData.Name);
         }
 
         public void SaveGame()
         {
             Debug.Log("game saved");
-
-            //this is messy but it's all I can think to do
             FindFirstObjectByType<Kerth>().OnSave();
-            FindFirstObjectByType<ObjectManager>().OnSave();
 
             dataService.Save(gameData);
         }

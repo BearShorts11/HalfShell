@@ -96,6 +96,19 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void ResetScene()
+    {
+        SaveLoadSystem system = FindFirstObjectByType<SaveLoadSystem>();
+        system.LoadGame(system.gameData.Name);
+
+        //undo death actions
+        player.Revive();
+
+        paused = false;
+        deathMenu.SetActive(false);
+        pauseMenu.SetActive(false);
+    }
+
     public void Death()
     {
         paused = true;

@@ -349,6 +349,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         //display game over txt
     }
 
+    public void Revive()
+    {
+        LockCursor();
+        ResumeTime();
+        YesMove();
+    }
+
     public void SetHealth(float health)
     {
         this.health = health;
