@@ -8,6 +8,7 @@ public class AmmoPickup : IPickup
 {
     [SerializeField] private ShellBase.ShellType ammoType;
     [SerializeField] private EventReference pickupSound;
+    [SerializeField] private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,6 +45,10 @@ public class AmmoPickup : IPickup
                     counter.UpdateAmmoCount();
                    
                 }
+
+                // If this is an ammo crate that *has* an animation for picking up ammo, play this animation state -V
+                if (animator != null)
+                    animator.CrossFade("Ammo_Pickup", 0.2f);
 
                 // More to be added here when Ammo Maximums are added -A
                 if (!infinite) { base.OnPickup(); Destroy(gameObject); }
