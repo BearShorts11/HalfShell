@@ -21,6 +21,8 @@ namespace Assets.Scripts
         public float Health;
         public float Armor;
 
+        public bool FirstBind = true;
+
         //PlayerShooting data
         /// <summary>
         /// array index refers to shell type enum value, array value refers to ammo count for shell type

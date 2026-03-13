@@ -39,16 +39,28 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
 
         //in order to actually move the character you have to disable the character controller
         if(behavior.characterController != null) behavior.characterController.enabled = false;
-        transform.position = data.position;
-        transform.rotation = data.rotation;
+
+        //only change position if reloading
+        if (this.data.FirstBind)
+        {
+            data.FirstBind = false;
+        }
+        else 
+        { 
+            transform.position = data.position;
+            transform.rotation = data.rotation;
+
+            //only do these after first bind therefore it does not matter what starting values are in the script
+            behavior.SetHealth(data.Health);
+            behavior.SetArmor(data.Armor);
+
+            shooting.SetAmmoCounts(data.AmmoCounts);
+            shooting.SetMagazine(data.ReversedMagazine);
+            shooting.SetChamber(ConvertNumToShell());
+        }
+
         if (behavior.characterController != null) behavior.characterController.enabled = true;
 
-        behavior.SetHealth(data.Health);
-        behavior.SetArmor(data.Armor);
-
-        shooting.SetAmmoCounts(data.AmmoCounts);
-        shooting.SetMagazine(data.ReversedMagazine);
-        shooting.SetChamber(ConvertNumToShell());
     }
 
     private void Update()

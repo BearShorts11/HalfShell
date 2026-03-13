@@ -49,7 +49,8 @@ public class ChaseState : State
         }
         else
         {
-            Owner.agent.SetDestination(Owner.Player.transform.position);
+            //attempting to avoid editor errors
+            if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
         }
     }
 }

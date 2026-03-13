@@ -18,14 +18,22 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
     {
         this.data = data;
         this.data.Id = Id;
-        transform.position = data.position;
-        enemy.SetHealth(data.Health);
 
-        if (enemy.stateMachine is not null)
+        //only place in position indicated when reloading
+        if (this.data.FirstBind) this.data.FirstBind = false;
+        else
         { 
-            enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
+            //only update values on reloading so how they're placed in the scene stays the same 
+            transform.position = data.position;
+
+            enemy.SetHealth(data.Health);
+
+            if (enemy.stateMachine is not null)
+            { 
+                enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
+            }
+            if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState) Destroy(this.gameObject);
         }
-        if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState) Destroy(this.gameObject);
 
     }
 

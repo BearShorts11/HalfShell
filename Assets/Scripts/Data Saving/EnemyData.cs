@@ -16,6 +16,8 @@ public class EnemyData : ISaveable
     public Vector3 position;
     public float Health;
 
+    public bool FirstBind = true;
+
     /// <summary>
     /// converted to and from state object in Fiend (object will not save)
     /// </summary>
