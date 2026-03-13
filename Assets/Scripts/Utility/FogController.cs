@@ -7,8 +7,7 @@ public class FogController : MonoBehaviour
         RenderSettings.fog = check;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
     }
-
-        public void FogColor(string hexCode)
+    public void FogColor(string hexCode)
     {
         ColorUtility.TryParseHtmlString(hexCode, out Color hexColor);
         RenderSettings.fogColor = hexColor;
