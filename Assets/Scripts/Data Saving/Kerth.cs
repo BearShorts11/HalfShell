@@ -25,6 +25,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     [SerializeField] GameObject SmallArmor;
 
     private List<PickupData> pickupsSinceLastSave = new List<PickupData>();
+    private List<Enemy> gibbedEnemysSinceLastSave = new List<Enemy>();
 
     private void Start()
     {
@@ -117,6 +118,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         }
 
         pickupsSinceLastSave.Clear();
+        gibbedEnemysSinceLastSave.Clear();
     }
 
     public void OnReload()
@@ -140,11 +142,25 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
             }
         }
 
+        foreach (Enemy e in gibbedEnemysSinceLastSave)
+        {
+            e.gameObject.SetActive(true);
+            e.Revive();
+            Fiend data = e.GetComponent<Fiend>();
+            data.Bind(data.data);
+        }
+
         pickupsSinceLastSave.Clear();
+        gibbedEnemysSinceLastSave.Clear();
     }
 
     public void PickedUpObject(PickupData data)
     { 
         pickupsSinceLastSave.Add(data);
+    }
+
+    public void GibbedEnemy(Enemy enemy)
+    { 
+        gibbedEnemysSinceLastSave.Add(enemy);
     }
 }

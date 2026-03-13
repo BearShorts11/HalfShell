@@ -264,6 +264,7 @@ MonoBehaviour:
   rotationStep: 4
   maxRotationStep: 5
   smooth: 8
+  jumpSwayAmount: 0
   walkBobAmount: 5
   runBobAmount: 8
   speedCurve: 0
@@ -518,6 +519,7 @@ GameObject:
   - component: {fileID: 8382919727395203364}
   - component: {fileID: 2340924979681423522}
   - component: {fileID: 6507287202376100298}
+  - component: {fileID: 7500289994402315020}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -609,6 +611,7 @@ MonoBehaviour:
   ShotgunViewmodel: {fileID: 4964506546132639080}
   ApollyonBark: {fileID: 1626839815154843019}
   IsInCombat: 0
+  inAir: 0
   deathRemark:
     Guid:
       Data1: -1580899290
@@ -942,6 +945,45 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &7500289994402315020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4622949660c83cb4b803d8c64bd63640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id:
+    Part1: 741868766
+    Part2: 1331560118
+    Part3: 3813141928
+    Part4: 2257169153
+  data:
+    _id:
+      Part1: 0
+      Part2: 0
+      Part3: 0
+      Part4: 0
+    position: {x: 0, y: 1.5, z: -15}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    Health: 100
+    Armor: 0
+    FirstBind: 1
+    AmmoCounts: 
+    ReversedMagazine: 
+    Chamber: 0
+  behavior: {fileID: 1584785158103645611}
+  shooting: {fileID: 1626164165021683729}
+  BigHealth: {fileID: 8883928284135029951, guid: 673c7920265cff844bf76afd22fa5b8c, type: 3}
+  SmallHealth: {fileID: 6228779371739049736, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+  BigAmmo: {fileID: 4864751819991077685, guid: 964231e289f3ef641adb991567dd8ab2, type: 3}
+  SmallAmmo: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+  BigArmor: {fileID: 1250187441270729918, guid: 4d9ec97a5f001a44e9d772449ef49aaa, type: 3}
+  SmallArmor: {fileID: 6692179363074624554, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0

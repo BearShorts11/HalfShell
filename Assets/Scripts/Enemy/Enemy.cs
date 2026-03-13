@@ -114,12 +114,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             Dead = true;
             //OnDeath?.Invoke();
 
-            ObjectManager manager = FindFirstObjectByType<ObjectManager>();
-            if (manager is not null)
-            { 
-                manager.PickedUpObject(GetComponent<Fiend>().Id);
-            }
-
             StartCoroutine(SpawnDeathBloodPool());
         }
 
@@ -154,9 +148,30 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             FullyGibbedParticle.SetActive(true);
             FullyGibbedParticle.gameObject.transform.parent = null;
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+
+            Player.GetComponent<Kerth>().GibbedEnemy(this);
+
+            //TODO: add to kerth list like pickups
+            //re-enable on reload
+
             return;
         }
+    }
+
+    /// <summary>
+    /// undo death actions when reloading
+    /// </summary>
+    public void Revive()
+    {
+        this.agent.enabled = true;
+        this.agent.isStopped = false;
+        Dead = false;
+
+        animator.enabled = true;
+        ragdollController.SetColliderState(false);
+        ragdollController.SetRigidbodyState(true);
     }
 
     protected IEnumerator SpawnDeathBloodPool()

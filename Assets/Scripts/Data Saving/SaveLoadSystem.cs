@@ -15,7 +15,6 @@ namespace Assets.Scripts
         public PlayerData playerData;
         public List<EnemyData> enemyData;
         public List<PickupData> pickupData;
-        public SceneData sceneData;
     }
 
     //TODO: throw in own interface ISaveandBind
@@ -96,7 +95,7 @@ namespace Assets.Scripts
             gameData = new GameData
             {
                 Name = "new game",
-                CurrentLevelName = "N Testing"
+                CurrentLevelName = "L1A1 Dev"
             };
 
             SceneManager.LoadScene(gameData.CurrentLevelName);

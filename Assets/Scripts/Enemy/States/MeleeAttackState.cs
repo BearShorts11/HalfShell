@@ -21,7 +21,7 @@ public class MeleeAttackState : State
     public override void Enter()
     {
         attackTimer = Owner.attackTimer;
-        Owner.agent.isStopped = true;
+        if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
         Owner.animator.SetBool("Attacking", true);
         hitPlayer = false;
     }

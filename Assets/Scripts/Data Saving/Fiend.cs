@@ -11,7 +11,7 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
         set { _id = value; }
     }
 
-    [SerializeField] EnemyData data;
+    [SerializeField] public EnemyData data;
     [SerializeField] Enemy enemy;
 
     public void Bind(EnemyData data)
@@ -29,10 +29,16 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
             enemy.SetHealth(data.Health);
 
             if (enemy.stateMachine is not null)
-            { 
+            {
+                //if was dead and on loading will not be dead "revive" it
+                if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState &&
+                    ConvertStringToState(data.State) != enemy.stateMachine._deadState)
+                {
+                    enemy.Revive();
+                }
                 enemy.stateMachine.TransitionTo(ConvertStringToState(data.State));
             }
-            if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState) Destroy(this.gameObject);
+            //if (enemy.stateMachine.CurrentState == enemy.stateMachine._deadState) Destroy(this.gameObject);
         }
 
     }

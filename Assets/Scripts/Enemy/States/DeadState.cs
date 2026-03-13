@@ -19,7 +19,7 @@ public class DeadState : State
 
         //stops character from moving, doesn't need to happen every frame in update
         if (Owner.agent.isActiveAndEnabled) Owner.agent.isStopped = true;
-        Object.Destroy(Owner.gameObject, 10f);
+        //Object.Destroy(Owner.gameObject, 10f);
 
         Owner.animator.enabled = false;
         Owner.ragdollController.SetColliderState(true);

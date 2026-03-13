@@ -96,7 +96,7 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void ResetScene()
+    public void ResetSceneFromCheckpoint()
     {
         SaveLoadSystem system = FindFirstObjectByType<SaveLoadSystem>();
         system.LoadGame(system.gameData.Name);

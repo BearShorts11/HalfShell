@@ -11,6 +11,7 @@ public class Checkpoint : MonoBehaviour
         if (other.tag == "Player")
         { 
             SaveGame.Invoke();
+            this.gameObject.SetActive(false);
         }
     }
 }
