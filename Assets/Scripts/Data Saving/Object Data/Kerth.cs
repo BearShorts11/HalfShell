@@ -73,6 +73,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         data.Armor = behavior.Armor;
 
         //shooting data
+        if(data.AmmoCounts.Length == 0) data.AmmoCounts = new int[6];
         data.AmmoCounts[(int)ShellBase.ShellType.HalfShell] = shooting.AmmoCounts[ShellBase.ShellType.HalfShell];
         data.AmmoCounts[(int)ShellBase.ShellType.Slug] = shooting.AmmoCounts[ShellBase.ShellType.Slug];
         if (shooting.Chamber is not null) data.Chamber = (int)shooting.Chamber.Type;

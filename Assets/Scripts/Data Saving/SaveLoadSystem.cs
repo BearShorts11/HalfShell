@@ -54,7 +54,8 @@ namespace Assets.Scripts
             if (scene.name == "TitleScreen") return;
 
             Bind<Kerth, PlayerData>(gameData.playerData);
-            Bind<Fiend, EnemyData>(gameData.enemyData);
+            Bind<FiendMB, EnemyData>(gameData.enemyData);
+            Bind<FiendRB, EnemyData>(gameData.enemyData);
             Bind<IPickup, PickupData>(gameData.pickupData);
         }
 

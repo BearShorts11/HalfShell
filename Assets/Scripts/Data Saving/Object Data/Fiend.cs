@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fiend : MonoBehaviour, IBind<EnemyData>
 {
-    [SerializeField] private SerializableGuid _id = new SerializableGuid(Guid.NewGuid());
+    [SerializeField] protected SerializableGuid _id = new SerializableGuid(Guid.NewGuid());
     public SerializableGuid Id
     {
         get { return _id; }
@@ -12,7 +12,7 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
     }
 
     [SerializeField] public EnemyData data;
-    [SerializeField] Enemy enemy;
+    [SerializeField] protected Enemy enemy;
 
     public void Bind(EnemyData data)
     {
@@ -43,14 +43,14 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
 
     }
 
-    private void Update()
+    protected void Update()
     {
         data.position = transform.position;
         data.Health = enemy.Health;
         data.State = ConvertStateToString();
     }
 
-    private string ConvertStateToString()
+    protected string ConvertStateToString()
     {
         switch (enemy.stateMachine.CurrentState)
         {
@@ -72,7 +72,7 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
         }
     }
 
-    private State ConvertStringToState(string state)
+    protected State ConvertStringToState(string state)
     {
         if (enemy is null) return null;
         if (enemy.stateMachine is null) return null;
