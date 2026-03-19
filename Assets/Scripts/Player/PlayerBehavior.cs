@@ -164,6 +164,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         //Enemy.DeathAlert.AddListener(AddKill);
         killsSinceDamage = 0;
         canPlayBark = true;
+
+        UpdateSensitivity();
+        UpdateFOV();
     }
 
     private void AddKill()
@@ -308,14 +311,16 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
-    public void UpdateSensitivity()
+    public float UpdateSensitivity()
     {
         if (PlayerPrefs.HasKey(SENSITIVITY_KEY)) sensitivityModifier = PlayerPrefs.GetFloat(SENSITIVITY_KEY);
+        return sensitivityModifier;
     }
-    public void UpdateFOV()
+    public float UpdateFOV()
     {
         //for some reason does not do exact value, but still works fine
         if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+        return playerCinemachineCamera.Lens.FieldOfView;
     }
 
     public void NoMove() => canMove = false;
