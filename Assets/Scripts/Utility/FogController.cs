@@ -14,15 +14,21 @@ public class FogController : MonoBehaviour
     public void FogColor(string hexCode)
     {
         ColorUtility.TryParseHtmlString(hexCode, out Color hexColor);
-        if (ChangeTime > 0) { StartCoroutine(LerpFog(hexColor, RenderSettings.fogDensity)); }
+        if (ChangeTime > 0) { ActivateLerp(hexColor, RenderSettings.fogDensity); }
         else { RenderSettings.fogColor = hexColor; }
     }
     public void FogDensity(float density)
     {
-        if (ChangeTime > 0) { StartCoroutine(LerpFog(RenderSettings.fogColor, density)); }
+        if (ChangeTime > 0) { ActivateLerp(RenderSettings.fogColor, density); }
         else { RenderSettings.fogDensity = density; }
     }
     public void SetChangeTime(float time) => ChangeTime = time; 
+
+    public void ActivateLerp(Color color, float density)
+    {
+        if (FogChange != null) { StopCoroutine(FogChange); }
+        FogChange = StartCoroutine(LerpFog(color, density));
+    }
 
     private IEnumerator LerpFog(Color color, float density)
     {
