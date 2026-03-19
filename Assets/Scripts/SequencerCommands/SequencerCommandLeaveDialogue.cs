@@ -8,10 +8,10 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
     public class SequencerCommandLeaveDialogue : SequencerCommand
     {
         
-           private Dialogue dialogue;
+           private PlayerShooting shoot;
         public void EndConvo()
         {
-            dialogue.StartDialogue();
+            shoot.ForceLookAtGun();
             Stop();
         }
     

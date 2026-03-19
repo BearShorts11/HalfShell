@@ -237,7 +237,12 @@ public class PlayerShooting : MonoBehaviour
         if (looking) animator.CrossFade("Idle_Goto_LookAtFace", 0.1f);
         else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
     }
-
+    //Narrative Method Only
+    public void ForceLookAtGun()
+    {
+        lookingAtGun = !lookingAtGun;
+        LookAtGun(lookingAtGun);
+    }
     internal void GunRaise()
     {
         if (isWaiting())
