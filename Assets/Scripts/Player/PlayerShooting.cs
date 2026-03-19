@@ -19,6 +19,7 @@ public class PlayerShooting : MonoBehaviour
     public CinemachineImpulseSource impulse;
     public GameObject ApollyonBarks;
     public Vector3 hitPosition;
+    private LayerMask triggerMask;
 
     #region VFX
     public GameObject BulletHole;
@@ -149,6 +150,8 @@ public class PlayerShooting : MonoBehaviour
             defaultCapacity: 100,
             maxSize: 500
         );
+
+        triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast");
     }
 
     #region pool behaviors
@@ -501,7 +504,7 @@ public class PlayerShooting : MonoBehaviour
                         //https://discussions.unity.com/t/raycast-bullet-spread/753464 
                         Vector3 fwd = fpsCam.transform.forward;
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
-                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange) && hit.distance <= shell.MaxRange)
+                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
                             DoHit(hit, shell);
                         }
@@ -509,7 +512,7 @@ public class PlayerShooting : MonoBehaviour
 
                     break;
                 case ShellBase.ShellType.Slug:
-                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange) && hit.distance <= shell.MaxRange)
+                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
                         DoHit(hit, shell);
                     }
