@@ -18,7 +18,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
     /// - parameter: Optional parameter to set. For none, omit or leave blank.
     /// - value: Value to set parameter to.
     /// </summary>
-    public class SequencerCommandFMODWait : SequencerCommand
+    public class SequencerCommandFMODOldWait : SequencerCommand
     {
         PLAYBACK_STATE state;
         EVENT_CALLBACK dialogueCallback;
