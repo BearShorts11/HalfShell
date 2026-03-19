@@ -88,6 +88,7 @@ public class Dialogue : MonoBehaviour
         if (playerShoot.lookingAtGun == true)
         {
             //gunFace.StopTalking();
+            Debug.Log("player is NOT looking at gun.");
             Apollyon.SetActive(false);
             PlayerBehavior.LockCursor();
             txtComp.text = string.Empty;
