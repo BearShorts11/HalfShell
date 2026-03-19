@@ -128,6 +128,7 @@ namespace Assets.Scripts
         public void SaveGame()
         {
             Debug.Log("game saved");
+            Bind<Kerth, PlayerData>(gameData.playerData);
             FindFirstObjectByType<Kerth>().OnSave();
 
             dataService.Save(gameData);
