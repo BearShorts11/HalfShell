@@ -153,7 +153,7 @@ public class NPCFootstepAudio : MonoBehaviour
         }
         else
         {
-            Debug.Log("No ground hit detected for surface detection!");
+            //Debug.Log("No ground hit detected for surface detection!");
         }
     }
 
