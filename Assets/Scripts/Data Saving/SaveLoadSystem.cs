@@ -102,8 +102,11 @@ namespace Assets.Scripts
             SceneManager.LoadScene(gameData.CurrentLevelName);
         }
 
+        [ContextMenu("load game")]
         public void LoadGame(string saveName)
-        { 
+        {
+            Debug.Log("loading game");
+
             gameData = dataService.Load(saveName);
 
             if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
@@ -111,7 +114,8 @@ namespace Assets.Scripts
             //SceneManager.LoadScene(gameData.CurrentLevelName);
 
             Bind<Kerth, PlayerData>(gameData.playerData);
-            Bind<Fiend, EnemyData>(gameData.enemyData);
+            Bind<FiendMB, EnemyData>(gameData.enemyData);
+            Bind<FiendRB, EnemyData>(gameData.enemyData);
 
             FindFirstObjectByType<Kerth>().OnReload();
         }

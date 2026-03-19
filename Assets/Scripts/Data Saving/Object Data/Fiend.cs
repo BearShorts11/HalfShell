@@ -26,7 +26,10 @@ public class Fiend : MonoBehaviour, IBind<EnemyData>
             //only update values on reloading so how they're placed in the scene stays the same 
             transform.position = data.position;
 
+            Debug.Log(enemy.Health);
+            if (enemy.Health <= 0 && data.Health > 0) enemy.Revive();
             enemy.SetHealth(data.Health);
+            Debug.Log(enemy.Health);
 
             if (enemy.stateMachine is not null)
             {

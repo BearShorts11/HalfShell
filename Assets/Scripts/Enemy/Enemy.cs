@@ -165,6 +165,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     public void Revive()
     {
+        Debug.Log("reviving enemy");
+
         this.agent.enabled = true;
         this.agent.isStopped = false;
         Dead = false;
