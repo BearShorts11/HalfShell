@@ -403,6 +403,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void Revive()
     {
+        health = maxHealth;
+
         LockCursor();
         ResumeTime();
         YesMove();

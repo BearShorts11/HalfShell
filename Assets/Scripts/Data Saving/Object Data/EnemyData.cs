@@ -14,6 +14,7 @@ public class EnemyData : ISaveable
 
     //basic data- no need to save exact rotation
     public Vector3 position;
+    public Vector3 startPosition;
     public float Health;
 
     public bool FirstBind = true;
