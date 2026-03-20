@@ -60,7 +60,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     [Header("Unity Event Stuff")]
     [SerializeField] public UnityEvent OnDeath;
-    [SerializeField] public static UnityEvent DeathAlert;
+    [SerializeField] public static UnityEvent DeathAlert = new UnityEvent();
 
     protected void Startup()
     {
