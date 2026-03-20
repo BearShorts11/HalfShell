@@ -62,22 +62,9 @@ public class Dialogue : MonoBehaviour
 
      void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)) {
-            if (playerShoot.lookingAtGun == false)
-            {
-
-                Debug.Log("player is looking at gun.");
-                Apollyon.SetActive(true);
-                PlayerBehavior.UnlockCursor();
-            }
-            if (playerShoot.lookingAtGun == true)
-            {
-                gunFace.StopTalking();
-                Apollyon.SetActive(false);
-                PlayerBehavior.LockCursor();
-                txtComp.text = string.Empty;
-                
-            }
+        if (Input.GetKeyDown(KeyCode.LeftControl)) {
+            
+            StartDialogue();
         }
     }
 
@@ -87,15 +74,28 @@ public class Dialogue : MonoBehaviour
         StartDialogue();
     }
 
-    void StartDialogue()
+    public void StartDialogue()
     {
-      
-        gunFace.Talk();
-        RandomMissionOneLine();
-        StartCoroutine(TypeLine());
-        Debug.Log("Line End hit");
-        
-        
+
+        //gunFace.Talk();
+        if (playerShoot.lookingAtGun == false)
+        {
+
+            Debug.Log("player is looking at gun.");
+            Apollyon.SetActive(true);
+            PlayerBehavior.UnlockCursor();
+        }
+        if (playerShoot.lookingAtGun == true)
+        {
+            //gunFace.StopTalking();
+            Debug.Log("player is NOT looking at gun.");
+            Apollyon.SetActive(false);
+            PlayerBehavior.LockCursor();
+            txtComp.text = string.Empty;
+
+        }
+
+
     }
 
     

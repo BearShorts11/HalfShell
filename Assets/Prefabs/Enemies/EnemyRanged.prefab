@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3256531511175847293}
   - component: {fileID: 3725621020842838227}
   - component: {fileID: 7612800190896384274}
+  - component: {fileID: -4560225689640029882}
   m_Layer: 7
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -144,6 +145,9 @@ MonoBehaviour:
   damageCooldown: 1.5
   Docile: 0
   SpawnAgro: 0
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   tooCloseRange: 10
   fireRate: 0.25
@@ -214,6 +218,34 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &-4560225689640029882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204181174462613249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1742890a2a5d40b4fbc3176fdeb003df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id:
+    Part1: 42448755
+    Part2: 1275214689
+    Part3: 4105870766
+    Part4: 3321378539
+  data:
+    _id:
+      Part1: 0
+      Part2: 0
+      Part3: 0
+      Part4: 0
+    position: {x: 0, y: 0, z: 0}
+    Health: 0
+    FirstBind: 1
+    State: 
+  enemy: {fileID: 3256531511175847293}
 --- !u!1001 &271593418312977336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2430,6 +2462,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3214146041863294826}
     m_Modifications:
+    - target: {fileID: 551782608195310464, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+      propertyPath: ammoType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 551782608195310464, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
       propertyPath: regainAmount
       value: 2

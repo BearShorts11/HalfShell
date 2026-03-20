@@ -38,7 +38,7 @@ public class ChaseState : State
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._shootState);
                     break;
                 default:
-                    Owner.agent.isStopped = true;
+                    if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
                     break;
             }
@@ -49,7 +49,8 @@ public class ChaseState : State
         }
         else
         {
-            Owner.agent.SetDestination(Owner.Player.transform.position);
+            //attempting to avoid editor errors
+            if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
         }
     }
 }

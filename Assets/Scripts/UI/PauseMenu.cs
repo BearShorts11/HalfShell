@@ -1,5 +1,8 @@
 //using UnityEditor;
 //using UnityEditor.SearchService;
+using Assets.Scripts;
+using FMOD.Studio;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +20,12 @@ public class PauseMenu : MonoBehaviour
     public Slider SensitivitySlider; 
     public Slider FOVSlider;
     public TextMeshProUGUI FOV_val_txt;
+
+    // Volume Editing Properties
+    public Bus masterBus;
+    public Bus soundBus;
+    public Bus musicBus;
+    public Bus dialogueBus; //UNIMPLEMENTED
 
     string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
@@ -36,6 +45,22 @@ public class PauseMenu : MonoBehaviour
         if (paused) { Pause(); }
 
         FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange();  });
+        SensitivitySlider.onValueChanged.AddListener(delegate { SensitivityValueChange();  });
+        
+        // These are all Sound Groups that can be edited for mastering
+        masterBus = RuntimeManager.GetBus("bus:/");
+        soundBus = RuntimeManager.GetBus("bus:/SFX");
+        musicBus = RuntimeManager.GetBus("bus:/Music");
+        dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
+        // For each bus that has their volume updated
+        // They can be run through a method that updates them
+        // Each that have their volume adjusted should be adjusted with this
+        // code: [groupName]Bus.SetVolume(floatValue/float property);
+
+        SensitivitySlider.value = player.UpdateSensitivity();
+        SensitivityValueChange();
+        FOVSlider.value = player.UpdateFOV();
+        FOVValueChange();
     }
 
     // Update is called once per frame
@@ -75,6 +100,19 @@ public class PauseMenu : MonoBehaviour
     {
         paused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ResetSceneFromCheckpoint()
+    {
+        SaveLoadSystem system = FindFirstObjectByType<SaveLoadSystem>();
+        system.LoadGame(system.gameData.Name);
+
+        //undo death actions
+        player.Revive();
+
+        paused = false;
+        deathMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     public void Death()
@@ -141,11 +179,24 @@ public class PauseMenu : MonoBehaviour
         player.UpdateSensitivity();
         player.UpdateFOV();
         FOV_val_txt.text = $"{FOVSlider.value}";
+
+        //save out to json
     }
 
     private void FOVValueChange()
     {
         FOV_val_txt.text = $"{FOVSlider.value}";
 
+        float FOVvalue = FOVSlider.value;
+        PlayerPrefs.SetFloat(PlayerBehavior.FOV_KEY, FOVvalue);
+        SaveUpdateSettings();
+    }
+
+    private void SensitivityValueChange()
+    {
+        float sensitivityModifier = SensitivitySlider.value;
+        PlayerPrefs.SetFloat(PlayerBehavior.SENSITIVITY_KEY, sensitivityModifier);
+        //FOV_val_txt.text = $"{FOVSlider.value}";
+        SaveUpdateSettings();
     }
 }

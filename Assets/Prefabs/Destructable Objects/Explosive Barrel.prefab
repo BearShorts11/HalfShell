@@ -3069,7 +3069,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -16.19, y: 0.12, z: -6.86}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3698649347965740387}
@@ -3135,14 +3135,14 @@ MonoBehaviour:
   targetShell: 0
   explosive: 1
   fragments: 25
-  explosionRadius: 10
+  explosionRadius: 5
   damageLayer:
     serializedVersion: 2
     m_Bits: 128
   blockFragmentsLayer:
     serializedVersion: 2
     m_Bits: 1
-  maxDamage: 200
+  maxDamage: 150
   minDamage: 10
   explosionForce: 1000
   explosionParticles: {fileID: 6552170656286442810}
@@ -3153,6 +3153,9 @@ MonoBehaviour:
       Data3: 1132104076
       Data4: 380002596
     Path: event:/Explosions/Explosion
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &4139915300140076577
 BoxCollider:
   m_ObjectHideFlags: 0

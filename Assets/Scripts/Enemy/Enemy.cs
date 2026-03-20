@@ -3,6 +3,7 @@ using System.Collections;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.UI.GridLayoutGroup;
 
@@ -42,7 +43,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("Health & Damage")]
     public float Health { get; set; }
     public float maxHealth { get; set; } = 50f;
-    public bool Dead { get; private set; }
+    public bool Dead { get; set; }
 
 
     [Header("Behavior Changes")]
@@ -56,6 +57,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     [Header("States")]
     public StateMachine stateMachine;
+
+    [Header("Unity Event Stuff")]
+    [SerializeField] public UnityEvent OnDeath;
+    [SerializeField] public static UnityEvent DeathAlert = new UnityEvent();
 
     protected void Startup()
     {
@@ -91,6 +96,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         HandleAnimation();
     }
 
+    //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
     public virtual void TakeDamage(float amount)
     {
         //Damage is not it's own state because what Damage does depends on what state the enemy WAS in or IS CURRENTLY in
@@ -107,6 +113,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             stateMachine.TransitionTo(stateMachine._deadState);
             agent.enabled = false;
             Dead = true;
+            //OnDeath?.Invoke();
+
+            //put here instead of dead state so that it doesn't trigger when loading a save
+            Enemy.DeathAlert.Invoke();
 
             StartCoroutine(SpawnDeathBloodPool());
         }
@@ -142,9 +152,32 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             FullyGibbedParticle.SetActive(true);
             FullyGibbedParticle.gameObject.transform.parent = null;
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+
+            Player.GetComponent<Kerth>().GibbedEnemy(this);
+
+            //TODO: add to kerth list like pickups
+            //re-enable on reload
+
             return;
         }
+    }
+
+    /// <summary>
+    /// undo death actions when reloading
+    /// </summary>
+    public void Revive()
+    {
+        Debug.Log("reviving enemy");
+
+        this.agent.enabled = true;
+        this.agent.isStopped = false;
+        Dead = false;
+
+        animator.enabled = true;
+        ragdollController.SetColliderState(false);
+        ragdollController.SetRigidbodyState(true);
     }
 
     protected IEnumerator SpawnDeathBloodPool()
@@ -224,4 +257,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
         return null;
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    public void SetHealth(float health) => Health = health;
 }

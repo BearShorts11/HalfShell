@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class MeleeEnemy : Enemy
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public bool PlayerInTrigger;
+
+    private void Awake()
     {
         base.Startup();
     }
@@ -12,5 +13,15 @@ public class MeleeEnemy : Enemy
     void Update()
     {
         base.BaseUpdate();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player") PlayerInTrigger = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player") PlayerInTrigger = false;
     }
 }

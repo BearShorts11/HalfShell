@@ -8,18 +8,21 @@ public class AmmoPickup : IPickup
 {
     [SerializeField] private ShellBase.ShellType ammoType;
     [SerializeField] private EventReference pickupSound;
+    [SerializeField] private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Gun = FindFirstObjectByType<PlayerShooting>();
         UI = FindFirstObjectByType<PlayerUI>();
+        this.Type = PickupType.Ammo;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (rotate) { Rotate(); }
+        base.BaseUpdate();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -43,8 +46,12 @@ public class AmmoPickup : IPickup
                    
                 }
 
+                // If this is an ammo crate that *has* an animation for picking up ammo, play this animation state -V
+                if (animator != null)
+                    animator.CrossFade("Ammo_Pickup", 0.2f);
+
                 // More to be added here when Ammo Maximums are added -A
-                if (!infinite) { Destroy(gameObject); }
+                if (!infinite) { base.OnPickup(); Destroy(gameObject); }
             }
         }
     }

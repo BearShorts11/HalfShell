@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1676573364625945026}
   - component: {fileID: 8384322713868323038}
   - component: {fileID: 1697274530351514028}
+  - component: {fileID: 7132507391989287381}
+  - component: {fileID: -5436520487712906119}
   m_Layer: 7
   m_Name: EnemySwarmer
   m_TagString: Enemy
@@ -68,7 +70,7 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 255
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: dba35823f1c6a6b4c96865c2306e1976, type: 2}
@@ -108,7 +110,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -157,14 +159,18 @@ MonoBehaviour:
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 4896151076121982080}
   movementSpeed: 12
-  detectionRange: 10
-  attackRange: 4
-  attackTimer: 1
+  detectionRange: 12
+  attackRange: 3
+  attackTimer: 0.4
   damage: 10
   attackCooldown: 0.5
   damageCooldown: 1.5
   Docile: 0
   SpawnAgro: 0
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerInTrigger: 0
 --- !u!114 &1697274530351514028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +204,55 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!65 &7132507391989287381
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309285473008256643}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &-5436520487712906119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309285473008256643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe986389a9d1e9a448ea2d58c61c7f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id:
+    Part1: 2939056136
+    Part2: 1183155200
+    Part3: 3991078550
+    Part4: 2570308643
+  data:
+    _id:
+      Part1: 0
+      Part2: 0
+      Part3: 0
+      Part4: 0
+    position: {x: 0, y: 0, z: 0}
+    Health: 0
+    FirstBind: 1
+    State: 
+  enemy: {fileID: 8384322713868323038}
 --- !u!1 &6553075296426887595
 GameObject:
   m_ObjectHideFlags: 0

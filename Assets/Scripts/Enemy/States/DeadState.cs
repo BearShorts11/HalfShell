@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using PixelCrushers.DialogueSystem.Demo;
 
 /// <summary>
 /// Handles enemy death behavior: state where the enemy performs death actions
@@ -14,13 +15,17 @@ public class DeadState : State
 
     public override void Enter()
     {
+        Owner.Dead = true;
+
         //stops character from moving, doesn't need to happen every frame in update
         if (Owner.agent.isActiveAndEnabled) Owner.agent.isStopped = true;
-        Object.Destroy(Owner.gameObject, 10f);
+        //Object.Destroy(Owner.gameObject, 10f);
 
         Owner.animator.enabled = false;
         Owner.ragdollController.SetColliderState(true);
         Owner.ragdollController.SetRigidbodyState(false);
+
+        Owner.OnDeath?.Invoke();
 
 
         //handle enemy drops

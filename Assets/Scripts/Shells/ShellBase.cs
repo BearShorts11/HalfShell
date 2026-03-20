@@ -15,11 +15,12 @@ public abstract class ShellBase : MonoBehaviour
 
     public enum ShellType
     { 
-        Buckshot,
-        Slug,
-        HalfShell,
-        BeanBag,
-        BMG
+        HalfShell = 1,
+        Slug = 2,
+        Buckshot = 3,
+        BeanBag = 4,
+        BMG = 5,
+        Incindiary = 6
     }
 
     protected ShellType type;

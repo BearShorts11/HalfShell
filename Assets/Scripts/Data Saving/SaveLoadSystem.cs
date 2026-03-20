@@ -13,6 +13,8 @@ namespace Assets.Scripts
         public string Name;
         public string CurrentLevelName;
         public PlayerData playerData;
+        public List<EnemyData> enemyData;
+        public List<PickupData> pickupData;
     }
 
     //TODO: throw in own interface ISaveandBind
@@ -38,6 +40,8 @@ namespace Assets.Scripts
         {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+
+            Checkpoint.SaveGame.AddListener(SaveGame);
         }
 
         private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
@@ -50,6 +54,9 @@ namespace Assets.Scripts
             if (scene.name == "TitleScreen") return;
 
             Bind<Kerth, PlayerData>(gameData.playerData);
+            Bind<FiendMB, EnemyData>(gameData.enemyData);
+            Bind<FiendRB, EnemyData>(gameData.enemyData);
+            Bind<IPickup, PickupData>(gameData.pickupData);
         }
 
 
@@ -89,24 +96,43 @@ namespace Assets.Scripts
             gameData = new GameData
             {
                 Name = "new game",
-                CurrentLevelName = "N Testing"
+                CurrentLevelName = "L1A1 Dev"
             };
 
             SceneManager.LoadScene(gameData.CurrentLevelName);
         }
 
+        [ContextMenu("load game")]
         public void LoadGame(string saveName)
-        { 
+        {
+            Debug.Log("loading game");
+
             gameData = dataService.Load(saveName);
 
-            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "Bullshit";
+            if (string.IsNullOrWhiteSpace(gameData.CurrentLevelName)) gameData.CurrentLevelName = "N Testing";
 
-            SceneManager.LoadScene(gameData.CurrentLevelName);
+            //SceneManager.LoadScene(gameData.CurrentLevelName);
+
+            Bind<Kerth, PlayerData>(gameData.playerData);
+            Bind<FiendMB, EnemyData>(gameData.enemyData);
+            Bind<FiendRB, EnemyData>(gameData.enemyData);
+
+            FindFirstObjectByType<Kerth>().OnReload();
         }
 
-        public void ReloadGame() => LoadGame(gameData.Name);
+        public void ReloadGame()
+        {
+            LoadGame(gameData.Name);
+        }
 
-        public void SaveGame() => dataService.Save(gameData);
+        public void SaveGame()
+        {
+            Debug.Log("game saved");
+            Bind<Kerth, PlayerData>(gameData.playerData);
+            FindFirstObjectByType<Kerth>().OnSave();
+
+            dataService.Save(gameData);
+        }
 
         public void DeleteGame(string saveName) => dataService.Delete(saveName);
 

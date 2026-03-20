@@ -258,14 +258,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c658b31219378b4eb4c0a87ee916aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBehavior: {fileID: 1584785158103645611}
+  step: 0.01
+  maxStepDistance: 0.06
+  rotationStep: 4
+  maxRotationStep: 5
   smooth: 8
-  swayMultiplier: 4
-  effectIntensity: 0.04
-  effectIntensityX: 1
-  effectSpeed: 4
-  sprintEffectIntensity: 0.08
-  sprintEffectIntensityX: 1
-  sprintEffectSpeed: 7
+  jumpSwayAmount: 0
+  walkBobAmount: 5
+  runBobAmount: 8
+  speedCurve: 0
+  travelLimit: {x: 0.025, y: 0.025, z: 0.025}
+  bobLimit: {x: 0.01, y: 0.01, z: 0.01}
+  multiplier: {x: 2, y: 1, z: 1}
 --- !u!114 &8019770363139407577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +313,7 @@ Transform:
   m_GameObject: {fileID: 4275438011113338175}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.65000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0.649999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +462,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5078965712888966585}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -514,6 +519,7 @@ GameObject:
   - component: {fileID: 8382919727395203364}
   - component: {fileID: 2340924979681423522}
   - component: {fileID: 6507287202376100298}
+  - component: {fileID: 7500289994402315020}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -589,9 +595,11 @@ MonoBehaviour:
   lookXLimit: 90
   defaultHeight: 2
   startWithShotgun: 1
+  invincible: 0
   health: 100
   armor: 0
   moveDirection: {x: 0, y: 0, z: 0}
+  characterController: {fileID: 0}
   SlowedTime: 0.1
   playerCinemachineCamera: {fileID: 3181911189500020457}
   CinemachineCameraTarget: {fileID: 9124881526004739986}
@@ -602,6 +610,15 @@ MonoBehaviour:
   rotationVelocity: 0
   ShotgunViewmodel: {fileID: 4964506546132639080}
   ApollyonBark: {fileID: 1626839815154843019}
+  IsInCombat: 0
+  inAir: 0
+  deathRemark:
+    Guid:
+      Data1: -1580899290
+      Data2: 1123648912
+      Data3: -161705832
+      Data4: -510310023
+    Path: event:/Dialogue/apollyonDeathRemarks
   dmgEfforts:
     Guid:
       Data1: -482168951
@@ -609,6 +626,27 @@ MonoBehaviour:
       Data3: -1777142105
       Data4: 1622016491
     Path: event:/Efforts/dmgEfforts
+  degrade:
+    Guid:
+      Data1: -1917253582
+      Data2: 1195729288
+      Data3: 2120584632
+      Data4: -1225415171
+    Path: event:/Dialogue/apollyonDegrade
+  Support:
+    Guid:
+      Data1: 295405135
+      Data2: 1226283446
+      Data3: -80303721
+      Data4: -79703447
+    Path: event:/Dialogue/apollyonSupport
+  Idle:
+    Guid:
+      Data1: 962567158
+      Data2: 1171790553
+      Data3: -771394141
+      Data4: 807606008
+    Path: event:/Dialogue/apollyonIdle
 --- !u!114 &1626164165021683729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,6 +684,7 @@ MonoBehaviour:
   SingleShotCrosshair: {fileID: 0}
   MultiShotCrosshair: {fileID: 0}
   ShellSelectionMenu: {fileID: 0}
+  input: {fileID: 0}
   firingSound:
     Guid:
       Data1: 1006705048
@@ -906,6 +945,45 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &7500289994402315020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4622949660c83cb4b803d8c64bd63640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id:
+    Part1: 741868766
+    Part2: 1331560118
+    Part3: 3813141928
+    Part4: 2257169153
+  data:
+    _id:
+      Part1: 0
+      Part2: 0
+      Part3: 0
+      Part4: 0
+    position: {x: 0, y: 1.5, z: -15}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    Health: 100
+    Armor: 0
+    FirstBind: 1
+    AmmoCounts: 
+    ReversedMagazine: 
+    Chamber: 0
+  behavior: {fileID: 1584785158103645611}
+  shooting: {fileID: 1626164165021683729}
+  BigHealth: {fileID: 8883928284135029951, guid: 673c7920265cff844bf76afd22fa5b8c, type: 3}
+  SmallHealth: {fileID: 6228779371739049736, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+  BigAmmo: {fileID: 4864751819991077685, guid: 964231e289f3ef641adb991567dd8ab2, type: 3}
+  SmallAmmo: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+  BigArmor: {fileID: 1250187441270729918, guid: 4d9ec97a5f001a44e9d772449ef49aaa, type: 3}
+  SmallArmor: {fileID: 6692179363074624554, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,7 +1013,7 @@ Transform:
   m_GameObject: {fileID: 6719948019014343288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 126.62445, y: -4.7388887, z: 168.82445}
+  m_LocalPosition: {x: 0, y: 0.649999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1517,6 +1595,10 @@ PrefabInstance:
     - target: {fileID: 6662085205764459956, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
       propertyPath: m_Name
       value: ApollyonBark
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662085205764459956, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

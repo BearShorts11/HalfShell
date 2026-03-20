@@ -19,6 +19,7 @@ public class PlayerShooting : MonoBehaviour
     public CinemachineImpulseSource impulse;
     public GameObject ApollyonBarks;
     public Vector3 hitPosition;
+    private LayerMask triggerMask;
 
     #region VFX
     public GameObject BulletHole;
@@ -91,8 +92,8 @@ public class PlayerShooting : MonoBehaviour
     List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
-    private Stack<ShellBase> magazine = new Stack<ShellBase>();
-    private ShellBase chamber;
+    public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
+    public ShellBase Chamber { get; private set; }
     public static bool canFire = true;
 
     #region new input handling
@@ -137,9 +138,7 @@ public class PlayerShooting : MonoBehaviour
             counter.UpdateAmmoCount();
         }
 
-        // Temporary, just to showcase that it exists. Delete when we get to the starting sequence.
-        animator.CrossFade("Draw_Inspect", 0f);
-
+        
         input = GetComponent<PlayerInput>();
 
         bulletHolePool = new ObjectPool<GameObject>(
@@ -151,6 +150,8 @@ public class PlayerShooting : MonoBehaviour
             defaultCapacity: 100,
             maxSize: 500
         );
+
+        triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast");
     }
 
     #region pool behaviors
@@ -177,19 +178,15 @@ public class PlayerShooting : MonoBehaviour
 
     #endregion
 
-    //any data that needs saved, pass as parameter & update
-    public void LoadData(Dictionary<ShellBase.ShellType, int> savedCounts) 
-    { 
-        AmmoCounts = savedCounts;  
-    }
 
     // Update is called once per frame
     void Update()
     {
+
         if (PauseMenu.paused) return;
 
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
-        if (Input.GetKeyDown(KeyCode.F) && !isInShellSelect && !pumped) 
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isInShellSelect && !pumped) 
         {
             lookingAtGun = !lookingAtGun;
             ShellWheelController.shellWheelDisabled = !ShellWheelController.shellWheelDisabled;
@@ -214,19 +211,19 @@ public class PlayerShooting : MonoBehaviour
 
         animator.speed = Time.timeScale < 1 ? 1 / Time.timeScale : 1;
         // Can someone set a button name for these? - V  
-        if (Input.GetKeyDown(KeyCode.Tab) | Input.GetKeyDown(KeyCode.LeftControl) ) 
+        if (Input.GetKeyDown(KeyCode.Tab)) 
         {
             GunRaise();
             if (lookingAtGun) lookingAtGun = false;
         }
-        if (Input.GetKeyUp(KeyCode.Tab) | Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             GunLower();
         }
 
 
-        float magCount = magazine.Count;
-        playerUI.SwitchCrosshairUI(chamber, magCount);
+        float magCount = Magazine.Count;
+        playerUI.SwitchCrosshairUI(Chamber, magCount);
 
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
@@ -235,12 +232,17 @@ public class PlayerShooting : MonoBehaviour
         
     }
 
-    private void LookAtGun(bool looking)
+    public void LookAtGun(bool looking)
     {
         if (looking) animator.CrossFade("Idle_Goto_LookAtFace", 0.1f);
         else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
     }
-
+    //Narrative Method Only
+    public void ForceLookAtGun()
+    {
+        lookingAtGun = !lookingAtGun;
+        LookAtGun(lookingAtGun);
+    }
     internal void GunRaise()
     {
         if (isWaiting())
@@ -277,14 +279,14 @@ public class PlayerShooting : MonoBehaviour
         animator.CrossFade("Pump_Backwards", 0.15f);
         canFire = false;
 
-        if (chamber is not null)
+        if (Chamber is not null)
         {
             playerUI.ChamberUIOff();
-            ShellBase shell = chamber as ShellBase;
-            if (useShells) AmmoCounts[shell.Type]++;
+            ShellBase shell = Chamber as ShellBase;
+            if (useShells && AmmoCounts[shell.Type] < shell.MaxHolding) AmmoCounts[shell.Type]++;
         }
 
-        chamber = null;
+        Chamber = null;
         pumped = true;
     }
     private void PumpFWD()
@@ -293,15 +295,15 @@ public class PlayerShooting : MonoBehaviour
             return;
         //PlaySound(pumpForwardSound);
         animator.CrossFade("Pump_Fwd", 0.15f);
-        if (magazine.Count > 0)
+        if (Magazine.Count > 0)
         {
-            chamber = magazine.Pop();
-            float size = chamber.Size;
-            MagLoss(chamber.Size);
+            Chamber = Magazine.Pop();
+            float size = Chamber.Size;
+            MagLoss(Chamber.Size);
             magUI.RemoveAt(magUI.Count - 1);
             MagazineUILoss();
             //temporary based on current UI
-            playerUI.ChamberUIOn(chamber);
+            playerUI.ChamberUIOn(Chamber);
         }
         if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         pumped = false;
@@ -329,8 +331,14 @@ public class PlayerShooting : MonoBehaviour
         //can always use half shells
         if (shell.Type == ShellBase.ShellType.HalfShell && currentCapacity + size <= totalCapacity) return true;
 
+        if (isWaiting() && !SetFromLoad)
+        {
+            PlaySound(fullyLoadedSound); //some kind of feedback for number key users
+            return false;
+        }
+
         //check dictionary
-        if (AmmoCounts[shell.Type] <= 0 || isWaiting())
+        if (AmmoCounts[shell.Type] <= 0)
         {
             PlaySound(fullyLoadedSound); //some kind of feedback for number key users
             return false;
@@ -350,15 +358,24 @@ public class PlayerShooting : MonoBehaviour
 
     public void LoadMagazine(ShellBase shell)
     {
+        //prevents load errors
+        if (Magazine is null) Magazine = new Stack<ShellBase>();
+
         if (CanLoad(shell))
         {
-            magazine.Push(shell);
+            Magazine.Push(shell);
             float size = shell.Size;
             currentCapacity += size;
 
+            //prevents load errors
+            if ( spaceLeftText is null)
+            { 
+                spaceLeftText = GameObject.Find("CanLoadShells").GetComponent<TextMeshProUGUI>();
+            }
+
             spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
-            if (Input.GetKey(KeyCode.Tab) | Input.GetKey(KeyCode.LeftControl)) 
+            if (Input.GetKey(KeyCode.Tab)) 
             {
                 //animator.CrossFade("reload_loop", 0.01f);
                 animator.SetTrigger("LoadShell");
@@ -441,7 +458,7 @@ public class PlayerShooting : MonoBehaviour
         if (AmmoCounts[shell.Type] < shell.MaxHolding)
         { 
             AmmoCounts[shell.Type] += ammoCount;
-            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding;
+            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding; //Mathf.clamp?
             return true;
         }
         return false;
@@ -456,7 +473,7 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         //check if chamber IS NULL *NOT* == null, trying to reference chamber directly will always equate to null
-        if (canFire == false || chamber is null)
+        if (canFire == false || Chamber is null)
         {
             //Debug.Log($"cannot fire: {canFire} or chamber is null");
             PlaySound(dryFireSound);
@@ -470,9 +487,9 @@ public class PlayerShooting : MonoBehaviour
             //animator.SetTrigger("Fire");
             animator.CrossFade("Shoot", 0.1f);
 
-            ShellBase shell = chamber;
+            ShellBase shell = Chamber;
             //MagazineUILoss();
-            chamber = null;
+            Chamber = null;
             playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
             PlaySound(firingSound);
@@ -492,7 +509,7 @@ public class PlayerShooting : MonoBehaviour
                         //https://discussions.unity.com/t/raycast-bullet-spread/753464 
                         Vector3 fwd = fpsCam.transform.forward;
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
-                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange) && hit.distance <= shell.MaxRange)
+                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
                             DoHit(hit, shell);
                         }
@@ -500,7 +517,7 @@ public class PlayerShooting : MonoBehaviour
 
                     break;
                 case ShellBase.ShellType.Slug:
-                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange) && hit.distance <= shell.MaxRange)
+                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
                         DoHit(hit, shell);
                     }
@@ -514,6 +531,8 @@ public class PlayerShooting : MonoBehaviour
     private void DoHit(RaycastHit hit, ShellBase shell)
     {
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
+
+        if (hit.collider.gameObject.tag == "Player") return; // I'm suspecting the player capsule is blocking the bullets when sprinting + backpedaling, especially when looking at the playtest footage
 
         if (hit.collider.gameObject.tag == "Enemy")
         {
@@ -602,7 +621,7 @@ public class PlayerShooting : MonoBehaviour
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (currentCapacity < totalCapacity)
-            Destroy(magazineUI.transform.GetChild(magazine.Count).gameObject);
+            Destroy(magazineUI.transform.GetChild(Magazine.Count).gameObject);
         spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
     }
 
@@ -628,7 +647,62 @@ public class PlayerShooting : MonoBehaviour
         UIshell.SetActive(true);
     }
 
-    public bool ShellInChamber() => chamber is not null;
+    public bool ShellInChamber() => Chamber is not null;
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Recieves a stack of ints and converts them to shells
+    /// </summary>
+    public void SetMagazine(int[] reversedMagazine)
+    {
+        SetFromLoad = true;
+        if (reversedMagazine is null) return;
+
+        for (int i = reversedMagazine.Length - 1; i >= 0; i--)
+        { 
+            //casting for clarity
+            ShellBase.ShellType type = (ShellBase.ShellType)reversedMagazine[i];
+
+            switch (type)
+            {
+                case ShellBase.ShellType.HalfShell:
+                    AddHalfShell();
+                    break;
+                case ShellBase.ShellType.Slug:
+                    AmmoCounts[ShellBase.ShellType.Slug]++; //add slug/load mag needs 
+                    AddSlug();
+                    break;
+            }
+        }
+        SetFromLoad = false;
+    }
+    bool SetFromLoad;
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Sets what is in the chamber
+    /// </summary>
+    public void SetChamber(ShellBase shell)
+    { 
+        if (shell is not null)
+        { 
+            Chamber = shell;
+            if (playerUI is not null) playerUI.ChamberUIOn(Chamber);
+        }
+    }
+
+    /// <summary>
+    /// called from Kerth/PlayerData on scene reloaded. Sets AmmoCounts
+    /// </summary>
+    public void SetAmmoCounts(int[] ammoCounts)
+    {
+        if (ammoCounts is null || ammoCounts.Length == 0) return;
+
+        //this fires before Start() meaning that they get reset...
+        //still keeping both in just in case
+        startingSlugs = ammoCounts[(int)ShellBase.ShellType.Slug];
+
+        this.AmmoCounts[ShellBase.ShellType.HalfShell] = ammoCounts[(int)ShellBase.ShellType.HalfShell];
+        this.AmmoCounts[ShellBase.ShellType.Slug] = ammoCounts[(int)ShellBase.ShellType.Slug];
+    }
 
     private void BufferLastFunction(string methodName, float time)
     {
@@ -657,4 +731,9 @@ public class PlayerShooting : MonoBehaviour
 
     public void InfiniteShells() => useShells = false;
     public void UseShells() => useShells = true;
+
+    public void GunInspect()
+    {
+        animator.CrossFade("Draw_Inspect", 0f); //this plays Inspector Anim
+    }
 }

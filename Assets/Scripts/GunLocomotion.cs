@@ -1,106 +1,138 @@
 using UnityEngine;
 
-[RequireComponent (typeof(PositionFollower))]
+[RequireComponent(typeof(PositionFollower))]
 
 public class GunLocomotion : MonoBehaviour
 {
-    [Header("Sway Properties")]
-    public float smooth;
-    public float swayMultiplier;
 
-    [Header("Movement Properties")]
-    public float effectIntensity;
-    public float effectIntensityX;
-    public float effectSpeed;
-    public float sprintEffectIntensity;
-    public float sprintEffectIntensityX;
-    public float sprintEffectSpeed;
+    public PlayerBehavior playerBehavior;
+    private bool isRunning;
+    private bool isJumping;
 
-    private PositionFollower FollowerInstance;
-    private Vector3 OriginalOffset;
-    private float sinTime;
-    private bool isSprinting;
+    [Header("Weapon Sway")]
+    public float step = 0.01f;
+    public float maxStepDistance = 0.06f;
+    Vector3 swayPos;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Sway Rotation")]
+    public float rotationStep = 4f;
+    public float maxRotationStep = 5f;
+    Vector3 swayEulerRot;
+
+    public float smooth = 10f;
+    float smoothRot = 12f;
+
+    [Header("Jump Sway")]
+    public float jumpSwayAmount;
+
+    [Header("Weapon Bobbing")]
+    public float walkBobAmount;
+    public float runBobAmount;
+
+    public float speedCurve;
+    float curveSin { get => Mathf.Sin(speedCurve); }
+    float curveCos { get => Mathf.Cos(speedCurve); }
+
+    public Vector3 travelLimit = Vector3.one * 0.025f;
+    public Vector3 bobLimit = Vector3.one * 0.01f;
+    Vector3 bobPosition;
+
+    [Header("Bob Rotation")]
+    public Vector3 multiplier;
+    Vector3 bobEulerRotation;
+
+    // Start is called before the first frame update
     void Start()
     {
-        FollowerInstance = GetComponent<PositionFollower>();
-        OriginalOffset = FollowerInstance.offset;
+        playerBehavior = GetComponentInParent<PlayerBehavior>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        GetInput();
+
         GunSway();
-        GunMovement();
+        SwayRotation();
+        BobOffset();
+        BobRotation();
+
+        CompositePositionRotation();
     }
 
-    public void GunSway()
+
+    Vector2 walkInput;
+    Vector2 lookInput;
+
+    void GetInput()
     {
-        // Get Mouse Input
+        walkInput.x = Input.GetAxis("Horizontal");
+        walkInput.y = Input.GetAxis("Vertical");
+        walkInput = walkInput.normalized;
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * swayMultiplier;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * swayMultiplier;
+        lookInput.x = Input.GetAxis("Mouse X");
+        lookInput.y = Input.GetAxis("Mouse Y");
 
-        // Caluculate Target Rotation
-
-        Quaternion rotationX = Quaternion.AngleAxis(-mouseY, Vector3.right);
-        Quaternion rotationY = Quaternion.AngleAxis(mouseX, Vector3.up);
-
-        Quaternion targetRotation = rotationX * rotationY;
-
-        // Rotate
-
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smooth * Time.deltaTime);
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+        isJumping = Input.GetKey(KeyCode.Space);
     }
 
-    public void GunMovement()
+
+    private void GunSway()
     {
-        Vector3 inputVector = new Vector3(Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
+        Vector3 invertLook = lookInput * -step;
+        invertLook.x = Mathf.Clamp(invertLook.x, -maxStepDistance, maxStepDistance);
+        invertLook.y = Mathf.Clamp(invertLook.y, -maxStepDistance, maxStepDistance);
 
-        isSprinting = Input.GetKey(KeyCode.LeftShift);
+        swayPos = invertLook;
+    }
 
-        if (isSprinting == false)
+    private void SwayRotation()
+    {
+        Vector2 invertLook = lookInput * -rotationStep;
+        invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
+        invertLook.y = Mathf.Clamp(invertLook.y, -maxRotationStep, maxRotationStep);
+        swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
+
+        if (playerBehavior.inAir )
         {
-            if (inputVector.magnitude > 0f)
-            {
-                sinTime += Time.deltaTime * effectSpeed;
-            }
-            else
-            {
-                sinTime = 0f;
-            }
-
-            float sinAmountY = -Mathf.Abs(effectIntensity * Mathf.Sin(sinTime));
-            Vector3 sinAmount = FollowerInstance.transform.right * effectIntensity * Mathf.Cos(sinTime) * effectIntensityX;
-
-            FollowerInstance.offset = new Vector3
-            {
-                x = OriginalOffset.x,
-                y = OriginalOffset.y + sinAmountY,
-                z = OriginalOffset.z
-            };
+            swayEulerRot = new Vector3(invertLook.y + jumpSwayAmount, invertLook.x, invertLook.x);
         }
-        else if (isSprinting == true)
+        else
         {
-            if (inputVector.magnitude > 0f)
-            {
-                sinTime += Time.deltaTime * sprintEffectSpeed;
-            }
-            else
-            {
-                sinTime = 0f;
-            }
-
-            float sinAmountY = -Mathf.Abs(sprintEffectIntensity * Mathf.Sin(sinTime));
-            Vector3 sinAmount = FollowerInstance.transform.right * sprintEffectIntensity * Mathf.Cos(sinTime) * sprintEffectIntensityX;
-
-            FollowerInstance.offset = new Vector3
-            {
-                x = OriginalOffset.x,
-                y = OriginalOffset.y + sinAmountY,
-                z = OriginalOffset.z
-            };
+            swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
         }
     }
+
+    private void CompositePositionRotation()
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, swayPos + bobPosition, Time.deltaTime * smooth);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(swayEulerRot) * Quaternion.Euler(bobEulerRotation), Time.deltaTime * smoothRot);
+    }
+
+    void BobOffset()
+    {
+        if(isRunning)
+        {
+            speedCurve += Time.deltaTime * (playerBehavior.characterController.isGrounded ? walkInput.magnitude * runBobAmount : 1f) + 0.01f;
+        }
+        else
+        {
+            speedCurve += Time.deltaTime * (playerBehavior.characterController.isGrounded ? walkInput.magnitude * walkBobAmount : 1f) + 0.01f;
+        }
+
+
+        bobPosition.x = (curveCos * bobLimit.x * (playerBehavior.characterController.isGrounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
+        bobPosition.y = (curveSin * bobLimit.y) - (Input.GetAxis("Vertical") * travelLimit.y);
+        bobPosition.z = -(walkInput.y * travelLimit.z);
+    }
+
+    void BobRotation()
+    {
+        bobEulerRotation.x = (walkInput != Vector2.zero ? multiplier.x * (Mathf.Sin(2 * speedCurve)) : multiplier.x * (Mathf.Sin(2 * speedCurve) / 2));
+        bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
+        bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
+    }
+
+
 }

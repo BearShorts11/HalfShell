@@ -75,12 +75,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //public float crouchHeight = 1f;
     //public float crouchSpeed = 3f;
 
-    [SerializeField] private Vector3 moveDirection = Vector3.zero;
+    [SerializeField] public Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
-    private CharacterController characterController;
+    public CharacterController characterController;
 
     private bool canMove = true;
     private static bool canLook = true;
+
 
     public float SlowedTime = 0.1f;
     public static bool SlowMoActive = false;
@@ -100,6 +101,17 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public GameObject ShotgunViewmodel;
     public GameObject ApollyonBark;
 
+    private int killsSinceDamage;
+    /// <summary>
+    /// number of consecutive kills without taking damage to trigger a dialogue event. 
+    /// </summary>
+    [SerializeField] private int killsToDialoge;
+    /// <summary>
+    /// cooldown between when dialoge events trigger to avoid overlapping or repetative dialogue
+    /// </summary>
+    [SerializeField] private float dialogueCooldown = 3f;
+    private bool canPlayBark;
+
     private bool isCurrentDeviceMouse
     {
         get { return input.currentControlScheme == "KeyBoardMouse"; }
@@ -109,10 +121,14 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
     public bool IsInCombat;
+    public bool inAir;
 
     //game over sounds
-    //public EventReference deathRemark;
+    public EventReference deathRemark;
     public EventReference dmgEfforts;
+    public EventReference degrade;
+    public EventReference Support;
+    public EventReference Idle;
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
     /// Plays a sound from the game object that this script is attached to, in this case, the player
@@ -144,7 +160,32 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             ShotgunViewmodel.SetActive(false);
             ApollyonBark.SetActive(false);
         }
+
+        //Enemy.DeathAlert.AddListener(AddKill);
+        killsSinceDamage = 0;
+        canPlayBark = true;
+
+        UpdateSensitivity();
+        UpdateFOV();
     }
+
+    private void AddKill()
+    { 
+        killsSinceDamage++;
+        if (killsSinceDamage >= killsToDialoge && canPlayBark)
+        {
+            //play dialogue sound
+            StartCoroutine(CanPlayBark());
+        }
+    }
+
+    private IEnumerator CanPlayBark()
+    {
+        canPlayBark = false;
+        yield return new WaitForSeconds(dialogueCooldown);
+        canPlayBark = true;
+    }
+
 
     private void LateUpdate()
     {
@@ -187,7 +228,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         // Checks if the player is touching the ground. If not, applies the force of gravity to send them downward
         if (!characterController.isGrounded && movementDirectionY > -15) //-15 ensures the player doens't keep adding downward velocity forever.
         {
+            inAir = true;
             moveDirection.y -= gravity * Time.deltaTime;
+        }
+        else
+        {
+            inAir = false;
         }
 
         #region crouching input (CURRENTLY UNSUED) 
@@ -265,14 +311,16 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
-    public void UpdateSensitivity()
+    public float UpdateSensitivity()
     {
         if (PlayerPrefs.HasKey(SENSITIVITY_KEY)) sensitivityModifier = PlayerPrefs.GetFloat(SENSITIVITY_KEY);
+        return sensitivityModifier;
     }
-    public void UpdateFOV()
+    public float UpdateFOV()
     {
         //for some reason does not do exact value, but still works fine
         if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+        return playerCinemachineCamera.Lens.FieldOfView;
     }
 
     public void NoMove() => canMove = false;
@@ -322,6 +370,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             health -= damage;
             UI.UpdateHP(health, maxHealth);
             PlaySound(dmgEfforts);
+
+            if (health < health / 5 && canPlayBark)
+            {
+                //trigger dialogue cue
+                StartCoroutine(CanPlayBark());
+            }
         }
 
         if (health <= 0)
@@ -330,6 +384,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
 
         UI.Hurt();
+        killsSinceDamage = 0;
     }
 
     public void GainHealth(float gainhealth)
@@ -340,10 +395,17 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void OnDeath()
     {
-        //PlaySound(deathRemark);
+        PlaySound(deathRemark);
         NoMove();
 
         //display game over txt
+    }
+
+    public void Revive()
+    {
+        LockCursor();
+        ResumeTime();
+        YesMove();
     }
 
     public void SetHealth(float health)
@@ -359,13 +421,18 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public void SetArmor(float armor)
     { 
         this.armor = armor;
+
+        if (UI is null) UI = FindFirstObjectByType<PlayerUI>();
+        UI.UpdateArmor(armor, MaxArmor);
+
+        if (UI.player is null) UI.player = this;
     }
 
     public void EquipShotgun()
     {
         playerShooting.enabled = true;
         ShotgunViewmodel.SetActive(true);
-        ApollyonBark.SetActive(true) ;
+        //ApollyonBark.SetActive(true) ; To be enabled after Tutorial Sequence.
     }
 
     public void Invincible() => invincible = true;
