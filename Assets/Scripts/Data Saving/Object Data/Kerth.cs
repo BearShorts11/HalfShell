@@ -30,7 +30,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     private void Start()
     {
         //number based on shell type enum, can't think of a better way to do this right now
-        data.AmmoCounts = new int[6];
+        data.AmmoCounts = new int[7];
     }
 
     public void Bind(PlayerData data)
@@ -44,7 +44,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         //only change position if reloading
         if (this.data.FirstBind)
         {
-            data.FirstBind = false;
+            this.data.FirstBind = false;
         }
         else 
         { 
@@ -98,6 +98,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     /// </summary>
     public void OnSave()
     {
+        data.FirstBind = false;
+
         data.ReversedMagazine = new int[shooting.Magazine.Count];
         int index = 0;
 
@@ -124,6 +126,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
 
     public void OnReload()
     {
+
+
         foreach (PickupData data in pickupsSinceLastSave)
         {
             switch (data.Type)

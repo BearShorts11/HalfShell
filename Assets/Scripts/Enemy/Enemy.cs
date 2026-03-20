@@ -60,6 +60,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     [Header("Unity Event Stuff")]
     [SerializeField] public UnityEvent OnDeath;
+    [SerializeField] public static UnityEvent DeathAlert;
 
     protected void Startup()
     {
@@ -113,6 +114,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             agent.enabled = false;
             Dead = true;
             //OnDeath?.Invoke();
+
+            //put here instead of dead state so that it doesn't trigger when loading a save
+            Enemy.DeathAlert.Invoke();
 
             StartCoroutine(SpawnDeathBloodPool());
         }

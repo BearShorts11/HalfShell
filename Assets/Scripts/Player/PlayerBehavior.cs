@@ -101,6 +101,17 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public GameObject ShotgunViewmodel;
     public GameObject ApollyonBark;
 
+    private int killsSinceDamage;
+    /// <summary>
+    /// number of consecutive kills without taking damage to trigger a dialogue event. 
+    /// </summary>
+    [SerializeField] private int killsToDialoge;
+    /// <summary>
+    /// cooldown between when dialoge events trigger to avoid overlapping or repetative dialogue
+    /// </summary>
+    [SerializeField] private float dialogueCooldown = 3f;
+    private bool canPlayBark;
+
     private bool isCurrentDeviceMouse
     {
         get { return input.currentControlScheme == "KeyBoardMouse"; }
@@ -149,7 +160,32 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             ShotgunViewmodel.SetActive(false);
             ApollyonBark.SetActive(false);
         }
+
+        //Enemy.DeathAlert.AddListener(AddKill);
+        killsSinceDamage = 0;
+        canPlayBark = true;
+
+        UpdateSensitivity();
+        UpdateFOV();
     }
+
+    private void AddKill()
+    { 
+        killsSinceDamage++;
+        if (killsSinceDamage >= killsToDialoge && canPlayBark)
+        {
+            //play dialogue sound
+            StartCoroutine(CanPlayBark());
+        }
+    }
+
+    private IEnumerator CanPlayBark()
+    {
+        canPlayBark = false;
+        yield return new WaitForSeconds(dialogueCooldown);
+        canPlayBark = true;
+    }
+
 
     private void LateUpdate()
     {
@@ -275,14 +311,16 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
-    public void UpdateSensitivity()
+    public float UpdateSensitivity()
     {
         if (PlayerPrefs.HasKey(SENSITIVITY_KEY)) sensitivityModifier = PlayerPrefs.GetFloat(SENSITIVITY_KEY);
+        return sensitivityModifier;
     }
-    public void UpdateFOV()
+    public float UpdateFOV()
     {
         //for some reason does not do exact value, but still works fine
         if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+        return playerCinemachineCamera.Lens.FieldOfView;
     }
 
     public void NoMove() => canMove = false;
@@ -332,6 +370,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             health -= damage;
             UI.UpdateHP(health, maxHealth);
             PlaySound(dmgEfforts);
+
+            if (health < health / 5 && canPlayBark)
+            {
+                //trigger dialogue cue
+                StartCoroutine(CanPlayBark());
+            }
         }
 
         if (health <= 0)
@@ -340,6 +384,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
 
         UI.Hurt();
+        killsSinceDamage = 0;
     }
 
     public void GainHealth(float gainhealth)
