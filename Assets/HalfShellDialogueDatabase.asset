@@ -2276,7 +2276,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 7
@@ -3420,7 +3420,7 @@ MonoBehaviour:
     - id: 7
       fields:
       - title: Title
-        value: 
+        value: Shotgun_Viewmodel is anim
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
@@ -3444,9 +3444,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'Animation(Draw_Inspect, Player)
-
-'
+        value: AnimatorPlayWait(Draw_Inspect, Shotgun_Viewmodel)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 11
