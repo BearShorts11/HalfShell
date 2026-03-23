@@ -99,16 +99,17 @@ public class PauseMenu : MonoBehaviour
     public void ReloadCurrentScene()
     {
         paused = false;
+        player.Revive();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ResetSceneFromCheckpoint()
     {
+        player.Revive();
         SaveLoadSystem system = FindFirstObjectByType<SaveLoadSystem>();
         system.LoadGame(system.gameData.Name);
 
         //undo death actions
-        player.Revive();
 
         paused = false;
         deathMenu.SetActive(false);

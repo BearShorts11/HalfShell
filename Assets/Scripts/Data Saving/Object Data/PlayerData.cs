@@ -17,6 +17,7 @@ namespace Assets.Scripts
 
         //PlayerBehavior data
         public Vector3 position;
+        public Vector3 startPosition;
         public Quaternion rotation;
         public float Health;
         public float Armor;

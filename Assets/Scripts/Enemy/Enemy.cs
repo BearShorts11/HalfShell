@@ -172,7 +172,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Debug.Log("reviving enemy");
 
         this.agent.enabled = true;
-        this.agent.isStopped = false;
+        if (this.agent.isOnNavMesh) this.agent.isStopped = false;
         Dead = false;
 
         animator.enabled = true;

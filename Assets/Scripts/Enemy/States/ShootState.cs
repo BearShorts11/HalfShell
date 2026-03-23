@@ -57,6 +57,9 @@ public class ShootState : State
                 {
                     if (OwnerAsRanged.UseFirePoints)
                     {
+                        //avoids freezing if it was to try to find a new fire point and it only has one in the list
+                        if (OwnerAsRanged.FirePoints.Count == 1) return;
+
                         //Debug.Log($"found new point {foundNewPoint}");
                         //checks if found a new point yet, avoids continuously finding a new point causing "paralysis"
                         if (!foundNextPoint) FindNewFirePoint();
@@ -113,6 +116,8 @@ public class ShootState : State
     /// </summary>
     private void FindNewFirePoint()
     {
+        if (OwnerAsRanged.FirePoints.Count == 1) return;
+
         Transform newPoint = OwnerAsRanged.FirePoints[Random.Range(0, OwnerAsRanged.FirePoints.Count)];
         //makes sure new point is not the same one that the enemy is currently at
         while (newPoint.position == currentPoint.position)

@@ -68,6 +68,15 @@ namespace Assets.Scripts
             {
                 if (data == null) data = new TData { Id = entity.Id };
 
+                PlayerData pData = data as PlayerData;
+                if (pData is not null && pData.FirstBind == false)
+                {
+                    CharacterController controller = entity.GetComponent<CharacterController>();
+                    if (controller != null) controller.enabled = false;
+                    entity.transform.position = pData.startPosition;
+                    if (controller != null) controller.enabled = true;
+                }
+
                 entity.Bind(data);
             }
         }
@@ -116,6 +125,7 @@ namespace Assets.Scripts
             Bind<Kerth, PlayerData>(gameData.playerData);
             Bind<FiendMB, EnemyData>(gameData.enemyData);
             Bind<FiendRB, EnemyData>(gameData.enemyData);
+            //Bind<IPickup, PickupData>(gameData.pickupData);
 
             FindFirstObjectByType<Kerth>().OnReload();
         }
@@ -129,6 +139,9 @@ namespace Assets.Scripts
         {
             Debug.Log("game saved");
             Bind<Kerth, PlayerData>(gameData.playerData);
+            Bind<FiendMB, EnemyData>(gameData.enemyData);
+            Bind<FiendRB, EnemyData>(gameData.enemyData);
+            Bind<IPickup, PickupData>(gameData.pickupData);
             FindFirstObjectByType<Kerth>().OnSave();
 
             dataService.Save(gameData);

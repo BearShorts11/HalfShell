@@ -24,8 +24,8 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
     [SerializeField] GameObject BigArmor;
     [SerializeField] GameObject SmallArmor;
 
-    private List<PickupData> pickupsSinceLastSave = new List<PickupData>();
-    private List<Enemy> gibbedEnemysSinceLastSave = new List<Enemy>();
+    [SerializeField] private List<PickupData> pickupsSinceLastSave = new List<PickupData>();
+    [SerializeField] private List<Enemy> gibbedEnemysSinceLastSave = new List<Enemy>();
 
     private void Start()
     {
@@ -45,6 +45,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
         if (this.data.FirstBind)
         {
             this.data.FirstBind = false;
+            this.data.startPosition = this.transform.position;
         }
         else 
         { 
@@ -126,8 +127,6 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
 
     public void OnReload()
     {
-
-
         foreach (PickupData data in pickupsSinceLastSave)
         {
             switch (data.Type)
