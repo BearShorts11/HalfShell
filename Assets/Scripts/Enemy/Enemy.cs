@@ -42,7 +42,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     [Header("Health & Damage")]
     public float Health { get; set; }
-    public float maxHealth { get; set; } = 50f;
+    [field: SerializeField] public float maxHealth { get; set; } = 50f;
     public bool Dead { get; set; }
 
 
