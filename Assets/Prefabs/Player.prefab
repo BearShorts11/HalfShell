@@ -610,6 +610,8 @@ MonoBehaviour:
   rotationVelocity: 0
   ShotgunViewmodel: {fileID: 4964506546132639080}
   ApollyonBark: {fileID: 1626839815154843019}
+  killsToDialoge: 0
+  dialogueCooldown: 3
   IsInCombat: 0
   inAir: 0
   deathRemark:
@@ -713,6 +715,13 @@ MonoBehaviour:
       Data3: 2097687216
       Data4: 543903414
     Path: event:/UI/Tick
+  bulletImpactEvent:
+    Guid:
+      Data1: 770842911
+      Data2: 1243018215
+      Data3: 1144922808
+      Data4: -1535999146
+    Path: event:/Weapons/BulletImpacts/WeaponImpacts
 --- !u!114 &4660708139432030009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +978,7 @@ MonoBehaviour:
       Part3: 0
       Part4: 0
     position: {x: 0, y: 1.5, z: -15}
+    startPosition: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
     Health: 100
     Armor: 0
@@ -984,6 +994,8 @@ MonoBehaviour:
   SmallAmmo: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
   BigArmor: {fileID: 1250187441270729918, guid: 4d9ec97a5f001a44e9d772449ef49aaa, type: 3}
   SmallArmor: {fileID: 6692179363074624554, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
+  pickupsSinceLastSave: []
+  gibbedEnemysSinceLastSave: []
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0

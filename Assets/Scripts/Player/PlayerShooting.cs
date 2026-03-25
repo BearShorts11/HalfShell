@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -111,6 +113,9 @@ public class PlayerShooting : MonoBehaviour
     public EventReference fullyLoadedSound;
     //public EventReference pumpBackwardSound;
     //public EventReference pumpForwardSound;
+
+    public EventReference bulletImpactEvent;
+    private PARAMETER_ID impactSurfaceParamID;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -150,7 +155,13 @@ public class PlayerShooting : MonoBehaviour
             defaultCapacity: 100,
             maxSize: 500
         );
+        EventDescription eventDesc;
+        RuntimeManager.StudioSystem.getEvent(bulletImpactEvent.Path, out eventDesc);
 
+        PARAMETER_DESCRIPTION paramDesc;
+        eventDesc.getParameterDescriptionByName("ImpactSurface", out paramDesc);
+
+        impactSurfaceParamID = paramDesc.id;
         triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast");
     }
 
@@ -530,6 +541,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void DoHit(RaycastHit hit, ShellBase shell)
     {
+        PlayImpactSound(hit);
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
         if (hit.collider.gameObject.tag == "Player") return; // I'm suspecting the player capsule is blocking the bullets when sprinting + backpedaling, especially when looking at the playtest footage
@@ -735,5 +747,35 @@ public class PlayerShooting : MonoBehaviour
     public void GunInspect()
     {
         animator.CrossFade("Draw_Inspect", 0f); //this plays Inspector Anim
+    }
+    private void PlayImpactSound(RaycastHit hit)
+    {
+        float surfaceValue = 0f;
+        if (hit.collider.CompareTag("DirtFloor"))
+            surfaceValue = 0f;
+        else if (hit.collider.CompareTag("GravelFloor"))
+            surfaceValue = 1f;
+        else if (hit.collider.CompareTag("WoodFloor"))
+            surfaceValue = 2f;
+        else if (hit.collider.CompareTag("AsphaltFloor"))
+            surfaceValue = 3f;
+        else if (hit.collider.CompareTag("MetalFloor"))
+            surfaceValue = 4f;
+        else if (hit.collider.CompareTag("Enemy"))
+            surfaceValue = 5f;
+       
+        Debug.Log($"Surface Value: {surfaceValue}");
+        EventInstance impact = RuntimeManager.CreateInstance(bulletImpactEvent);
+
+        // play sound where the bullet hit
+        impact.set3DAttributes(RuntimeUtils.To3DAttributes(hit.point));
+
+        // set FMOD parameter for surface type
+        impact.setParameterByID(impactSurfaceParamID, surfaceValue);
+
+        impact.getParameterByID(impactSurfaceParamID, out float value);
+        Debug.Log("FMOD Parameter Set To: " + value);
+        impact.start();
+        impact.release();
     }
 }
