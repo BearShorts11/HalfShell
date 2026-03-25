@@ -75,11 +75,11 @@ public class Limb : MonoBehaviour, IDamageable
             Health -= Damage;       // This limb can only lose health if it is removable (i.e decapitation, amputation, is a body armor, etc.)
                                     //  This also means that the health check in the last line will never return true
 
-        // Take *some* damage but never enough damage to no more than 25% of the limb's maximum health if this is only
+        // Take *some* damage but never enough damage to no more than 10% of the limb's maximum health if this is only
         // Removable on death.
-        if (!isRemovable && (enemy.Health - Damage >= maxHealth * .25f && removableAfterDeath))
+        if (!isRemovable && (enemy.Health - Damage >= maxHealth * .1f && removableAfterDeath))
         {
-            Health = Mathf.Clamp(enemy.Health - Damage, maxHealth * .25f, enemy.maxHealth);
+            Health = Mathf.Clamp(enemy.Health - Damage, maxHealth * .1f, enemy.maxHealth);
         }
 
         if (enemy  != null) enemy.TakeDamage(Damage); // Pass the damage down to the enemy

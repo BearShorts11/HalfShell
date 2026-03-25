@@ -131,7 +131,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -158,13 +158,14 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 4896151076121982080}
-  movementSpeed: 12
+  movementSpeed: 8
   detectionRange: 12
   attackRange: 3
   attackTimer: 0.4
   damage: 10
   attackCooldown: 0.5
   damageCooldown: 1.5
+  <maxHealth>k__BackingField: 80
   Docile: 0
   SpawnAgro: 0
   OnDeath:
@@ -249,6 +250,7 @@ MonoBehaviour:
       Part3: 0
       Part4: 0
     position: {x: 0, y: 0, z: 0}
+    startPosition: {x: 0, y: 0, z: 0}
     Health: 0
     FirstBind: 1
     State: 
