@@ -99,6 +99,7 @@ public class PlayerUI : MonoBehaviour
                     MultiShotCrosshair.gameObject.SetActive(false);
                     break;
                 case ShellBase.ShellType.Buckshot:
+                case ShellBase.ShellType.Incindiary:
                 case ShellBase.ShellType.HalfShell:
                     SingleShotCrosshair.gameObject.SetActive(false);
                     MultiShotCrosshair.gameObject.SetActive(true);

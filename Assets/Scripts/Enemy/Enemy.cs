@@ -45,6 +45,21 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [field: SerializeField] public float maxHealth { get; set; } = 50f;
     public bool Dead { get; set; }
 
+    /// <summary>
+    /// if the enemy is effected by any staus effects from shells
+    /// </summary>
+    private bool statusEffected;
+
+    /// <summary>
+    /// holds a reference to the shell if effected by a status effect in order to access all it
+    /// </summary>
+    ShellBase statusEffectShell;
+
+    /// <summary>
+    /// if effected by a status effect, next time to take damage on
+    /// </summary>
+    private float timeToStatusDamage;
+
 
     [Header("Behavior Changes")]
     public bool Docile;
@@ -94,6 +109,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         stateMachine.Update();
 
         HandleAnimation();
+
+        if (statusEffected && Time.time > timeToStatusDamage)
+        {
+            //could have a custom method to take damage if we don't want the hit animation to play every time
+            TakeDamage(statusEffectShell.effectDamage);
+        }
     }
 
     //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
@@ -162,6 +183,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
             return;
         }
+    }
+
+    public void HitEffect(ShellBase shell)
+    {
+        statusEffected = true;
+        statusEffectShell = shell;
+        timeToStatusDamage = Time.time + shell.effectHitPerSecond;
+        StartCoroutine(EffectOverIn(shell.effectTime));
+    }
+
+    public IEnumerator EffectOverIn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        statusEffected = false;
     }
 
     /// <summary>

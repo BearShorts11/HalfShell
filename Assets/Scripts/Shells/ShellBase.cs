@@ -23,8 +23,24 @@ public abstract class ShellBase : MonoBehaviour
         Incindiary = 6
     }
 
+    /// <summary>
+    /// own class???
+    /// </summary>
+    public enum HitEffect
+    { 
+        Stun = 0,
+        Fire = 1
+    }
+
     protected ShellType type;
     public ShellType Type { get { return type; } }
+
+    protected HitEffect effect;
+    public HitEffect Effect { get { return effect; } }
+    public float effectTime { get; protected set; }
+    public float effectHitPerSecond { get; protected set; }
+
+    public float effectDamage { get; protected set; }
 
     /// <summary>
     /// scales the damage based on how far a shell was shot

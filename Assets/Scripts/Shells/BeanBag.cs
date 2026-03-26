@@ -13,6 +13,7 @@ public class BeanBag : ShellBase
         MaxHolding = 10;
 
         hasSpecialEffects = true;
+        effect = HitEffect.Stun;
     }
     public override float ScaleDamage(RaycastHit hit)
     { 
