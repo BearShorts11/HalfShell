@@ -332,10 +332,15 @@ public class PlayerShooting : MonoBehaviour
     }
 
     // Dedicated firing sound function since it's using parameters now... -V
+    /// <summary>
+    /// Play the Firing Sound with the parameter applied based on the shell type to play specific sounds or to modify the firing sound
+    /// </summary>
+    /// <param name="shelltype">Shell Type Enum, will be converted into an Interger as an ID</param>
     private void PlayFireSound(ShellBase.ShellType shelltype = 0)
     {
         soundInstance = RuntimeManager.CreateInstance(firingSound);
         soundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(this.gameObject));
+        RuntimeManager.AttachInstanceToGameObject(soundInstance, this.gameObject);
         if (shelltype != 0)
             soundInstance.setParameterByName("ShellType", (int)shelltype - 1);
         soundInstance.start();
