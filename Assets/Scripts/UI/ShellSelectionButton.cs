@@ -14,6 +14,9 @@ public class ShellSelectionButton : MonoBehaviour
     private PlayerShooting player;
     private ShellBase.ShellType type;
 
+    public string itemDescription;
+    public TextMeshProUGUI itemDescriptionText;
+
     private Button button;
 
 
@@ -47,12 +50,14 @@ public class ShellSelectionButton : MonoBehaviour
         {
             anim.SetBool("Hovered", true);
             itemText.text = itemName;
+            itemDescriptionText.text = itemDescription;
         }
     }
     public void HoverExit()
     {
         anim.SetBool("Hovered", false);
         itemText.text = "";
+        itemDescriptionText.text = "";
     }
 
     private void SetShellType()
