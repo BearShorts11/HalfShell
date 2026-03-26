@@ -106,6 +106,7 @@ public class PlayerShooting : MonoBehaviour
 
     #region Sound variables
     //Sound variable
+    private EventInstance soundInstance;
     public EventReference firingSound;
     public EventReference dryFireSound;
     public EventReference reloadSound;
@@ -330,6 +331,17 @@ public class PlayerShooting : MonoBehaviour
         RuntimeManager.PlayOneShotAttached(eventReference, this.gameObject);
     }
 
+    // Dedicated firing sound function since it's using parameters now... -V
+    private void PlayFireSound(ShellBase.ShellType shelltype = 0)
+    {
+        soundInstance = RuntimeManager.CreateInstance(firingSound);
+        soundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(this.gameObject));
+        if (shelltype != 0)
+            soundInstance.setParameterByName("ShellType", (int)shelltype - 1);
+        soundInstance.start();
+        soundInstance.release();
+    }
+
     // Making the if checks regarding currentCapacity <= total capacity to this return method to save time later on -V
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
@@ -503,7 +515,7 @@ public class PlayerShooting : MonoBehaviour
             Chamber = null;
             playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
-            PlaySound(firingSound);
+            
             float impulseRange = Random.Range(0.5f, 2f);
             impulse.GenerateImpulseWithForce(impulseRange);
             //Debug.Log("ImpulseForce:" + impulseRange);
@@ -534,7 +546,7 @@ public class PlayerShooting : MonoBehaviour
                     }
                     break;
             }
-
+            PlayFireSound(shell.Type);
         }
 
     }
