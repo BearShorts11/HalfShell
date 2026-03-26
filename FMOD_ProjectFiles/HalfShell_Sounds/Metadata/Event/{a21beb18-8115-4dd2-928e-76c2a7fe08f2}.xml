@@ -109,7 +109,7 @@
 			<destination>{e46d0d47-5bc7-4b75-86cd-97ad521eb238}</destination>
 			<destination>{02bf0322-3ede-4d0b-8c49-c4a3cbd7b79c}</destination>
 			<destination>{25542ace-a729-4729-a4b8-4f3ed9d28456}</destination>
-			<destination>{471fbfb6-5458-441b-b4cc-6cf60a916967}</destination>
+			<destination>{ec65de79-283d-4649-8feb-8a5a31dcf45d}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{d2881ff1-3022-417d-9adc-62876d08ba43}</destination>
@@ -118,7 +118,7 @@
 	<object class="Timeline" id="{256eae22-ea58-4179-9686-25ec08b12b52}">
 		<relationship name="modules">
 			<destination>{8d071cd4-23e9-4203-8594-5ac965bd744b}</destination>
-			<destination>{471fbfb6-5458-441b-b4cc-6cf60a916967}</destination>
+			<destination>{ec65de79-283d-4649-8feb-8a5a31dcf45d}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{08159d2b-505d-4fa3-bb6e-512d2dc6751f}</destination>
@@ -298,9 +298,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{aca0c9f1-9aae-4f2e-bc7c-16a36dd5b0a9}">
-		<property name="volume">
-			<value>-6</value>
-		</property>
 		<property name="name">
 			<value>Combat</value>
 		</property>
@@ -373,12 +370,18 @@
 			<value>0</value>
 		</property>
 	</object>
-	<object class="SingleSound" id="{471fbfb6-5458-441b-b4cc-6cf60a916967}">
+	<object class="SingleSound" id="{ec65de79-283d-4649-8feb-8a5a31dcf45d}">
 		<property name="length">
-			<value>178.60464852607709</value>
+			<value>170.23256235827665</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
+		</property>
+		<property name="playCount">
+			<value>2</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{b491216f-c5b4-4a30-a25d-4a8940add187}</destination>
+			<destination>{deafc2ba-9005-4588-9b9a-ff42bba3da70}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{d2881ff1-3022-417d-9adc-62876d08ba43}">
@@ -477,7 +480,7 @@
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>178.60464583333334</value>
+			<value>170.23256235827665</value>
 		</property>
 		<property name="name">
 			<value>Calm_Loop</value>
