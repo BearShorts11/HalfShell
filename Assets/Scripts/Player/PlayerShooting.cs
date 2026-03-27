@@ -511,6 +511,9 @@ public class PlayerShooting : MonoBehaviour
         {
             if (muzzleflash != null)
                 Instantiate(muzzleflash, shotgunMuzzleflashPos);
+            else
+                muzzleflash.Play(true);
+
             //animator.SetInteger("Shoot_Variation", Random.Range(0, 3));
             //animator.SetTrigger("Fire");
             animator.CrossFade("Shoot", 0.1f);
