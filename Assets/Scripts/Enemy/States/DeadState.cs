@@ -32,7 +32,10 @@ public class DeadState : State
         if (Owner.Player.Health <= 25)
         {
             GameObject healthPickup = Owner.RecursiveFindChild(Owner.transform, "Small Health Pack Variant").gameObject;
-            if (healthPickup != null) healthPickup.SetActive(true);
+            if (healthPickup != null) { 
+                healthPickup.transform.parent = null;
+                healthPickup.SetActive(true);
+            }
         }
 
         switch (Owner)
@@ -43,7 +46,10 @@ public class DeadState : State
                     <= s.MaxHolding / 5)
                 {
                     GameObject ammoBox = Owner.RecursiveFindChild(Owner.transform, "Small Ammo RB").gameObject;  
-                    if (ammoBox != null) ammoBox.SetActive(true);
+                    if (ammoBox != null) {
+                        ammoBox.transform.parent = null;
+                        ammoBox.SetActive(true); 
+                    }
                 }
                 break;
         }

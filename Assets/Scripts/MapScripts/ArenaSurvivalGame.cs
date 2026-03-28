@@ -8,14 +8,20 @@ public class ArenaSurvivalGame : MonoBehaviour
     static public ArenaSurvivalGame Instance;
 
     [Header("Inscribed")]
-    // Default rate to use when there are no more defined waves to go through
-    public float endlessWaveSpawnRate = 0.3f;
     public List<SurvivalWave> waves;
-    public int preparationTime = 8;
-    public List<GameObject> defaultEnemies;
-    public SurvivalWave_Events[] waveEvents;
-    public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
+    [Tooltip("Time delay to let the wave end. Adds onto the wave transition time set in the Wave Scriptable Object")]
+    public int preparationTime = 5;
+    [Tooltip("Default rate to use when there are no more defined waves to go through")]
+    public float endlessWaveSpawnRate = 0.3f;
+    [Tooltip("Default pool of enemies to draw when there are no waves configured")]
+    public List<GameObject> defaultEnemies;
+    [Header("Wave Events - Scripted Events executed on a specific wave")]
+    public SurvivalWave_Events[] waveEvents;
+    [Tooltip("How many enemies can exist at a single time on the map")]
+    public int maxEnemiesAtOnce = 32;
+
+    public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
     [Header("Dynamic")]
     [SerializeField] private int waveCount;
@@ -24,6 +30,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     [SerializeField] private List<Enemy> enemiesSpawned;
     [SerializeField] private float spawnRate;
     [SerializeField] private bool waveOver;
+    private List<Enemy> enemiesDead;
 
     // Handle the enemy count?
     private UnityAction updateEnemyCounter;
@@ -84,12 +91,7 @@ public class ArenaSurvivalGame : MonoBehaviour
             waveConditions[waveCount].RunStartEvents();
         }
 
-        foreach (Enemy enemy in enemiesSpawned)
-        {
-            Destroy(enemy.gameObject);
-        }
-        enemiesSpawned.Clear();
-        enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 32 * waveCount;
+        enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 8 * waveCount;
 
         Debug.Log($"Wave {waveCount}!");
     }
@@ -109,6 +111,11 @@ public class ArenaSurvivalGame : MonoBehaviour
     {
         waitTime = currentWave == null ? preparationTime : currentWave.wavetransitionTime;
         IncrementWave();
+        foreach (Enemy enemy in enemiesDead)
+        {
+            Destroy(enemy.gameObject);
+        }
+        enemiesDead.Clear();
         Debug.Log("Get Ready for the next Wave... (" + (waitTime) + " seconds)");
         Invoke(nameof(StartWave), waitTime);
     }
@@ -132,8 +139,9 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     bool AllEnemiesSpawned()
     {
-        return enemiesSpawned.Count >= enemiesToWipe;
+        return enemiesSpawned.Count >= enemiesToWipe || enemiesSpawned.Count > maxEnemiesAtOnce;
     }
+
     void WaveUpdate()
     {
         if (nextSpawnTime < Time.fixedTime && !AllEnemiesSpawned())
@@ -155,8 +163,9 @@ public class ArenaSurvivalGame : MonoBehaviour
             else
                 spawnVol.SpawnEnemy(defaultEnemies[Random.Range(0, defaultEnemies.Count)]);
 
+            // Are there more enemies that spawned more than the required kill count (Via Squad Spawn)?
             if (enemiesSpawned.Count > enemiesToWipe)
-                enemiesToWipe = enemiesSpawned.Count - 1;
+                enemiesToWipe = enemiesSpawned.Count;
         }
     }
 
@@ -174,6 +183,21 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (enemiesToWipe <= 0)
         {
             EndWave();
+        }
+
+        UpdateEnemiesSpawnedList();
+    }
+
+    private void UpdateEnemiesSpawnedList()
+    {
+        foreach (Enemy enemy in enemiesSpawned)
+        {
+            if (enemy.Dead) enemiesDead.Add(enemy);
+        }
+        foreach(Enemy deadenemy in enemiesDead)
+        {
+            if (enemiesSpawned.Contains(deadenemy))
+                enemiesSpawned.Remove(deadenemy);
         }
     }
 
