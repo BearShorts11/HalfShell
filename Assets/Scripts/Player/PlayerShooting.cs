@@ -791,7 +791,7 @@ public class PlayerShooting : MonoBehaviour
         else if (hit.collider.CompareTag("Enemy"))
             surfaceValue = 5f;
        
-        Debug.Log($"Surface Value: {surfaceValue}");
+        // Debug.Log($"Surface Value: {surfaceValue}");
         EventInstance impact = RuntimeManager.CreateInstance(bulletImpactEvent);
 
         // play sound where the bullet hit
@@ -801,7 +801,7 @@ public class PlayerShooting : MonoBehaviour
         impact.setParameterByID(impactSurfaceParamID, surfaceValue);
 
         impact.getParameterByID(impactSurfaceParamID, out float value);
-        Debug.Log("FMOD Parameter Set To: " + value);
+        // Debug.Log("FMOD Parameter Set To: " + value);
         impact.start();
         impact.release();
     }
