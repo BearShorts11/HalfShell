@@ -27,7 +27,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     [SerializeField] private int waveCount;
     [SerializeField] private List<SimpleSpawnVolume> spawnVolumes;
     [SerializeField] private int enemiesToWipe;
-    [SerializeField] private List<Enemy> enemiesSpawned;
+    [SerializeField] private List<Enemy> enemiesSpawned = new();
     [SerializeField] private float spawnRate;
     [SerializeField] private bool waveOver;
     private List<Enemy> enemiesDead;
@@ -192,7 +192,8 @@ public class ArenaSurvivalGame : MonoBehaviour
     {
         foreach (Enemy enemy in enemiesSpawned)
         {
-            if (enemy.Dead) enemiesDead.Add(enemy);
+            if (enemy.Dead) 
+                enemiesDead.Add(enemy);
         }
         foreach(Enemy deadenemy in enemiesDead)
         {
