@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
+
 public class ArenaSurvivalGame : MonoBehaviour
 {
     static public ArenaSurvivalGame Instance;
@@ -30,7 +30,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     [SerializeField] private List<Enemy> enemiesSpawned = new();
     [SerializeField] private float spawnRate;
     [SerializeField] private bool waveOver;
-    private List<Enemy> enemiesDead;
+    private List<Enemy> enemiesDead = new();
 
     // Handle the enemy count?
     private UnityAction updateEnemyCounter;
@@ -67,7 +67,6 @@ public class ArenaSurvivalGame : MonoBehaviour
         spawnVolumes = FindObjectsByType<SimpleSpawnVolume>(FindObjectsSortMode.None).ToList<SimpleSpawnVolume>();
 
         updateEnemyCounter += DecreaseEnemyCount;
-        Enemy.DeathAlert.AddListener(updateEnemyCounter);
 
         Invoke(nameof(StartWave), 5);
     }
@@ -172,6 +171,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     public void IncreaseEnemyCount(Enemy enemy)
     {
         enemiesSpawned.Add(enemy);
+        enemy.OnDeath.AddListener(updateEnemyCounter);
         enemy.Alert();
     }
 
