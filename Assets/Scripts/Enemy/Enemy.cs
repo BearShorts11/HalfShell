@@ -126,7 +126,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Health -= amount;
 
         animator.SetFloat("Damage", amount);
-        animator.SetBool("Hit", true);
+        if (!IsInvoking(nameof(StopHitReaction)))
+        {
+            animator.SetBool("Hit", true);
+            Invoke(nameof(StopHitReaction), 1);
+        }
 
         //checking for dead prevents this from firing every time the enemy is shot after death
         if (Health <= 0 & Dead == false)
@@ -237,6 +241,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         //Controls Idle/Walking/Running 
         animator.SetFloat("Velocity X", agent.velocity.x);
         animator.SetFloat("Velocity Y", agent.velocity.z);
+    }
+
+    protected void StopHitReaction()
+    {
+        animator.SetBool("Hit", false);
     }
 
 

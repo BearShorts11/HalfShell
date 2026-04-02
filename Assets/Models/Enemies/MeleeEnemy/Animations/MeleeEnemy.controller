@@ -148,6 +148,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-2570973560714351624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c71cb5b18784ff4a8ec844bc7b69aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crossfade: 1
+  transitionIsPct: 1
+  transitionTime: 0.2
+  nextAnimName: Movement
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -302,7 +318,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 2656269889740402271}
   - {fileID: -5279497784536829637}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -2570973560714351624}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
