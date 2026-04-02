@@ -691,7 +691,7 @@ public class PlayerShooting : MonoBehaviour
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Recieves a stack of ints and converts them to shells
     /// </summary>
-    public void SetMagazine(int[] reversedMagazine)
+    public void SetMagazineOld(int[] reversedMagazine)
     {
         SetFromLoad = true;
         if (reversedMagazine is null) return;
@@ -715,6 +715,31 @@ public class PlayerShooting : MonoBehaviour
         SetFromLoad = false;
     }
     bool SetFromLoad;
+
+    public void SetMagazine(Stack<ShellBase> reversedMagazine)
+    { 
+        SetFromLoad = true;
+
+        if (reversedMagazine is null) return;
+
+        while (reversedMagazine.Count > 0)
+        { 
+            ShellBase shell = reversedMagazine.Pop();
+
+            switch (shell)
+            {
+                case HalfShell:
+                    AddHalfShell();
+                    break;
+                case Slug:
+                    AmmoCounts[ShellBase.ShellType.Slug]++; //add slug/load mag needs 
+                    AddSlug();
+                    break;
+            }
+        }
+
+        SetFromLoad = false;
+    }
 
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Sets what is in the chamber

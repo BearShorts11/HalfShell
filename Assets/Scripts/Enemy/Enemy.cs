@@ -176,7 +176,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             //Destroy(this.gameObject);
             this.gameObject.SetActive(false);
 
-            Player.GetComponent<Kerth>().GibbedEnemy(this);
+            Kerth k = Player.GetComponent<Kerth>();
+            if (k != null) k.GibbedEnemy(this);
 
             //TODO: add to kerth list like pickups
             //re-enable on reload

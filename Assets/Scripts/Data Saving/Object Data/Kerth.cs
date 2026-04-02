@@ -57,7 +57,7 @@ public class Kerth : MonoBehaviour, IBind<PlayerData>
             behavior.SetArmor(data.Armor);
 
             shooting.SetAmmoCounts(data.AmmoCounts);
-            shooting.SetMagazine(data.ReversedMagazine);
+            shooting.SetMagazineOld(data.ReversedMagazine);
             shooting.SetChamber(ConvertNumToShell());
         }
 
