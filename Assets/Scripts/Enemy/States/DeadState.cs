@@ -41,6 +41,8 @@ public class DeadState : State
         switch (Owner)
         {
             case RangedEnemy:
+                if ((Owner as RangedEnemy).AllowSlugDrops == false) break;
+
                 Slug s = new Slug();
                 if (Owner.Player.GetComponent<PlayerShooting>().AmmoCounts[ShellBase.ShellType.Slug]
                     <= s.MaxHolding / 5)

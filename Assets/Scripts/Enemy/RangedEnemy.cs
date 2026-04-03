@@ -17,6 +17,8 @@ public class RangedEnemy : Enemy
     public float fireRate = 0.5f;
     public float nextTimeToFire = 0;
 
+    public bool AllowSlugDrops = true;
+
     [Header("Fire Points Configuration")]
     public bool UseFirePoints;
     public List<Transform> FirePoints;

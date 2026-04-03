@@ -26,6 +26,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     [Header("Dynamic")]
     [SerializeField] private int waveCount;
     [SerializeField] private List<SimpleSpawnVolume> spawnVolumes;
+    [SerializeField] private List<SimpleSpawnVolume> activeSpawnVolumes;
     [SerializeField] private int enemiesToWipe;
     [SerializeField] private List<Enemy> enemiesSpawned = new();
     [SerializeField] private float spawnRate;
@@ -64,7 +65,8 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     void SetupGame()
     {
-        spawnVolumes = FindObjectsByType<SimpleSpawnVolume>(FindObjectsSortMode.None).ToList<SimpleSpawnVolume>();
+        spawnVolumes = FindObjectsByType<SimpleSpawnVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList<SimpleSpawnVolume>();
+        
 
         updateEnemyCounter += DecreaseEnemyCount;
 
@@ -121,15 +123,15 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     SimpleSpawnVolume PickSpawnVolume()
     {
-        List<SimpleSpawnVolume> mapSpawnVolumes = new();
+        activeSpawnVolumes.Clear();
 
         foreach (SimpleSpawnVolume volume in spawnVolumes)
         {
             if (volume.gameObject.activeInHierarchy)
-                mapSpawnVolumes.Add(volume);
+                activeSpawnVolumes.Add(volume);
         }
 
-        return mapSpawnVolumes[Random.Range(0, mapSpawnVolumes.Count)];
+        return activeSpawnVolumes[Random.Range(0, activeSpawnVolumes.Count)];
     }
     bool WaveConfigured()
     {
@@ -150,14 +152,16 @@ public class ArenaSurvivalGame : MonoBehaviour
             if (WaveConfigured())
             {
                 // Spawn a squad or a stray enemy
-                if (Random.Range(0f, 1f) > 0.5f)
+                if (Random.Range(0f, 1f) > 0.5f || currentWave.StrayEnemies.Count == 0 && currentWave.Squads.Count != 0)
                 {
                     SurvivalWave_Squad squadSpawn = currentWave.Squads[Random.Range(0, currentWave.Squads.Count)];
                     spawnVol.enemies = squadSpawn.Enemies;
                     spawnVol.SpawnSquad();
                 }
-                else
+                else if (currentWave.StrayEnemies.Count != 0)
                     spawnVol.SpawnEnemy(currentWave.StrayEnemies[Random.Range(0, currentWave.StrayEnemies.Count)]);
+                else
+                    Debug.LogError($"ERROR: Wave configuration loaded but has no set Squads or Strays! Please check {currentWave.name}");
             }
             else
                 spawnVol.SpawnEnemy(defaultEnemies[Random.Range(0, defaultEnemies.Count)]);
