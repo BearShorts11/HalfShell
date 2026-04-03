@@ -157,7 +157,7 @@ public class PlayerShooting : MonoBehaviour
             maxSize: 500
         );
         EventDescription eventDesc;
-        RuntimeManager.StudioSystem.getEvent(bulletImpactEvent.Path, out eventDesc);
+        RuntimeManager.StudioSystem.getEvent(bulletImpactEvent.ToString(), out eventDesc);
 
         PARAMETER_DESCRIPTION paramDesc;
         eventDesc.getParameterDescriptionByName("ImpactSurface", out paramDesc);
