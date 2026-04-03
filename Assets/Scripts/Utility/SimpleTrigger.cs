@@ -6,17 +6,17 @@ using System.Collections.Generic;
 public class SimpleTrigger : MonoBehaviour
 {
     [Header("Enter Collider Triggers")]
-    public List<string> onTriggerEnterTag;
-    public List<UnityEvent> onTriggerEnter;
+    public List<string> onTriggerEnterTag = new();
+    public List<UnityEvent> onTriggerEnter = new();
 
     [Header("Exit Collider Triggers")]
-    public List<string> onTriggerExitTag;
-    public List<UnityEvent> onTriggerExit;
+    public List<string> onTriggerExitTag = new();
+    public List<UnityEvent> onTriggerExit = new();
 
     [Header("Kill All of... Triggers")]
     public int InitEnemyCounter;
     public int EnemyDeathsCounter;
-    public List<UnityEvent> onKillAll;
+    public List<UnityEvent> onKillAll = new();
 
     public void OnTriggerEnter(Collider other)
     {
