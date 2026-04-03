@@ -34418,81 +34418,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1062042277 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1346194655260938581, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
-  m_PrefabInstance: {fileID: 1515366374}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1062042278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062042277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a0deefea69925e4983d3e4050d2b489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onTriggerEnterTag:
-  - Player
-  onTriggerEnter:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2104355388}
-        m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
-        m_MethodName: StartDialogue
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 660544579}
-        m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
-        m_MethodName: ForceLookAtGun
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FogController, Assembly-CSharp
-        m_MethodName: FogDensity
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.02
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FogController, Assembly-CSharp
-        m_MethodName: FogColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '#786F5C'
-          m_BoolArgument: 1
-        m_CallState: 2
-  onTriggerExitTag: []
-  onTriggerExit: []
-  InitEnemyCounter: 0
-  EnemyDeathsCounter: 0
-  onKillAll: []
 --- !u!1 &1073543086
 GameObject:
   m_ObjectHideFlags: 0
@@ -43143,6 +43068,57 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1432238841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432238843}
+  - component: {fileID: 1432238842}
+  m_Layer: 0
+  m_Name: Teleporter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1432238842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432238841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0deefea69925e4983d3e4050d2b489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTriggerEnterTag: []
+  onTriggerEnter: []
+  onTriggerExitTag: []
+  onTriggerExit: []
+  InitEnemyCounter: 0
+  EnemyDeathsCounter: 0
+  onKillAll: []
+--- !u!4 &1432238843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432238841}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -29.367727, y: 2.0671003, z: -99.4877}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1438462852
 Mesh:
   m_ObjectHideFlags: 0
@@ -44854,29 +44830,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9054477136814992638, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
-      propertyPath: speed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9054477136814992638, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
-      propertyPath: rotate
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 6799246997628669877, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
+      propertyPath: onTriggerEnter.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2104355388}
+    - target: {fileID: 6799246997628669877, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
+      propertyPath: onTriggerEnter.Array.data[0].m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 660544579}
     - target: {fileID: 9054477136814992638, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
       propertyPath: ApofinalPos
       value: 
       objectReference: {fileID: 1585121544}
-    - target: {fileID: 9054477136814992638, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
-      propertyPath: shotgunPickup
-      value: 
-      objectReference: {fileID: 1062042277}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1346194655260938581, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1062042278}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 220b4dc282d81994da76a2642d8d98e7, type: 3}
 --- !u!114 &1520307615 stripped
 MonoBehaviour:
@@ -59845,6 +59814,87 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2125111110229762214, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
   m_PrefabInstance: {fileID: 686923992406527359}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2119901845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119901837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c593457cd8105e148906690e1707c592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: 8
+  delayOneFrame: 0
+  condition:
+    luaConditions:
+    - Variable["ApoIntroC"] == true
+    questConditions: []
+    acceptedTags:
+    - Player
+    acceptedGameObjects: []
+    luaWizardIndex: -1
+    lastEvaluationValue: 0
+  setQuestState: 1
+  questName: 
+  questState: 0
+  setQuestEntryState: 0
+  questEntryNumber: 1
+  questEntryState: 0
+  setAnotherQuestEntryState: 0
+  anotherQuestEntryNumber: 1
+  anotherQuestEntryState: 0
+  luaCode: 
+  sequence: 
+  sequenceSpeaker: {fileID: 0}
+  sequenceListener: {fileID: 0}
+  waitOneFrameOnStartOrEnable: 1
+  alertMessage: 
+  textTable: {fileID: 0}
+  alertDuration: 0
+  sendMessages: []
+  barkSource: 0
+  barkConversation: 
+  barkEntryID: -1
+  barkEntryTitle: 
+  barkText: 
+  barkTextSequence: 
+  barker: {fileID: 0}
+  barkTarget: {fileID: 0}
+  barkOrder: 0
+  allowBarksDuringConversations: 0
+  skipBarkIfNoValidEntries: 0
+  cacheBarkLines: 0
+  conversation: ApoTalksMission1
+  conversationConversant: {fileID: 2119901838}
+  conversationActor: {fileID: 1676006770}
+  startConversationEntryID: -1
+  startConversationEntryTitle: 
+  overrideDialogueUI: {fileID: 0}
+  exclusive: 0
+  replace: 0
+  queue: 0
+  skipIfNoValidEntries: 0
+  preventRestartOnSameFrameEnded: 0
+  stopConversationOnTriggerExit: 1
+  marginToAllowTriggerExit: 0
+  stopConversationIfTooFar: 0
+  maxConversationDistance: 5
+  monitorConversationDistanceFrequency: 1
+  showCursorDuringConversation: 0
+  pauseGameDuringConversation: 0
+  setActiveActions: []
+  setEnabledActions: []
+  setAnimatorStateActions: []
+  onExecute:
+    m_PersistentCalls:
+      m_Calls: []
+  useConversationTitlePicker: 1
+  useBarkTitlePicker: 1
+  useQuestNamePicker: 1
+  selectedDatabase: {fileID: 11400000, guid: ca7748c7dc2df6644aa14cfe3be9077f, type: 2}
 --- !u!43 &2125626897
 Mesh:
   m_ObjectHideFlags: 0
@@ -61186,7 +61236,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8341273633999850004, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
       propertyPath: stopConversationOnTriggerExit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341273633999850004, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: condition.luaConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341273633999850004, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: condition.questConditions.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341273633999850004, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: 'condition.luaConditions.Array.data[0]'
+      value: Variable["ApoIntroC"] == false
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341273633999850004, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: condition.questConditions.Array.data[0].questState
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -61195,6 +61261,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6132485486643332482, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1676006781}
+    - targetCorrespondingSourceObject: {fileID: 524057217865007814, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2119901845}
     - targetCorrespondingSourceObject: {fileID: 1626839815154843019, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 338256197}
@@ -61799,3 +61868,4 @@ SceneRoots:
   - {fileID: 1357793739}
   - {fileID: 1515366374}
   - {fileID: 1585121545}
+  - {fileID: 1432238843}
