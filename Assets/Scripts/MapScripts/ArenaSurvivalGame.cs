@@ -44,6 +44,9 @@ public class ArenaSurvivalGame : MonoBehaviour
     private float waitTime;
     private float nextWaitTime;
 
+    UI_Message messageUI;
+    UI_Wave waveCounter;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -59,6 +62,9 @@ public class ArenaSurvivalGame : MonoBehaviour
         {
             waveConditions.Add(waveEvents[i].waveIndex, waveEvents[i]);
         }
+
+        messageUI = FindFirstObjectByType<UI_Message>();
+        waveCounter = FindFirstObjectByType<UI_Wave>();
 
         Invoke(nameof(SetupGame), 1);
     }
@@ -94,7 +100,13 @@ public class ArenaSurvivalGame : MonoBehaviour
 
         enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 8 * waveCount;
 
-        Debug.Log($"Wave {waveCount}!");
+        //Debug.Log($"Wave {waveCount}!");
+        if (waveCounter != null)
+        {
+            waveCounter.waveCount = waveCount;
+            waveCounter.UpdateWave();
+        }
+        UI_Message_Update($"Wave {waveCount}, start!");
     }
 
     void EndWave()
@@ -104,7 +116,9 @@ public class ArenaSurvivalGame : MonoBehaviour
             waveConditions[waveCount].RunClearEvents();
         }
         // WAVE COMPLETE!
-        Debug.Log("Wave Complete!");
+        //Debug.Log("Wave Complete!");
+
+        UI_Message_Update($"Wave {waveCount} complete!");
         Invoke(nameof(SetUpNextWave), preparationTime);
     }
 
@@ -117,7 +131,8 @@ public class ArenaSurvivalGame : MonoBehaviour
             Destroy(enemy.gameObject);
         }
         enemiesDead.Clear();
-        Debug.Log("Get Ready for the next Wave... (" + (waitTime) + " seconds)");
+        //Debug.Log("Get Ready for the next Wave... (" + (waitTime) + " seconds)");
+        UI_Message_Update("Prepare for the next wave...");
         Invoke(nameof(StartWave), waitTime);
     }
 
@@ -209,5 +224,13 @@ public class ArenaSurvivalGame : MonoBehaviour
     void IncrementWave()
     {
         waveCount++;
+    }
+
+    void UI_Message_Update(string message)
+    {
+        if (messageUI != null)
+        {
+            messageUI.SetMessage(message);
+        }
     }
 }
