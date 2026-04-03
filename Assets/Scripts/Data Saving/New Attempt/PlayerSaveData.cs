@@ -28,18 +28,18 @@ public class PlayerSaveData : ObjectSaveData
     [Header("Pickup Data")]
     private List<PickupSaveData> pickupsSinceLastSave = new List<PickupSaveData>();
 
-    [SerializeField] GameObject BigHealth;
-    [SerializeField] GameObject SmallHealth;
-    [SerializeField] GameObject BigAmmo;
-    [SerializeField] GameObject SmallAmmo;
-    [SerializeField] GameObject BigArmor;
-    [SerializeField] GameObject SmallArmor;
+    [SerializeField] GameObject BigHealthPrefab;
+    [SerializeField] GameObject SmallHealthPrefab;
+    [SerializeField] GameObject BigAmmoPrefab;
+    [SerializeField] GameObject SmallAmmoPrefab;
+    [SerializeField] GameObject BigArmorPrefab;
+    [SerializeField] GameObject SmallArmorPrefab;
 
     [Header("Enemy Data")]
     private List<EnemySaveData> gibbedEnemiesSinceLastSave = new List<EnemySaveData>();
 
-    [SerializeField] GameObject MeleeBasicEnemy;
-    [SerializeField] GameObject RangedBasicEnemy;
+    [SerializeField] GameObject MeleeBasicEnemyPrefab;
+    [SerializeField] GameObject RangedBasicEnemyPrefab;
 
     private void Start()
     {
@@ -134,16 +134,16 @@ public class PlayerSaveData : ObjectSaveData
             switch (data.Type)
             {
                 case IPickup.PickupType.Ammo:
-                    if (data.IsBig) Instantiate(BigAmmo, data.lastPosition, data.lastRotation);
-                    else Instantiate(SmallAmmo, data.lastPosition, data.lastRotation);
+                    if (data.IsBig) Instantiate(BigAmmoPrefab, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallAmmoPrefab, data.lastPosition, data.lastRotation);
                     break;
                 case IPickup.PickupType.Armor:
-                    if (data.IsBig) Instantiate(BigArmor, data.lastPosition, data.lastRotation);
-                    else Instantiate(SmallArmor, data.lastPosition, data.lastRotation);
+                    if (data.IsBig) Instantiate(BigArmorPrefab, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallArmorPrefab, data.lastPosition, data.lastRotation);
                     break;
                 case IPickup.PickupType.Health:
-                    if (data.IsBig) Instantiate(BigHealth, data.lastPosition, data.lastRotation);
-                    else Instantiate(SmallHealth, data.lastPosition, data.lastRotation);
+                    if (data.IsBig) Instantiate(BigHealthPrefab, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallHealthPrefab, data.lastPosition, data.lastRotation);
                     break;
             }
         }
@@ -163,10 +163,10 @@ public class PlayerSaveData : ObjectSaveData
             switch (enemy)
             {
                 case RangedEnemy:
-                    newEnemy = Instantiate(RangedBasicEnemy, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
+                    newEnemy = Instantiate(RangedBasicEnemyPrefab, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
                     break;
                 default:
-                    newEnemy = Instantiate(MeleeBasicEnemy, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
+                    newEnemy = Instantiate(MeleeBasicEnemyPrefab, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
                     break;
             }
 
@@ -188,4 +188,5 @@ public class PlayerSaveData : ObjectSaveData
     { 
         gibbedEnemiesSinceLastSave.Add(enemy);
     }
+
 }

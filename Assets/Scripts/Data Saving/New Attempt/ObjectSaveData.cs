@@ -21,8 +21,8 @@ public abstract class ObjectSaveData : MonoBehaviour, ISavableData
     public virtual void OnLoad()
     {
         if (!hasBeenSaved) return;
-        transform.position = this.Positon;
-        transform.rotation = this.Rotation;
+        if (this.Positon != null) transform.position = this.Positon;
+        if (this.Rotation != null) transform.rotation = this.Rotation;
     }
 
     /// <summary>

@@ -188,7 +188,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
             PlayerSaveData saveData = Player.GetComponent<PlayerSaveData>();
             EnemySaveData thisData = GetComponent<EnemySaveData>();
-            if (saveData != null && thisData != null) saveData.GibbedEnemy(thisData);
+            if (saveData != null && thisData != null)
+            {
+                thisData.SetLastTransform();
+                saveData.GibbedEnemy(thisData);
+            }
 
             return;
         }
