@@ -56,7 +56,7 @@ namespace Assets.Scripts
             Bind<Kerth, PlayerData>(gameData.playerData);
             Bind<FiendMB, EnemyData>(gameData.enemyData);
             Bind<FiendRB, EnemyData>(gameData.enemyData);
-            Bind<IPickup, PickupData>(gameData.pickupData);
+           // Bind<IPickup, PickupData>(gameData.pickupData);
         }
 
 
@@ -141,7 +141,7 @@ namespace Assets.Scripts
             Bind<Kerth, PlayerData>(gameData.playerData);
             Bind<FiendMB, EnemyData>(gameData.enemyData);
             Bind<FiendRB, EnemyData>(gameData.enemyData);
-            Bind<IPickup, PickupData>(gameData.pickupData);
+            //Bind<IPickup, PickupData>(gameData.pickupData);
             FindFirstObjectByType<Kerth>().OnSave();
 
             dataService.Save(gameData);

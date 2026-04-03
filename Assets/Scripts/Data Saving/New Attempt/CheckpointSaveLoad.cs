@@ -7,7 +7,7 @@ public class CheckpointSaveLoad : MonoBehaviour
         Checkpoint.SaveGame.AddListener(SaveAtCheckpoint);
     }
 
-
+    [ContextMenu("Save At Checkpoint")]
     public void SaveAtCheckpoint()
     {
         Debug.Log("saving from checkpoint");

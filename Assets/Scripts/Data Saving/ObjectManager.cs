@@ -33,7 +33,7 @@ public class ObjectManager : MonoBehaviour, IBind<SceneData>
         {
             foreach (SerializableGuid id in data.PickedUpObjects)
             {
-                if (pickupsInScene[i].Id == id) Destroy(pickupsInScene[i].gameObject);
+                //if (pickupsInScene[i].Id == id) Destroy(pickupsInScene[i].gameObject);
             }
         }
 

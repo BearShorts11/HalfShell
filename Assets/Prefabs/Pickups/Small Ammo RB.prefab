@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 903279363539956105}
   - component: {fileID: 2033340831767503619}
   - component: {fileID: 7223720605164096425}
+  - component: {fileID: 891408137406907287}
   m_Layer: 7
   m_Name: Small Ammo RB
   m_TagString: Untagged
@@ -75,6 +76,24 @@ MonoBehaviour:
   infinite: 0
   rotate: 0
   rotateSpeed: 50
+  Type: 0
+  isBig: 0
+  data:
+    _id:
+      Part1: 0
+      Part2: 0
+      Part3: 0
+      Part4: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    FirstBind: 1
+    Type: 0
+    IsBig: 0
+  _id:
+    Part1: 4223538899
+    Part2: 1133249706
+    Part3: 1624554402
+    Part4: 2662399745
   ammoType: 1
   pickupSound:
     Guid:
@@ -83,6 +102,7 @@ MonoBehaviour:
       Data3: 374113940
       Data4: 172278774
     Path: event:/Pickups/AmmoPickup
+  animator: {fileID: 0}
 --- !u!108 &6650558946996037428
 Light:
   m_ObjectHideFlags: 0
@@ -219,6 +239,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &891408137406907287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7287427250971299590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42fbb98801672ea418cc076bd47df87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastPosition: {x: 0, y: 0, z: 0}
+  lastRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1001 &7048639724639379920
 PrefabInstance:
   m_ObjectHideFlags: 0

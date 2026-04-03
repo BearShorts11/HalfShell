@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerSaveData : ObjectSaveData
 {
-
+    [Header("Basic Data")]
     public float Health { get; private set; }
     public float Armor { get; private set; }
 
     private PlayerBehavior behavior;
     private PlayerShooting shooting;
 
+    [Header("Shooting Data")]
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>()
     {
         { ShellBase.ShellType.Buckshot, 0 },
@@ -19,16 +20,22 @@ public class PlayerSaveData : ObjectSaveData
     };
 
     /// <summary>
-    /// because *stacks* magazine is saved in reversed order and loaded in correct order. 
-    /// Saved as ints to reference shell type in ShellBase.ShellType enum. 
-    /// Cannot save custom objects directly
+    /// saves the magazine in reverse because of how stacks work. 
     /// </summary>
     public Stack<ShellBase> ReversedMagazine = new Stack<ShellBase>();
+    public ShellBase.ShellType Chamber { get; private set; }
 
-    /// <summary>
-    /// holds enum number of shell type
-    /// </summary>
-    public ShellBase.ShellType Chamber;
+    [Header("Pickup Data")]
+    private List<PickupSaveData> pickupsSinceLastSave = new List<PickupSaveData>();
+    [SerializeField] GameObject BigHealth;
+    [SerializeField] GameObject SmallHealth;
+    [SerializeField] GameObject BigAmmo;
+    [SerializeField] GameObject SmallAmmo;
+    [SerializeField] GameObject BigArmor;
+    [SerializeField] GameObject SmallArmor;
+
+    [Header("Enemy Data")]
+    private List<Enemy> gibbedEnemiesSinceLastSave = new List<Enemy>();
 
     private void Start()
     {
@@ -49,6 +56,9 @@ public class PlayerSaveData : ObjectSaveData
         if (shooting.Chamber is not null) this.Chamber = shooting.Chamber.Type;
 
         SaveMagazine();
+
+        pickupsSinceLastSave.Clear();
+        gibbedEnemiesSinceLastSave.Clear();
     }
 
     private void SaveMagazine()
@@ -80,12 +90,12 @@ public class PlayerSaveData : ObjectSaveData
 
     public override void OnLoad()
     {
+        if (!hasBeenSaved) return; //only loads if there's actually data to load in
+
         //must disable the controller in order to move the player
         CharacterController controller = this.GetComponent<CharacterController>();
         controller.enabled = false;
-
         base.OnLoad();
-
         controller.enabled = true;
 
         behavior.SetHealth(Health);
@@ -105,19 +115,58 @@ public class PlayerSaveData : ObjectSaveData
         shooting.SetMagazine(ReversedMagazine);
 
         //set ammo counts
-        //i'm doing a bad i know
+        //i'm doing a bad i know I should be calling a method not directly changing shit
         shooting.AmmoCounts[ShellBase.ShellType.HalfShell] = this.AmmoCounts[ShellBase.ShellType.HalfShell];
         shooting.AmmoCounts[ShellBase.ShellType.Slug] = this.AmmoCounts[ShellBase.ShellType.Slug];
 
+        ResetPickups();
+        ReviveGibbedEnemies();
     }
 
-    private void LoadMagazine()
-    { 
-        shooting.Magazine.Clear();
-
-        while (this.ReversedMagazine.Count > 0)
+    private void ResetPickups()
+    {
+        foreach (PickupSaveData data in pickupsSinceLastSave)
         {
-            shooting.Magazine.Push(ReversedMagazine.Pop());
+            switch (data.Type)
+            {
+                case IPickup.PickupType.Ammo:
+                    if (data.IsBig) Instantiate(BigAmmo, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallAmmo, data.lastPosition, data.lastRotation);
+                    break;
+                case IPickup.PickupType.Armor:
+                    if (data.IsBig) Instantiate(BigArmor, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallArmor, data.lastPosition, data.lastRotation);
+                    break;
+                case IPickup.PickupType.Health:
+                    if (data.IsBig) Instantiate(BigHealth, data.lastPosition, data.lastRotation);
+                    else Instantiate(SmallHealth, data.lastPosition, data.lastRotation);
+                    break;
+            }
         }
+
+        pickupsSinceLastSave.Clear();
+    }
+
+    private void ReviveGibbedEnemies()
+    {
+        foreach (Enemy e in gibbedEnemiesSinceLastSave)
+        {
+            e.gameObject.SetActive(true);
+            e.Revive();
+            EnemySaveData data = e.GetComponent<EnemySaveData>();
+            data.OnLoad();
+        }
+
+        gibbedEnemiesSinceLastSave.Clear();
+    }
+
+    public void PickedUpObject(PickupSaveData pickup)
+    { 
+        pickupsSinceLastSave.Add(pickup);
+    }
+
+    public void GibbedEnemy(Enemy enemy)
+    { 
+        gibbedEnemiesSinceLastSave.Add(enemy);
     }
 }

@@ -22,7 +22,6 @@ public class AmmoPickup : IPickup
     void Update()
     {
         if (rotate) { Rotate(); }
-        base.BaseUpdate();
     }
 
     public void OnTriggerEnter(Collider other)

@@ -1602,6 +1602,7 @@ GameObject:
   - component: {fileID: 6058145765847574809}
   - component: {fileID: 7842366563641455283}
   - component: {fileID: 771287364505104619}
+  - component: {fileID: -1621754854533726603}
   m_Layer: 7
   m_Name: Armor Pickup Big RB
   m_TagString: Health Pickup
@@ -1824,6 +1825,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1621754854533726603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250187441270729918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42fbb98801672ea418cc076bd47df87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastPosition: {x: 0, y: 0, z: 0}
+  lastRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2572662874600806175
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,27 +5,18 @@ public abstract class ObjectSaveData : MonoBehaviour, ISavableData
     public Vector3 Positon { get; set; }
     public Quaternion Rotation { get; set; }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    protected bool hasBeenSaved;
 
     public virtual void OnSave()
     {
+        hasBeenSaved = true;    
         this.Positon = transform.position;
         this.Rotation = transform.rotation;
     }
 
     public virtual void OnLoad()
-    { 
+    {
+        if (!hasBeenSaved) return;
         transform.position = this.Positon;
         transform.rotation = this.Rotation;
     }
