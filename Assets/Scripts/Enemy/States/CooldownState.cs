@@ -32,7 +32,7 @@ public class CooldownState : State
                 case RangedEnemy:
                         break;
                 default:
-                        Owner.agent.isStopped = false;
+                        if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.isStopped = false;
                         Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
                     break;
             }
