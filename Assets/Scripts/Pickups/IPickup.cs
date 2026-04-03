@@ -8,6 +8,7 @@ public abstract class IPickup : MonoBehaviour
     public bool infinite;
     public bool rotate;
     public float rotateSpeed = 50f;
+    public bool droppedFromEnemy;
 
     private PlayerBehavior player;
     private PlayerShooting gun;

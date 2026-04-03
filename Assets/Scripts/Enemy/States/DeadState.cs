@@ -45,10 +45,10 @@ public class DeadState : State
                 if (Owner.Player.GetComponent<PlayerShooting>().AmmoCounts[ShellBase.ShellType.Slug]
                     <= s.MaxHolding / 5)
                 {
-                    GameObject ammoBox = Owner.RecursiveFindChild(Owner.transform, "Small Ammo RB").gameObject;  
+                    Transform ammoBox = Owner.RecursiveFindChild(Owner.transform, "Small Ammo RB");  
                     if (ammoBox != null) {
                         ammoBox.transform.parent = null;
-                        ammoBox.SetActive(true); 
+                        ammoBox.gameObject.SetActive(true); 
                     }
                 }
                 break;

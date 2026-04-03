@@ -106,8 +106,6 @@ public class PauseMenu : MonoBehaviour
     public void ResetSceneFromCheckpoint()
     {
         player.Revive();
-        //SaveLoadSystem system = FindFirstObjectByType<SaveLoadSystem>();
-        //system.LoadGame(system.gameData.Name);
         CheckpointSaveLoad checkpointManager = FindFirstObjectByType<CheckpointSaveLoad>();
         if (checkpointManager != null) checkpointManager.LoadFromCheckpoint();
 

@@ -19,6 +19,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     private Material[] decals;
     public GameObject FullyGibbedParticle;
 
+    [SerializeField] private GameObject HealthDrop;
+    [SerializeField] private GameObject AmmoDrop;
+
     [Header("Designer Variables")]
     [SerializeField] public float movementSpeed = 12f;
     [SerializeField] public float detectionRange = 10f;
@@ -39,6 +42,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// cooldown time after enemy is damaged
     /// </summary>
     [SerializeField] public float damageCooldown = 1.5f;
+
+    [SerializeField] public int healthDropAmt = 10;
+    [SerializeField] public int ammoDropAmt = 2;
 
     [Header("Health & Damage")]
     public float Health { get; set; }
@@ -181,10 +187,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             this.gameObject.SetActive(false);
 
             PlayerSaveData saveData = Player.GetComponent<PlayerSaveData>();
-            if (saveData != null) saveData.GibbedEnemy(this);
-
-            //TODO: add to kerth list like pickups
-            //re-enable on reload
+            EnemySaveData thisData = GetComponent<EnemySaveData>();
+            if (saveData != null && thisData != null) saveData.GibbedEnemy(thisData);
 
             return;
         }
@@ -218,6 +222,27 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         animator.enabled = true;
         ragdollController.SetColliderState(false);
         ragdollController.SetRigidbodyState(true);
+
+        //if previously dropped it's pickup, reset it
+        if (RecursiveFindChild(this.transform, "Small Ammo RB") == null)
+        {
+            GameObject newPickup = Instantiate(AmmoDrop, this.transform);
+            AmmoPickup newAmmo = newPickup.GetComponent<AmmoPickup>();
+            newAmmo.regainAmount = ammoDropAmt;
+            newAmmo.droppedFromEnemy = true;
+            //should case this next line by enemy type if we get to the point of having them drop diff types
+            newAmmo.SetAmmoType(ShellBase.ShellType.Slug);
+            newAmmo.gameObject.SetActive(false);
+        }
+
+        if (RecursiveFindChild(transform, "Small Health Pack Variant") == null)
+        { 
+            GameObject newPickup = Instantiate(HealthDrop, this.transform);
+            HealthPickup newHealth = newPickup.GetComponent<HealthPickup>();
+            newHealth.regainAmount = healthDropAmt;
+            newHealth.droppedFromEnemy = true;
+            newHealth.gameObject.SetActive(false);
+        }
     }
 
     protected IEnumerator SpawnDeathBloodPool()

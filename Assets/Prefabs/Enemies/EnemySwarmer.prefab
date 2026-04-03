@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8384322713868323038}
   - component: {fileID: 1697274530351514028}
   - component: {fileID: 7132507391989287381}
-  - component: {fileID: -5436520487712906119}
+  - component: {fileID: 1274689941359280769}
   m_Layer: 7
   m_Name: EnemySwarmer
   m_TagString: Enemy
@@ -158,6 +158,8 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 4896151076121982080}
+  HealthDrop: {fileID: 6228779371739049736, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+  AmmoDrop: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
   movementSpeed: 8
   detectionRange: 12
   attackRange: 3
@@ -165,6 +167,8 @@ MonoBehaviour:
   damage: 10
   attackCooldown: 0.5
   damageCooldown: 1.5
+  healthDropAmt: 10
+  ammoDropAmt: 2
   <maxHealth>k__BackingField: 80
   Docile: 0
   SpawnAgro: 0
@@ -226,7 +230,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0.5}
---- !u!114 &-5436520487712906119
+--- !u!114 &1274689941359280769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,26 +239,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6309285473008256643}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe986389a9d1e9a448ea2d58c61c7f06, type: 3}
+  m_Script: {fileID: 11500000, guid: fc0a6a6fcccc18143b5538159d3e9e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id:
-    Part1: 2939056136
-    Part2: 1183155200
-    Part3: 3991078550
-    Part4: 2570308643
-  data:
-    _id:
-      Part1: 0
-      Part2: 0
-      Part3: 0
-      Part4: 0
-    position: {x: 0, y: 0, z: 0}
-    startPosition: {x: 0, y: 0, z: 0}
-    Health: 0
-    FirstBind: 1
-    State: 
-  enemy: {fileID: 8384322713868323038}
 --- !u!1 &6553075296426887595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3324,6 +3311,10 @@ PrefabInstance:
     - target: {fileID: 2768574406368601867, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
       propertyPath: regainAmount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768574406368601867, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+      propertyPath: droppedFromEnemy
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4899628975184972232, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
       propertyPath: m_LocalScale.x

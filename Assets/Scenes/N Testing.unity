@@ -131,10 +131,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyRanged
       objectReference: {fileID: 0}
-    - target: {fileID: 2204181174462613249, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.34347677
@@ -176,18 +172,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
-      propertyPath: UseFirePoints
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
-      propertyPath: movementSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
-      propertyPath: FirePoints.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: 'FirePoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1895795677}
@@ -195,10 +179,6 @@ PrefabInstance:
       propertyPath: 'FirePoints.Array.data[1]'
       value: 
       objectReference: {fileID: 88370636}
-    - target: {fileID: 7671385689155647640, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
-      propertyPath: m_RenderingLayerMask
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1994,18 +1974,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySwarmer
       objectReference: {fileID: 0}
-    - target: {fileID: 6309285473008256643, guid: f976106c600f35346bc753db2122236f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -5436520487712906119, guid: f976106c600f35346bc753db2122236f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6309285473008256643, guid: f976106c600f35346bc753db2122236f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 819067072}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f976106c600f35346bc753db2122236f, type: 3}
 --- !u!43 &486439806
 Mesh:
@@ -3485,23 +3457,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &819067063 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6309285473008256643, guid: f976106c600f35346bc753db2122236f, type: 3}
-  m_PrefabInstance: {fileID: 450615740}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &819067072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819067063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0a6a6fcccc18143b5538159d3e9e33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &873068052
 GameObject:
   m_ObjectHideFlags: 0
@@ -4175,7 +4130,7 @@ PrefabInstance:
       objectReference: {fileID: 134145646}
     - target: {fileID: 2975816232503532693, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1610
+      value: 1622
       objectReference: {fileID: 0}
     - target: {fileID: 4977538901578392158, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
       propertyPath: Type
@@ -7094,7 +7049,7 @@ PrefabInstance:
       objectReference: {fileID: 785968960}
     - target: {fileID: 2975816232503532693, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1592
+      value: 1604
       objectReference: {fileID: 0}
     - target: {fileID: 4977538901578392158, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
       propertyPath: Type
@@ -7364,6 +7319,8 @@ MonoBehaviour:
   SmallAmmo: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
   BigArmor: {fileID: 1250187441270729918, guid: 4d9ec97a5f001a44e9d772449ef49aaa, type: 3}
   SmallArmor: {fileID: 6692179363074624554, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
+  MeleeBasicEnemy: {fileID: 6309285473008256643, guid: f976106c600f35346bc753db2122236f, type: 3}
+  RangedBasicEnemy: {fileID: 2204181174462613249, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
 --- !u!1001 &6094972404868539869
 PrefabInstance:
   m_ObjectHideFlags: 0

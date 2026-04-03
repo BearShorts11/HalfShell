@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3256531511175847293}
   - component: {fileID: 3725621020842838227}
   - component: {fileID: 7612800190896384274}
-  - component: {fileID: -4560225689640029882}
+  - component: {fileID: 7041516562532296834}
   m_Layer: 7
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 0
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ee37b8340b16db946a5566e469293efa, type: 2}
@@ -136,13 +136,17 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 5294962421360413842}
-  movementSpeed: 6
+  HealthDrop: {fileID: 6228779371739049736, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+  AmmoDrop: {fileID: 7287427250971299590, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+  movementSpeed: 8
   detectionRange: 25
   attackRange: 20
   attackTimer: 0.5
   damage: 15
   attackCooldown: 0.5
   damageCooldown: 1.5
+  healthDropAmt: 10
+  ammoDropAmt: 2
   <maxHealth>k__BackingField: 50
   Docile: 0
   SpawnAgro: 0
@@ -154,7 +158,9 @@ MonoBehaviour:
   fireRate: 0.25
   nextTimeToFire: 0
   UseFirePoints: 0
-  FirePoints: []
+  FirePoints:
+  - {fileID: 0}
+  - {fileID: 0}
   maxDistanceFromPlayer: 20
   muzzleflash: {fileID: 2348306862388933869}
   firingSound:
@@ -219,7 +225,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &-4560225689640029882
+--- !u!114 &7041516562532296834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,26 +234,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2204181174462613249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1742890a2a5d40b4fbc3176fdeb003df, type: 3}
+  m_Script: {fileID: 11500000, guid: fc0a6a6fcccc18143b5538159d3e9e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id:
-    Part1: 42448755
-    Part2: 1275214689
-    Part3: 4105870766
-    Part4: 3321378539
-  data:
-    _id:
-      Part1: 0
-      Part2: 0
-      Part3: 0
-      Part4: 0
-    position: {x: 0, y: 0, z: 0}
-    startPosition: {x: 0, y: 0, z: 0}
-    Health: 0
-    FirstBind: 1
-    State: 
-  enemy: {fileID: 3256531511175847293}
 --- !u!1001 &271593418312977336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2472,6 +2461,10 @@ PrefabInstance:
       propertyPath: regainAmount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 551782608195310464, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
+      propertyPath: droppedFromEnemy
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2393304053043858811, guid: b2cd73ed46bf447428d63a4967d4d824, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.75
@@ -2855,6 +2848,10 @@ PrefabInstance:
     - target: {fileID: 2768574406368601867, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
       propertyPath: regainAmount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768574406368601867, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
+      propertyPath: droppedFromEnemy
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4899628975184972232, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
       propertyPath: m_LocalScale.x

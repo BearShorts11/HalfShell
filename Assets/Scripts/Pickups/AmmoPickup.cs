@@ -54,4 +54,9 @@ public class AmmoPickup : IPickup
             }
         }
     }
+
+    public void SetAmmoType(ShellBase.ShellType type)
+    { 
+        ammoType = type;
+    }
 }

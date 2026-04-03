@@ -18,6 +18,13 @@ public class CheckpointSaveLoad : MonoBehaviour
         { 
             data.OnSave();
         }
+
+        //if player manages to reach another checkpoint without picking up an enemy object, it can stay as it was saved
+        IPickup[] pickups = FindObjectsByType<IPickup>(FindObjectsSortMode.None);
+        foreach (IPickup pickup in pickups)
+        {
+            if (pickup.droppedFromEnemy) pickup.droppedFromEnemy = false;
+        }
     }
 
     [ContextMenu("Load From Checkpoint")]
@@ -28,6 +35,13 @@ public class CheckpointSaveLoad : MonoBehaviour
         foreach (ObjectSaveData data in datas)
         {
             data.OnLoad();
+        }
+
+        //destory pickups dropped from enemies as the enemies would be reset on reloading
+        IPickup[] pickups = FindObjectsByType<IPickup>(FindObjectsSortMode.None);
+        foreach (IPickup pickup in pickups)
+        { 
+            if (pickup.droppedFromEnemy) Destroy(pickup.gameObject);
         }
     }
 }

@@ -27,6 +27,7 @@ public class PlayerSaveData : ObjectSaveData
 
     [Header("Pickup Data")]
     private List<PickupSaveData> pickupsSinceLastSave = new List<PickupSaveData>();
+
     [SerializeField] GameObject BigHealth;
     [SerializeField] GameObject SmallHealth;
     [SerializeField] GameObject BigAmmo;
@@ -35,7 +36,10 @@ public class PlayerSaveData : ObjectSaveData
     [SerializeField] GameObject SmallArmor;
 
     [Header("Enemy Data")]
-    private List<Enemy> gibbedEnemiesSinceLastSave = new List<Enemy>();
+    private List<EnemySaveData> gibbedEnemiesSinceLastSave = new List<EnemySaveData>();
+
+    [SerializeField] GameObject MeleeBasicEnemy;
+    [SerializeField] GameObject RangedBasicEnemy;
 
     private void Start()
     {
@@ -149,12 +153,27 @@ public class PlayerSaveData : ObjectSaveData
 
     private void ReviveGibbedEnemies()
     {
-        foreach (Enemy e in gibbedEnemiesSinceLastSave)
+        foreach (EnemySaveData e in gibbedEnemiesSinceLastSave)
         {
-            e.gameObject.SetActive(true);
-            e.Revive();
-            EnemySaveData data = e.GetComponent<EnemySaveData>();
+            //e.gameObject.SetActive(true);
+            //e.Enemy.Revive();
+            Enemy enemy = e.Enemy;
+            EnemySaveData newEnemy;
+
+            switch (enemy)
+            {
+                case RangedEnemy:
+                    newEnemy = Instantiate(RangedBasicEnemy, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
+                    break;
+                default:
+                    newEnemy = Instantiate(MeleeBasicEnemy, e.lastPosition, e.lastRotation).GetComponent<EnemySaveData>();
+                    break;
+            }
+
+            EnemySaveData data = newEnemy.GetComponent<EnemySaveData>();
             data.OnLoad();
+
+            Destroy(e.gameObject);
         }
 
         gibbedEnemiesSinceLastSave.Clear();
@@ -165,7 +184,7 @@ public class PlayerSaveData : ObjectSaveData
         pickupsSinceLastSave.Add(pickup);
     }
 
-    public void GibbedEnemy(Enemy enemy)
+    public void GibbedEnemy(EnemySaveData enemy)
     { 
         gibbedEnemiesSinceLastSave.Add(enemy);
     }
