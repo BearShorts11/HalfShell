@@ -121,6 +121,10 @@ public class BreakableObject : MonoBehaviour, IDamageable
 
         isBroken = true;
         Destroy(GetComponent<Collider>());
+        if (TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
+        {
+            Destroy(meshCollider);
+        }
         OnDeath?.Invoke();
 
         if (Particles != null) { Particles.Play(); }
