@@ -1,10 +1,21 @@
 using UnityEngine;
 
-// Script made for Simple Triggers
+// Script component made for Arena Mode
+// Mainly used for spawning items every wave (if needed)
 public class SimpleSpawner : MonoBehaviour
 {
+    public GameObject defaultObjectToSpawn;
+    GameObject spawnedObject;
+
+    public void SpawnObject()
+    {
+        SpawnObject(defaultObjectToSpawn);
+    }
+
     public void SpawnObject(GameObject obj)
     {
-        Instantiate(obj, this.transform.position, Quaternion.identity);
+        if (spawnedObject == null) {
+            spawnedObject = Instantiate(obj, this.transform.position, Quaternion.identity);
+        }
     }
 }

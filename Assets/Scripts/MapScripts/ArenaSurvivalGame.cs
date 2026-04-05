@@ -25,8 +25,10 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     [Header("Dynamic")]
     [SerializeField] private int waveCount;
-    [SerializeField] private List<SimpleSpawnVolume> spawnVolumes;
-    [SerializeField] private List<SimpleSpawnVolume> activeSpawnVolumes;
+    [SerializeField] private List<SimpleSpawnVolume> spawnVolumes = new();
+    [SerializeField] private List<SimpleSpawnVolume> activeSpawnVolumes = new();
+    [SerializeField] private List<SimpleSpawner> mapSpawns = new();
+    [SerializeField] private List<SimpleSpawner> activeMapSpawns = new();
     [SerializeField] private int enemiesToWipe;
     [SerializeField] private List<Enemy> enemiesSpawned = new();
     [SerializeField] private float spawnRate;
@@ -73,6 +75,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     {
         spawnVolumes = FindObjectsByType<SimpleSpawnVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList<SimpleSpawnVolume>();
         
+        mapSpawns = FindObjectsByType<SimpleSpawner>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList<SimpleSpawner>();
 
         updateEnemyCounter += DecreaseEnemyCount;
 
@@ -96,6 +99,14 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (waveConditions.ContainsKey(waveCount))
         {
             waveConditions[waveCount].RunStartEvents();
+        }
+
+        foreach(SimpleSpawner mapSpawn in mapSpawns)
+        {
+            if (mapSpawn.gameObject.activeInHierarchy)
+            {
+                mapSpawn.SpawnObject(mapSpawn.defaultObjectToSpawn);
+            }
         }
 
         enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 8 * waveCount;
