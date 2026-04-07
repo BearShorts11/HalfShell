@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class ArenaSurvivalGame : MonoBehaviour
     public SurvivalWave_Events[] waveEvents;
     [Tooltip("How many enemies can exist at a single time on the map")]
     public int maxEnemiesAtOnce = 32;
+    [Tooltip("After this wave, item/object respawns will require more wave clears to respawn")]
+    public int minWaveToStaggerItemSpawns = 2;
 
     public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
@@ -29,6 +32,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     [SerializeField] private List<SimpleSpawnVolume> activeSpawnVolumes = new();
     [SerializeField] private List<SimpleSpawner> mapSpawns = new();
     [SerializeField] private List<SimpleSpawner> activeMapSpawns = new();
+    [SerializeField] private int wavesToRestock;
     [SerializeField] private int enemiesToWipe;
     [SerializeField] private List<Enemy> enemiesSpawned = new();
     [SerializeField] private float spawnRate;
@@ -101,13 +105,7 @@ public class ArenaSurvivalGame : MonoBehaviour
             waveConditions[waveCount].RunStartEvents();
         }
 
-        foreach(SimpleSpawner mapSpawn in mapSpawns)
-        {
-            if (mapSpawn.gameObject.activeInHierarchy)
-            {
-                mapSpawn.SpawnObject(mapSpawn.defaultObjectToSpawn);
-            }
-        }
+        RespawnItems();
 
         enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 8 * waveCount;
 
@@ -242,6 +240,28 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (messageUI != null)
         {
             messageUI.SetMessage(message);
+        }
+    }
+
+    void RespawnItems()
+    {
+        if (wavesToRestock <= 0)
+        {
+            foreach (SimpleSpawner mapSpawn in mapSpawns)
+            {
+                if (mapSpawn.gameObject.activeInHierarchy)
+                {
+                    mapSpawn.SpawnObject(mapSpawn.defaultObjectToSpawn);
+                }
+            }
+            if (waveCount > minWaveToStaggerItemSpawns)
+            {
+                wavesToRestock = waveCount - minWaveToStaggerItemSpawns;
+            }
+        }
+        else
+        {
+            wavesToRestock--;
         }
     }
 }
