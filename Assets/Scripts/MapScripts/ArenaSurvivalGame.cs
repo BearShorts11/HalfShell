@@ -23,6 +23,8 @@ public class ArenaSurvivalGame : MonoBehaviour
     public int maxEnemiesAtOnce = 32;
     [Tooltip("After this wave, item/object respawns will require more wave clears to respawn")]
     public int minWaveToStaggerItemSpawns = 2;
+    [Tooltip("Cap the stagger count to prevent items from taking too long to spawn")]
+    [Min(0)]public int maxItemSpawnStagger = 3;
 
     public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
@@ -38,6 +40,8 @@ public class ArenaSurvivalGame : MonoBehaviour
     [SerializeField] private float spawnRate;
     [SerializeField] private bool waveOver;
     private List<Enemy> enemiesDead = new();
+
+    private int supplyStaggerCounter = 0;
 
     // Handle the enemy count?
     private UnityAction updateEnemyCounter;
@@ -256,7 +260,9 @@ public class ArenaSurvivalGame : MonoBehaviour
             }
             if (waveCount > minWaveToStaggerItemSpawns)
             {
-                wavesToRestock = waveCount - minWaveToStaggerItemSpawns;
+                supplyStaggerCounter++;
+                supplyStaggerCounter = Mathf.Clamp(supplyStaggerCounter, 0, maxItemSpawnStagger);
+                wavesToRestock = supplyStaggerCounter;
             }
         }
         else
