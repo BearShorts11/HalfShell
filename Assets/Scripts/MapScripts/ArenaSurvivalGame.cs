@@ -139,9 +139,9 @@ public class ArenaSurvivalGame : MonoBehaviour
             }
             foreach (Enemy deadenemy in enemiesDead)
             {
+                deadenemy.TakeDamage(deadenemy.Health);
                 if (enemiesSpawned.Contains(deadenemy))
                     enemiesSpawned.Remove(deadenemy);
-                deadenemy.TakeDamage(deadenemy.Health);
             }
         }
 
@@ -291,6 +291,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     // For map scripting or debugging
     public void ForceEndWave()
     {
+        enemiesToWipe = 0;
         EndWave();
     }
 }
