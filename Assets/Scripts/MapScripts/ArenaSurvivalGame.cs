@@ -128,6 +128,16 @@ public class ArenaSurvivalGame : MonoBehaviour
         {
             waveConditions[waveCount].RunClearEvents();
         }
+
+        // If there are enemies spawned by the still alive when the wave ends
+        if (enemiesSpawned.Count > 0)
+        {
+            foreach (Enemy enemy in enemiesSpawned)
+            {
+                enemy.TakeDamage(enemy.Health);
+            }
+        }
+
         // WAVE COMPLETE!
         //Debug.Log("Wave Complete!");
 
@@ -269,5 +279,11 @@ public class ArenaSurvivalGame : MonoBehaviour
         {
             wavesToRestock--;
         }
+    }
+
+    // For map scripting or debugging
+    public void ForceEndWave()
+    {
+        EndWave();
     }
 }
