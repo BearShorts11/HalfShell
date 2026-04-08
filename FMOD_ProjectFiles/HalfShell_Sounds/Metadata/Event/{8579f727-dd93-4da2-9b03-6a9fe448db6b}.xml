@@ -5,7 +5,7 @@
 			<value>cultistsAtk</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{f0a8a9d0-9a47-4435-ac98-b4006fff2b94}</destination>
@@ -105,6 +105,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{14aca3b4-41f6-49d4-af3c-e397d01da183}">
+		<property name="volume">
+			<value>6</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -121,6 +124,7 @@
 	<object class="MixerBusEffectChain" id="{310b4754-3be5-45a5-b25d-57a231133a82}">
 		<relationship name="effects">
 			<destination>{59c892e2-c1d6-4f91-b234-f6b1a3d8c415}</destination>
+			<destination>{1d861e62-ccda-489f-ada8-93f2283359d3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5e953927-e315-4380-b809-6753d86086c6}" />
@@ -177,5 +181,10 @@
 	</object>
 	<object class="MixerBusPanner" id="{8f6ad51f-827c-4913-a15a-08ecca521f95}" />
 	<object class="MixerBusFader" id="{59c892e2-c1d6-4f91-b234-f6b1a3d8c415}" />
+	<object class="SpatialiserEffect" id="{1d861e62-ccda-489f-ada8-93f2283359d3}">
+		<property name="distanceRolloffType">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{bcffb1dc-7f2f-4e18-9856-f983fa4127a0}" />
 </objects>

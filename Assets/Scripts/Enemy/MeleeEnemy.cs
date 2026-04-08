@@ -1,7 +1,9 @@
+using FMODUnity;
 using UnityEngine;
 
 public class MeleeEnemy : Enemy
 {
+    [Header("Melee Enemy")]
     public bool PlayerInTrigger;
 
     private void Awake()
@@ -13,6 +15,8 @@ public class MeleeEnemy : Enemy
     void Update()
     {
         base.BaseUpdate();
+
+        Voice_Update();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,5 +27,36 @@ public class MeleeEnemy : Enemy
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player") PlayerInTrigger = false;
+    }
+
+    public override void TakeDamage(float amount)
+    {
+        vocalCoolDown = 0.01f;
+        if (!IsOnVocalCooldown())
+        {
+            PlayVoice("event:/Dialogue/cultistsDmg");
+        }
+        base.TakeDamage(amount);
+    }
+
+    void Voice_Update()
+    {
+        if (!IsOnVocalCooldown())
+        {
+            vocalCoolDown = defaultVocalCoolDown + Random.Range(-1.5f, 1.5f);
+
+            switch(stateMachine.CurrentState)
+            {
+                case MeleeAttackState:
+                    vocalCoolDown = 0.9f;
+                    PlayVoice("event:/Dialogue/cultistsAtk");
+                    break;
+                case ChaseState:
+                    PlayVoice("event:/Dialogue/cultistBark");
+                    break;
+            }
+
+            lastVocalization = Time.time;
+        }
     }
 }

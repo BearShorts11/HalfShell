@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1697274530351514028}
   - component: {fileID: 7132507391989287381}
   - component: {fileID: -5436520487712906119}
+  - component: {fileID: 1552978784529567682}
   m_Layer: 7
   m_Name: EnemySwarmer
   m_TagString: Enemy
@@ -171,6 +172,7 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
+  soundEvents: {fileID: 1552978784529567682}
   PlayerInTrigger: 0
 --- !u!114 &1697274530351514028
 MonoBehaviour:
@@ -255,6 +257,18 @@ MonoBehaviour:
     FirstBind: 1
     State: 
   enemy: {fileID: 8384322713868323038}
+--- !u!114 &1552978784529567682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309285473008256643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7357b9d31c66fa6478d9503197fc8159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6553075296426887595
 GameObject:
   m_ObjectHideFlags: 0
