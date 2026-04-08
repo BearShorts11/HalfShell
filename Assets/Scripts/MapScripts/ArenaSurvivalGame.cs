@@ -134,7 +134,14 @@ public class ArenaSurvivalGame : MonoBehaviour
         {
             foreach (Enemy enemy in enemiesSpawned)
             {
-                enemy.TakeDamage(enemy.Health);
+                if (enemy.Dead)
+                    enemiesDead.Add(enemy);
+            }
+            foreach (Enemy deadenemy in enemiesDead)
+            {
+                if (enemiesSpawned.Contains(deadenemy))
+                    enemiesSpawned.Remove(deadenemy);
+                deadenemy.TakeDamage(deadenemy.Health);
             }
         }
 
