@@ -77,6 +77,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [SerializeField] public UnityEvent OnDeath;
     [SerializeField] public static UnityEvent DeathAlert = new UnityEvent();
 
+    [Header("Sounds")]
+    [SerializeField] public SimpleSoundEvent soundEvents;
+    protected float defaultVocalCoolDown = 3;
+    protected float vocalCoolDown;
+    protected float lastVocalization;
+
     protected void Startup()
     {
         stateMachine = new StateMachine(this);
@@ -98,6 +104,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Health = maxHealth;
         agent.speed = movementSpeed;
         agent.acceleration = 10f;
+
+        if (soundEvents == null)
+            soundEvents = this.gameObject.GetComponent<SimpleSoundEvent>();
+        vocalCoolDown = defaultVocalCoolDown;
     }
 
     /// <summary>
@@ -300,6 +310,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             }
         }
         return null;
+    }
+
+    protected void PlayVoice(string eventPath)
+    {
+        if (soundEvents != null && Health > 0)
+        {
+            soundEvents.PlaySoundAttached(eventPath); 
+            lastVocalization = Time.time;
+        }
+    }
+
+    protected bool IsOnVocalCooldown()
+    {
+        return Time.time < lastVocalization + vocalCoolDown;
     }
 
     private void OnDrawGizmos()
