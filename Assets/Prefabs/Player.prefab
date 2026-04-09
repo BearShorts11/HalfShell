@@ -520,6 +520,7 @@ GameObject:
   - component: {fileID: 2340924979681423522}
   - component: {fileID: 6507287202376100298}
   - component: {fileID: 7500289994402315020}
+  - component: {fileID: 1468094387291114580}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -594,7 +595,7 @@ MonoBehaviour:
   lookSpeed: 0.3
   lookXLimit: 90
   defaultHeight: 2
-  startWithShotgun: 1
+  startWithShotgun: 0
   invincible: 0
   health: 100
   armor: 0
@@ -996,6 +997,28 @@ MonoBehaviour:
   SmallArmor: {fileID: 6692179363074624554, guid: 51e1ac64217c4be4fb9d36fadea2d31c, type: 3}
   pickupsSinceLastSave: []
   gibbedEnemysSinceLastSave: []
+--- !u!95 &1468094387291114580
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132485486643332482}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6719948019014343288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1048,7 @@ Transform:
   m_GameObject: {fileID: 6719948019014343288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.649999, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6500001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1498,6 +1521,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5175454161512950739}
     m_Modifications:
+    - target: {fileID: 2538504249288830666, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: conversationActor
+      value: 
+      objectReference: {fileID: 5175454161512950739}
     - target: {fileID: 3194527589093206725, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.092243195
@@ -1543,14 +1570,123 @@ PrefabInstance:
       value: Apollyon
       objectReference: {fileID: 0}
     - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: conversation
+      value: FirstTalkApollyon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
       propertyPath: conversationActor
       value: 
       objectReference: {fileID: 5175454161512950739}
+    - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: marginToAllowTriggerExit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: stopConversationOnTriggerExit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: condition.luaConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821944029355327607, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      propertyPath: 'condition.luaConditions.Array.data[0]'
+      value: Variable["ApoIntroC"] == false
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3921799518906747045, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7569219792434054642}
   m_SourcePrefab: {fileID: 100100000, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+--- !u!1 &524057217865007814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3921799518906747045, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
+  m_PrefabInstance: {fileID: 3542314895358741091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7569219792434054642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524057217865007814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c593457cd8105e148906690e1707c592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: 8
+  delayOneFrame: 0
+  condition:
+    luaConditions:
+    - Variable["ApoIntroC"] == true
+    questConditions: []
+    acceptedTags:
+    - Player
+    acceptedGameObjects: []
+    luaWizardIndex: -1
+    lastEvaluationValue: 0
+  setQuestState: 1
+  questName: 
+  questState: 0
+  setQuestEntryState: 0
+  questEntryNumber: 1
+  questEntryState: 0
+  setAnotherQuestEntryState: 0
+  anotherQuestEntryNumber: 1
+  anotherQuestEntryState: 0
+  luaCode: 
+  sequence: 
+  sequenceSpeaker: {fileID: 0}
+  sequenceListener: {fileID: 0}
+  waitOneFrameOnStartOrEnable: 1
+  alertMessage: 
+  textTable: {fileID: 0}
+  alertDuration: 0
+  sendMessages: []
+  barkSource: 0
+  barkConversation: 
+  barkEntryID: -1
+  barkEntryTitle: 
+  barkText: 
+  barkTextSequence: 
+  barker: {fileID: 0}
+  barkTarget: {fileID: 0}
+  barkOrder: 0
+  allowBarksDuringConversations: 0
+  skipBarkIfNoValidEntries: 0
+  cacheBarkLines: 0
+  conversation: ApoTalksMission1
+  conversationConversant: {fileID: 2125111110229762214}
+  conversationActor: {fileID: 5175454161512950739}
+  startConversationEntryID: -1
+  startConversationEntryTitle: 
+  overrideDialogueUI: {fileID: 0}
+  exclusive: 0
+  replace: 0
+  queue: 0
+  skipIfNoValidEntries: 0
+  preventRestartOnSameFrameEnded: 0
+  stopConversationOnTriggerExit: 1
+  marginToAllowTriggerExit: 0
+  stopConversationIfTooFar: 0
+  maxConversationDistance: 5
+  monitorConversationDistanceFrequency: 1
+  showCursorDuringConversation: 0
+  pauseGameDuringConversation: 0
+  setActiveActions: []
+  setEnabledActions: []
+  setAnimatorStateActions: []
+  onExecute:
+    m_PersistentCalls:
+      m_Calls: []
+  useConversationTitlePicker: 1
+  useBarkTitlePicker: 1
+  useQuestNamePicker: 1
+  selectedDatabase: {fileID: 11400000, guid: ca7748c7dc2df6644aa14cfe3be9077f, type: 2}
 --- !u!4 &2125111110229762214 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3194527589093206725, guid: ad17b57db29b5fe4fa7cf621041d2549, type: 3}
@@ -1615,7 +1751,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6662085205764459956, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5986952480959058517}
+    - targetCorrespondingSourceObject: {fileID: 6662085205764459956, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1848520297713191289}
   m_SourcePrefab: {fileID: 100100000, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
 --- !u!4 &912973130843938795 stripped
 Transform:
@@ -1627,6 +1769,75 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6662085205764459956, guid: 587ca8bcee3c83a4ab57040b067452ba, type: 3}
   m_PrefabInstance: {fileID: 5397503696374198335}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5986952480959058517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626839815154843019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: Apollyon
+  persistentDataName: 
+  portrait: {fileID: 0}
+  spritePortrait: {fileID: 0}
+  cameraAngles: {fileID: 0}
+  audioSource: {fileID: 0}
+  barkUISettings:
+    barkUI: {fileID: 11426712, guid: 21b4828b943afef4896267f31f98ee1a, type: 3}
+    barkUIOffset: {x: 0, y: 2, z: 2}
+  standardDialogueUISettings:
+    subtitlePanelNumber: 0
+    customSubtitlePanel: {fileID: 0}
+    customSubtitlePanelOffset: {x: 0, y: 0, z: 0}
+    menuPanelNumber: 0
+    customMenuPanel: {fileID: 0}
+    customMenuPanelOffset: {x: 0, y: 0, z: 0}
+    useMenuPanelFor: 0
+    portraitAnimatorController: {fileID: 0}
+    setSubtitleColor: 0
+    applyColorToPrependedName: 0
+    prependActorNameSeparator: ': '
+    prependActorNameFormat: '{0}{1}'
+    subtitleColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1848520297713191289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626839815154843019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505dcd4c4aa3a1741ab98b9ad39eb7a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  once: 0
+  conversation: ApoDoorSeqBarks
+  condition:
+    luaConditions: []
+    questConditions: []
+    acceptedTags: []
+    acceptedGameObjects: []
+    luaWizardIndex: -1
+    lastEvaluationValue: 0
+  skipIfNoValidEntries: 0
+  exclusive: 0
+  conversant: {fileID: 0}
+  useConversationTitlePicker: 1
+  selectedDatabase: {fileID: 0}
+  barkOrder: 1
+  allowDuringConversations: 0
+  cacheBarkLines: 0
+  barkOnStart: 0
+  barkOnEnable: 0
+  minSeconds: 5
+  maxSeconds: 10
+  target: {fileID: 0}
 --- !u!1001 &8034355594651571339
 PrefabInstance:
   m_ObjectHideFlags: 0
