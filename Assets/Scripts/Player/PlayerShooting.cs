@@ -669,23 +669,22 @@ public class PlayerShooting : MonoBehaviour
 
     private void LoadMagUI(ShellBase shell)
     {
-        GameObject UIshell = PlayerUI.MakeUIShell(magazineUI, shell);
+        GameObject UIshell = PlayerUI.MakeUIShell(magazineUI, shell, true);
 
         //set position based on capacity, shell size, & buffer
-        float y = 0;
         float size = shell.Size;
-        y = 160;
-        if (shell.Type == ShellBase.ShellType.HalfShell) y += 17.5f; //half of halfshell height
+        float y = 0;
+        y = -122;
+        if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f; //half of halfshell width //should be 14 for adjusted size
         shellUIstart = y;
 
         for (int i = 1; i < magUI.Count; i++)
         {
-            if (magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y -= 40;
-            else y -= 75;
+            if (magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y += 30;
+            else y += 60;
         }
 
-        //Debug.Log(y);
-        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(0, y, 0);
+        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
         UIshell.SetActive(true);
     }
 

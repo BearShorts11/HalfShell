@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class PlayerUI : MonoBehaviour
     public Slider healthBar;
     public TextMeshProUGUI HPtext;
 
+    public GameObject armorParent;
     public Slider armorBar;
     public TextMeshProUGUI armorText;
 
@@ -26,10 +28,16 @@ public class PlayerUI : MonoBehaviour
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
 
+    //gets around needing a static reference for a static method (Make UI Shell)
+    public Sprite HalfShellSprite;
+    public Sprite SlugSprite;
+    private static Sprite _halfShellSprite;
+    private static Sprite _slugSprite;
+
     //UI shell size vals
-    static float shellWidth = 30f;
-    static float shellHeight = 70f;
-    static float halfShellHeight = 35f;
+    static float shellHeight = 30f;
+    static float shellWidth = 70f;
+    static float halfShellWidth = 35f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,6 +49,9 @@ public class PlayerUI : MonoBehaviour
         {
             ChamberUIOn(gun.Chamber);
         }
+
+        _halfShellSprite = HalfShellSprite;
+        _slugSprite = SlugSprite;
     }
 
     // Update is called once per frame
@@ -49,26 +60,27 @@ public class PlayerUI : MonoBehaviour
     }
 
 
-    public static GameObject MakeUIShell(Image parent, ShellBase shell)
+    public static GameObject MakeUIShell(Image parent, ShellBase shell, bool forMagazine)
     {
         GameObject UIshell = new GameObject();
-        Image display = UIshell.AddComponent<Image>();
+        UIshell.AddComponent<Image>();
         RectTransform UIShellRectTransform = UIshell.GetComponent<RectTransform>();
         UIShellRectTransform.SetParent(parent.transform, false);
-
-        Color color = shell.DisplayColor;
-        UIshell.GetComponent<Image>().color = color;
 
         //set size based on full or half shell
         switch (shell.Type)
         {
             case ShellBase.ShellType.HalfShell:
-                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, halfShellHeight);
+                UIshell.GetComponent<Image>().sprite = _halfShellSprite;
+                UIShellRectTransform.sizeDelta = new Vector2(halfShellWidth, shellHeight);
                 break;
             default:
+                UIshell.GetComponent<Image>().sprite = _slugSprite;
                 UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
                 break;
         }
+
+        if (forMagazine) { UIShellRectTransform.localScale = new Vector3(0.8f, 0.8f, 1); }
 
         return UIshell;
     }
@@ -80,8 +92,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ChamberUIOn(ShellBase shell)
     {
-
-        GameObject UIshell = PlayerUI.MakeUIShell(ChamberUI, shell);
+        GameObject UIshell = MakeUIShell(ChamberUI, shell, false);
         UIshell.SetActive(true);
     }
 
@@ -114,8 +125,6 @@ public class PlayerUI : MonoBehaviour
             MultiShotCrosshair.gameObject.SetActive(false);
         }
     }
-
-
 
     public void Hurt()
     {
@@ -163,11 +172,13 @@ public class PlayerUI : MonoBehaviour
         armorBar.value = Arm;
         if (armorBar.value > 0)
         {
+            armorParent.SetActive(true);
             armorText.enabled = true;
             armorText.text = $"ARM: {Mathf.Round(Arm)}";
         }
-        else { armorText.enabled = false; }
+        else { armorText.enabled = false; armorParent.SetActive(false); }
     }
+
     public void UpdateMaxArmor(float Arm, float Max)
     {
         armorBar.maxValue = Max;
