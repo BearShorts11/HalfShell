@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour
 {
     public PlayerBehavior player;
+    public PlayerShooting gun;
 
     // The parent object for all static UI elements (Chamber/Load, HP Bar, etc)
     // Exclude crosshairs from this because it gets real disorienting
@@ -38,13 +39,14 @@ public class PlayerUI : MonoBehaviour
     static float shellHeight = 30f;
     static float shellWidth = 70f;
     static float halfShellWidth = 35f;
+    float shellUIstart;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = FindFirstObjectByType<PlayerBehavior>();
 
-        PlayerShooting gun = FindFirstObjectByType<PlayerShooting>();
+        gun = FindFirstObjectByType<PlayerShooting>();
         if (gun.Chamber is not null)
         {
             ChamberUIOn(gun.Chamber);
@@ -83,6 +85,34 @@ public class PlayerUI : MonoBehaviour
         if (forMagazine) { UIShellRectTransform.localScale = new Vector3(0.8f, 0.8f, 1); }
 
         return UIshell;
+    }
+
+    public void MagazineUILoss()
+    {
+        // Transform out of bound error fix (5 + 1 in the chamber) -V
+        if (gun.currentCapacity < gun.totalCapacity)
+            Destroy(gun.magazineUI.transform.GetChild(gun.Magazine.Count).gameObject);
+    }
+
+    public void LoadMagUI(ShellBase shell)
+    {
+        GameObject UIshell = PlayerUI.MakeUIShell(gun.magazineUI, shell, true);
+
+        //set position based on capacity, shell size, & buffer
+        float size = shell.Size;
+        float y = 0;
+        y = -122;
+        if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f; //half of halfshell width //should be 14 for adjusted size
+        shellUIstart = y;
+
+        for (int i = 1; i < gun.magUI.Count; i++)
+        {
+            if (gun.magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y += 30;
+            else y += 60;
+        }
+
+        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
+        UIshell.SetActive(true);
     }
 
     public void ChamberUIOff()

@@ -60,8 +60,8 @@ public class PlayerShooting : MonoBehaviour
     public bool lookingAtGun = false;
     private bool pumped = false;
 
-    private float totalCapacity = 5;
-    private float currentCapacity = 0; 
+    public float totalCapacity = 5;
+    public float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
     private bool useShells = true; //toggle infinite shells
@@ -91,7 +91,7 @@ public class PlayerShooting : MonoBehaviour
     //realated but UI
     private PlayerUI playerUI;
     float shellUIstart;
-    List<ShellBase> magUI = new List<ShellBase>();
+    public List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
     public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
@@ -316,7 +316,7 @@ public class PlayerShooting : MonoBehaviour
             float size = Chamber.Size;
             MagLoss(Chamber.Size);
             magUI.RemoveAt(magUI.Count - 1);
-            MagazineUILoss();
+            playerUI.MagazineUILoss();
             //temporary based on current UI
             playerUI.ChamberUIOn(Chamber);
         }
@@ -451,7 +451,7 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(slug);
             magUI.Add(slug);
-            LoadMagUI(slug);
+            playerUI.LoadMagUI(slug);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Slug]--;
         }
@@ -464,7 +464,7 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(buck);
             magUI.Add(buck);
-            LoadMagUI(buck);
+            playerUI.LoadMagUI(buck);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
@@ -477,10 +477,15 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(half);
             magUI.Add(half);
-            LoadMagUI(half);
+            playerUI.LoadMagUI(half);
 
             //AmmoCounts[ShellBase.ShellType.HalfShell]--;
         }
+    }
+
+    public void AddIncindiary()
+    { 
+        
     }
 
 
@@ -657,36 +662,6 @@ public class PlayerShooting : MonoBehaviour
     }
 
     private void MagLoss(float shellSize) => currentCapacity -= shellSize;
-
-
-    private void MagazineUILoss()
-    {
-        // Transform out of bound error fix (5 + 1 in the chamber) -V
-        if (currentCapacity < totalCapacity)
-            Destroy(magazineUI.transform.GetChild(Magazine.Count).gameObject);
-        spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-    }
-
-    private void LoadMagUI(ShellBase shell)
-    {
-        GameObject UIshell = PlayerUI.MakeUIShell(magazineUI, shell, true);
-
-        //set position based on capacity, shell size, & buffer
-        float size = shell.Size;
-        float y = 0;
-        y = -122;
-        if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f; //half of halfshell width //should be 14 for adjusted size
-        shellUIstart = y;
-
-        for (int i = 1; i < magUI.Count; i++)
-        {
-            if (magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y += 30;
-            else y += 60;
-        }
-
-        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
-        UIshell.SetActive(true);
-    }
 
     public bool ShellInChamber() => Chamber is not null;
 
