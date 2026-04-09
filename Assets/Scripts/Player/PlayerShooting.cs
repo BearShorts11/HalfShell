@@ -90,7 +90,6 @@ public class PlayerShooting : MonoBehaviour
 
     //realated but UI
     private PlayerUI playerUI;
-    float shellUIstart;
     public List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
