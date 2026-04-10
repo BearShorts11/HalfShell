@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3725621020842838227}
   - component: {fileID: 7612800190896384274}
   - component: {fileID: -4560225689640029882}
+  - component: {fileID: -2853080314309113474}
   m_Layer: 7
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -136,6 +137,7 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 5294962421360413842}
+  HealthPackDrop: {fileID: 0}
   movementSpeed: 6
   detectionRange: 25
   attackRange: 20
@@ -149,10 +151,12 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
+  soundEvents: {fileID: 0}
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   tooCloseRange: 10
   fireRate: 0.25
   nextTimeToFire: 0
+  AllowSlugDrops: 1
   UseFirePoints: 0
   FirePoints: []
   maxDistanceFromPlayer: 20
@@ -248,6 +252,26 @@ MonoBehaviour:
     FirstBind: 1
     State: 
   enemy: {fileID: 3256531511175847293}
+--- !u!114 &-2853080314309113474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204181174462613249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &271593418312977336
 PrefabInstance:
   m_ObjectHideFlags: 0
