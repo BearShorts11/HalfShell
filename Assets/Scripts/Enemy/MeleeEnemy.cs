@@ -39,6 +39,16 @@ public class MeleeEnemy : Enemy
         base.TakeDamage(amount);
     }
 
+    public override void Alert()
+    {
+        vocalCoolDown = 0.00001f;
+        if (!IsOnVocalCooldown())
+        {
+            PlayVoice("event:/Dialogue/cultistBark");
+        }
+        base.Alert();
+    }
+
     void Voice_Update()
     {
         if (!IsOnVocalCooldown())
@@ -51,12 +61,12 @@ public class MeleeEnemy : Enemy
                     vocalCoolDown = 0.9f;
                     PlayVoice("event:/Dialogue/cultistsAtk");
                     break;
-                case ChaseState:
-                    PlayVoice("event:/Dialogue/cultistBark");
-                    break;
+                //case ChaseState:
+                //    PlayVoice("event:/Dialogue/cultistBark");
+                //    break;
             }
 
-            lastVocalization = Time.time;
+            //lastVocalization = Time.time;
         }
     }
 }
