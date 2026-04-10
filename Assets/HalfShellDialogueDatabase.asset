@@ -288,6 +288,20 @@ MonoBehaviour:
       value: 
       type: 0
       typeString: CustomFieldType_Text
+  - id: 12
+    fields:
+    - title: Name
+      value: HaveUTalked2Apo
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
   conversations:
   - id: 1
     fields:
@@ -662,7 +676,7 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value: What do I do now?
+        value: 
         type: 0
         typeString: 
       - title: Description
@@ -682,7 +696,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 
+        value: What do I do now?
         type: 0
         typeString: 
       - title: Sequence
@@ -1571,7 +1585,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq01);
+        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq01, , , true);
 
           Delay(7)'
         type: 0
@@ -1628,7 +1642,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02-1);
+        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02-1, , , true);
 
           Delay(3)'
         type: 0
@@ -1657,7 +1671,19 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: 
+            m_MethodName: 
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: 
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
         x: 399
@@ -3136,7 +3162,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 115
+        x: 116
         y: 150
         width: 160
         height: 30
@@ -3456,13 +3482,13 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: Variable["ApoIntroC"] = true
+      userScript: Variable["HaveUTalked2Apo"] = true
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 630
+        x: 632
         y: 234.66666
         width: 160
         height: 30

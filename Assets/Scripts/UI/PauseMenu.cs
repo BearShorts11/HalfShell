@@ -20,6 +20,7 @@ public class PauseMenu : MonoBehaviour
     public Slider SensitivitySlider; 
     public Slider FOVSlider;
     public TextMeshProUGUI FOV_val_txt;
+    public GameObject LoadingSceneText;
 
     // Volume Editing Properties
     public Bus masterBus;
@@ -140,6 +141,7 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadSelectedScene(int selecteedScene)
     {
+        LoadingSceneText.SetActive(true);
         SceneManager.LoadScene(selecteedScene);
     }
 

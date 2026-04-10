@@ -89,12 +89,14 @@ public class ShellSelectionButton : MonoBehaviour
     private void CheckActive()
     {
         if (player.AmmoCounts[type] > 0) 
-        { 
+        {
+            //Debug.Log("setting button active" + this.gameObject.name);
             button.interactable = true;
             anim.SetBool("Active", true);
         }
         else 
         { 
+            //Debug.Log("setting button inactive" + this.gameObject.name);
             button.interactable = false;
             anim.SetBool("Active", false);
         }

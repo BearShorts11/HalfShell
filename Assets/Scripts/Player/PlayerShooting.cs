@@ -60,14 +60,15 @@ public class PlayerShooting : MonoBehaviour
     public bool lookingAtGun = false;
     private bool pumped = false;
 
-    private float totalCapacity = 5;
-    private float currentCapacity = 0; 
+    public float totalCapacity = 5;
+    public float currentCapacity = 0; 
     [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
     private bool useShells = true; //toggle infinite shells
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
+        { ShellBase.ShellType.Incindiary, 0 },
         { ShellBase.ShellType.Buckshot, 0 },
         { ShellBase.ShellType.HalfShell, 0 },
         { ShellBase.ShellType.Slug, 0 }
@@ -76,7 +77,7 @@ public class PlayerShooting : MonoBehaviour
     [Header("Starting Ammo Counts")]
     public int startingHalfShells;
     public int startingSlugs;
-    public int startingBuckshot;
+    public int startingIncindiary;
 
     #region UI fields - move to own object
 
@@ -90,8 +91,7 @@ public class PlayerShooting : MonoBehaviour
 
     //realated but UI
     private PlayerUI playerUI;
-    float shellUIstart;
-    List<ShellBase> magUI = new List<ShellBase>();
+    public List<ShellBase> magUI = new List<ShellBase>();
 
     //first in last out collection
     public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
@@ -122,7 +122,7 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts[ShellBase.ShellType.Buckshot] = startingBuckshot; // Should be 0 but wtv
+        AmmoCounts[ShellBase.ShellType.Buckshot] = startingIncindiary; // Should be 0 but wtv
         AmmoCounts[ShellBase.ShellType.HalfShell] = startingHalfShells;
         AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
 
@@ -197,6 +197,7 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(AmmoCounts[ShellBase.ShellType.Incindiary]);
 
         if (PauseMenu.paused) return;
 
@@ -210,9 +211,6 @@ public class PlayerShooting : MonoBehaviour
         if (lookingAtGun) return;
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
-
-        //Debug only DO NOT LEAVE IN FINAL GAME
-        //if (Input.GetKeyDown(KeyCode.O)) AmmoCounts[ShellBase.ShellType.Slug] = (new Slug()).MaxHolding;
 
         //racking
         if (Input.GetButtonDown("Fire2"))
@@ -244,6 +242,8 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
         
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
+
+        if (Input.GetKeyDown(KeyCode.Keypad3) | Input.GetKeyDown(KeyCode.Alpha3)) AddIncindiary(); 
         
     }
 
@@ -316,7 +316,7 @@ public class PlayerShooting : MonoBehaviour
             float size = Chamber.Size;
             MagLoss(Chamber.Size);
             magUI.RemoveAt(magUI.Count - 1);
-            MagazineUILoss();
+            playerUI.MagazineUILoss();
             //temporary based on current UI
             playerUI.ChamberUIOn(Chamber);
         }
@@ -451,7 +451,7 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(slug);
             magUI.Add(slug);
-            LoadMagUI(slug);
+            playerUI.LoadMagUI(slug);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Slug]--;
         }
@@ -464,7 +464,7 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(buck);
             magUI.Add(buck);
-            LoadMagUI(buck);
+            playerUI.LoadMagUI(buck);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Buckshot]--;
         }
@@ -477,19 +477,34 @@ public class PlayerShooting : MonoBehaviour
         {
             LoadMagazine(half);
             magUI.Add(half);
-            LoadMagUI(half);
+            playerUI.LoadMagUI(half);
 
             //AmmoCounts[ShellBase.ShellType.HalfShell]--;
+        }
+    }
+
+    public void AddIncindiary()
+    { 
+        Incindiary fire = new Incindiary();
+        if (CanLoad(fire))
+        {
+            LoadMagazine(fire);
+            magUI.Add(fire);
+            playerUI.LoadMagUI(fire);
+
+            if (useShells) AmmoCounts[ShellBase.ShellType.Incindiary]--;
         }
     }
 
 
     public bool AddAmmo(int ammoCount, ShellBase shell)
     {
+        //Debug.Log(shell.Type);
         if (AmmoCounts[shell.Type] < shell.MaxHolding)
         { 
             AmmoCounts[shell.Type] += ammoCount;
             if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding; //Mathf.clamp?
+            //Debug.Log($"{shell.Type}, {AmmoCounts[shell.Type]}");
             return true;
         }
         return false;
@@ -537,6 +552,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 case ShellBase.ShellType.Buckshot:
                 case ShellBase.ShellType.HalfShell:
+                case ShellBase.ShellType.Incindiary:
 
                     for (int i = 1; i <= shell.AmtProjectiles; i++)
                     {
@@ -614,16 +630,22 @@ public class PlayerShooting : MonoBehaviour
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
-        //Debug.Log(hit.transform.name);
-
         if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
         { 
-            damageable.TakeDamage(shell.ScaleDamage(hit));
 
-            if (shell.hasSpecialEffects)
+            if (hit.collider.gameObject.transform.TryGetComponent<Enemy>(out Enemy enemy))
             {
-                if (hit.collider.gameObject.transform.TryGetComponent<Enemy>(out Enemy enemy)) enemy.HitEffect(shell);
+                enemy.HitFrom(shell);
+
+                Debug.Log("shell has special effects");
+                if (shell.hasSpecialEffects)
+                { 
+                    enemy.HitEffect(shell);
+                    Debug.Log("hit effect on enemy");
+                }
             }
+
+            damageable.TakeDamage(shell.ScaleDamage(hit));
         }
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();
@@ -657,37 +679,6 @@ public class PlayerShooting : MonoBehaviour
     }
 
     private void MagLoss(float shellSize) => currentCapacity -= shellSize;
-
-
-    private void MagazineUILoss()
-    {
-        // Transform out of bound error fix (5 + 1 in the chamber) -V
-        if (currentCapacity < totalCapacity)
-            Destroy(magazineUI.transform.GetChild(Magazine.Count).gameObject);
-        spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
-    }
-
-    private void LoadMagUI(ShellBase shell)
-    {
-        GameObject UIshell = PlayerUI.MakeUIShell(magazineUI, shell);
-
-        //set position based on capacity, shell size, & buffer
-        float y = 0;
-        float size = shell.Size;
-        y = 160;
-        if (shell.Type == ShellBase.ShellType.HalfShell) y += 17.5f; //half of halfshell height
-        shellUIstart = y;
-
-        for (int i = 1; i < magUI.Count; i++)
-        {
-            if (magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y -= 40;
-            else y -= 75;
-        }
-
-        //Debug.Log(y);
-        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(0, y, 0);
-        UIshell.SetActive(true);
-    }
 
     public bool ShellInChamber() => Chamber is not null;
 
