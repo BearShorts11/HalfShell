@@ -28,6 +28,12 @@ public class MeleeAttackState : State
 
     public override void Update()
     {
+        if (Owner.Dead)
+        { 
+            Owner.stateMachine.TransitionTo(Owner.stateMachine._deadState);
+            return;
+        }
+
         attackTimer -= Time.deltaTime;
 
         if (attackTimer <= 0)

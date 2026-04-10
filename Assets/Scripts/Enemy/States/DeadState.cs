@@ -56,6 +56,7 @@ public class DeadState : State
                 break;
             case MeleeEnemy:
                 Owner.GetComponent<CapsuleCollider>().enabled = false;
+                if (Owner.GetComponent<BoxCollider>() != null) Owner.GetComponent<BoxCollider>().enabled = false;
                 break;
         }
     }
