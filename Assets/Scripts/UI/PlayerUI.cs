@@ -76,6 +76,11 @@ public class PlayerUI : MonoBehaviour
                 UIshell.GetComponent<Image>().sprite = _halfShellSprite;
                 UIShellRectTransform.sizeDelta = new Vector2(halfShellWidth, shellHeight);
                 break;
+            case ShellBase.ShellType.Incindiary:
+                UIshell.GetComponent<Image>().sprite = _slugSprite;
+                UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
+                UIshell.GetComponent <Image>().color = shell.DisplayColor;
+                break;
             default:
                 UIshell.GetComponent<Image>().sprite = _slugSprite;
                 UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
@@ -96,7 +101,7 @@ public class PlayerUI : MonoBehaviour
 
     public void LoadMagUI(ShellBase shell)
     {
-        GameObject UIshell = PlayerUI.MakeUIShell(gun.magazineUI, shell, true);
+        GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
 
         //set position based on capacity, shell size, & buffer
         float size = shell.Size;

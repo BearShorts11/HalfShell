@@ -33,6 +33,7 @@ public class AmmoPickup : IPickup
             if (ammoType == ShellBase.ShellType.HalfShell)     { canPickup = Gun.AddAmmo(regainAmount, new HalfShell()); }
             else if (ammoType == ShellBase.ShellType.Slug)     { canPickup = Gun.AddAmmo(regainAmount, new Slug()); }
             else if (ammoType == ShellBase.ShellType.Buckshot) { canPickup = Gun.AddAmmo(regainAmount, new Buckshot()); }
+            else if (ammoType == ShellBase.ShellType.Incindiary) { canPickup = Gun.AddAmmo(regainAmount, new Incindiary()); }
 
             if (canPickup)
             {

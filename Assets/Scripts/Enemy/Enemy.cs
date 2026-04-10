@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using System.Collections;
 using System.Xml;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -18,6 +19,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public GameObject BloodSplatterProjector;
     private Material[] decals;
     public GameObject FullyGibbedParticle;
+
+    [SerializeField] GameObject HealthPackDrop;
 
     [Header("Designer Variables")]
     [SerializeField] public float movementSpeed = 12f;
@@ -53,13 +56,25 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// <summary>
     /// holds a reference to the shell if effected by a status effect in order to access all it
     /// </summary>
-    ShellBase statusEffectShell;
+    private ShellBase statusEffectShell;
 
     /// <summary>
     /// if effected by a status effect, next time to take damage on
     /// </summary>
     private float timeToStatusDamage;
 
+    /// <summary>
+    /// used to prevent triggering hit animation if damaged from a status effect
+    /// </summary>
+    private bool damageFromStatusEffect;
+
+    /// <summary>
+    /// cooldown on if status effected && hit from a half shell || slug so that enemy doesn't drop a million health packs from being hit from a slug
+    /// </summary>
+    private float specialHealthDropCooldown = 0.5f;
+    private float nextTimeToSpecialHealthDrop;
+
+    private ShellBase lastHitFrom;
 
     [Header("Behavior Changes")]
     public bool Docile;
@@ -120,10 +135,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         HandleAnimation();
 
+        Debug.Log(statusEffected);
         if (statusEffected && Time.time > timeToStatusDamage)
         {
             //could have a custom method to take damage if we don't want the hit animation to play every time
+            damageFromStatusEffect = true;
             TakeDamage(statusEffectShell.effectDamage);
+            timeToStatusDamage = Time.time + statusEffectShell.effectHitPerSecond;
         }
     }
 
@@ -135,11 +153,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         Health -= amount;
 
-        animator.SetFloat("Damage", amount);
-        if (!IsInvoking(nameof(StopHitReaction)))
+        //only trigger animation if the damage was NOT from a status effect
+        //very much could cause errors, but this is the best solution without editing the parameters.
+        if (!damageFromStatusEffect)
         {
-            animator.SetBool("Hit", true);
-            Invoke(nameof(StopHitReaction), 1);
+            animator.SetFloat("Damage", amount);
+            if (!IsInvoking(nameof(StopHitReaction)))
+            {
+                animator.SetBool("Hit", true);
+                Invoke(nameof(StopHitReaction), 1);
+            }
         }
 
         //checking for dead prevents this from firing every time the enemy is shot after death
@@ -156,11 +179,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             StartCoroutine(SpawnDeathBloodPool());
         }
 
+        if (statusEffected && !Dead && (lastHitFrom.Type != ShellBase.ShellType.Incindiary) && (Time.time > nextTimeToSpecialHealthDrop))
+        {
+            //drop health pack
+            GameObject drop = Instantiate(HealthPackDrop);
+            drop.GetComponent<HealthPickup>().regainAmount = 5;
+            nextTimeToSpecialHealthDrop = Time.time + specialHealthDropCooldown;
+        }
+
         //behavior based on state
         if (stateMachine.CurrentState == stateMachine._deadState)
         {
             //move body if shot when dead
-            ragdollController.ApplyForceToRagdoll(amount);
+            ragdollController.ApplyForceToRagdoll(amount + 0.1f); //+ 0.1 prevents issue of ragdoll FLYING if amt = 0
         }
         else if (stateMachine.CurrentState == stateMachine._idleState)
         {
@@ -197,12 +228,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
             return;
         }
+
+        damageFromStatusEffect = false;
     }
 
     public void HitEffect(ShellBase shell)
     {
+        Debug.Log("oh no i'm effected by a status");
+
         statusEffected = true;
         statusEffectShell = shell;
+
+        damageFromStatusEffect = true;
+        //TakeDamage(statusEffectShell.effectDamage);
+
         timeToStatusDamage = Time.time + shell.effectHitPerSecond;
         StartCoroutine(EffectOverIn(shell.effectTime));
     }
@@ -335,4 +374,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     }
 
     public void SetHealth(float health) => Health = health;
+
+    /// <summary>
+    /// update what the enemy was hit from. Used to check for special effect drops
+    /// </summary>
+    /// <param name="shell"></param>
+    public void HitFrom(ShellBase shell) => lastHitFrom = shell;
 }

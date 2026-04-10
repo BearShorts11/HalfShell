@@ -68,6 +68,7 @@ public class PlayerShooting : MonoBehaviour
 
     public Dictionary<ShellBase.ShellType, int> AmmoCounts = new Dictionary<ShellBase.ShellType, int>() 
     {
+        { ShellBase.ShellType.Incindiary, 0 },
         { ShellBase.ShellType.Buckshot, 0 },
         { ShellBase.ShellType.HalfShell, 0 },
         { ShellBase.ShellType.Slug, 0 }
@@ -76,7 +77,7 @@ public class PlayerShooting : MonoBehaviour
     [Header("Starting Ammo Counts")]
     public int startingHalfShells;
     public int startingSlugs;
-    public int startingBuckshot;
+    public int startingIncindiary;
 
     #region UI fields - move to own object
 
@@ -121,7 +122,7 @@ public class PlayerShooting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AmmoCounts[ShellBase.ShellType.Buckshot] = startingBuckshot; // Should be 0 but wtv
+        AmmoCounts[ShellBase.ShellType.Buckshot] = startingIncindiary; // Should be 0 but wtv
         AmmoCounts[ShellBase.ShellType.HalfShell] = startingHalfShells;
         AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
 
@@ -196,6 +197,7 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(AmmoCounts[ShellBase.ShellType.Incindiary]);
 
         if (PauseMenu.paused) return;
 
@@ -209,9 +211,6 @@ public class PlayerShooting : MonoBehaviour
         if (lookingAtGun) return;
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
-
-        //Debug only DO NOT LEAVE IN FINAL GAME
-        //if (Input.GetKeyDown(KeyCode.O)) AmmoCounts[ShellBase.ShellType.Slug] = (new Slug()).MaxHolding;
 
         //racking
         if (Input.GetButtonDown("Fire2"))
@@ -243,6 +242,8 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
         
         if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
+
+        if (Input.GetKeyDown(KeyCode.Keypad3) | Input.GetKeyDown(KeyCode.Alpha3)) AddIncindiary(); 
         
     }
 
@@ -484,16 +485,26 @@ public class PlayerShooting : MonoBehaviour
 
     public void AddIncindiary()
     { 
-        
+        Incindiary fire = new Incindiary();
+        if (CanLoad(fire))
+        {
+            LoadMagazine(fire);
+            magUI.Add(fire);
+            playerUI.LoadMagUI(fire);
+
+            if (useShells) AmmoCounts[ShellBase.ShellType.Incindiary]--;
+        }
     }
 
 
     public bool AddAmmo(int ammoCount, ShellBase shell)
     {
+        //Debug.Log(shell.Type);
         if (AmmoCounts[shell.Type] < shell.MaxHolding)
         { 
             AmmoCounts[shell.Type] += ammoCount;
             if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding; //Mathf.clamp?
+            //Debug.Log($"{shell.Type}, {AmmoCounts[shell.Type]}");
             return true;
         }
         return false;
@@ -541,6 +552,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 case ShellBase.ShellType.Buckshot:
                 case ShellBase.ShellType.HalfShell:
+                case ShellBase.ShellType.Incindiary:
 
                     for (int i = 1; i <= shell.AmtProjectiles; i++)
                     {
@@ -618,16 +630,22 @@ public class PlayerShooting : MonoBehaviour
 
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
-        //Debug.Log(hit.transform.name);
-
         if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
         { 
-            damageable.TakeDamage(shell.ScaleDamage(hit));
 
-            if (shell.hasSpecialEffects)
+            if (hit.collider.gameObject.transform.TryGetComponent<Enemy>(out Enemy enemy))
             {
-                if (hit.collider.gameObject.transform.TryGetComponent<Enemy>(out Enemy enemy)) enemy.HitEffect(shell);
+                enemy.HitFrom(shell);
+
+                Debug.Log("shell has special effects");
+                if (shell.hasSpecialEffects)
+                { 
+                    enemy.HitEffect(shell);
+                    Debug.Log("hit effect on enemy");
+                }
             }
+
+            damageable.TakeDamage(shell.ScaleDamage(hit));
         }
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();

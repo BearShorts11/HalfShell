@@ -54,6 +54,9 @@ public class DeadState : State
                     }
                 }
                 break;
+            case MeleeEnemy:
+                Owner.GetComponent<CapsuleCollider>().enabled = false;
+                break;
         }
     }
 
