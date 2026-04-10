@@ -2,15 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class AnimationEvent
+{
+    [field:SerializeField] public string EventName { get; private set; }
+    [SerializeField] public UnityEvent[] events = new UnityEvent[new()];
+}
 
 public class AnimationEventHandler : MonoBehaviour
 {
     [SerializeField] private GameObject[] bodyGroup;
     [SerializeField] private Transform[] transformPoints;
+    [SerializeField] private AnimationEvent[] animationEvents;
+    Dictionary<string, AnimationEvent> animationDictionary = new();
 
     private void Start()
     {
+        foreach (AnimationEvent _event in animationEvents)
+        {
+            animationDictionary.Add(_event.EventName, _event);
+        }
     }
+
+    public void PlayEvent(string EventName)
+    {
+        //bool isTrue = animationDictionary.ContainsKey(EventName);
+        if (animationDictionary.ContainsKey(EventName))
+        {
+            for (int i = 0; i < animationDictionary[EventName].events.Length; i++) {
+                animationDictionary[EventName].events[i].Invoke();
+            }
+        }
+    }
+
     //if this isn't used in the next few weeks can I get rid of this? -N
     // You may. -V
     public void PlaySound(string path)
@@ -29,25 +55,4 @@ public class AnimationEventHandler : MonoBehaviour
         if (bodyGroup.Length > 0)
             bodyGroup[Mathf.Clamp(index, 0, bodyGroup.Length-1)].SetActive(true);
     }
-
-
-
-    #region Shotgun related animation event methods
-    public void EjectShell()
-    {
-        // TODO: Find a way to link this to the player shooting script and know what shell to eject based on what the shotgun just shot or what shell is sitting in the chamber
-        GameObject playerObject = GameObject.Find("Player");
-        PlayerShooting shooting = playerObject.GetComponent<PlayerShooting>();
-        if (shooting.ShellInChamber() == false) return;
-
-        EjectShell(Resources.Load<GameObject>("Shell_Ejection/Shell_Generic"));
-    }
-    private void EjectShell(GameObject shell)
-    {
-        shell = Instantiate(shell, transformPoints[0].position, Quaternion.LookRotation(transformPoints[0].right));
-        shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.right * Random.Range(150f, 300f));
-        shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
-        shell.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-15f, 15f), Random.Range(30f, 50f), Random.Range(-5f,-5f)));
-    }
-    #endregion
 }

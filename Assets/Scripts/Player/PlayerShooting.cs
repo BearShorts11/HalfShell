@@ -29,6 +29,15 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private ParticleSystem dust;
     [SerializeField] private ParticleSystem muzzleflash;
     [SerializeField] private Transform      shotgunMuzzleflashPos;
+    [SerializeField] private Transform ejectionPoint;
+    [SerializeField] private Mesh ejectedHalfShellMesh;
+    public GameObject shellGO;
+    public GameObject halfShellGO;
+    private MeshRenderer shellMesh;
+    private Material shellMaterial;
+    private GameObject reloadedShellGO;
+
+    private Color orange = new(System.Drawing.Color.Orange.R / 255, System.Drawing.Color.Orange.G / 255, System.Drawing.Color.Orange.B / 255);
 
     public Animator animator;
 
@@ -96,6 +105,7 @@ public class PlayerShooting : MonoBehaviour
     //first in last out collection
     public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
     public ShellBase Chamber { get; private set; }
+    private ShellBase.ShellType ChamberType;
     public static bool canFire = true;
 
     #region new input handling
@@ -319,6 +329,7 @@ public class PlayerShooting : MonoBehaviour
             playerUI.MagazineUILoss();
             //temporary based on current UI
             playerUI.ChamberUIOn(Chamber);
+            ChamberType = Chamber.Type;
         }
         if (ShellWheelController.shellWheelSelected != true) { canFire = true; }
         pumped = false;
@@ -397,6 +408,44 @@ public class PlayerShooting : MonoBehaviour
             Magazine.Push(shell);
             float size = shell.Size;
             currentCapacity += size;
+            Color shellColor = Color.white;
+
+            // Is this a half shell or a full shell
+            if (shell.Type == ShellBase.ShellType.HalfShell)
+            {
+                halfShellGO.SetActive(true);
+                shellGO.SetActive(false);
+                reloadedShellGO = halfShellGO;
+            }
+            else
+            {
+                halfShellGO.SetActive(false);
+                shellGO.SetActive(true);
+                reloadedShellGO = shellGO;
+            }
+            // What color is the shell
+            switch (shell)
+            {
+                case Buckshot:
+                case HalfShell:
+                    shellColor = Color.red;
+                    break;
+                case Slug:
+                    shellColor = Color.green;
+                    break;
+                case Incindiary:
+                    // WHAT DO YOU MEAN THERE'S NO ORANGE -V to Unity
+                    shellColor = orange;
+                    break;
+                case BMG:
+                case BeanBag:
+                default:
+                    break;
+            }
+
+            shellMesh = reloadedShellGO.GetComponent<MeshRenderer>();
+            shellMaterial = shellMesh.materials[1];
+            shellMaterial.SetColor("_Color", shellColor);
 
             //prevents load errors
             if ( spaceLeftText is null)
@@ -680,7 +729,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void MagLoss(float shellSize) => currentCapacity -= shellSize;
 
-    public bool ShellInChamber() => Chamber is not null;
+    public bool ShellInChamber() => ChamberType is not 0;
 
     /// <summary>
     /// called from Kerth/PlayerData on scene reloaded. Recieves a stack of ints and converts them to shells
@@ -798,5 +847,38 @@ public class PlayerShooting : MonoBehaviour
         // Debug.Log("FMOD Parameter Set To: " + value);
         impact.start();
         impact.release();
+    }
+
+    public void EjectShell()
+    {
+        if (!ShellInChamber()) return;
+
+        GameObject shell = Instantiate(Resources.Load<GameObject>("Shell_Ejection/Shell_Generic"), ejectionPoint.position, Quaternion.LookRotation(ejectionPoint.right));
+        MeshFilter mesh = shell.transform.GetChild(0).GetComponent<MeshFilter>();
+        Material material = shell.transform.GetChild(0).GetComponent<MeshRenderer>().materials[1];
+        switch (ChamberType)
+        {
+            case ShellBase.ShellType.BMG:
+            case ShellBase.ShellType.BeanBag:
+            default:
+                break;
+            case ShellBase.ShellType.Buckshot:
+                material.SetColor("_Color", Color.red);
+                break;
+            case ShellBase.ShellType.HalfShell:
+                material.SetColor("_Color", Color.red);
+                mesh.mesh = ejectedHalfShellMesh;
+                break;
+            case ShellBase.ShellType.Slug:
+                material.SetColor("_Color", Color.green);
+                break;
+            case ShellBase.ShellType.Incindiary:
+                material.SetColor("_Color", orange);
+                break;
+        }
+        ChamberType = 0;
+        shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.right * Random.Range(150f, 300f));
+        shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
+        shell.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-15f, 15f), Random.Range(30f, 50f), Random.Range(-5f, -5f)));
     }
 }

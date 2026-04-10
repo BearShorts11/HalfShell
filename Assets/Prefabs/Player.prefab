@@ -671,6 +671,10 @@ MonoBehaviour:
   dust: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
+  ejectionPoint: {fileID: 180328361391050672}
+  ejectedHalfShellMesh: {fileID: -6318240170413417413, guid: 17e49af22acc82d44bcfb439c0460b84, type: 3}
+  shellGO: {fileID: 6063585586159451665}
+  halfShellGO: {fileID: 5485727288744335859}
   animator: {fileID: 7794537637733972831}
   pumpBackTime: 0.06
   pumpFWDTime: 0.06
@@ -684,7 +688,7 @@ MonoBehaviour:
   spreadRange: 0.05
   startingHalfShells: 1
   startingSlugs: 0
-  startingBuckshot: 0
+  startingIncindiary: 0
   magazineUI: {fileID: 0}
   SingleShotCrosshair: {fileID: 0}
   MultiShotCrosshair: {fileID: 0}
@@ -2077,6 +2081,90 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[2].events.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].<EventName>k__BackingField
+      value: EjectShell
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].<EventName>k__BackingField
+      value: EmitSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[2].<EventName>k__BackingField
+      value: AnythingElseIdk
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1626164165021683729}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4964506546132639080}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EjectShell
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerShooting, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerShooting, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[0].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553836052466974016, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+      propertyPath: animationEvents.Array.data[1].events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2595880208539527649, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
       propertyPath: m_Layer
       value: 2
@@ -2417,6 +2505,11 @@ PrefabInstance:
       addedObject: {fileID: 7181507913943004412}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+--- !u!4 &180328361391050672 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7926164267064449851, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+  m_PrefabInstance: {fileID: 8034355594651571339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2111073342127768728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8229142897278291987, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
@@ -2427,9 +2520,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3142030119010781667, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
   m_PrefabInstance: {fileID: 8034355594651571339}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5485727288744335859 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2548742994822221176, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+  m_PrefabInstance: {fileID: 8034355594651571339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5694940268224629725 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2339547268110737238, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
+  m_PrefabInstance: {fileID: 8034355594651571339}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6063585586159451665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4276710105444477594, guid: fa62c14c8783bcc4890549c4bf542061, type: 3}
   m_PrefabInstance: {fileID: 8034355594651571339}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &7794537637733972831 stripped
