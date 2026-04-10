@@ -25,6 +25,8 @@ public class ArenaSurvivalGame : MonoBehaviour
     public int minWaveToStaggerItemSpawns = 2;
     [Tooltip("Cap the stagger count to prevent items from taking too long to spawn")]
     [Min(0)]public int maxItemSpawnStagger = 3;
+    [Tooltip("Percentage chance that a stray enemy will spawn")]
+    [Range(0, 1)] public float straySpawnChance = 0.15f;
 
     public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
@@ -196,7 +198,7 @@ public class ArenaSurvivalGame : MonoBehaviour
             if (WaveConfigured())
             {
                 // Spawn a squad or a stray enemy
-                if (Random.Range(0f, 1f) > 0.5f || currentWave.StrayEnemies.Count == 0 && currentWave.Squads.Count != 0)
+                if (Random.Range(0f, 1f) > straySpawnChance || (currentWave.StrayEnemies.Count == 0 && currentWave.Squads.Count != 0))
                 {
                     SurvivalWave_Squad squadSpawn = currentWave.Squads[Random.Range(0, currentWave.Squads.Count)];
                     spawnVol.enemies = squadSpawn.Enemies;

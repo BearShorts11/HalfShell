@@ -32,8 +32,8 @@ public class SimpleSpawnVolume : MonoBehaviour
 
     public void SpawnSquad()
     {
-        // Pick a random Enemy prefab to instantiate
-        for (int ndx = 1; ndx< enemies.Count; ndx++){
+        // spawn each enemy in the list
+        for (int ndx = 0; ndx < enemies.Count; ndx++){
             SpawnEnemy(enemies[ndx]);
         }
     }
