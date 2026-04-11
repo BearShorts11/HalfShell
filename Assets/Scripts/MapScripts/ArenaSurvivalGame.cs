@@ -106,11 +106,6 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (WaveConfigured())
             currentWave = waves[waveCount];
 
-        if (waveConditions.ContainsKey(waveCount))
-        {
-            waveConditions[waveCount].RunStartEvents();
-        }
-
         RespawnItems();
 
         enemiesToWipe = waveCount < waves.Count ? currentWave.waveAmount : 8 * waveCount;
@@ -122,6 +117,11 @@ public class ArenaSurvivalGame : MonoBehaviour
             waveCounter.UpdateWave();
         }
         UI_Message_Update($"Wave {waveCount}, start!");
+        
+        if (waveConditions.ContainsKey(waveCount))
+        {
+            waveConditions[waveCount].RunStartEvents();
+        }
     }
 
     void EndWave()
