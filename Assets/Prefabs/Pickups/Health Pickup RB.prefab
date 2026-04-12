@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8332449760240172694}
   - component: {fileID: 6444558651761396923}
   - component: {fileID: 6708271334049015834}
+  - component: {fileID: 505724729030512904}
   m_Layer: 7
   m_Name: Health Pickup RB
   m_TagString: Health Pickup
@@ -315,6 +316,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &505724729030512904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042613196975092684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 4
+  colliders: []
+  colliderTags:
+  - Player
 --- !u!1 &5633198373006814544
 GameObject:
   m_ObjectHideFlags: 0

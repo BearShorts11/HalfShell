@@ -54,6 +54,7 @@ public class RagdollController : MonoBehaviour
                 if (!state) continue; // The limb system will handle the collision.
             }
             collider.enabled = state;
+            Physics.IgnoreCollision(collider, playerShooting.gameObject.transform.GetComponent<Collider>());
         }
     }
 

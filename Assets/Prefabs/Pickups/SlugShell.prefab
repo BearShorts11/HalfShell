@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 903279363539956105}
   - component: {fileID: 2033340831767503619}
   - component: {fileID: 7223720605164096425}
+  - component: {fileID: 1244592729668165950}
   m_Layer: 7
   m_Name: SlugShell
   m_TagString: Untagged
@@ -238,6 +239,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1244592729668165950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7287427250971299590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 1
+  colliders: []
+  colliderTags:
+  - Player
 --- !u!1001 &7048639724639379920
 PrefabInstance:
   m_ObjectHideFlags: 0

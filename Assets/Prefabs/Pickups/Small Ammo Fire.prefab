@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1076138771693757978}
   - component: {fileID: 2184740599031477392}
   - component: {fileID: 7375188473324526650}
+  - component: {fileID: 7463561325423923844}
   m_Layer: 7
   m_Name: Small Ammo Fire
   m_TagString: Untagged
@@ -238,6 +239,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7463561325423923844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441078188841425045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 1
+  colliders: []
+  colliderTags:
+  - Player
 --- !u!1 &8031753097559853842
 GameObject:
   m_ObjectHideFlags: 0

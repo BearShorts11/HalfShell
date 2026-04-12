@@ -33,6 +33,7 @@ public class SlowMo_Manager : MonoBehaviour
         }
         else
         {
+            if (IsInvoking(nameof(StopSlowMo)))
             CancelInvoke(nameof(StopSlowMo));
         }
         transitioning = true;
@@ -51,8 +52,8 @@ public class SlowMo_Manager : MonoBehaviour
     {
         if (slowMoActive)
         {
-            slowMoActive = false;
             transitioning = true;
+            slowMoActive = false;
             if (ShellWheelController.shellWheelSelected && setTimeScale > player.SlowedTime)
             {
                 TransitionTimeScale(player.SlowedTime);
@@ -100,9 +101,8 @@ public class SlowMo_Manager : MonoBehaviour
             if (transitioning)
                 RuntimeManager.StudioSystem.setParameterByName("Timescale", Time.timeScale);
 
-            if (time >= 1)
+            if (Time.timeScale == setTimeScale && time >= 1)
                 transitioning = false;
-            //Time.timeScale = slowMoTimeSaved > setTimeScale ? Mathf.Lerp(Time.timeScale, setTimeScale, time) : Mathf.Lerp(Time.timeScale, setTimeScale, 1 - time);
         }
     }
 }
