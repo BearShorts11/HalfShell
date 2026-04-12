@@ -70,6 +70,12 @@ public class SlowMo_Manager : MonoBehaviour
         player = GetComponent<PlayerBehavior>();
         if (player == null)
             player = FindFirstObjectByType<PlayerBehavior>();
+        
+        if (Time.timeScale != 1 && setTimeScale != 1)
+        {
+            Time.timeScale = 1;
+            setTimeScale = 1;
+        }
         //Enemy.DeathAlert.AddListener(DramaEvent);
     }
 
