@@ -22,6 +22,8 @@ public class PlayerShooting : MonoBehaviour
     public GameObject ApollyonBarks;
     public Vector3 hitPosition;
     private LayerMask triggerMask;
+    private SlowMo_Manager slowmo;
+    public Enemy lastDamaged { get; set; }
 
     #region VFX
     public GameObject BulletHole;
@@ -177,6 +179,8 @@ public class PlayerShooting : MonoBehaviour
 
         impactSurfaceParamID = paramDesc.id;
         triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast");
+
+        slowmo = GetComponent<SlowMo_Manager>();
     }
 
     #region pool behaviors
@@ -209,7 +213,7 @@ public class PlayerShooting : MonoBehaviour
     {
         //Debug.Log(AmmoCounts[ShellBase.ShellType.Incindiary]);
 
-        if (PauseMenu.paused) return;
+        if (PauseMenu.paused) { animator.speed = 0; return; }
 
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isInShellSelect && !pumped) 
@@ -680,9 +684,18 @@ public class PlayerShooting : MonoBehaviour
     private void HitEnemy(RaycastHit hit, ShellBase shell)
     {
         if (hit.collider.gameObject.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
-        { 
+        {
+            float Damage = shell.ScaleDamage(hit);
+            Enemy enemy = hit.collider.gameObject.transform.GetComponent<Enemy>();
+            Limb limb = hit.collider.gameObject.transform.GetComponent<Limb>();
+            
+            // Get the enemy component from the Limb if a limb was hit
+            if (enemy == null && limb != null)
+            {
+                enemy = limb.enemy;
+            }
 
-            if (hit.collider.gameObject.transform.TryGetComponent<Enemy>(out Enemy enemy))
+            if (enemy != null)
             {
                 enemy.HitFrom(shell);
 
@@ -694,7 +707,12 @@ public class PlayerShooting : MonoBehaviour
                 }
             }
 
-            damageable.TakeDamage(shell.ScaleDamage(hit));
+            if (enemy != null)
+            {
+                SetLastDamaged(enemy);
+            }
+
+            damageable.TakeDamage(Damage);
         }
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();
@@ -707,6 +725,33 @@ public class PlayerShooting : MonoBehaviour
         //    enemy.Damage(shell.ScaleDamage(hit));
         //    //Debug.Log("enemy hit");
         //}
+    }
+
+    public void SetLastDamaged(Enemy enemy)
+    {
+        // Is this a new target or an old target
+        if (lastDamaged != enemy)
+        {
+            if (slowmo == null) return;
+
+            if (lastDamaged != null)
+            { 
+                lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
+                CancelInvoke(nameof(Enemy_RemoveDramaEvent));
+            }
+            lastDamaged = enemy;
+            lastDamaged.OnDeath.AddListener(slowmo.DramaEvent);
+            Invoke(nameof(Enemy_RemoveDramaEvent), 1f);
+        }
+    }
+
+    void Enemy_RemoveDramaEvent()
+    {
+        if (lastDamaged != null)
+        {
+            lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
+            lastDamaged = null;
+        }
     }
 
     private void HitBreakable(RaycastHit hit, ShellBase shell, ShellBase.ShellType shellType)

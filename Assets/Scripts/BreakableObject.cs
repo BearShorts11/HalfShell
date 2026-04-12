@@ -145,6 +145,7 @@ public class BreakableObject : MonoBehaviour, IDamageable
             if (!explosionSound.IsNull) { RuntimeManager.PlayOneShot(explosionSound, this.gameObject.transform.position); }
             
             EXPLODED = true;
+            PlayerBehavior player = FindFirstObjectByType<PlayerBehavior>(); 
             // DO NOT TOUCH THIS VARIABLE
             bool playerHurt = false;
             // Ensures the player only gets hit once per object explosion
@@ -176,13 +177,14 @@ public class BreakableObject : MonoBehaviour, IDamageable
                     if (!Physics.Raycast(explodePos, (fragmentHits[i].transform.position - explodePos).normalized, distance, blockFragmentsLayer.value))
                     {
                         Debug.DrawLine(explodePos, fragmentHits[i].transform.position, Color.green, 5f);
+                        player.GetComponent<PlayerShooting>().SetLastDamaged(enemy);
                         enemy.TakeDamage(Mathf.Lerp(maxDamage, minDamage, distance / explosionRadius));
                     }
                 }
                 else if (fragmentHits[i].TryGetComponent<IDamageable>(out IDamageable damageable))
                 {
                     // Hurts Player
-                    if (fragmentHits[i].TryGetComponent<PlayerBehavior>(out PlayerBehavior player))
+                    if (fragmentHits[i] == player)
                     {
                         //float distance = Vector3.Distance(explodePos, fragmentHits[i].transform.position);
                         if (playerHurt) continue;

@@ -19,14 +19,19 @@ public class MeleeEnemy : Enemy
         Voice_Update();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player") PlayerInTrigger = true;
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player") PlayerInTrigger = true;
+    //}
 
-    private void OnTriggerExit(Collider other)
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "Player") PlayerInTrigger = false;
+    //}
+
+    public void SetPlayerInTrigger(bool boolean)
     {
-        if (other.tag == "Player") PlayerInTrigger = false;
+        PlayerInTrigger = boolean;
     }
 
     public override void TakeDamage(float amount)

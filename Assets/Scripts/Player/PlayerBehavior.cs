@@ -11,6 +11,7 @@ using Unity.Cinemachine;
 using Assets.Scripts;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -82,9 +83,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     private bool canMove = true;
     private static bool canLook = true;
 
-
     public float SlowedTime = 0.1f;
-    public static bool SlowMoActive = false;
+    public static UnityEvent ShellWheelToggle { get; private set; } = new();
 
     private PlayerUI UI;
 
@@ -162,6 +162,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
 
         //Enemy.DeathAlert.AddListener(AddKill);
+        ShellWheelToggle.AddListener(ShellWheel);
         killsSinceDamage = 0;
         canPlayBark = true;
 
@@ -267,16 +268,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, UnityEngine.Input.GetAxis("Mouse X") * lookSpeed * sensitivityModifier, 0);
         }
-
-        if (SlowMoActive)
-        {
-            Time.timeScale = SlowedTime;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
-
 
         if(FindObjectsByType<MeleeEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
         else if(FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
@@ -439,5 +430,18 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void Invincible() => invincible = true;
     public void Mortal() => invincible = false;
+
+    private void ShellWheel()
+    {
+        if (ShellWheelController.shellWheelSelected)
+        {
+            if (SlowMo_Manager.setTimeScale > SlowedTime)
+                SlowMo_Manager.TransitionTimeScale(SlowedTime);
+        }
+        else if (SlowMo_Manager.slowMoActive)
+            SlowMo_Manager.TransitionTimeScale(SlowMo_Manager.slowMoScale);
+        else
+            SlowMo_Manager.TransitionTimeScale();
+    }
 
 }

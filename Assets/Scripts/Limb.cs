@@ -31,7 +31,7 @@ public class Limb : MonoBehaviour, IDamageable
     [Tooltip("Take extra damage based on Percentage of Max HP when this limb is removed (0 - No damage,  1 - Instant Kill)")]
     [SerializeField] [Range(0, 1)] private float damPctHealthOnRemove = 0f; // Take extra damage based on enemy max health upon removing this limb
 
-    private Enemy enemy;
+    [field:SerializeField] public Enemy enemy { get; private set; }
     private Collider coll;
 
     void Awake()

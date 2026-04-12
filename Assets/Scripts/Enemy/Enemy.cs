@@ -135,7 +135,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         HandleAnimation();
 
-        Debug.Log(statusEffected);
+        //Debug.Log(statusEffected);
         if (statusEffected && Time.time > timeToStatusDamage)
         {
             //could have a custom method to take damage if we don't want the hit animation to play every time

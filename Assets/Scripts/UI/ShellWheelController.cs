@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,16 +26,12 @@ public class ShellWheelController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                PlayerBehavior.UnlockCursor();
-                PlayerBehavior.SlowMoActive = true;
-                shellWheelSelected = true;
+                ToggleWheel(true);
             }
 
             if (Input.GetKeyUp(KeyCode.Tab))
             {
-                PlayerBehavior.LockCursor();
-                PlayerBehavior.SlowMoActive = false;
-                shellWheelSelected = false;
+                ToggleWheel(false);
             }
         }
 
@@ -49,5 +46,20 @@ public class ShellWheelController : MonoBehaviour
             shellWheelAnim.SetBool("OpenShellWheel", false);
             slowOverlayAnim.SetBool("OpenShellWheel", false);
         }
+    }
+
+    public void ToggleWheel(bool toggle)
+    {
+        if (toggle)
+        {
+            PlayerBehavior.UnlockCursor();
+            shellWheelSelected = true;
+        }
+        else
+        {
+            PlayerBehavior.LockCursor();
+            shellWheelSelected = false;
+        }
+        PlayerBehavior.ShellWheelToggle?.Invoke();
     }
 }

@@ -24,6 +24,8 @@ public class PlayerUI : MonoBehaviour
     public Animator hurtOverlayAnim;
     public bool lowHealth = false;
 
+    public UI_Message messageText;
+
     public TextMeshProUGUI currentCapacityText;
     public Image ChamberUI;
     public Image SingleShotCrosshair;
@@ -218,5 +220,10 @@ public class PlayerUI : MonoBehaviour
     {
         armorBar.maxValue = Max;
         armorText.text = $"ARM: {Mathf.Round(Arm)}";
+    }
+
+    public void UI_SetMessage(string message)
+    {
+        messageText.SetMessage(message);
     }
 }

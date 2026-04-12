@@ -51,6 +51,10 @@ public class SimpleSpawnVolume : MonoBehaviour
         go = Instantiate<GameObject>(enemyGO, this.gameObject.transform.position + pos, Quaternion.identity);
         enemy = go.GetComponent<Enemy>();
         enemy.Alert();
+
+        if (enemy.TryGetComponent<RangedEnemy>(out RangedEnemy rangedEnemy))
+            rangedEnemy.detectionRange += Mathf.Clamp(200, 0, 400);
+
         survivalGame.IncreaseEnemyCount(enemy);
     }
     // Update is called once per frame
