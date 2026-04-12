@@ -34,11 +34,11 @@ public class SlowMo_Manager : MonoBehaviour
         else
         {
             if (IsInvoking(nameof(StopSlowMo)))
-            CancelInvoke(nameof(StopSlowMo));
+                CancelInvoke(nameof(StopSlowMo));
         }
         transitioning = true;
         TransitionTimeScale(setTimeScale);
-        Invoke(nameof(StopSlowMo), slowMoActiveTime * setTimeScale);
+        Invoke(nameof(StopSlowMo), (slowMoActiveTime * setTimeScale) + (1 * setTimeScale));
     }
 
     public static void TransitionTimeScale(float timeScale = 1f)
@@ -52,7 +52,6 @@ public class SlowMo_Manager : MonoBehaviour
     {
         if (slowMoActive)
         {
-            transitioning = true;
             slowMoActive = false;
             if (ShellWheelController.shellWheelSelected && setTimeScale > player.SlowedTime)
             {
@@ -92,17 +91,20 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && time < 1 && Time.timeScale != setTimeScale)
+        if (!PauseMenu.paused && time <= 1 && Time.timeScale != setTimeScale)
         {
+            // Eeeyikes! It's like this isn't properly updating, better skidaddle out of this if statement!
+            // Seriously, I'm bothered by imprecise float values messing up the code. At this rate I might just leave the shell wheel
+            // having the permanent bullet time effect
+            if (time == 1)
+                time++;
             step = Time.deltaTime;
             time += step;
-            time = Mathf.Clamp01(time);
             Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, time);
             if (transitioning)
                 RuntimeManager.StudioSystem.setParameterByName("Timescale", Time.timeScale);
-
-            if (Time.timeScale == setTimeScale && time >= 1)
-                transitioning = false;
         }
+        if (Time.timeScale == 1 && time >= 1 && transitioning)
+            transitioning = false;
     }
 }

@@ -433,15 +433,22 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     private void ShellWheel()
     {
-        if (ShellWheelController.shellWheelSelected)
+        if (SlowMo_Manager.slowMoActive)
         {
-            if (SlowMo_Manager.setTimeScale > SlowedTime)
+            if (ShellWheelController.shellWheelSelected && SlowMo_Manager.slowMoScale > SlowedTime)
                 SlowMo_Manager.TransitionTimeScale(SlowedTime);
+            else if (SlowMo_Manager.setTimeScale < SlowedTime)
+                SlowMo_Manager.TransitionTimeScale(SlowMo_Manager.slowMoScale);
+            return;
         }
-        else if (SlowMo_Manager.slowMoActive)
-            SlowMo_Manager.TransitionTimeScale(SlowMo_Manager.slowMoScale);
-        else
-            SlowMo_Manager.TransitionTimeScale();
+        
+        if (!SlowMo_Manager.slowMoActive)
+        {
+            if (ShellWheelController.shellWheelSelected)
+                SlowMo_Manager.TransitionTimeScale(SlowedTime);
+            else 
+                SlowMo_Manager.TransitionTimeScale();
+        }
     }
 
 }
