@@ -14,7 +14,7 @@ public class UI_Message : MonoBehaviour
     }
     public void SetMessage(string message)
     {
-        SetMessage(message, 3f);
+        SetMessage(message, 6f);
     }
     public void SetMessage(string message, float time)
     {
