@@ -235,6 +235,7 @@ public class PauseMenu : MonoBehaviour
         player.UpdateFOV();
         FOV_val_txt.text = $"{FOVSlider.value}";
 
+
         //save out to json
     }
 
@@ -260,6 +261,7 @@ public class PauseMenu : MonoBehaviour
         dialoguevol_val_txt .text = dialogueVolume.ToString("#.00");
 
         LoadVolumeSettings();
+        SaveVolumeSettings(); // Shouldn't really put it here but since there is no apply button, but I guess this will do.
     }
 
     private void SaveVolumeSettings()
