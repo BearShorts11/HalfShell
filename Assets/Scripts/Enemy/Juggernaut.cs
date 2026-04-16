@@ -85,8 +85,8 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         //animate
 
         //get object from the pool (eventually)
-        GameObject bullet = GameObject.Instantiate(ProjectilePrefab, this.transform.position, this.transform.rotation, this.transform);
-
+        GameObject bullet = GameObject.Instantiate(ProjectilePrefab, this.transform.position + this.transform.forward, this.transform.rotation, this.transform);
+        bullet.SetActive(true);
         //set transform to that of enemy's gun (seperated for pooling)
         //bullet.transform.position = hand position
         //bullet.transform.rotation = hand position
