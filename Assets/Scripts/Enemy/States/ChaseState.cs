@@ -19,6 +19,10 @@ public class ChaseState : State
     public override void Enter()
     {
         this.attackRange = Owner.attackRange;
+        Owner.agent.isStopped = false;
+
+        //have owner as jugg set ranged attack time
+        if (Owner is Juggernaut) (Owner as Juggernaut).SetNextRangedAttackTime();
     }
 
     public override void Exit()
@@ -47,10 +51,15 @@ public class ChaseState : State
         {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
         }
+        else if ((Owner is Juggernaut) && (Owner as Juggernaut).nextTimeToRangedAttack <= Time.time)
+        {
+            Owner.stateMachine.TransitionTo(Owner.stateMachine._shootState);
+        }
         else
         {
             //attempting to avoid editor errors
             if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
+            Debug.Log("setting target pos");
         }
     }
 }

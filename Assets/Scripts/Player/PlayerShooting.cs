@@ -93,16 +93,23 @@ public class PlayerShooting : MonoBehaviour
     #region UI fields - move to own object
 
     [Header("UI")]
-    TextMeshProUGUI spaceLeftText;
+
+    /// <summary>
+    /// Magazine background UI image
+    /// </summary>
     public Image magazineUI;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
     public GameObject ShellSelectionMenu;
-    #endregion
 
     //realated but UI
     private PlayerUI playerUI;
+
+    /// <summary>
+    /// list of shells to be parsed through to create images for shell UI
+    /// </summary>
     public List<ShellBase> magUI = new List<ShellBase>();
+    #endregion
 
     //first in last out collection
     public Stack<ShellBase> Magazine { get; private set; } = new Stack<ShellBase>();
@@ -139,8 +146,6 @@ public class PlayerShooting : MonoBehaviour
         AmmoCounts[ShellBase.ShellType.Slug] = startingSlugs;
 
         playerUI = FindFirstObjectByType<PlayerUI>();
-        spaceLeftText = playerUI.currentCapacityText;
-        spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
 
         SingleShotCrosshair.gameObject.SetActive(true);
         MultiShotCrosshair.gameObject.SetActive(false);
@@ -451,13 +456,6 @@ public class PlayerShooting : MonoBehaviour
             shellMaterial = shellMesh.materials[1];
             shellMaterial.SetColor("_Color", shellColor);
 
-            //prevents load errors
-            if ( spaceLeftText is null)
-            { 
-                spaceLeftText = GameObject.Find("CanLoadShells").GetComponent<TextMeshProUGUI>();
-            }
-
-            spaceLeftText.text = $"Can load {totalCapacity - currentCapacity} shells";
             //PlaySound(reloadSound);
             if (Input.GetKey(KeyCode.Tab)) 
             {
@@ -503,6 +501,7 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(slug))
         {
             LoadMagazine(slug);
+            //magUI.Insert(0, slug);
             magUI.Add(slug);
             playerUI.LoadMagUI(slug);
 
@@ -516,6 +515,7 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(buck))
         {
             LoadMagazine(buck);
+            //magUI.Insert(0, buck);
             magUI.Add(buck);
             playerUI.LoadMagUI(buck);
 
@@ -529,6 +529,7 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(half))
         {
             LoadMagazine(half);
+            //magUI.Insert(0, half);
             magUI.Add(half);
             playerUI.LoadMagUI(half);
 
@@ -542,6 +543,7 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(fire))
         {
             LoadMagazine(fire);
+            //magUI.Insert(0, fire);
             magUI.Add(fire);
             playerUI.LoadMagUI(fire);
 
@@ -698,8 +700,6 @@ public class PlayerShooting : MonoBehaviour
             if (enemy != null)
             {
                 enemy.HitFrom(shell);
-
-                Debug.Log("shell has special effects");
                 if (shell.hasSpecialEffects)
                 { 
                     enemy.HitEffect(shell);

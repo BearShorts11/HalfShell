@@ -1,10 +1,10 @@
 using FMODUnity;
 using UnityEngine;
 
-public class MeleeEnemy : Enemy
+public class MeleeEnemy : Enemy, IHasMeleeAttack
 {
     [Header("Melee Enemy")]
-    public bool PlayerInTrigger;
+    public bool PlayerInTrigger { get; set; }
 
     private void Awake()
     {

@@ -22,12 +22,13 @@ public class MeleeAttackState : State
     {
         attackTimer = Owner.attackTimer;
         if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
-        Owner.animator.SetBool("Attacking", true);
+        if(Owner.animator != null) Owner.animator.SetBool("Attacking", true);
         hitPlayer = false;
     }
 
     public override void Update()
     {
+        //prevents issue with hitting player when dead?
         if (Owner.Dead)
         { 
             Owner.stateMachine.TransitionTo(Owner.stateMachine._deadState);
@@ -39,16 +40,10 @@ public class MeleeAttackState : State
         if (attackTimer <= 0)
         {
             //if player is still within attack range after the animation finished playing, player takes damage
-            //TO REVISE: see if we can't add a collider on the player to trigger damage instead... 
-
-            /**
-             *  TODO: if you want to avoid player taking damage when they are behind the enemy or to it's side, but still within the attack range, 
-             *  you could turn on a collider for whatever frames of the attack animation look like they are dealing damage, and check if that collider is intersecting the player.
-             *  If you did that, I would consider using animation events instead of trying to time it so that you can have a visual inspector to know which frames should deal damage.
-             */
-            if ((Owner as MeleeEnemy).PlayerInTrigger && !hitPlayer)
+            //TO REVISE: if the enemy doesn't do damage to the player have them turn instead of keep attacking the air
+            if ((Owner as IHasMeleeAttack).PlayerInTrigger && !hitPlayer)
             { 
-                Owner.Player.TakeDamage(((MeleeEnemy)Owner).damage);
+                Owner.Player.TakeDamage(Owner.damage);
                 hitPlayer = true;
             }
                 
@@ -57,10 +52,19 @@ public class MeleeAttackState : State
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._cooldownState);
         }
 
+        //melee basic never stop chasing, juggernaut can switch to his ranged attack
+        if (Owner is Juggernaut)
+        {
+            if (Vector3.Distance(Owner.transform.position, Owner.Player.transform.position) > Owner.attackRange)
+            {
+                Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);
+            }
+        }
+
     }
 
     public override void Exit()
     {
-        Owner.animator.SetBool("Attacking", false);
+        if (Owner.animator != null) Owner.animator.SetBool("Attacking", false);
     }
 }

@@ -145,6 +145,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    //not abstract so melee doesn't have to implement it, but should be
+    //actually should probably be an interface "IRangedAttack"
+    public virtual void Shoot() { }
+
     //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
     public virtual void TakeDamage(float amount)
     {
@@ -221,7 +225,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             //Destroy(this.gameObject);
             this.gameObject.SetActive(false);
 
-            Player.GetComponent<Kerth>().GibbedEnemy(this);
+            //Player.GetComponent<Kerth>().GibbedEnemy(this);
 
             //TODO: add to kerth list like pickups
             //re-enable on reload

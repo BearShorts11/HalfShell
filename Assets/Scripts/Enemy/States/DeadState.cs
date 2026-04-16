@@ -21,6 +21,9 @@ public class DeadState : State
         if (Owner.agent.isActiveAndEnabled) Owner.agent.isStopped = true;
         //Object.Destroy(Owner.gameObject, 10f);
 
+        //take out when he gets the below componenets
+        if (Owner is Juggernaut) return;
+
         Owner.animator.enabled = false;
         Owner.ragdollController.SetColliderState(true);
         Owner.ragdollController.SetRigidbodyState(false);

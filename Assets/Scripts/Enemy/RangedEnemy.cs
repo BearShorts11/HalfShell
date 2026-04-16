@@ -2,8 +2,9 @@ using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEngine.UI.GridLayoutGroup;
 
-public class RangedEnemy : Enemy
+public class RangedEnemy : Enemy, IHasRangedAttack
 {
 
     [Header("Ranged Enemy Specific Variables")]
@@ -55,5 +56,25 @@ public class RangedEnemy : Enemy
         }
 
         base.TakeDamage(amount);
+    }
+
+    public override void Shoot()
+    {
+        animator.Play("Pistol Shooting");
+
+        Transform gunChild =RecursiveFindChild(transform, "Pistol");
+
+        //get object from the pool (eventually)
+        GameObject bullet = GameObject.Instantiate(bulletPrefab);
+        //set transform to that of enemy's gun (seperated for pooling)
+        bullet.transform.position = gunChild.position;
+        bullet.transform.rotation = gunChild.rotation;
+        bullet.transform.parent = transform;
+
+        Vector3 playerCurrPos = Player.transform.position;
+        bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
+        muzzleflash.Play(true);
+
+        RuntimeManager.PlayOneShot(firingSound, transform.position);
     }
 }

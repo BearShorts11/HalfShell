@@ -70,6 +70,7 @@ public class StateMachine
     {
         if (CurrentState != null)
         {
+            Debug.Log("updating state machine");
             CurrentState.Update();
         }
     }
