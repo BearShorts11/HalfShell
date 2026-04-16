@@ -23,10 +23,31 @@ public class PauseMenu : MonoBehaviour
     public GameObject LoadingSceneText;
 
     // Volume Editing Properties
-    public Bus masterBus;
-    public Bus soundBus;
-    public Bus musicBus;
-    public Bus dialogueBus; //UNIMPLEMENTED
+    private Bus masterBus;
+    private Bus soundBus;
+    private Bus uiBus; // Shares the same volume as soundBus, but should not be effected by the timescaling effect in FMOD.
+    private Bus musicBus;
+    private Bus dialogueBus;
+    public Slider masterVolumeSlider; 
+    public Slider sfxVolumeSlider; 
+    public Slider musicVolumeSlider; 
+    public Slider dialogueVolumeSlider;
+    public TextMeshProUGUI mastervol_val_txt;
+    public TextMeshProUGUI sfxvol_val_txt;
+    public TextMeshProUGUI musicvol_val_txt;
+    public TextMeshProUGUI dialoguevol_val_txt;
+    private float masterVolume = 1;
+    private float sfxVolume = 1;
+    private float musicVolume = 1;
+    private float dialogueVolume = 1;
+    [Range(0,1f)] public const float DEFAULT_MASTER_VOLUME = 1;
+    [Range(0,1f)] public const float DEFAULT_SFX_VOLUME = 1;
+    [Range(0,1f)] public const float DEFAULT_MUSIC_VOLUME = 1;
+    [Range(0,1f)] public const float DEFAULT_DIALOGUE_VOLUME = 1;
+    public const string MASTER_VOLUME_KEY = "FMOD_MASTER_VOLUME";
+    public const string SFX_VOLUME_KEY = "FMOD_SFX_VOLUME";
+    public const string MUSIC_VOLUME_KEY = "FMOD_MUSIC_VOLUME";
+    public const string DIALOGUE_VOLUME_KEY = "FMOD_DIALOGUE_VOLUME";
 
     string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
@@ -47,10 +68,16 @@ public class PauseMenu : MonoBehaviour
 
         FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange();  });
         SensitivitySlider.onValueChanged.AddListener(delegate { SensitivityValueChange();  });
+
+        masterVolumeSlider.onValueChanged.AddListener(delegate      { UpdateVolumeSettings();  });
+        sfxVolumeSlider.onValueChanged.AddListener(delegate         { UpdateVolumeSettings();  });
+        musicVolumeSlider.onValueChanged.AddListener(delegate       { UpdateVolumeSettings();  });
+        dialogueVolumeSlider.onValueChanged.AddListener(delegate    { UpdateVolumeSettings();  });
         
         // These are all Sound Groups that can be edited for mastering
         masterBus = RuntimeManager.GetBus("bus:/");
         soundBus = RuntimeManager.GetBus("bus:/SFX");
+        uiBus = RuntimeManager.GetBus("bus:/UI");
         musicBus = RuntimeManager.GetBus("bus:/Music");
         dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
         // For each bus that has their volume updated
@@ -62,6 +89,17 @@ public class PauseMenu : MonoBehaviour
         SensitivityValueChange();
         FOVSlider.value = player.UpdateFOV();
         FOVValueChange();
+
+        if (PlayerPrefs.HasKey(MASTER_VOLUME_KEY))
+            masterVolumeSlider.value    = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
+        if (PlayerPrefs.HasKey(SFX_VOLUME_KEY))
+            sfxVolumeSlider.value       = PlayerPrefs.GetFloat(SFX_VOLUME_KEY);
+        if (PlayerPrefs.HasKey(MUSIC_VOLUME_KEY))
+            musicVolumeSlider.value     = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY);
+        if (PlayerPrefs.HasKey(DIALOGUE_VOLUME_KEY))
+            dialogueVolumeSlider.value  = PlayerPrefs.GetFloat(DIALOGUE_VOLUME_KEY);
+
+        LoadVolumeSettings();
     }
 
     // Update is called once per frame
@@ -69,6 +107,12 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (settingsMenu.activeSelf)
+            { 
+                settingsMenu.SetActive(false);
+                pauseMenu.SetActive(true);
+                return;
+            }
             Pause();
         }
 
@@ -143,6 +187,7 @@ public class PauseMenu : MonoBehaviour
     {
         LoadingSceneText.SetActive(true);
         SceneManager.LoadScene(selecteedScene);
+        paused = false;
     }
 
     public void OpenSettings()
@@ -160,6 +205,11 @@ public class PauseMenu : MonoBehaviour
         SensitivitySlider.value = PlayerBehavior.DEFAULT_SENSITIVITY_MOD;
         FOVSlider.value = PlayerBehavior.DEFAULT_FOV_VALUE;
 
+        PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, DEFAULT_MASTER_VOLUME);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, DEFAULT_SFX_VOLUME);
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, DEFAULT_MUSIC_VOLUME);
+        PlayerPrefs.SetFloat(DIALOGUE_VOLUME_KEY, DEFAULT_DIALOGUE_VOLUME);
+
         SaveUpdateSettings();
     }
 
@@ -174,6 +224,8 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetFloat(PlayerBehavior.FOV_KEY, FOVvalue);
 
         SaveUpdateSettings();
+
+        SaveVolumeSettings();
     }
 
     private void SaveUpdateSettings()
@@ -184,6 +236,40 @@ public class PauseMenu : MonoBehaviour
         FOV_val_txt.text = $"{FOVSlider.value}";
 
         //save out to json
+    }
+
+    private void LoadVolumeSettings()
+    {
+        masterBus.setVolume(masterVolume);
+        soundBus.setVolume(sfxVolume);
+        uiBus.setVolume(sfxVolume);
+        musicBus.setVolume(musicVolume);
+        dialogueBus.setVolume(dialogueVolume);
+    }
+
+    private void UpdateVolumeSettings()
+    {
+        masterVolume =      masterVolumeSlider.value;
+        sfxVolume =         sfxVolumeSlider.value;
+        musicVolume =       musicVolumeSlider.value;
+        dialogueVolume =    dialogueVolumeSlider.value;
+
+        mastervol_val_txt   .text = masterVolume.ToString("#.00");
+        sfxvol_val_txt      .text = sfxVolume.ToString("#.00");
+        musicvol_val_txt    .text = musicVolume.ToString("#.00");
+        dialoguevol_val_txt .text = dialogueVolume.ToString("#.00");
+
+        LoadVolumeSettings();
+    }
+
+    private void SaveVolumeSettings()
+    {
+        PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicVolume);
+        PlayerPrefs.SetFloat(DIALOGUE_VOLUME_KEY, dialogueVolume);
+
+        LoadVolumeSettings();
     }
 
     private void FOVValueChange()

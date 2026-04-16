@@ -4,9 +4,6 @@
 		<property name="name">
 			<value>Master Bus</value>
 		</property>
-		<relationship name="automators">
-			<destination>{b148d367-27a0-4cf5-87be-ebc28062242d}</destination>
-		</relationship>
 		<relationship name="effectChain">
 			<destination>{c97c6d2c-3377-44bf-8c94-ee876a59b165}</destination>
 		</relationship>
@@ -15,14 +12,6 @@
 		</relationship>
 		<relationship name="mixer">
 			<destination>{bfa00b8b-501b-4988-9618-0bc49ed31464}</destination>
-		</relationship>
-	</object>
-	<object class="Automator" id="{b148d367-27a0-4cf5-87be-ebc28062242d}">
-		<property name="nameOfPropertyBeingAutomated">
-			<value>pitch</value>
-		</property>
-		<relationship name="automationCurves">
-			<destination>{d045e9fd-690f-44fd-8dca-c32f8fb91e58}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{c97c6d2c-3377-44bf-8c94-ee876a59b165}">
@@ -35,39 +24,5 @@
 			<value>2</value>
 		</property>
 	</object>
-	<object class="AutomationCurve" id="{d045e9fd-690f-44fd-8dca-c32f8fb91e58}">
-		<relationship name="parameter">
-			<destination>{96b9ec6c-4f0a-4daf-97b7-7f6489486599}</destination>
-		</relationship>
-		<relationship name="automationPoints">
-			<destination>{4c7b77fb-5560-46e0-acf4-c6ec3aade0e3}</destination>
-			<destination>{48f8e934-2bdd-4973-97b3-29fa8f54602a}</destination>
-			<destination>{a07bf836-bd59-4cd2-80be-a8d9e5ed834d}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{7d684103-efad-4656-a97b-34d731de5f7b}" />
-	<object class="AutomationPoint" id="{4c7b77fb-5560-46e0-acf4-c6ec3aade0e3}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="value">
-			<value>-24</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{48f8e934-2bdd-4973-97b3-29fa8f54602a}">
-		<property name="position">
-			<value>1</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{a07bf836-bd59-4cd2-80be-a8d9e5ed834d}">
-		<property name="position">
-			<value>2</value>
-		</property>
-		<property name="value">
-			<value>24</value>
-		</property>
-	</object>
 </objects>

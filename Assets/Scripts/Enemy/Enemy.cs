@@ -102,13 +102,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         stateMachine = new StateMachine(this);
 
-        if (SpawnAgro) stateMachine.Initialize(stateMachine._chaseState);
-        else stateMachine.Initialize(stateMachine._idleState);
-
         Player = FindFirstObjectByType<PlayerBehavior>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         ragdollController = GetComponentInChildren<RagdollController>();
+
+        if (SpawnAgro) stateMachine.Initialize(stateMachine._chaseState);
+        else stateMachine.Initialize(stateMachine._idleState);
+
 
         if (BloodSplatterProjector != null)
         {

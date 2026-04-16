@@ -97,20 +97,21 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && time <= 1 && Time.timeScale != setTimeScale)
+        if (!PauseMenu.paused && time < 1)
         {
-            // Eeeyikes! It's like this isn't properly updating, better skidaddle out of this if statement!
-            // Seriously, I'm bothered by imprecise float values messing up the code. At this rate I might just leave the shell wheel
-            // having the permanent bullet time effect
-            if (time == 1)
-                time++;
             step = Time.deltaTime;
             time += step;
+            if (time > 1)
+                time = Mathf.Clamp01(time);
+            
             Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, time);
+
             if (transitioning)
+            {
                 RuntimeManager.StudioSystem.setParameterByName("Timescale", Time.timeScale);
+                if (Time.timeScale == 1 && time >= 1 && transitioning)
+                    transitioning = false;
+            }
         }
-        if (Time.timeScale == 1 && time >= 1 && transitioning)
-            transitioning = false;
     }
 }
