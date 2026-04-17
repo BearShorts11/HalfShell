@@ -288,6 +288,20 @@ MonoBehaviour:
       value: 
       type: 0
       typeString: CustomFieldType_Text
+  - id: 12
+    fields:
+    - title: Name
+      value: HaveUTalked2Apo
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
   conversations:
   - id: 1
     fields:
@@ -750,6 +764,10 @@ MonoBehaviour:
         value: FMODAudioEvent(event:/Dialogue/apollyonTalksMission01)
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 0c7fffcb-1d1c-4d5b-a82c-ea420c75b3ba
+        type: 0
+        typeString: 
       conversationID: 2
       isRoot: 0
       isGroup: 0
@@ -762,7 +780,43 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: YesMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5912933418021355262, guid: 27a9e279513301f47aa293bc849ce718, type: 3}
+            m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
+            m_MethodName: StartDialogue
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1626164165021683729, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+            m_MethodName: ForceLookAtGun
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
         x: 38
@@ -799,6 +853,10 @@ MonoBehaviour:
         value: FMODAudioEvent(event:/Dialogue/apollyonTalksMission02)
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: a84a9328-f15c-441e-bb9d-4631b75e6f0f
+        type: 0
+        typeString: 
       conversationID: 2
       isRoot: 0
       isGroup: 0
@@ -811,7 +869,43 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: YesMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5912933418021355262, guid: 27a9e279513301f47aa293bc849ce718, type: 3}
+            m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
+            m_MethodName: StartDialogue
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1626164165021683729, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+            m_MethodName: ForceLookAtGun
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
         x: 218
@@ -823,11 +917,11 @@ MonoBehaviour:
       - title: Title
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Description
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Actor
         value: 1
         type: 5
@@ -839,15 +933,19 @@ MonoBehaviour:
       - title: Menu Text
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: 'Nevermind [em1][Exit][/em1]'
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Sequence
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 69fbae4b-5b7a-46dd-b739-e33d7cdb901c
+        type: 0
+        typeString: CustomFieldType_Text
       conversationID: 2
       isRoot: 0
       isGroup: 0
@@ -860,10 +958,46 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: YesMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5912933418021355262, guid: 27a9e279513301f47aa293bc849ce718, type: 3}
+            m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
+            m_MethodName: StartDialogue
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1626164165021683729, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+            m_MethodName: ForceLookAtGun
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
-        x: 756
+        x: 757
         y: 35
         width: 160
         height: 30
@@ -1571,7 +1705,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq01);
+        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq01, , , true);
 
           Delay(7)'
         type: 0
@@ -1628,7 +1762,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02-1);
+        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02-1, , , true);
 
           Delay(3)'
         type: 0
@@ -1657,7 +1791,19 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: 
+            m_MethodName: 
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: 
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
         x: 399
@@ -3136,7 +3282,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 115
+        x: 116
         y: 150
         width: 160
         height: 30
@@ -3228,7 +3374,7 @@ MonoBehaviour:
       - title: Response Menu Sequence
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 11
       isRoot: 0
       isGroup: 0
@@ -3250,8 +3396,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 628
-        y: 159
+        x: 634.6667
+        y: 169.00003
         width: 160
         height: 30
     - id: 4
@@ -3447,6 +3593,10 @@ MonoBehaviour:
         value: AnimatorPlayWait(Draw_Inspect, Shotgun_Viewmodel)
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 9f431260-b00c-414f-ab6f-c57867a718a5
+        type: 0
+        typeString: CustomFieldType_Text
       conversationID: 11
       isRoot: 0
       isGroup: 0
@@ -3456,14 +3606,50 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["HaveUTalked2Apo"] = true
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: YesMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5912933418021355262, guid: 27a9e279513301f47aa293bc849ce718, type: 3}
+            m_TargetAssemblyTypeName: Dialogue, Assembly-CSharp
+            m_MethodName: StartDialogue
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1626164165021683729, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+            m_MethodName: ForceLookAtGun
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
-        x: 626
-        y: 234
+        x: 632
+        y: 234.66666
         width: 160
         height: 30
     entryGroups: []
