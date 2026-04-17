@@ -64,7 +64,7 @@ public class PlayerShooting : MonoBehaviour
     }
 
     private string lastMethod;
-    private bool isInShellSelect // Bool that can only return a value
+    protected bool isInShellSelect // Bool that can only return a value
     {
         get { return ShellWheelController.shellWheelSelected; }
     }
@@ -223,8 +223,9 @@ public class PlayerShooting : MonoBehaviour
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isInShellSelect && !pumped) 
         {
+            Debug.Log("LeftControl hit Shooting script");
             lookingAtGun = !lookingAtGun;
-            ShellWheelController.shellWheelDisabled = !ShellWheelController.shellWheelDisabled;
+            
             LookAtGun(lookingAtGun);
         }
         if (lookingAtGun) return;
@@ -268,6 +269,7 @@ public class PlayerShooting : MonoBehaviour
 
     public void LookAtGun(bool looking)
     {
+        ShellWheelController.shellWheelDisabled = !ShellWheelController.shellWheelDisabled;
         if (looking) animator.CrossFade("Idle_Goto_LookAtFace", 0.1f);
         else animator.CrossFade("LookAtFace_Goto_Idle", 0.1f);
     }

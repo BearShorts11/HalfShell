@@ -62,9 +62,11 @@ public class Dialogue : MonoBehaviour
 
      void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl)) {
-            
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+
             StartDialogue();
+            Debug.Log("LeftControl Hit StartDialogue");
         }
     }
 
