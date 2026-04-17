@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class AmmoPickup : IPickup
 {
-    [SerializeField] private ShellBase.ShellType ammoType;
+    [field: SerializeField] public ShellBase.ShellType ammoType { get; private set; } = ShellBase.ShellType.Slug;
     [SerializeField] private EventReference pickupSound;
     [SerializeField] private Animator animator;
 

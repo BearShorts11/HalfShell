@@ -226,4 +226,9 @@ public class PlayerUI : MonoBehaviour
     {
         messageText.SetMessage(message);
     }
+
+    public void UI_SetMessage(string message, float time)
+    {
+        messageText.SetMessage(message, time);
+    }
 }

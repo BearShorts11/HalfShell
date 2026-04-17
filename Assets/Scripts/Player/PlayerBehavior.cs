@@ -451,4 +451,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
+    public void NotifyPlayer(string message, float time = 2)
+    {
+        UI.UI_SetMessage(message, time);
+    }
+
 }

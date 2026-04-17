@@ -1,5 +1,6 @@
 using Assets.Scripts;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class IPickup : MonoBehaviour, IBind<PickupData>
@@ -83,6 +84,14 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
         if (k is not null)
         {
             k.PickedUpObject(this.data);
+            if (Type == PickupType.Ammo)
+            {
+                AmmoPickup ammopickup = GetComponent<AmmoPickup>();
+                if (ammopickup != null)
+                    k.gameObject.GetComponent<PlayerBehavior>().NotifyPlayer($"You got {ammopickup.ammoType} " + $"{Type}".ToLower() + "!");
+            }
+            else
+                k.gameObject.GetComponent<PlayerBehavior>().NotifyPlayer($"You got {Type}!");
         }
     }
 
