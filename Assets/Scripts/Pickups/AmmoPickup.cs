@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.Rendering;
 
 
 public class AmmoPickup : IPickup
@@ -10,12 +11,16 @@ public class AmmoPickup : IPickup
     [SerializeField] private EventReference pickupSound;
     [SerializeField] private Animator animator;
 
+    [SerializeField] private Renderer Rend;
+    MaterialPropertyBlock matCollor;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Gun = FindFirstObjectByType<PlayerShooting>();
         UI = FindFirstObjectByType<PlayerUI>();
         this.Type = PickupType.Ammo;
+        SetSmallAmmoColor();
     }
 
     // Update is called once per frame
@@ -23,6 +28,43 @@ public class AmmoPickup : IPickup
     {
         if (rotate) { Rotate(); }
         base.BaseUpdate();
+    }
+
+    private void OnValidate()
+    {
+        SetSmallAmmoColor();
+    }
+
+    private void SetSmallAmmoColor()
+    {
+        if (Rend != null) // Note: Rend is not automatically set. If the ammo pickup model has an extra material slot with a modular texture, set it in the editor prefab.
+        {
+            if (Rend.sharedMaterials.Length > 1) // Does this mesh use more than 1 material?
+            {
+                matCollor = new();
+                switch (ammoType)
+                {
+                    case ShellBase.ShellType.Slug:
+                        matCollor.SetColor("_Color", Color.green);
+                        break;
+                    case ShellBase.ShellType.Incindiary:
+                        matCollor.SetColor("_Color", ColorsExt.orange);
+                        break;
+                    case ShellBase.ShellType.Buckshot:
+                    case ShellBase.ShellType.HalfShell:
+                        matCollor.SetColor("_Color", Color.red);
+                        break;
+                    case ShellBase.ShellType.BeanBag:
+                    case ShellBase.ShellType.BMG:
+                    default:
+                        break;
+                }
+                if (!matCollor.isEmpty)
+                {
+                    Rend.SetPropertyBlock(matCollor, 1); // The modular material should always be in index 1.
+                }
+            }
+        }
     }
 
     public void OnTriggerEnter(Collider other)

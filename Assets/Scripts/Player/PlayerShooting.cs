@@ -39,8 +39,6 @@ public class PlayerShooting : MonoBehaviour
     private Material shellMaterial;
     private GameObject reloadedShellGO;
 
-    private Color orange = new(System.Drawing.Color.Orange.R / 255, System.Drawing.Color.Orange.G / 255, System.Drawing.Color.Orange.B / 255);
-
     public Animator animator;
 
     private ObjectPool<GameObject> bulletHolePool;
@@ -446,7 +444,7 @@ public class PlayerShooting : MonoBehaviour
                     break;
                 case Incindiary:
                     // WHAT DO YOU MEAN THERE'S NO ORANGE -V to Unity
-                    shellColor = orange;
+                    shellColor = ColorsExt.orange;
                     break;
                 case BMG:
                 case BeanBag:
@@ -920,7 +918,7 @@ public class PlayerShooting : MonoBehaviour
                 material.SetColor("_Color", Color.green);
                 break;
             case ShellBase.ShellType.Incindiary:
-                material.SetColor("_Color", orange);
+                material.SetColor("_Color", ColorsExt.orange);
                 break;
         }
         ChamberType = 0;

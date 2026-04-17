@@ -103,6 +103,7 @@ MonoBehaviour:
       Data4: 172278774
     Path: event:/Pickups/AmmoPickup
   animator: {fileID: 0}
+  Rend: {fileID: 8507398489652919636}
 --- !u!108 &6650558946996037428
 Light:
   m_ObjectHideFlags: 0
@@ -251,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colliderType: 0
   colliders: []
   colliderTags:
   - Player
@@ -303,9 +305,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 02b858621d1e8dc4f9def4ef71291151, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f07b8c631131e2b438ffa0f4cab71cd2, type: 2}
+      objectReference: {fileID: 2100000, guid: 04b455b65f3a36545ae3a296e49bd7f3, type: 2}
     - target: {fileID: 919132149155446097, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
       propertyPath: m_Name
       value: AmmoBox_Small
@@ -318,5 +324,10 @@ PrefabInstance:
 --- !u!4 &7375617485634733627 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+  m_PrefabInstance: {fileID: 7048639724639379920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507398489652919636 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
   m_PrefabInstance: {fileID: 7048639724639379920}
   m_PrefabAsset: {fileID: 0}

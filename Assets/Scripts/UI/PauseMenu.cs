@@ -255,10 +255,10 @@ public class PauseMenu : MonoBehaviour
         musicVolume =       musicVolumeSlider.value;
         dialogueVolume =    dialogueVolumeSlider.value;
 
-        mastervol_val_txt   .text = masterVolume.ToString("#.00");
-        sfxvol_val_txt      .text = sfxVolume.ToString("#.00");
-        musicvol_val_txt    .text = musicVolume.ToString("#.00");
-        dialoguevol_val_txt .text = dialogueVolume.ToString("#.00");
+        mastervol_val_txt   .text = masterVolume.ToString("0.00");
+        sfxvol_val_txt      .text = sfxVolume.ToString("0.00");
+        musicvol_val_txt    .text = musicVolume.ToString("0.00");
+        dialoguevol_val_txt .text = dialogueVolume.ToString("0.00");
 
         LoadVolumeSettings();
         SaveVolumeSettings(); // Shouldn't really put it here but since there is no apply button, but I guess this will do.
