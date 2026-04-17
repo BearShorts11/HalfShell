@@ -100,6 +100,11 @@ public class Dialogue : MonoBehaviour
 
     }
 
+    public void LockCursor()
+    {
+        PlayerBehavior.LockCursor();
+    }
+
     
     
 
