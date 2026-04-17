@@ -14,7 +14,7 @@ public class SlowMo_Manager : MonoBehaviour
 
     [Range(0f,1f)] public float slowMoChance = 0.05f;
     private PlayerBehavior player;
-    private float slowMoActiveTime = 5;
+    [SerializeField] private float slowMoActiveTime = 2.5f;
     private bool transitioning = false;
 
     public void DramaEvent()
