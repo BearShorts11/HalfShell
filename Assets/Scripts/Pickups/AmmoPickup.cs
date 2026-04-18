@@ -95,7 +95,14 @@ public class AmmoPickup : IPickup
 
                 // More to be added here when Ammo Maximums are added -A
                 if (!infinite) { base.OnPickup(); Destroy(gameObject); }
+                else
+                    PickupMessage(other.gameObject.GetComponent<PlayerBehavior>(), $"You got {ammoType} " + $"{Type}".ToLower() + "!");
             }
         }
+    }
+
+    public override void PickupMessage(PlayerBehavior Player, string Message)
+    {
+        Player.NotifyPlayer(Message);
     }
 }

@@ -84,15 +84,13 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
         if (k is not null)
         {
             k.PickedUpObject(this.data);
-            if (Type == PickupType.Ammo)
-            {
-                AmmoPickup ammopickup = GetComponent<AmmoPickup>();
-                if (ammopickup != null)
-                    k.gameObject.GetComponent<PlayerBehavior>().NotifyPlayer($"You got {ammopickup.ammoType} " + $"{Type}".ToLower() + "!");
-            }
-            else
-                k.gameObject.GetComponent<PlayerBehavior>().NotifyPlayer($"You got {Type}!");
+            PickupMessage(k.gameObject.GetComponent<PlayerBehavior>(), $"You got " + $"{Type}".ToLower() + "!");
         }
+    }
+
+    public virtual void PickupMessage(PlayerBehavior Player, string Message)
+    {
+        Player.NotifyPlayer(Message);
     }
 
 }
