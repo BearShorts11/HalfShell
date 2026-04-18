@@ -34,8 +34,10 @@ public class PlayerUI : MonoBehaviour
     //gets around needing a static reference for a static method (Make UI Shell)
     public Sprite HalfShellSprite;
     public Sprite SlugSprite;
+    public Sprite FireShellSprite;
     private static Sprite _halfShellSprite;
     private static Sprite _slugSprite;
+    private static Sprite _fireShellSprite;
 
     //UI shell size vals
     static float shellHeight = 30f;
@@ -56,6 +58,7 @@ public class PlayerUI : MonoBehaviour
 
         _halfShellSprite = HalfShellSprite;
         _slugSprite = SlugSprite;
+        _fireShellSprite = FireShellSprite;
     }
 
     // Update is called once per frame
@@ -79,7 +82,7 @@ public class PlayerUI : MonoBehaviour
                 UIShellRectTransform.sizeDelta = new Vector2(halfShellWidth, shellHeight);
                 break;
             case ShellBase.ShellType.Incindiary:
-                UIshell.GetComponent<Image>().sprite = _slugSprite;
+                UIshell.GetComponent<Image>().sprite = _fireShellSprite;
                 UIShellRectTransform.sizeDelta = new Vector2(shellWidth, shellHeight);
                 UIshell.GetComponent <Image>().color = shell.DisplayColor;
                 break;

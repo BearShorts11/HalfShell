@@ -70,6 +70,9 @@ public class ShellSelectionButton : MonoBehaviour
             case 1: // Slug
                 type = ShellBase.ShellType.Slug;
                 break;
+            case 2:
+                type = ShellBase.ShellType.Incindiary;
+                break;
             default:
                 type = ShellBase.ShellType.Buckshot;
                 break;
@@ -79,8 +82,25 @@ public class ShellSelectionButton : MonoBehaviour
     public void UpdateAmmoCount()
     {
         if (ammoText != null)
-        { 
-            if (type != ShellBase.ShellType.Buckshot) { ammoText.text = $"{player.AmmoCounts[type]}"; }
+        {
+            if (type != ShellBase.ShellType.Buckshot) {
+                ShellBase shell;
+
+                switch (type)
+                {
+                    case ShellBase.ShellType.Slug:
+                        shell = new Slug();
+                        break;
+                    case ShellBase.ShellType.Incindiary:
+                        shell = new Incindiary();
+                        break;
+                    default:
+                        shell = new HalfShell();
+                        break;
+                }
+
+                ammoText.text = $"{player.AmmoCounts[type]}/{shell.MaxHolding}"; 
+            }
             else { ammoText.text = $""; }
         }
         CheckActive();
