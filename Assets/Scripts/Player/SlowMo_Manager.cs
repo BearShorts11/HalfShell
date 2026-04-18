@@ -71,7 +71,7 @@ public class SlowMo_Manager : MonoBehaviour
         if (player == null)
             player = FindFirstObjectByType<PlayerBehavior>();
         
-        if (Time.timeScale != 1 && setTimeScale != 1)
+        if (Time.timeScale != 1 || setTimeScale != 1)
         {
             Time.timeScale = 1;
             setTimeScale = 1;
@@ -112,6 +112,15 @@ public class SlowMo_Manager : MonoBehaviour
                 if (Time.timeScale == 1 && time >= 1 && transitioning)
                     transitioning = false;
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (setTimeScale != 1 || Time.timeScale != 1)
+        {
+            Time.timeScale = 1;
+            setTimeScale = 1;
         }
     }
 }
