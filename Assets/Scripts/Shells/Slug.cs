@@ -10,7 +10,7 @@ public class Slug : ShellBase
         MaxRange = 200f;
         type = ShellType.Slug;
         DisplayColor = Color.green;
-        MaxHolding = 20; //eventually 15
+        MaxHolding = 15; //eventually 15
     }
 
     public override float ScaleDamage(RaycastHit hit)
