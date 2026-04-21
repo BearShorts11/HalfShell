@@ -669,8 +669,11 @@ MonoBehaviour:
   ApollyonBarks: {fileID: 1626839815154843019}
   hitPosition: {x: 0, y: 0, z: 0}
   BulletHole: {fileID: 7475985742914195488, guid: 8f6b182b0c8ca1f488d18c80292ca216, type: 3}
-  blood: {fileID: 7649582879852285066, guid: 0d4a5a89a686d9c4a95943befb1de9a3, type: 3}
   dust: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
+  wood: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
+  concrete: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
+  metal: {fileID: 6252988100649161875, guid: 34bbcb38e871769459106dff108a1fef, type: 3}
+  blood: {fileID: 7649582879852285066, guid: 0d4a5a89a686d9c4a95943befb1de9a3, type: 3}
   muzzleflash: {fileID: 4585654835511407419, guid: 9173cd8b619c9584d933318267a52ff9, type: 3}
   shotgunMuzzleflashPos: {fileID: 5694940268224629725}
   ejectionPoint: {fileID: 180328361391050672}
@@ -1019,6 +1022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowMoChance: 0.05
+  slowMoActiveTime: 2.5
 --- !u!95 &1952711760327031536
 Animator:
   serializedVersion: 7
@@ -1085,7 +1089,7 @@ Transform:
   m_GameObject: {fileID: 6719948019014343288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6500001, z: 0}
+  m_LocalPosition: {x: 176.02223, y: 88.42778, z: 69.288895}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

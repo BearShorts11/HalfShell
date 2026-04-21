@@ -107,7 +107,7 @@ public class NPCFootstepAudio : MonoBehaviour
         float distance = raycastDistance;
 
         // Cast straight down
-        bool grounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, distance, groundMask);
+        bool grounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, distance/*, groundMask*/);
 
        
 
@@ -122,9 +122,9 @@ public class NPCFootstepAudio : MonoBehaviour
             Vector3.down,
             out RaycastHit hit,
             raycastDistance,
-            groundMask))
+            1<<LayerMask.NameToLayer("Damageable")))
         {
-            string tag = hit.collider.tag;
+            /*string tag = hit.collider.tag;
            
 
             switch (tag)
@@ -147,9 +147,12 @@ public class NPCFootstepAudio : MonoBehaviour
                 default:
                     currentSurfaceIndex = 0;
                     break;
-            }
-
-           
+            }*/
+            if (hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+                if (renderer.sharedMaterial == null)
+                    currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterials[1]);
+                else
+                    currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
         }
         else
         {

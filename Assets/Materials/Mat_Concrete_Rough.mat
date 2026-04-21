@@ -10,11 +10,12 @@ Material:
   m_Name: Mat_Concrete_Rough
   m_Shader: {fileID: -6465566751694194690, guid: 53bd08903d5129a439f0e585a443e15e, type: 3}
   m_Parent: {fileID: 2100000, guid: aebab9d7b0577ff47b43c1f91fb3d667, type: 2}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ModifiedSerializedProperties: 4
+  m_ValidKeywords:
+  - _SURFACETYPE_CONCRETE
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap:
@@ -34,8 +35,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _SURFACETYPE: 3
+    m_Colors:
+    - _Tiling: {r: 0.125, g: 0.25, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1976754957025502238

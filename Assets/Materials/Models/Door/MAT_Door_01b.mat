@@ -21,17 +21,20 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Door_01b
-  m_Shader: {fileID: -6465566751694194690, guid: 2b3b7d0b179748b449e12721ea4fcfa6, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 53bd08903d5129a439f0e585a443e15e, type: 3}
   m_Parent: {fileID: 2100000, guid: 1496f4e04df6ea6429baedd82195e303, type: 2}
   m_ModifiedSerializedProperties: 2
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _SPECULAR_SETUP
+  - _SURFACETYPE_WOOD
   m_InvalidKeywords:
   - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -39,6 +42,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_4450AB74:
+        m_Texture: {fileID: 2800000, guid: 97cf88bbaa6c0494ba5267fcf119d880, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
         m_Texture: {fileID: 2800000, guid: 97cf88bbaa6c0494ba5267fcf119d880, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}

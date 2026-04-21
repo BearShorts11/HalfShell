@@ -2,6 +2,7 @@ using Assets.Scripts;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using TMPro;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -26,9 +27,14 @@ public class PlayerShooting : MonoBehaviour
     public Enemy lastDamaged { get; set; }
 
     #region VFX
+    //Impacts
     public GameObject BulletHole;
-    [SerializeField] private ParticleSystem blood;
     [SerializeField] private ParticleSystem dust;
+    [SerializeField] private ParticleSystem wood;
+    [SerializeField] private ParticleSystem concrete;
+    [SerializeField] private ParticleSystem metal;
+    [SerializeField] private ParticleSystem blood;
+
     [SerializeField] private ParticleSystem muzzleflash;
     [SerializeField] private Transform      shotgunMuzzleflashPos;
     [SerializeField] private Transform ejectionPoint;
@@ -648,7 +654,7 @@ public class PlayerShooting : MonoBehaviour
         }
         else if (hit.collider.gameObject.tag == "Breakable")
         {
-            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+            SpawnImpactFX(hit);
             HitBreakable(hit, shell, shell.Type);
             SpawnBulletHole(hit);
         }
@@ -659,8 +665,43 @@ public class PlayerShooting : MonoBehaviour
         }
         else
         {
-            Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+            SpawnImpactFX(hit);
             SpawnBulletHole(hit);
+        }
+    }
+
+    private void SpawnImpactFX(RaycastHit hit)
+    {
+        int surfaceTypeID = 0;
+        bool hasRender = hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer);
+
+        if (!hasRender) renderer = hit.collider.gameObject.GetComponentInChildren<Renderer>(); // Try looking for a render component in children if this is one of *those* game objects.
+
+        if (renderer == null) // this mf thing still null
+            renderer = hit.collider.gameObject.GetComponentInParent<Renderer>();
+
+        if (renderer == null) // if this thing still null, I give up -_-
+            surfaceTypeID = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
+
+        switch (surfaceTypeID)
+        {
+            case 2:
+                Instantiate(wood, hit.point, Quaternion.LookRotation(hit.normal));
+                break;
+            case 3:
+                Instantiate(concrete, hit.point, Quaternion.LookRotation(hit.normal));
+                break;
+            case 4:
+                Instantiate(metal, hit.point, Quaternion.LookRotation(hit.normal));
+                break;
+            case 5:
+                Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+                break;
+            case 0:
+            case 1:
+            default:
+                Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
+                break;
         }
     }
 
@@ -866,19 +907,31 @@ public class PlayerShooting : MonoBehaviour
     private void PlayImpactSound(RaycastHit hit)
     {
         float surfaceValue = 0f;
-        if (hit.collider.CompareTag("DirtFloor"))
-            surfaceValue = 0f;
-        else if (hit.collider.CompareTag("GravelFloor"))
-            surfaceValue = 1f;
-        else if (hit.collider.CompareTag("WoodFloor"))
-            surfaceValue = 2f;
-        else if (hit.collider.CompareTag("AsphaltFloor"))
-            surfaceValue = 3f;
-        else if (hit.collider.CompareTag("MetalFloor"))
-            surfaceValue = 4f;
-        else if (hit.collider.CompareTag("Enemy"))
+        //if (hit.collider.CompareTag("DirtFloor"))
+        //    surfaceValue = 0f;
+        //else if (hit.collider.CompareTag("GravelFloor"))
+        //    surfaceValue = 1f;
+        //else if (hit.collider.CompareTag("WoodFloor"))
+        //    surfaceValue = 2f;
+        //else if (hit.collider.CompareTag("AsphaltFloor"))
+        //    surfaceValue = 3f;
+        //else if (hit.collider.CompareTag("MetalFloor"))
+        //    surfaceValue = 4f;
+        //else if (hit.collider.CompareTag("Enemy"))
+        //    surfaceValue = 5f;
+        bool hasRender = hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer);
+
+        if (!hasRender) renderer = hit.collider.gameObject.GetComponentInChildren<Renderer>(); // Try looking for a render component in children if this is one of *those* game objects.
+
+        if (renderer == null) // this mf thing still null
+            renderer = hit.collider.gameObject.GetComponentInParent<Renderer>();
+
+        if (renderer != null) // I hate this.
+            surfaceValue = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
+        
+        if (hit.collider.CompareTag("Enemy")) // Because it can't get the enemy's mesh renderer properly -_-
             surfaceValue = 5f;
-       
+
         // Debug.Log($"Surface Value: {surfaceValue}");
         EventInstance impact = RuntimeManager.CreateInstance(bulletImpactEvent);
 

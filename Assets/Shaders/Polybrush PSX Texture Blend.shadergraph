@@ -28,7 +28,11 @@
             "m_Id": "dbff0f12b19e448da94b2191e9dc9a76"
         }
     ],
-    "m_Keywords": [],
+    "m_Keywords": [
+        {
+            "m_Id": "9dc31f631fdd4e73ab4981506593929a"
+        }
+    ],
     "m_Dropdowns": [],
     "m_CategoryData": [
         {
@@ -1982,6 +1986,62 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.ShaderKeyword",
+    "m_ObjectId": "9dc31f631fdd4e73ab4981506593929a",
+    "m_Guid": {
+        "m_GuidSerialized": "53a81d0d-5913-4693-b305-d36b75ca501c"
+    },
+    "m_Name": "SurfaceType",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "SurfaceType",
+    "m_DefaultReferenceName": "_SURFACETYPE",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_KeywordType": 1,
+    "m_KeywordDefinition": 0,
+    "m_KeywordScope": 0,
+    "m_KeywordStages": 63,
+    "m_Entries": [
+        {
+            "id": 6,
+            "displayName": "Dirt",
+            "referenceName": "DIRT"
+        },
+        {
+            "id": 1,
+            "displayName": "Gravel",
+            "referenceName": "GRAVEL"
+        },
+        {
+            "id": 2,
+            "displayName": "Wood",
+            "referenceName": "WOOD"
+        },
+        {
+            "id": 3,
+            "displayName": "Concrete",
+            "referenceName": "CONCRETE"
+        },
+        {
+            "id": 7,
+            "displayName": "Metal",
+            "referenceName": "METAL"
+        },
+        {
+            "id": 4,
+            "displayName": "Body",
+            "referenceName": "BODY"
+        }
+    ],
+    "m_Value": 0,
+    "m_IsEditable": true
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "a1478c372a1743b690802952cdbba333",
@@ -2010,6 +2070,9 @@
         },
         {
             "m_Id": "dbff0f12b19e448da94b2191e9dc9a76"
+        },
+        {
+            "m_Id": "9dc31f631fdd4e73ab4981506593929a"
         }
     ]
 }

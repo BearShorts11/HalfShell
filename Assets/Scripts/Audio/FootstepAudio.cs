@@ -96,9 +96,10 @@ public class PlayerFootstepAudio : MonoBehaviour
     // ===== SURFACE DETECTION =====
     private void DetectSurface()
     {
-        if (Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, out RaycastHit hit, raycastDistance, groundMask))
+        if (Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, out RaycastHit hit, raycastDistance/*, groundMask*/))
         {
-            string tag = hit.collider.tag;
+            /*
+             * string tag = hit.collider.tag;
             // Debug.Log($"Surface detected: {tag}");
             // Assign an index based on tag (used by FMOD parameter)
             switch (tag)
@@ -121,7 +122,13 @@ public class PlayerFootstepAudio : MonoBehaviour
                 default:
                     currentSurfaceIndex = 0;
                     break;
-            }
+            }*/
+
+            if (hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+                if (renderer.sharedMaterial == null)
+                    currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterials[1]); // Get the next material specified in the index if there is no material found in the first one (seriously how do you do that) -V
+                else
+                    currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
         }
         else
         {
