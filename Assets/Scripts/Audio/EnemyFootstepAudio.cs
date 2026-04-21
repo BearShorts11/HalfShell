@@ -1,7 +1,8 @@
+using FMOD.Studio;
+using FMODUnity;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using FMODUnity;
-using FMOD.Studio;
 
 public class NPCFootstepAudio : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class NPCFootstepAudio : MonoBehaviour
     [SerializeField] private float stepInterval = 0.5f; // Time between footsteps
     [SerializeField] private float minMoveSpeed = 0.05f; // Minimum speed to trigger footsteps
     [SerializeField] private float raycastDistance = 2f; // How far below NPC to check for ground
-    [SerializeField] private LayerMask groundMask; // Which layers count as ground
+    //[SerializeField] private LayerMask groundMask; // Which layers count as ground
 
     private NavMeshAgent agent;
 
@@ -54,10 +55,6 @@ public class NPCFootstepAudio : MonoBehaviour
         // Calculate actual movement speed based on position delta
         movementSpeed = Vector3.Distance(transform.position, previousPosition) / Time.deltaTime;
 
-        
-
-        DetectSurface();
-
         // ===== LANDING =====
         if (isGrounded && !wasGrounded)
         {
@@ -94,22 +91,21 @@ public class NPCFootstepAudio : MonoBehaviour
 
         wasGrounded = isGrounded;
         previousPosition = transform.position;
-
-       
-       
     }
 
     // ===== GROUND CHECK =====
     private bool CheckGrounded()
     {
         // Get the bottom of the capsule
-        Vector3 origin = transform.position + Vector3.up * 0.1f; // start slightly above ground
+        Vector3 origin = transform.position + Vector3.up * 0.01f; // start slightly above ground
         float distance = raycastDistance;
 
         // Cast straight down
-        bool grounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, distance/*, groundMask*/);
+        bool grounded = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, distance, 1 << 6 | 9);
 
-       
+        if (hit.collider != null)
+            if ((origin - hit.point).sqrMagnitude < distance)
+                grounded = true;
 
         return grounded;
     }
@@ -117,13 +113,16 @@ public class NPCFootstepAudio : MonoBehaviour
     // ===== SURFACE DETECTION =====
     private void DetectSurface()
     {
-        if (Physics.Raycast(
-            transform.position + Vector3.up * 0.2f,
+        Physics.Raycast(
+            transform.position + Vector3.up * 0.1f,
             Vector3.down,
             out RaycastHit hit,
             raycastDistance,
-            1<<LayerMask.NameToLayer("Damageable")))
+            1 << 6 | 9);
+
+        if (!hit.IsUnityNull())
         {
+            currentSurfaceIndex = 0;
             /*string tag = hit.collider.tag;
            
 
@@ -148,10 +147,11 @@ public class NPCFootstepAudio : MonoBehaviour
                     currentSurfaceIndex = 0;
                     break;
             }*/
+
             if (hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
                 if (renderer.sharedMaterial == null)
                     currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterials[1]);
-                else
+                else if (renderer.sharedMaterial != null)
                     currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
         }
         else
@@ -163,6 +163,7 @@ public class NPCFootstepAudio : MonoBehaviour
     // ===== FMOD =====
     private void PlayFootstepSound()
     {
+        DetectSurface();// Detect which surface the player is on
         //Debug.Log("NPC FOOTSTEP PLAYED");
 
         EventInstance stepInstance = RuntimeManager.CreateInstance(footstepEvent);
@@ -176,6 +177,7 @@ public class NPCFootstepAudio : MonoBehaviour
 
     private void PlayLandingSound()
     {
+        DetectSurface();// Detect which surface the player is on
         //Debug.Log("NPC LANDING PLAYED");
 
         EventInstance landInstance = RuntimeManager.CreateInstance(landEvent);
