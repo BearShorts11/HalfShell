@@ -50,8 +50,6 @@ public class PlayerFootstepAudio : MonoBehaviour
 
         // Debug.Log($"Grounded: {isGrounded}, Speed: {speed:F2}, Timer: {stepTimer:F2}");
 
-        DetectSurface();// Detect which surface the player is on
-
         // Landing
         if (isGrounded && !wasGrounded)
         {
@@ -138,6 +136,7 @@ public class PlayerFootstepAudio : MonoBehaviour
 
     private void PlayFootstepSound()
     {
+        DetectSurface();// Detect which surface the player is on
         // Debug.Log($"Sending FMOD Footstep — SurfaceIndex = {currentSurfaceIndex}");
 
         EventInstance stepInstance = RuntimeManager.CreateInstance(footstepEvent);
@@ -149,6 +148,7 @@ public class PlayerFootstepAudio : MonoBehaviour
 
     private void PlayLandingSound()
     {
+        DetectSurface();// Detect which surface the player is on
         // Debug.Log($"Sending FMOD Landing — SurfaceIndex = {currentSurfaceIndex}");
 
         EventInstance landInstance = RuntimeManager.CreateInstance(landEvent);
