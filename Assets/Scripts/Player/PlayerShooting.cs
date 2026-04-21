@@ -187,7 +187,7 @@ public class PlayerShooting : MonoBehaviour
         eventDesc.getParameterDescriptionByName("ImpactSurface", out paramDesc);
 
         impactSurfaceParamID = paramDesc.id;
-        triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast");
+        triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast", "Player");
 
         slowmo = GetComponent<SlowMo_Manager>();
     }

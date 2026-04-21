@@ -119,7 +119,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         Health = maxHealth;
         agent.speed = movementSpeed;
-        agent.acceleration = 10f;
+        // Why? - V
+        //agent.acceleration = 10f;
 
         if (soundEvents == null)
             soundEvents = this.gameObject.GetComponent<SimpleSoundEvent>();
