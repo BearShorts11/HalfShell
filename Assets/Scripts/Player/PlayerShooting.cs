@@ -680,7 +680,7 @@ public class PlayerShooting : MonoBehaviour
         if (renderer == null) // this mf thing still null
             renderer = hit.collider.gameObject.GetComponentInParent<Renderer>();
 
-        if (renderer == null) // if this thing still null, I give up -_-
+        if (renderer != null) // if this thing still null, I give up -_-
             surfaceTypeID = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
 
         switch (surfaceTypeID)
