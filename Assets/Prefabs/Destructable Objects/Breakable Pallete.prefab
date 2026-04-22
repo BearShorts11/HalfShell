@@ -32,9 +32,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8267519781570644793}
   - {fileID: 7800106086173153351}
   - {fileID: 5103690491491641624}
+  - {fileID: 8267519781570644793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1112183526804818074
@@ -85,6 +85,9 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1127285940728007392
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -366,15 +369,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 796567652542769201, guid: 92bbbec7e64f95142b76565beeee9819, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 796567652542769201, guid: 92bbbec7e64f95142b76565beeee9819, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 796567652542769201, guid: 92bbbec7e64f95142b76565beeee9819, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 796567652542769201, guid: 92bbbec7e64f95142b76565beeee9819, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

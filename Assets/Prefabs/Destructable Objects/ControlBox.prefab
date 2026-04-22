@@ -418,10 +418,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4811527274548330155}
   - {fileID: 2790060732440090654}
   - {fileID: 5977121151524670007}
   - {fileID: 9045831437451755066}
+  - {fileID: 4811527274548330155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 90}
 --- !u!114 &2994484659899726459
@@ -848,6 +848,9 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &4224948230599385918
 Rigidbody:
   m_ObjectHideFlags: 0
