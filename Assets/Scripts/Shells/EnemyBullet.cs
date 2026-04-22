@@ -37,7 +37,7 @@ public class EnemyBullet : MonoBehaviour
         nextPos = transform.position + (transform.forward * speed * Time.deltaTime);
 
         //Predict if the bullet will hit the player or something by the next update
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, speed * Time.deltaTime, 1<<0|1<<4|1<<6|1<<7|1<<9|1<<12))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, (speed * Time.deltaTime) + 1, 1<<0|1<<4|1<<6|1<<7|1<<9|1<<12))
         {
             if (hit.collider != null)
                 objectToBeHit = hit.collider;
