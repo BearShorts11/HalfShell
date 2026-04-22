@@ -8,6 +8,7 @@ public class EnemyBullet : MonoBehaviour
     public float speed = 150F;
     private Vector3 target;
     private float targetReached = 0.001f;
+    private float nextPosDist;
     Vector3 nextPos;
     Collider objectToBeHit;
 
@@ -25,8 +26,21 @@ public class EnemyBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // from the prediction by the end of this method: if there was something about to be hit, call this method
-        if (objectToBeHit != null) OnTriggerEnter(objectToBeHit);
+        //Predict if the bullet will hit the player or something else
+        nextPos = transform.position + (transform.forward * speed * Time.deltaTime);
+        nextPosDist = Vector3.Distance(transform.position, nextPos);
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, nextPosDist, 1 << 0 | 1 << 4 | 1 << 6 /*| 1 << 7*/ | 1 << 9 | 1 << 12))
+        {
+            if (hit.collider != null)
+                objectToBeHit = hit.collider;
+        }
+
+        //If there was something about to be hit, call this method
+        if (objectToBeHit != null) {
+            transform.position = Vector3.MoveTowards(transform.position, hit.point, 1);
+            HitObject(objectToBeHit); 
+            return;
+        }
 
         if (target != null)
         {
@@ -34,17 +48,23 @@ public class EnemyBullet : MonoBehaviour
             if (Vector3.Distance(transform.position, target) <= targetReached) Destroy(this.gameObject);
         }
         else transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        nextPos = transform.position + (transform.forward * speed * Time.deltaTime);
-
-        //Predict if the bullet will hit the player or something by the next update
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, (speed * Time.deltaTime) + 1, 1<<0|1<<4|1<<6|1<<7|1<<9|1<<12))
-        {
-            if (hit.collider != null)
-                objectToBeHit = hit.collider;
-        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void HitObject(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (transform.parent is not null && !hitSomething)
+            {
+                hitSomething = true; //prevents double hit issue
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(GetComponentInParent<Enemy>().damage);
+            }
+        }
+
+        Destroy(this.gameObject);
+    }
+
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -56,7 +76,7 @@ public class EnemyBullet : MonoBehaviour
         }
 
         Destroy(this.gameObject);
-    }
+    }*/
 
     private void OnCollisionEnter(Collision collision)
     {
