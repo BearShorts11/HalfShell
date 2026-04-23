@@ -75,18 +75,20 @@ public class ShootState : State
                         Owner.agent.SetDestination(point);
 
 
-                        //shooting timer
-                        if (Time.time >= OwnerAsRanged.nextTimeToFire)
-                        {
-                            OwnerAsRanged.nextTimeToFire = Time.time + 1f / OwnerAsRanged.fireRate;
-                            Owner.Shoot();
-                            //Shoot();
-                        }
-                        Owner.transform.LookAt(Owner.Player.transform);
                     }
                 }
 
-                break;
+                //shooting timer
+                if (Time.time >= OwnerAsRanged.nextTimeToFire)
+                {
+                    //OwnerAsRanged.nextTimeToFire = Time.time + OwnerAsRanged.fireRate;
+                    OwnerAsRanged.nextTimeToFire = Time.time + Random.Range(OwnerAsRanged.minFireRate, OwnerAsRanged.maxFireRate);
+                    Owner.Shoot();
+                }
+                Owner.transform.LookAt(Owner.Player.transform);
+
+            break;
+
             case Juggernaut:
                 Owner.Shoot();
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._chaseState);

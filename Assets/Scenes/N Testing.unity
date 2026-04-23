@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2204181174462613249, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -180,6 +180,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: _shotOffset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: maxFireRate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: minFireRate
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: setFireRate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: UseFirePoints
       value: 0
       objectReference: {fileID: 0}
@@ -193,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 6228779371739049736, guid: 132af09ceb0f4a340991e56ecc31c471, type: 3}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: FirePoints.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: 'FirePoints.Array.data[0]'
@@ -2619,6 +2635,10 @@ PrefabInstance:
     - target: {fileID: 6309285473008256643, guid: f976106c600f35346bc753db2122236f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384322713868323038, guid: f976106c600f35346bc753db2122236f, type: 3}
+      propertyPath: SpawnAgro
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9965,6 +9985,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 765761212573964377, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 765761212573964377, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 765761212573964377, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+      propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1538956336376115557, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}

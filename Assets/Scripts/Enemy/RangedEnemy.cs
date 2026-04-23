@@ -6,7 +6,6 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class RangedEnemy : Enemy, IHasRangedAttack
 {
-
     [Header("Ranged Enemy Specific Variables")]
     public GameObject bulletPrefab;
     //private ObjectPool<GameObject> bulletPool; TODO
@@ -15,8 +14,17 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     /// AKA minimum distance between enemy and player
     /// </summary>
     public float tooCloseRange = 10f;
-    public float fireRate = 0.5f;
+    public float setFireRate = 2f;
     public float nextTimeToFire = 0;
+
+    public float minFireRate = 0.5f;
+    public float maxFireRate = 1.5f;
+
+    /// <summary>
+    /// offsets the shot randomly between +/- shot offset on all axises
+    /// </summary>
+    [SerializeField] private float _shotOffset;
+    public float ShotOffset { get { return _shotOffset; } }
 
     public bool AllowSlugDrops = true;
 
@@ -71,7 +79,8 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         bullet.transform.rotation = gunChild.rotation;
         bullet.transform.parent = transform;
 
-        Vector3 playerCurrPos = Player.transform.position;
+        Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset),
+            UnityEngine.Random.Range(-ShotOffset, ShotOffset), UnityEngine.Random.Range(-ShotOffset, ShotOffset));
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
         muzzleflash.Play(true);
 

@@ -46,8 +46,14 @@ public class MeleeAttackState : State
                 Owner.Player.TakeDamage(Owner.damage);
                 hitPlayer = true;
             }
-                
-            //automatically switch to cooldown after attack timer is done
+            //kind of negates the issue of standing behind an enemy? too snappy though
+            //real fix is probably only making enemy attack if player is in trigger.... ? 
+            //else
+            //{
+            //    Owner.transform.LookAt(Owner.Player.transform);
+            //}
+
+                //automatically switch to cooldown after attack timer is done
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);
                 Owner.stateMachine.TransitionTo(Owner.stateMachine._cooldownState);
         }

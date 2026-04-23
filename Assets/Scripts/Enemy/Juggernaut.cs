@@ -7,6 +7,9 @@ using UnityEngine.AI;
 public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 {
     [Header("Juggernaut Variables")]
+
+    [SerializeField] private float _shotOffset;
+    public float ShotOffset { get { return _shotOffset; } }
     public GameObject ProjectilePrefab;
 
     public bool PlayerInTrigger { get; set; }
@@ -92,7 +95,9 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         //bullet.transform.rotation = hand position
         //bullet.transform.parent = transform;
 
-        Vector3 playerCurrPos = Player.transform.position;
+
+        Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset), 
+            UnityEngine.Random.Range(-ShotOffset, ShotOffset), UnityEngine.Random.Range(-ShotOffset, ShotOffset));
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
 
         //play sound

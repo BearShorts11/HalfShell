@@ -32,6 +32,7 @@ public class ChaseState : State
 
     public override void Update()
     {
+
         float distanceFromPlayer = Vector3.Distance(Owner.transform.position, Owner.Player.transform.position);
         if (distanceFromPlayer <= attackRange)
         {
@@ -47,7 +48,7 @@ public class ChaseState : State
                     break;
             }
         }
-        else if ((Owner is RangedEnemy) && distanceFromPlayer > Owner.detectionRange)
+        else if ((Owner is RangedEnemy) && distanceFromPlayer > Owner.detectionRange && !Owner.AlwaysChase)
         {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
         }
@@ -59,7 +60,6 @@ public class ChaseState : State
         {
             //attempting to avoid editor errors
             if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
-            Debug.Log("setting target pos");
         }
     }
 }

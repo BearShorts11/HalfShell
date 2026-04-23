@@ -84,6 +84,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     public bool SpawnAgro;
 
+    /// <summary>
+    /// enemy will not return to idle even if player is outside of detection radius, instead constantly persuing the player
+    /// </summary>
+    public bool AlwaysChase;
+
 
     [Header("States")]
     public StateMachine stateMachine;
@@ -107,9 +112,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         animator = GetComponentInChildren<Animator>();
         ragdollController = GetComponentInChildren<RagdollController>();
 
-        if (SpawnAgro) stateMachine.Initialize(stateMachine._chaseState);
+        if (SpawnAgro)
+        {
+            AlwaysChase = true;
+            stateMachine.Initialize(stateMachine._chaseState);
+        } 
         else stateMachine.Initialize(stateMachine._idleState);
-
 
         if (BloodSplatterProjector != null)
         {
@@ -119,8 +127,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         Health = maxHealth;
         agent.speed = movementSpeed;
-        // Why? - V
-        //agent.acceleration = 10f;
+        // Why? - V 
+        //acceleration effects turn speed, so they don't go fucking flying past you when trying to hit you
+        agent.acceleration = 10f;
 
         if (soundEvents == null)
             soundEvents = this.gameObject.GetComponent<SimpleSoundEvent>();
@@ -316,9 +325,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// Enemy will attack player. Gets called from Debug Command ONLY
     /// </summary>
     public virtual void MakeAgro()
-    { 
-        stateMachine.TransitionTo(stateMachine._idleState);
-        
+    {
+        AlwaysChase = true;
+        stateMachine.TransitionTo(stateMachine._chaseState);
     }
 
     /// <summary>
@@ -326,6 +335,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     public virtual void Alert() 
     {
+        AlwaysChase = true;
         stateMachine.TransitionTo(stateMachine._chaseState);
     }
 
