@@ -14,8 +14,22 @@ public class SlowMo_Manager : MonoBehaviour
 
     [Range(0f,1f)] public float slowMoChance = 0.05f;
     private PlayerBehavior player;
-    [SerializeField] private float slowMoActiveTime = 2.5f;
+    [SerializeField] private float _SlowMoActiveTime = 2.5f;
+    private float slowMoActiveTime
+    {
+        get { return _SlowMoActiveTime; }
+        set { 
+            if (value <= 0f)
+            {
+                _SlowMoActiveTime = slowMoActiveTimeDefault;
+            }
+            _SlowMoActiveTime = value; 
+        }
+    }
+    float slowMoActiveTimeDefault;
     private bool transitioning = false;
+
+    private IEnumerator coroutine;
 
     public void DramaEvent()
     {
@@ -23,6 +37,11 @@ public class SlowMo_Manager : MonoBehaviour
         {
             StartSlowMo(slowMoScale);
         }
+    }
+
+    public void SetSlowMoDuration(float duration)
+    {
+        slowMoActiveTime = duration;
     }
 
     public void StartSlowMo(float setTimeScale)
@@ -39,7 +58,7 @@ public class SlowMo_Manager : MonoBehaviour
         RuntimeManager.PlayOneShot("event:/UI/SlowMo_Activate");
         transitioning = true;
         TransitionTimeScale(setTimeScale);
-        Invoke(nameof(StopSlowMo), (slowMoActiveTime * setTimeScale) + (1 * setTimeScale));
+        //Invoke(nameof(StopSlowMo), (slowMoActiveTime * setTimeScale) + (1 * setTimeScale));
     }
 
     public static void TransitionTimeScale(float timeScale = 1f)
@@ -63,6 +82,8 @@ public class SlowMo_Manager : MonoBehaviour
                 TransitionTimeScale();
             }
             RuntimeManager.PlayOneShot("event:/UI/SlowMo_Deactivate");
+=======
+            slowMoActiveTime = slowMoActiveTimeDefault;
         }
     }
 
@@ -78,6 +99,8 @@ public class SlowMo_Manager : MonoBehaviour
             Time.timeScale = 1;
             setTimeScale = 1;
         }
+
+        slowMoActiveTimeDefault = _SlowMoActiveTime;
         //Enemy.DeathAlert.AddListener(DramaEvent);
     }
 
@@ -99,20 +122,22 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && time < 1)
+        if (!PauseMenu.paused && time < slowMoActiveTime)
         {
             step = Time.deltaTime;
             time += step;
-            if (time > 1)
-                time = Mathf.Clamp01(time);
-            
-            Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, time);
+
+            Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, Mathf.Clamp01(time));
 
             if (transitioning)
             {
                 RuntimeManager.StudioSystem.setParameterByName("Timescale", Time.timeScale);
                 if (Time.timeScale == 1 && time >= 1 && transitioning)
                     transitioning = false;
+            }
+            if (time >= slowMoActiveTime && slowMoActive)
+            {
+                StopSlowMo();
             }
         }
     }
