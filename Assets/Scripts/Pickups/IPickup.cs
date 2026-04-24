@@ -75,16 +75,14 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
 
     public void OnPickup()
     {
-        //ObjectManager manager = FindFirstObjectByType<ObjectManager>();
-        //if (manager is null) return;
 
-        //manager.PickedUpObject(this.Id);
+
 
         Kerth k = FindFirstObjectByType<Kerth>();
         if (k is not null)
         {
             k.PickedUpObject(this.data);
-            PickupMessage(k.gameObject.GetComponent<PlayerBehavior>(), $"You got " + $"{Type}".ToLower() + "!");
+            //PickupMessage(k.gameObject.GetComponent<PlayerBehavior>(), $"You got " + $"{Type}".ToLower() + "!");
         }
     }
 

@@ -1,5 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +34,7 @@ public class PlayerUI : MonoBehaviour
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
 
-    //gets around needing a static reference for a static method (Make UI Shell)
+    //gets around needing a static reference for a static method (Make UI Shell) but needing to assign in the inspector
     public Sprite HalfShellSprite;
     public Sprite SlugSprite;
     public Sprite FireShellSprite;
@@ -97,15 +100,29 @@ public class PlayerUI : MonoBehaviour
         return UIshell;
     }
 
-    public void MagazineUILoss()
+    public void MagazineUILoss(ShellBase shell)
     {
         // Transform out of bound error fix (5 + 1 in the chamber) -V
         if (gun.currentCapacity < gun.totalCapacity)
-            Destroy(gun.magazineUI.transform.GetChild(gun.Magazine.Count).gameObject);
+            Destroy(gun.magazineUI.transform.GetChild(gun.magUI.Count -1).gameObject);
+
+        //shift position forward of all children
+        for (int i = 0; i < gun.Magazine.Count; i++)
+        {
+            Vector3 adjustPosition = Vector3.zero;
+            if (shell.Type == ShellBase.ShellType.HalfShell) adjustPosition.x = -30;
+            else adjustPosition.x = -60;
+
+            gun.magazineUI.transform.GetChild(i).GetComponent<RectTransform>().localPosition += adjustPosition;
+        }
     }
 
     public void LoadMagUI(ShellBase shell)
     {
+        LoadMagUI2(shell);
+        return;
+
+
         GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
 
         //set position based on capacity, shell size, & buffer
@@ -121,6 +138,26 @@ public class PlayerUI : MonoBehaviour
             else y += 60;
         }
 
+        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
+        UIshell.SetActive(true);
+    }
+
+    public void LoadMagUI2(ShellBase shell)
+    {
+        GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
+
+        //shift position forward of all children
+        for (int i = 0; i < gun.Magazine.Count; i++)
+        {
+            Vector3 adjustPosition = Vector3.zero;
+            if (shell.Type == ShellBase.ShellType.HalfShell) adjustPosition.x = 30;
+            else adjustPosition.x = 60;
+
+                gun.magazineUI.transform.GetChild(i).GetComponent<RectTransform>().localPosition += adjustPosition;
+        }
+
+        float y = -122;
+        if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f;
         UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
         UIshell.SetActive(true);
     }
@@ -234,4 +271,5 @@ public class PlayerUI : MonoBehaviour
     {
         messageText.SetMessage(message, time);
     }
+
 }

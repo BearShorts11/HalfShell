@@ -323,7 +323,11 @@ public class PlayerShooting : MonoBehaviour
         {
             playerUI.ChamberUIOff();
             ShellBase shell = Chamber as ShellBase;
-            if (useShells && AmmoCounts[shell.Type] < shell.MaxHolding) AmmoCounts[shell.Type]++;
+            if (useShells && AmmoCounts[shell.Type] < shell.MaxHolding)
+            { 
+                AmmoCounts[shell.Type]++;
+                AlertController.SetRackAlert(shell.Type);
+            }
         }
 
         Chamber = null;
@@ -340,8 +344,8 @@ public class PlayerShooting : MonoBehaviour
             Chamber = Magazine.Pop();
             float size = Chamber.Size;
             MagLoss(Chamber.Size);
-            magUI.RemoveAt(magUI.Count - 1);
-            playerUI.MagazineUILoss();
+            playerUI.MagazineUILoss(magUI[0]);
+            magUI.RemoveAt(0);
             //temporary based on current UI
             playerUI.ChamberUIOn(Chamber);
             ChamberType = Chamber.Type;
@@ -507,8 +511,8 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(slug))
         {
             LoadMagazine(slug);
-            //magUI.Insert(0, slug);
-            magUI.Add(slug);
+            magUI.Insert(0, slug);
+            //magUI.Add(slug);
             playerUI.LoadMagUI(slug);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Slug]--;
@@ -521,8 +525,8 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(buck))
         {
             LoadMagazine(buck);
-            //magUI.Insert(0, buck);
-            magUI.Add(buck);
+            magUI.Insert(0, buck);
+            //magUI.Add(buck);
             playerUI.LoadMagUI(buck);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Buckshot]--;
@@ -535,8 +539,8 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(half))
         {
             LoadMagazine(half);
-            //magUI.Insert(0, half);
-            magUI.Add(half);
+            magUI.Insert(0, half);
+            //magUI.Add(half);
             playerUI.LoadMagUI(half);
 
             //AmmoCounts[ShellBase.ShellType.HalfShell]--;
@@ -549,8 +553,8 @@ public class PlayerShooting : MonoBehaviour
         if (CanLoad(fire))
         {
             LoadMagazine(fire);
-            //magUI.Insert(0, fire);
-            magUI.Add(fire);
+            magUI.Insert(0, fire);
+            //magUI.Add(fire);
             playerUI.LoadMagUI(fire);
 
             if (useShells) AmmoCounts[ShellBase.ShellType.Incindiary]--;

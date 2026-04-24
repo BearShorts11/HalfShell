@@ -30,6 +30,7 @@ public class HealthPickup : IPickup
             Player.Health += regainAmount;
             UI.UpdateHP(Player.Health, Player.maxHealth);
             UI.CheckHealth();
+            AlertController.SetAlert("health", this.regainAmount);
 
             base.OnPickup();
             Destroy(gameObject);

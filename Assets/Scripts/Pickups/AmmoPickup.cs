@@ -96,7 +96,22 @@ public class AmmoPickup : IPickup
                 // More to be added here when Ammo Maximums are added -A
                 if (!infinite) { base.OnPickup(); Destroy(gameObject); }
                 else
-                    PickupMessage(other.gameObject.GetComponent<PlayerBehavior>(), $"You got {ammoType} " + $"{Type}".ToLower() + "!");
+                {
+                    //PickupMessage(other.gameObject.GetComponent<PlayerBehavior>(), $"You got {ammoType} " + $"{Type}".ToLower() + "!");
+                }
+
+                switch (ammoType)
+                {
+                    case ShellBase.ShellType.Incindiary:
+                        AlertController.SetAlert("fire shell", this.regainAmount);
+                        break;
+                    case ShellBase.ShellType.Slug:
+                        AlertController.SetAlert("slug", this.regainAmount);
+                        break;
+                    default:
+                        AlertController.SetAlert("half shell", this.regainAmount);
+                        break;
+                }
             }
         }
     }
