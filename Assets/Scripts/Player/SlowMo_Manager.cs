@@ -36,6 +36,7 @@ public class SlowMo_Manager : MonoBehaviour
             if (IsInvoking(nameof(StopSlowMo)))
                 CancelInvoke(nameof(StopSlowMo));
         }
+        RuntimeManager.PlayOneShot("event:/UI/SlowMo_Activate");
         transitioning = true;
         TransitionTimeScale(setTimeScale);
         Invoke(nameof(StopSlowMo), (slowMoActiveTime * setTimeScale) + (1 * setTimeScale));
@@ -61,6 +62,7 @@ public class SlowMo_Manager : MonoBehaviour
             {
                 TransitionTimeScale();
             }
+            RuntimeManager.PlayOneShot("event:/UI/SlowMo_Deactivate");
         }
     }
 
