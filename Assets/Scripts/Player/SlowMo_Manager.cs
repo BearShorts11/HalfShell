@@ -13,20 +13,25 @@ public class SlowMo_Manager : MonoBehaviour
     static float time = 0, step = 0;
 
     [Range(0f,1f)] public float slowMoChance = 0.05f;
+    private float slowMoChanceDefault;
+
     private PlayerBehavior player;
-    [SerializeField] private float _SlowMoActiveTime = 2.5f;
-    private float slowMoActiveTime
+    [SerializeField] private float _SlowMoDurationTime = 2.5f;
+    private float slowMoDurationTime
     {
-        get { return _SlowMoActiveTime; }
+        get { return _SlowMoDurationTime; }
         set { 
             if (value <= 0f)
             {
-                _SlowMoActiveTime = slowMoActiveTimeDefault;
+                _SlowMoDurationTime = slowMoDurationTimeDefault;
             }
-            _SlowMoActiveTime = value; 
+            _SlowMoDurationTime = value; 
         }
     }
-    float slowMoActiveTimeDefault;
+
+    float slowMoDurationModified { get { return slowMoDurationTime * setTimeScale; } }
+
+    float slowMoDurationTimeDefault;
     private bool transitioning = false;
 
     private IEnumerator coroutine;
@@ -41,7 +46,7 @@ public class SlowMo_Manager : MonoBehaviour
 
     public void SetSlowMoDuration(float duration)
     {
-        slowMoActiveTime = duration;
+        slowMoDurationTime = duration;
     }
 
     public void StartSlowMo(float setTimeScale)
@@ -82,8 +87,7 @@ public class SlowMo_Manager : MonoBehaviour
                 TransitionTimeScale();
             }
             RuntimeManager.PlayOneShot("event:/UI/SlowMo_Deactivate");
-=======
-            slowMoActiveTime = slowMoActiveTimeDefault;
+            slowMoDurationTime = slowMoDurationTimeDefault;
         }
     }
 
@@ -100,7 +104,7 @@ public class SlowMo_Manager : MonoBehaviour
             setTimeScale = 1;
         }
 
-        slowMoActiveTimeDefault = _SlowMoActiveTime;
+        slowMoDurationTimeDefault = _SlowMoDurationTime;
         //Enemy.DeathAlert.AddListener(DramaEvent);
     }
 
@@ -122,7 +126,7 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && time < slowMoActiveTime)
+        if (!PauseMenu.paused && time < slowMoDurationModified)
         {
             step = Time.deltaTime;
             time += step;
@@ -135,7 +139,7 @@ public class SlowMo_Manager : MonoBehaviour
                 if (Time.timeScale == 1 && time >= 1 && transitioning)
                     transitioning = false;
             }
-            if (time >= slowMoActiveTime && slowMoActive)
+            if (time >= slowMoDurationModified && slowMoActive)
             {
                 StopSlowMo();
             }
