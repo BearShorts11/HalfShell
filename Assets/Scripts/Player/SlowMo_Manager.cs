@@ -139,7 +139,7 @@ public class SlowMo_Manager : MonoBehaviour
         {
             step = Time.deltaTime;
             time += step;
-            transitionTime = time;
+            transitionTime += step;
 
             Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, Mathf.Clamp01(transitionTime));
 
