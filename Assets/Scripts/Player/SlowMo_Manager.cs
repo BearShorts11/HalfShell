@@ -17,7 +17,9 @@ public class SlowMo_Manager : MonoBehaviour
     private float slowMoChanceDefault;
     [Range(0f,1f)] public float maxSlowMoChanceBonusFromTime = 0.25f;
     [Tooltip("How long does it take for the bonus chance to reach it's maximum when it's added onto the existing slowMoChance")]
-    [Min(0f)] public float timeToReachMaxSlowMoChance = 6000f;
+    [Min(0f)] public float timeToReachMaxSlowMoChance = 600f;
+    private float slowMoChanceTimeCalc { get => Mathf.Lerp(0, maxSlowMoChanceBonusFromTime, (Time.time - timeSinceLastSlowMo) / timeToReachMaxSlowMoChance); }
+    private float slowMoChanceTotal { get => slowMoChance + slowMoChanceTimeCalc; }
     public float timeSinceLastSlowMo { get; private set; }
 
     private PlayerBehavior player;
@@ -43,7 +45,7 @@ public class SlowMo_Manager : MonoBehaviour
 
     public void DramaEvent()
     {
-        if (Random.Range(0f,1f) <= (slowMoChance + Mathf.Lerp(0, maxSlowMoChanceBonusFromTime, Time.time - timeSinceLastSlowMo / timeToReachMaxSlowMoChance)))
+        if (Random.Range(0f,1f) <= slowMoChanceTotal)
         {
             StartSlowMo(slowMoScale);
         }
