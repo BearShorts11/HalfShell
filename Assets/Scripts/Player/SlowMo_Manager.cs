@@ -10,10 +10,15 @@ public class SlowMo_Manager : MonoBehaviour
     [field: SerializeField] public static float setTimeScale { get; private set; } = 1.0f;
     [field: SerializeField] public static float slowMoScale { get; private set; } = 0.25f;
     [field: SerializeField] public static bool slowMoActive { get; private set; } = false;
+    static float transitionTime;
     static float time = 0, step = 0;
 
     [Range(0f,1f)] public float slowMoChance = 0.05f;
     private float slowMoChanceDefault;
+    [Range(0f,1f)] public float maxSlowMoChanceBonusFromTime = 0.25f;
+    [Tooltip("How long does it take for the bonus chance to reach it's maximum when it's added onto the existing slowMoChance")]
+    [Min(0f)] public float timeToReachMaxSlowMoChance = 6000f;
+    public float timeSinceLastSlowMo { get; private set; }
 
     private PlayerBehavior player;
     [SerializeField] private float _SlowMoDurationTime = 2.5f;
@@ -38,7 +43,7 @@ public class SlowMo_Manager : MonoBehaviour
 
     public void DramaEvent()
     {
-        if (Random.Range(0f,1f) <= slowMoChance)
+        if (Random.Range(0f,1f) <= (slowMoChance + Mathf.Lerp(0, maxSlowMoChanceBonusFromTime, Time.time - timeSinceLastSlowMo / timeToReachMaxSlowMoChance)))
         {
             StartSlowMo(slowMoScale);
         }
@@ -63,12 +68,14 @@ public class SlowMo_Manager : MonoBehaviour
         RuntimeManager.PlayOneShot("event:/UI/SlowMo_Activate");
         transitioning = true;
         TransitionTimeScale(setTimeScale);
+        timeSinceLastSlowMo = Time.time;
+        time = 0;
         //Invoke(nameof(StopSlowMo), (slowMoActiveTime * setTimeScale) + (1 * setTimeScale));
     }
 
     public static void TransitionTimeScale(float timeScale = 1f)
     {
-        time = 0; step = 0;
+        transitionTime = 0; step = 0;
         timeScale = Mathf.Clamp01(timeScale);
         setTimeScale = timeScale;
     }
@@ -88,6 +95,7 @@ public class SlowMo_Manager : MonoBehaviour
             }
             RuntimeManager.PlayOneShot("event:/UI/SlowMo_Deactivate");
             slowMoDurationTime = slowMoDurationTimeDefault;
+            slowMoChance = slowMoChanceDefault;
         }
     }
 
@@ -105,6 +113,7 @@ public class SlowMo_Manager : MonoBehaviour
         }
 
         slowMoDurationTimeDefault = _SlowMoDurationTime;
+        slowMoChanceDefault= slowMoChance;
         //Enemy.DeathAlert.AddListener(DramaEvent);
     }
 
@@ -126,12 +135,13 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && time < slowMoDurationModified)
+        if (!PauseMenu.paused && (time < slowMoDurationModified || transitionTime < 1))
         {
             step = Time.deltaTime;
             time += step;
+            transitionTime = time;
 
-            Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, Mathf.Clamp01(time));
+            Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, Mathf.Clamp01(transitionTime));
 
             if (transitioning)
             {
@@ -139,7 +149,7 @@ public class SlowMo_Manager : MonoBehaviour
                 if (Time.timeScale == 1 && time >= 1 && transitioning)
                     transitioning = false;
             }
-            if (time >= slowMoDurationModified && slowMoActive)
+            if ((time >= slowMoDurationModified) && slowMoActive)
             {
                 StopSlowMo();
             }

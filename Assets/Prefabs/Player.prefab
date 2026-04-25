@@ -1021,8 +1021,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140d8aa978140204295e4cf03bbcebae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowMoChance: 0.05
-  slowMoActiveTime: 2.5
+  slowMoChance: 0.01
+  maxSlowMoChanceBonusFromTime: 0.1
+  timeToReachMaxSlowMoChance: 6000
+  _SlowMoDurationTime: 2.5
 --- !u!95 &1952711760327031536
 Animator:
   serializedVersion: 7
