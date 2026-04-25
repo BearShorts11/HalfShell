@@ -96,21 +96,29 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: _shotOffset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: attackRange
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: maxFireRate
-      value: 1.75
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: minFireRate
-      value: 0.75
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: muzzleflash
       value: 
       objectReference: {fileID: 3589322914988105397}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: setFireRate
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: movementSpeed
       value: 3
@@ -122,6 +130,10 @@ PrefabInstance:
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: detectionRange
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
+      propertyPath: nextTimeToFire
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3256531511175847293, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: detectionRadius
