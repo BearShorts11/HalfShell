@@ -5,7 +5,7 @@ using UnityEngine;
 public class SimpleSpawner : MonoBehaviour
 {
     public GameObject defaultObjectToSpawn;
-    [Tooltip("Requires Child GameObject to be set and defaultObjectToSpawn be empty \nShould the child object be active when the scene starts or should it behave like defaultObjectToSpawn if it was set to a prefab")]
+    [Tooltip("Should the child object be active when the scene starts or should it behave like defaultObjectToSpawn if it was set to a prefab")]
     public bool bActiveOnStart = false;
     GameObject spawnedObject;
 
@@ -15,16 +15,14 @@ public class SimpleSpawner : MonoBehaviour
         if (defaultObjectToSpawn == null && transform.childCount > 0)
         {
             defaultObjectToSpawn = transform.GetChild(0).gameObject;
-            if (bActiveOnStart)
-            {
-                spawnedObject = defaultObjectToSpawn;
-                return;
-            }
+            spawnedObject = defaultObjectToSpawn;
             if (defaultObjectToSpawn.activeSelf)
             {
                 defaultObjectToSpawn.SetActive(false);
             }
         }
+        if (bActiveOnStart)
+            SpawnObject();
     }
 
     public void SpawnObject()
