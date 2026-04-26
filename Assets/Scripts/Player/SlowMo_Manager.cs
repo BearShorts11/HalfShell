@@ -17,12 +17,13 @@ public class SlowMo_Manager : MonoBehaviour
     private float slowMoChanceDefault;
     [Range(0f,1f)] public float maxSlowMoChanceBonusFromTime = 0.25f;
     [Tooltip("How long does it take for the bonus chance to reach it's maximum when it's added onto the existing slowMoChance")]
-    [Min(0f)] public float timeToReachMaxSlowMoChance = 600f;
-    private float slowMoChanceTimeCalc { get => Mathf.Lerp(0, maxSlowMoChanceBonusFromTime, (Time.time - timeSinceLastSlowMo) / timeToReachMaxSlowMoChance); }
-    private float slowMoChanceTotal { get => slowMoChance + slowMoChanceTimeCalc; }
+    [Min(0f)] public float timeToReachMaxSlowMoChance = 3000f;
+    [Range(0.1f, 1f)]public float timeScaleTransitionSpeed = 0.5f;
     public float timeSinceLastSlowMo { get; private set; }
 
     private PlayerBehavior player;
+    private float slowMoChanceTimeCalc { get => Mathf.Lerp(0, maxSlowMoChanceBonusFromTime, (Time.time - timeSinceLastSlowMo) / timeToReachMaxSlowMoChance); }
+    private float slowMoChanceTotal { get => slowMoChance + slowMoChanceTimeCalc; }
     [SerializeField] private float _SlowMoDurationTime = 2.5f;
     private float slowMoDurationTime
     {
@@ -36,7 +37,7 @@ public class SlowMo_Manager : MonoBehaviour
         }
     }
 
-    float slowMoDurationModified { get { return slowMoDurationTime * setTimeScale; } }
+    float slowMoDurationModified { get { return (slowMoDurationTime + (1 / timeScaleTransitionSpeed)) * setTimeScale; } }
 
     float slowMoDurationTimeDefault;
     private bool transitioning = false;
@@ -141,7 +142,7 @@ public class SlowMo_Manager : MonoBehaviour
         {
             step = Time.deltaTime;
             time += step;
-            transitionTime += step;
+            transitionTime += (step * .5f);
 
             Time.timeScale = Mathf.Lerp(Time.timeScale, setTimeScale, Mathf.Clamp01(transitionTime));
 
