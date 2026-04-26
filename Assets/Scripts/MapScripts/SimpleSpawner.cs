@@ -15,7 +15,6 @@ public class SimpleSpawner : MonoBehaviour
         if (defaultObjectToSpawn == null && transform.childCount > 0)
         {
             defaultObjectToSpawn = transform.GetChild(0).gameObject;
-            spawnedObject = defaultObjectToSpawn;
             if (defaultObjectToSpawn.activeSelf)
             {
                 defaultObjectToSpawn.SetActive(false);
