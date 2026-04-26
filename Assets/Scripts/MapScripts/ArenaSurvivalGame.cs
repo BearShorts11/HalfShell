@@ -197,6 +197,7 @@ public class ArenaSurvivalGame : MonoBehaviour
         {
             nextSpawnTime = Time.fixedTime + currentWave.spawnRate;
             SimpleSpawnVolume spawnVol = PickSpawnVolume();
+            if (spawnVol == null) return;
             if (WaveConfigured())
             {
                 // Spawn a squad or a stray enemy
