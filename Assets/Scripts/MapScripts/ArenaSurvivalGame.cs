@@ -194,6 +194,7 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (nextSpawnTime < Time.fixedTime && !AllEnemiesSpawned())
         {
             nextSpawnTime = Time.fixedTime + currentWave.spawnRate;
+            if (activeSpawnVolumes.Count <= 0) return;
             SimpleSpawnVolume spawnVol = PickSpawnVolume();
             if (WaveConfigured())
             {
