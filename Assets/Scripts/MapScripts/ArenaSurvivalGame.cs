@@ -177,6 +177,8 @@ public class ArenaSurvivalGame : MonoBehaviour
                 activeSpawnVolumes.Add(volume);
         }
 
+        if (activeSpawnVolumes.Count <= 0) return null;
+
         return activeSpawnVolumes[Random.Range(0, activeSpawnVolumes.Count)];
     }
     bool WaveConfigured()
@@ -194,7 +196,6 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (nextSpawnTime < Time.fixedTime && !AllEnemiesSpawned())
         {
             nextSpawnTime = Time.fixedTime + currentWave.spawnRate;
-            if (activeSpawnVolumes.Count <= 0) return;
             SimpleSpawnVolume spawnVol = PickSpawnVolume();
             if (WaveConfigured())
             {
