@@ -34,6 +34,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private ParticleSystem concrete;
     [SerializeField] private ParticleSystem metal;
     [SerializeField] private ParticleSystem blood;
+    [SerializeField] private ParticleSystem incendiaryFX;
 
     [SerializeField] private ParticleSystem muzzleflash;
     [SerializeField] private Transform      shotgunMuzzleflashPos;
@@ -626,6 +627,15 @@ public class PlayerShooting : MonoBehaviour
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
+                            if (shell.Type == ShellBase.ShellType.Incindiary)
+                            {
+                                float angle = Vector3.Angle(fwd,hit.normal);
+                                if (angle > 175f)
+                                {
+                                    fwd -= fwd;
+                                }
+                                Instantiate(incendiaryFX, hit.point, Quaternion.LookRotation(hit.normal + fwd));
+                            }
                             DoHit(hit, shell);
                         }
                     }
