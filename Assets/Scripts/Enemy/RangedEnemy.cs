@@ -50,10 +50,28 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     void Update()
     {
         base.BaseUpdate();
+
+        Voice_Update();
     }
 
     public override void TakeDamage(float amount)
     {
+        if (Health - amount <= 0)
+        {
+            PlayVoice("event:/Enemy/EnemyDeath");
+            base.TakeDamage(amount);
+            return;
+        }
+
+        if (!statusEffected)
+        {
+            vocalCoolDown = 0.01f;
+            if (!IsOnVocalCooldown())
+            {
+                PlayVoice("event:/Dialogue/cultistsDmg");
+            }
+        }
+
         if (agent.velocity.x > 0 || agent.velocity.z > 0)
         {
             animator.Play("Pistol Hit Running");
@@ -85,5 +103,42 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         muzzleflash.Play(true);
 
         RuntimeManager.PlayOneShot(firingSound, transform.position);
+    }
+
+    public override void SpottedPlayer()
+    {
+        vocalCoolDown = 0.00001f;
+        if (!IsOnVocalCooldown())
+        {
+            PlayVoice("event:/Dialogue/cultistBark");
+        }
+    }
+
+    void Voice_Update()
+    {
+        if (!IsOnVocalCooldown())
+        {
+
+            vocalCoolDown = defaultVocalCoolDown + Random.Range(-1.5f, 1.5f);
+
+            if (statusEffected && statusEffectShell.Type == ShellBase.ShellType.Incindiary)
+            {
+                vocalCoolDown = 5f;
+                PlayVoice("event:/Enemy/EnemyBurning");
+            }
+
+            /*switch (stateMachine.CurrentState)
+            {
+                case MeleeAttackState:
+                    vocalCoolDown = 0.9f;
+                    PlayVoice("event:/Dialogue/cultistsAtk");
+                    break;
+                    //case ChaseState:
+                    //    PlayVoice("event:/Dialogue/cultistBark");
+                    //    break;
+            }*/
+
+            //lastVocalization = Time.time;
+        }
     }
 }

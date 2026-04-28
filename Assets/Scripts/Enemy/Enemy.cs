@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using System.Collections;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,6 +20,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public GameObject BloodSplatterProjector;
     private Material[] decals;
     public GameObject FullyGibbedParticle;
+    public ParticleSystem[] fireParticles;
 
     [SerializeField] GameObject HealthPackDrop;
 
@@ -51,12 +53,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// <summary>
     /// if the enemy is effected by any staus effects from shells
     /// </summary>
-    private bool statusEffected;
+    protected bool statusEffected;
 
     /// <summary>
     /// holds a reference to the shell if effected by a status effect in order to access all it
     /// </summary>
-    private ShellBase statusEffectShell;
+    protected ShellBase statusEffectShell;
 
     /// <summary>
     /// if effected by a status effect, next time to take damage on
@@ -129,10 +131,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         agent.speed = movementSpeed;
         // Why? - V 
         //acceleration effects turn speed, so they don't go fucking flying past you when trying to hit you
-        agent.acceleration = 10f;
+        //agent.acceleration = 10f;
 
         if (soundEvents == null)
             soundEvents = this.gameObject.GetComponent<SimpleSoundEvent>();
+        if (soundEvents == null)
+            soundEvents = this.AddComponent<SimpleSoundEvent>();
         vocalCoolDown = defaultVocalCoolDown;
     }
 
@@ -257,6 +261,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         damageFromStatusEffect = true;
         //TakeDamage(statusEffectShell.effectDamage);
 
+        if (shell.Type == ShellBase.ShellType.Incindiary)
+        {
+            if (fireParticles != null || fireParticles.Length > 0)
+                foreach (ParticleSystem fireParticle in fireParticles)
+                {
+                    if (fireParticle != null)
+                        fireParticle.gameObject.SetActive(true);
+                }
+        }
+
         timeToStatusDamage = Time.time + shell.effectHitPerSecond;
         StartCoroutine(EffectOverIn(shell.effectTime));
     }
@@ -264,6 +278,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public IEnumerator EffectOverIn(float time)
     {
         yield return new WaitForSeconds(time);
+        if (fireParticles != null || fireParticles.Length > 0)
+            foreach (ParticleSystem fireParticle in fireParticles)
+            {
+                if (fireParticle != null)
+                    fireParticle.gameObject.SetActive(false);
+            }
         statusEffected = false;
     }
 
@@ -380,6 +400,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         return Time.time < lastVocalization + vocalCoolDown;
     }
+
+    public virtual void SpottedPlayer() { }
 
     private void OnDrawGizmos()
     {

@@ -36,29 +36,47 @@ public class MeleeEnemy : Enemy, IHasMeleeAttack
 
     public override void TakeDamage(float amount)
     {
-        vocalCoolDown = 0.01f;
-        if (!IsOnVocalCooldown())
+        if (Health - amount <= 0)
         {
-            PlayVoice("event:/Dialogue/cultistsDmg");
+            PlayVoice("event:/Enemy/EnemyDeath");
+            base.TakeDamage(amount);
+            return;
         }
+
+        if (!statusEffected)
+        {
+            vocalCoolDown = 0.01f;
+            if (!IsOnVocalCooldown())
+            {
+                PlayVoice("event:/Dialogue/cultistsDmg");
+            }
+        }
+
         base.TakeDamage(amount);
     }
 
-    public override void Alert()
+    public override void SpottedPlayer()
     {
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {
             PlayVoice("event:/Dialogue/cultistBark");
         }
-        base.Alert();
     }
 
     void Voice_Update()
     {
         if (!IsOnVocalCooldown())
         {
+
             vocalCoolDown = defaultVocalCoolDown + Random.Range(-1.5f, 1.5f);
+
+            if (statusEffected && statusEffectShell.Type == ShellBase.ShellType.Incindiary)
+            {
+                vocalCoolDown = 5f;
+                PlayVoice("event:/Enemy/EnemyBurning");
+                return;
+            }
 
             switch(stateMachine.CurrentState)
             {
