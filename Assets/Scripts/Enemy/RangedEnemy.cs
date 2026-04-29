@@ -20,6 +20,10 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public float minFireRate = 0.5f;
     public float maxFireRate = 1.5f;
 
+    private int clipSize = 9;
+    private int currentClip;
+    private bool bReloading = false;
+
     /// <summary>
     /// offsets the shot randomly between +/- shot offset on all axises
     /// </summary>
@@ -44,6 +48,7 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     private void Awake()
     {
         base.Startup();
+        currentClip = clipSize;
     }
 
     // Update is called once per frame
@@ -84,8 +89,31 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         base.TakeDamage(amount);
     }
 
+    private void Reload()
+    {
+        animator.Play("Reload");
+        nextTimeToFire += animator.GetCurrentAnimatorStateInfo(0).length + Random.Range(minFireRate, maxFireRate);
+        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length);
+        bReloading = true;
+    }
+
+    private void FinishReloading()
+    {
+        currentClip = clipSize;
+        bReloading = false;
+    }
+
     public override void Shoot()
     {
+        if (currentClip <= 0) 
+        {
+            if (bReloading) return;
+            Reload();
+            return; 
+        }
+
+        currentClip--;
+
         animator.Play("Pistol Shooting");
 
         Transform gunChild =RecursiveFindChild(transform, "Pistol");
