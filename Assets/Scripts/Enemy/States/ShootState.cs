@@ -9,6 +9,11 @@ public class ShootState : State
     private RangedEnemy OwnerAsRanged;
 
     /// <summary>
+    /// Cast owner to SniperEnemy as it gives access to SniperEnemy specific variables
+    /// </summary>
+    private SniperEnemy OwnerAsSniper;
+
+    /// <summary>
     /// If using fire points, holds the current point enemy is at or pathing to
     /// </summary>
     private Transform currentPoint;
@@ -22,6 +27,7 @@ public class ShootState : State
     {
         this.Owner = owner;
         OwnerAsRanged = owner as RangedEnemy;
+        OwnerAsSniper = owner as SniperEnemy;
     }
 
     public override void Enter()
@@ -31,6 +37,7 @@ public class ShootState : State
 
     public override void Exit()
     {
+        if (Owner is SniperEnemy) OwnerAsSniper.DisableLaser();
     }
 
     public override void Update()
@@ -40,6 +47,7 @@ public class ShootState : State
         //behavior
         switch (Owner)
         {
+            case SniperEnemy:
             case RangedEnemy:
                 //state changes
                 if (!OwnerAsRanged.UseFirePoints && distanceFromPlayer > Owner.attackRange)
@@ -82,10 +90,20 @@ public class ShootState : State
                 if (Time.time >= OwnerAsRanged.nextTimeToFire)
                 {
                     //OwnerAsRanged.nextTimeToFire = Time.time + OwnerAsRanged.fireRate;
-                    OwnerAsRanged.nextTimeToFire = Time.time + Random.Range(OwnerAsRanged.minFireRate, OwnerAsRanged.maxFireRate);
+                    if (Owner is SniperEnemy)
+                    {
+                        OwnerAsRanged.nextTimeToFire = Time.time + ((OwnerAsSniper.setFireRate * 2) + 3);
+                    }
+                    else
+                        OwnerAsRanged.nextTimeToFire = Time.time + Random.Range(OwnerAsRanged.minFireRate, OwnerAsRanged.maxFireRate);
+
                     Owner.Shoot();
                 }
-                Owner.transform.LookAt(Owner.Player.transform);
+
+                if (Owner is SniperEnemy)
+                    OwnerAsSniper.transform.LookAt(OwnerAsSniper.aimPos);
+                else
+                    Owner.transform.LookAt(Owner.Player.transform);
 
             break;
 

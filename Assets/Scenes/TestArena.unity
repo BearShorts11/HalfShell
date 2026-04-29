@@ -54921,7 +54921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.63188
+      value: 67.298676
       objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -55636,6 +55636,69 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f976106c600f35346bc753db2122236f, type: 3}
+--- !u!1 &1166152453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1166152455}
+  - component: {fileID: 1166152454}
+  m_Layer: 0
+  m_Name: Forest_Ambient
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1166152454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166152453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 803229081
+      Data2: 1135022727
+      Data3: 812539806
+      Data4: 1172502178
+    Path: event:/AMB/Forest
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 100
+  OverrideMaxDistance: 200
+--- !u!4 &1166152455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166152453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -46.1, y: 3.48, z: -99.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1178621325
 Mesh:
   m_ObjectHideFlags: 0
@@ -57749,7 +57812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.833204
+      value: 62.5
       objectReference: {fileID: 0}
     - target: {fileID: 3214146041863294826, guid: c3d0357667e8bb6439be2762eeccb9e3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -89802,17 +89865,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySniper_Test
       objectReference: {fileID: 0}
-    - target: {fileID: 1811996674893492803, guid: 4837690c53cd4814fa9e54e1bec142ad, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3110195903872956968, guid: 4837690c53cd4814fa9e54e1bec142ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 103.9
       objectReference: {fileID: 0}
     - target: {fileID: 3110195903872956968, guid: 4837690c53cd4814fa9e54e1bec142ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 3110195903872956968, guid: 4837690c53cd4814fa9e54e1bec142ad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -98614,3 +98673,4 @@ SceneRoots:
   - {fileID: 7806366113986058603}
   - {fileID: 569957183701012206}
   - {fileID: 7510560677368789643}
+  - {fileID: 1166152455}
