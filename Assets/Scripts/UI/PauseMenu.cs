@@ -26,6 +26,7 @@ public class PauseMenu : MonoBehaviour
     private Bus masterBus;
     private Bus soundBus;
     private Bus uiBus; // Shares the same volume as soundBus, but should not be effected by the timescaling effect in FMOD.
+    private Bus ambientBus; // Ditto
     private Bus musicBus;
     private Bus dialogueBus;
     public Slider masterVolumeSlider; 
@@ -80,6 +81,7 @@ public class PauseMenu : MonoBehaviour
         uiBus = RuntimeManager.GetBus("bus:/UI");
         musicBus = RuntimeManager.GetBus("bus:/Music");
         dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
+        ambientBus = RuntimeManager.GetBus("bus:/AMB");
         // For each bus that has their volume updated
         // They can be run through a method that updates them
         // Each that have their volume adjusted should be adjusted with this
@@ -244,6 +246,7 @@ public class PauseMenu : MonoBehaviour
         masterBus.setVolume(masterVolume);
         soundBus.setVolume(sfxVolume);
         uiBus.setVolume(sfxVolume);
+        ambientBus.setVolume(sfxVolume);
         musicBus.setVolume(musicVolume);
         dialogueBus.setVolume(dialogueVolume);
     }
