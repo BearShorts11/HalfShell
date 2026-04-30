@@ -30,6 +30,10 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{ae998f1e-7136-49a1-952e-4ce802767d50}">
 		<relationship name="effects">
+			<destination>{65214805-6790-4295-962c-356283607672}</destination>
+			<destination>{a5c4e3d2-430e-45af-b715-9d5c79ddc6c2}</destination>
+			<destination>{2780d000-b3bb-46e9-850b-fbebd18ae0de}</destination>
+			<destination>{d7d4fe53-b689-40c5-bfe8-014648142c9d}</destination>
 			<destination>{d0db1575-bb3c-43c4-9623-ef1115fa3f08}</destination>
 			<destination>{5943015c-5774-4a06-8592-a5b44a4c2cb6}</destination>
 		</relationship>
@@ -43,6 +47,41 @@
 			<destination>{e05f1db2-6e6d-4e09-a69c-714af2125330}</destination>
 			<destination>{b97f7325-996e-45b9-b2c3-40e870bece6f}</destination>
 			<destination>{4a099158-1cce-4ec3-a890-c375b5778095}</destination>
+		</relationship>
+	</object>
+	<object class="MixerSend" id="{65214805-6790-4295-962c-356283607672}">
+		<property name="level">
+			<value>0</value>
+		</property>
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{a3900d47-5f00-470d-97c4-3283ec35bd93}</destination>
+		</relationship>
+	</object>
+	<object class="MixerSend" id="{a5c4e3d2-430e-45af-b715-9d5c79ddc6c2}">
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{a312c1c2-f14d-4658-ad5f-c87667f9e396}</destination>
+		</relationship>
+	</object>
+	<object class="MixerSend" id="{2780d000-b3bb-46e9-850b-fbebd18ae0de}">
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{edb81382-167d-46aa-9e73-3569eb54f913}</destination>
+		</relationship>
+	</object>
+	<object class="MixerSend" id="{d7d4fe53-b689-40c5-bfe8-014648142c9d}">
+		<property name="inputFormat">
+			<value>2</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{a1ec3195-39a8-472c-a6f1-e5d9e5a0d24f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d0db1575-bb3c-43c4-9623-ef1115fa3f08}" />

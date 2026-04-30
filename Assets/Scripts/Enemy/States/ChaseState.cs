@@ -21,6 +21,8 @@ public class ChaseState : State
         this.attackRange = Owner.attackRange;
         Owner.agent.isStopped = false;
 
+        Owner.SpottedPlayer();
+
         //have owner as jugg set ranged attack time
         if (Owner is Juggernaut) (Owner as Juggernaut).SetNextRangedAttackTime();
     }

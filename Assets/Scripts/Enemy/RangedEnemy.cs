@@ -20,6 +20,10 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public float minFireRate = 0.5f;
     public float maxFireRate = 1.5f;
 
+    private int clipSize = 9;
+    private int currentClip;
+    private bool bReloading = false;
+
     /// <summary>
     /// offsets the shot randomly between +/- shot offset on all axises
     /// </summary>
@@ -44,16 +48,35 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     private void Awake()
     {
         base.Startup();
+        currentClip = clipSize;
     }
 
     // Update is called once per frame
     void Update()
     {
         base.BaseUpdate();
+
+        Voice_Update();
     }
 
     public override void TakeDamage(float amount)
     {
+        if (Health - amount <= 0)
+        {
+            PlayVoice("event:/Enemy/EnemyDeath");
+            base.TakeDamage(amount);
+            return;
+        }
+
+        if (!statusEffected)
+        {
+            vocalCoolDown = 0.01f;
+            if (!IsOnVocalCooldown())
+            {
+                PlayVoice("event:/Dialogue/cultistsDmg");
+            }
+        }
+
         if (agent.velocity.x > 0 || agent.velocity.z > 0)
         {
             animator.Play("Pistol Hit Running");
@@ -66,8 +89,31 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         base.TakeDamage(amount);
     }
 
+    private void Reload()
+    {
+        animator.Play("Reload");
+        nextTimeToFire += animator.GetCurrentAnimatorStateInfo(0).length + Random.Range(minFireRate, maxFireRate);
+        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length);
+        bReloading = true;
+    }
+
+    private void FinishReloading()
+    {
+        currentClip = clipSize;
+        bReloading = false;
+    }
+
     public override void Shoot()
     {
+        if (currentClip <= 0) 
+        {
+            if (bReloading) return;
+            Reload();
+            return; 
+        }
+
+        currentClip--;
+
         animator.Play("Pistol Shooting");
 
         Transform gunChild =RecursiveFindChild(transform, "Pistol");
@@ -85,5 +131,42 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         muzzleflash.Play(true);
 
         RuntimeManager.PlayOneShot(firingSound, transform.position);
+    }
+
+    public override void SpottedPlayer()
+    {
+        vocalCoolDown = 0.00001f;
+        if (!IsOnVocalCooldown())
+        {
+            PlayVoice("event:/Dialogue/cultistBark");
+        }
+    }
+
+    void Voice_Update()
+    {
+        if (!IsOnVocalCooldown())
+        {
+
+            vocalCoolDown = defaultVocalCoolDown + Random.Range(-1.5f, 1.5f);
+
+            if (statusEffected && statusEffectShell.Type == ShellBase.ShellType.Incindiary)
+            {
+                vocalCoolDown = 5f;
+                PlayVoice("event:/Enemy/EnemyBurning");
+            }
+
+            /*switch (stateMachine.CurrentState)
+            {
+                case MeleeAttackState:
+                    vocalCoolDown = 0.9f;
+                    PlayVoice("event:/Dialogue/cultistsAtk");
+                    break;
+                    //case ChaseState:
+                    //    PlayVoice("event:/Dialogue/cultistBark");
+                    //    break;
+            }*/
+
+            //lastVocalization = Time.time;
+        }
     }
 }

@@ -34,6 +34,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private ParticleSystem concrete;
     [SerializeField] private ParticleSystem metal;
     [SerializeField] private ParticleSystem blood;
+    [SerializeField] private ParticleSystem incendiaryFX;
 
     [SerializeField] private ParticleSystem muzzleflash;
     [SerializeField] private Transform      shotgunMuzzleflashPos;
@@ -626,6 +627,15 @@ public class PlayerShooting : MonoBehaviour
                         fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
+                            if (shell.Type == ShellBase.ShellType.Incindiary)
+                            {
+                                float angle = Vector3.Angle(fwd,hit.normal);
+                                if (angle > 175f)
+                                {
+                                    fwd -= fwd;
+                                }
+                                Instantiate(incendiaryFX, hit.point, Quaternion.LookRotation(hit.normal + fwd));
+                            }
                             DoHit(hit, shell);
                         }
                     }
@@ -679,10 +689,10 @@ public class PlayerShooting : MonoBehaviour
         int surfaceTypeID = 0;
         bool hasRender = hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer);
 
-        if (!hasRender) renderer = hit.collider.gameObject.GetComponentInChildren<Renderer>(); // Try looking for a render component in children if this is one of *those* game objects.
+        if (!hasRender) renderer = hit.collider.gameObject.GetComponentInChildren<Renderer>(false); // Try looking for a render component in children if this is one of *those* game objects.
 
         if (renderer == null) // this mf thing still null
-            renderer = hit.collider.gameObject.GetComponentInParent<Renderer>();
+            renderer = hit.collider.gameObject.GetComponentInParent<Renderer>(false);
 
         if (renderer != null) // if this thing still null, I give up -_-
             surfaceTypeID = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
@@ -772,6 +782,14 @@ public class PlayerShooting : MonoBehaviour
         //}
     }
 
+    private void RewardKill()
+    {
+        if (slowmo != null)
+        {
+            slowmo.slowMoChance += 0.0025f;
+        }
+    }
+
     public void SetLastDamaged(Enemy enemy)
     {
         // Is this a new target or an old target
@@ -782,19 +800,21 @@ public class PlayerShooting : MonoBehaviour
             if (lastDamaged != null)
             { 
                 lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
-                CancelInvoke(nameof(Enemy_RemoveDramaEvent));
+                CancelInvoke(nameof(Enemy_RemoveKillReward));
             }
             lastDamaged = enemy;
             lastDamaged.OnDeath.AddListener(slowmo.DramaEvent);
-            Invoke(nameof(Enemy_RemoveDramaEvent), 1f);
+            lastDamaged.OnDeath.AddListener(RewardKill);
+            Invoke(nameof(Enemy_RemoveKillReward), 1f);
         }
     }
 
-    void Enemy_RemoveDramaEvent()
+    void Enemy_RemoveKillReward()
     {
         if (lastDamaged != null)
         {
             lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
+            lastDamaged.OnDeath.RemoveListener(RewardKill);
             lastDamaged = null;
         }
     }
