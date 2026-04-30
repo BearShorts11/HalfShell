@@ -17,8 +17,8 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public float setFireRate = 2f;
     public float nextTimeToFire = 0;
 
-    public float minFireRate = 0.5f;
-    public float maxFireRate = 1.5f;
+    public float minFireRate = 0.12f;
+    public float maxFireRate = 1.2f;
 
     private int clipSize = 9;
     private int currentClip;
@@ -116,13 +116,13 @@ public class RangedEnemy : Enemy, IHasRangedAttack
 
         animator.Play("Pistol Shooting");
 
-        Transform gunChild =RecursiveFindChild(transform, "Pistol");
+        //Transform gunChild =RecursiveFindChild(transform, "Pistol");
 
         //get object from the pool (eventually)
         GameObject bullet = GameObject.Instantiate(bulletPrefab);
         //set transform to that of enemy's gun (seperated for pooling)
-        bullet.transform.position = gunChild.position;
-        bullet.transform.rotation = gunChild.rotation;
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
         bullet.transform.parent = transform;
 
         Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset),
