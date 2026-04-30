@@ -46,9 +46,9 @@ public class DeadState : State
             case RangedEnemy:
                 if ((Owner as RangedEnemy).AllowSlugDrops == false) break;
 
-                Slug s = new Slug();
+                //Slug s = new Slug();
                 if (Owner.Player.GetComponent<PlayerShooting>().AmmoCounts[ShellBase.ShellType.Slug]
-                    <= s.MaxHolding / 5)
+                    <= Slug.MaxHolding / 5)
                 {
                     GameObject ammoBox = Owner.RecursiveFindChild(Owner.transform, "Small Ammo RB").gameObject;  
                     if (ammoBox != null) {

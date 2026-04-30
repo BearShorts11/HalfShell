@@ -34,6 +34,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     [SerializeField] public float attackTimer = 0.5f;
     [SerializeField] public float damage = 10f;
+    public static float DamageMultiplier = 1;
 
     /// <summary>
     /// cooldown time after enemy attacks

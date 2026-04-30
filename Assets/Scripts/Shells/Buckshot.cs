@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Buckshot : ShellBase
 {
+    public static int MaxHolding;
+
     public Buckshot()
     {
         Size = 1;

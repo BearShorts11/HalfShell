@@ -27,10 +27,10 @@ public class HealthPickup : IPickup
         {
             if (Player.Health >= Player.maxHealth) { return; }
             RuntimeManager.PlayOneShot(pickupSound, transform.position);
-            Player.Health += regainAmount;
+            Player.Health += (this.regainAmount * regainMultiplier);
             UI.UpdateHP(Player.Health, Player.maxHealth);
             UI.CheckHealth();
-            AlertController.SetAlert("health", this.regainAmount);
+            AlertController.SetAlert("health", (int)(this.regainAmount * regainMultiplier));
 
             base.OnPickup();
             Destroy(gameObject);

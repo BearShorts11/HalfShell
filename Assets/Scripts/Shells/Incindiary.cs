@@ -2,6 +2,8 @@
     
 public class Incindiary : ShellBase
 {
+    public static int MaxHolding;
+
     public Incindiary()
     {
         Size = 1f;

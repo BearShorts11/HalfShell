@@ -150,7 +150,7 @@ public class SniperEnemy : RangedEnemy
             bt.SetPosition(1, hit.point);
 
             if (hit.transform.gameObject.TryGetComponent<PlayerBehavior>(out PlayerBehavior _player))
-                _player.TakeDamage(damage);
+                _player.TakeDamage(damage * Enemy.DamageMultiplier);
         }
         else
             bt.SetPosition(1, gameObject.transform.forward * 9999);

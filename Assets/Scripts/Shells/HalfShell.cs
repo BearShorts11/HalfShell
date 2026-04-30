@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class HalfShell : ShellBase
 {
+    public static int MaxHolding;
+
     public HalfShell()
     {
         Size = 0.5f;

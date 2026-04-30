@@ -57,7 +57,7 @@ public class EnemyBullet : MonoBehaviour
             if (transform.parent is not null && !hitSomething)
             {
                 hitSomething = true; //prevents double hit issue
-                other.gameObject.GetComponent<IDamageable>().TakeDamage(GetComponentInParent<Enemy>().damage);
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(GetComponentInParent<Enemy>().damage * Enemy.DamageMultiplier);
             }
         }
 
