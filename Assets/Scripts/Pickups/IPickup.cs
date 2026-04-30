@@ -76,24 +76,12 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
 
     public void OnPickup()
     {
-<<<<<<< Updated upstream
-        Kerth k = FindFirstObjectByType<Kerth>();
-        if (k is not null)
-        {
-            k.PickedUpObject(this.data);
-            //PickupMessage(k.gameObject.GetComponent<PlayerBehavior>(), $"You got " + $"{Type}".ToLower() + "!");
-        }
-=======
-
-
-
         //Kerth k = FindFirstObjectByType<Kerth>();
         //if (k is not null)
         //{
         //    k.PickedUpObject(this.data);
         //    //PickupMessage(k.gameObject.GetComponent<PlayerBehavior>(), $"You got " + $"{Type}".ToLower() + "!");
         //}
->>>>>>> Stashed changes
     }
 
     public virtual void PickupMessage(PlayerBehavior Player, string Message)
