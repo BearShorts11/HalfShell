@@ -9,14 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2393304053043858811}
-  - component: {fileID: 6186649338635148297}
   - component: {fileID: 551782608195310464}
   - component: {fileID: 6650558946996037428}
   - component: {fileID: 903279363539956105}
   - component: {fileID: 2033340831767503619}
   - component: {fileID: 7223720605164096425}
-  - component: {fileID: 1290781773141502956}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Small Ammo RB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,27 +37,6 @@ Transform:
   - {fileID: 7375617485634733627}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6186649338635148297
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287427250971299590}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.45357656, y: 0.35653597, z: 0.6026356}
-  m_Center: {x: 0.007084608, y: 0.17600328, z: 0.0005918741}
 --- !u!114 &551782608195310464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +71,7 @@ MonoBehaviour:
     Part2: 1121519123
     Part3: 3929659777
     Part4: 2196569457
-  ammoType: 1
+  <ammoType>k__BackingField: 2
   pickupSound:
     Guid:
       Data1: -1557584089
@@ -240,22 +217,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1290781773141502956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287427250971299590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colliderType: 0
-  colliders: []
-  colliderTags:
-  - Player
 --- !u!1001 &7048639724639379920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -316,16 +277,68 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmmoBox_Small
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7416353741045763839}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8310603427314628085}
   m_SourcePrefab: {fileID: 100100000, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
 --- !u!4 &7375617485634733627 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
   m_PrefabInstance: {fileID: 7048639724639379920}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7858963499808676993 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}
+  m_PrefabInstance: {fileID: 7048639724639379920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &7416353741045763839
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858963499808676993}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 0.39, z: 0.27}
+  m_Center: {x: -0.05, y: 0.17600328, z: 0.0005918741}
+--- !u!114 &8310603427314628085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858963499808676993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 1
+  colliders: []
+  colliderTags:
+  - Player
 --- !u!23 &8507398489652919636 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 265842ee73c9cad4989193a291e0f6c4, type: 3}

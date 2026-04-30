@@ -608,8 +608,9 @@ public class PlayerShooting : MonoBehaviour
             playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
             
-            float impulseRange = Random.Range(0.5f, 2f);
-            impulse.GenerateImpulseWithForce(impulseRange);
+            float impulseRange = Random.Range(0.15f, 0.3f);
+            impulse.GenerateImpulseWithVelocity(new Vector3(Random.Range(-impulseRange,impulseRange),Random.Range(-impulseRange,impulseRange),0));
+            //impulse.GenerateImpulseWithForce(impulseRange);
             //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
             Destroy(ApollyonBarks);

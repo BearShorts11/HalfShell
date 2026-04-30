@@ -75,9 +75,6 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
 
     public void OnPickup()
     {
-
-
-
         Kerth k = FindFirstObjectByType<Kerth>();
         if (k is not null)
         {

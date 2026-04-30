@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 2839908703414701077}
   - component: {fileID: 2152363585084657180}
   - component: {fileID: 648321812057217582}
-  m_Layer: 0
+  - component: {fileID: 2664391876676740265}
+  - component: {fileID: 5816064934510807147}
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,6 +811,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3463767221187030088}
   m_Mesh: {fileID: 0}
+--- !u!65 &2664391876676740265
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463767221187030088}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.22748457, y: 1.2263324, z: 1.067688}
+  m_Center: {x: 0.23, y: 0.56, z: -0.24}
+--- !u!114 &5816064934510807147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463767221187030088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 1
+  colliders: []
+  colliderTags:
+  - Player
 --- !u!1 &6692179363074624554
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,14 +857,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8037078773014331783}
-  - component: {fileID: 8507277731132267762}
   - component: {fileID: 4977538901578392158}
   - component: {fileID: 5558006090476034317}
   - component: {fileID: 2426027136669051626}
   - component: {fileID: 2155642400747324310}
   - component: {fileID: 5898178177674507174}
-  - component: {fileID: 8423067636386328121}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Armor Pickup RB
   m_TagString: Health Pickup
   m_Icon: {fileID: 0}
@@ -848,27 +885,6 @@ Transform:
   - {fileID: 1616734041892759715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8507277731132267762
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6692179363074624554}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.22748457, y: 1.2263324, z: 1.067688}
-  m_Center: {x: -0.0029350559, y: 0.011254453, z: 0.0034387368}
 --- !u!114 &4977538901578392158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1046,19 +1062,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8423067636386328121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6692179363074624554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b525d9d39a6d6044f9d90a0c51b042b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colliderType: 1
-  colliders: []
-  colliderTags:
-  - Player
