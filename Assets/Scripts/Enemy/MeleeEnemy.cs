@@ -57,6 +57,8 @@ public class MeleeEnemy : Enemy, IHasMeleeAttack
 
     public override void SpottedPlayer()
     {
+        base.SpottedPlayer();
+
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {

@@ -135,6 +135,8 @@ public class RangedEnemy : Enemy, IHasRangedAttack
 
     public override void SpottedPlayer()
     {
+        base.SpottedPlayer();
+
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {

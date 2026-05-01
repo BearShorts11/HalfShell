@@ -92,6 +92,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     public bool AlwaysChase;
 
+    private bool bSpottedPlayer = false;
+
 
     [Header("States")]
     public StateMachine stateMachine;
@@ -402,7 +404,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         return Time.time < lastVocalization + vocalCoolDown;
     }
 
-    public virtual void SpottedPlayer() { }
+    public virtual void SpottedPlayer() { if (bSpottedPlayer) return; bSpottedPlayer = true; }
 
     private void OnDrawGizmos()
     {
