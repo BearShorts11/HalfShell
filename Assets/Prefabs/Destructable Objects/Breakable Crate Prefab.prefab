@@ -5192,6 +5192,7 @@ GameObject:
   - component: {fileID: 8484833961873468966}
   - component: {fileID: 981500552354212148}
   - component: {fileID: 3342201041347898965}
+  - component: {fileID: 7373121859277303915}
   m_Layer: 0
   m_Name: Breakable Crate Prefab
   m_TagString: Breakable
@@ -5267,7 +5268,31 @@ MonoBehaviour:
     Path: 
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7373121859277303915}
+        m_TargetAssemblyTypeName: SimpleSoundEvent, Assembly-CSharp
+        m_MethodName: PlayInstance
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: event:/Physics/WoodDebris
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7373121859277303915}
+        m_TargetAssemblyTypeName: SimpleSoundEvent, Assembly-CSharp
+        m_MethodName: ChangeInstanceParameter
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Intensity;0.35f
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &981500552354212148
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5316,6 +5341,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7373121859277303915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621276018105555692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7357b9d31c66fa6478d9503197fc8159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7754738682669212770
 GameObject:
   m_ObjectHideFlags: 0

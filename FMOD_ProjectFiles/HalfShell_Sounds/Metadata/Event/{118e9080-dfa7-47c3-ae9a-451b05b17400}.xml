@@ -38,6 +38,9 @@
 		<relationship name="parameters">
 			<destination>{ba1380ce-94ec-43a1-af0e-74603dd9dde4}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{b6aa8820-c622-42db-a47b-4729b58168af}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{a3a606b6-ccbd-43a4-a315-a8756a528ea4}">
 		<relationship name="masterBus">
@@ -60,7 +63,11 @@
 			<destination>{d598f9f4-3b93-4c8a-9aa8-21246ff824de}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{41a50162-ca8a-45d8-a98c-34c3867a8631}" />
+	<object class="EventAutomatableProperties" id="{41a50162-ca8a-45d8-a98c-34c3867a8631}">
+		<property name="maximumDistance">
+			<value>40</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{94aea75a-53b7-4bc6-905c-aed0cd249ba7}" />
 	<object class="GroupTrack" id="{66df2c21-354d-4e0e-8366-724b71796081}">
 		<relationship name="automationTracks">
@@ -132,6 +139,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{081d82ab-34e3-461c-aca0-b30a91e036d7}">
+		<property name="volume">
+			<value>5.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{e22bd5fa-e410-412f-b8e3-0457d1c422b3}</destination>
 		</relationship>
@@ -684,7 +694,7 @@
 			<value>0.12930135557872785</value>
 		</property>
 		<property name="value">
-			<value>-32</value>
+			<value>-30</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{4f8f560f-0d2b-4a0a-a081-758caa9bab77}">
@@ -700,7 +710,7 @@
 			<value>0.021897810218978103</value>
 		</property>
 		<property name="value">
-			<value>-13</value>
+			<value>-10</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{10ec5c56-b665-4580-a8c2-5266c7e4fe1c}">
@@ -716,7 +726,7 @@
 			<value>0.0052137643378519297</value>
 		</property>
 		<property name="value">
-			<value>-38</value>
+			<value>-32</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{c2fcd82d-641c-425e-8c47-84a2260f0343}">
@@ -740,7 +750,7 @@
 			<value>0.015641293013555789</value>
 		</property>
 		<property name="value">
-			<value>-45.5</value>
+			<value>-36.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{a8892677-943d-4dd4-9fa4-c497312b61f7}">

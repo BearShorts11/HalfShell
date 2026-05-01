@@ -60,16 +60,28 @@ public class SimpleSoundEvent : MonoBehaviour
     private void PlayEventInstance()
     {
         if (!eventInstance.IsUnityNull())
+        {
+            eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(this.gameObject));
+            RuntimeManager.AttachInstanceToGameObject(eventInstance, this.gameObject);
             eventInstance.start();
+        }
     }
 
     public void StopEventInstance_Fade()
     {
+        if (eventInstance.IsUnityNull()) return;
         eventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
     public void StopEventInstance()
     {
+        if (eventInstance.IsUnityNull()) return;
         eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
+    public void ReleaseEventInstance()
+    {
+        if (eventInstance.IsUnityNull()) return;
+        eventInstance.release();
     }
 
     public void ChangeSound(EventReference NewReference)
@@ -102,21 +114,21 @@ public class SimpleSoundEvent : MonoBehaviour
     /// <summary>
     /// Modify a parameter of an instance by using command-like arguments
     /// </summary>
-    /// <param name="arguments">Arguments to pass separated by comma: "[Parameter Name],[Number Value]"
+    /// <param name="arguments">Arguments to pass separated by semi-colon: "[Parameter Name];[Number Value]"
     /// It is recommended that the FMOD parameter names should not have spaces in them.
     /// </param>
     public void ChangeInstanceParameter(string arguments)
     {
         arguments = arguments.Trim((char)32);
-        string[] args = arguments.ToCommaSeparatedString().Split(",");
+        string[] values = arguments.ToCommaSeparatedString().Split(";");
 
-        if (int.TryParse(args[1], out var intValue))
+        if (int.TryParse(values[1], out var intValue))
         {
-            eventInstance.setParameterByName(args[0], intValue);
+            eventInstance.setParameterByName(values[0], intValue);
             return;
         }
-        else if (float.TryParse(args[1], out float floatValue))
-            eventInstance.setParameterByName(args[0], floatValue);
+        else if (float.TryParse(values[1], out float floatValue))
+            eventInstance.setParameterByName(values[0], floatValue);
     }
 
     private void OnDestroy()
