@@ -161,7 +161,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             ApollyonBark.SetActive(false);
         }
 
-        //Enemy.DeathAlert.AddListener(AddKill);
+        Enemy.DeathAlert.AddListener(AddKill);
         ShellWheelToggle.AddListener(ShellWheel);
         killsSinceDamage = 0;
         canPlayBark = true;
@@ -176,7 +176,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         if (killsSinceDamage >= killsToDialoge && canPlayBark)
         {
             //play dialogue sound
+            PlaySound(Support);
             StartCoroutine(CanPlayBark());
+            Debug.Log("Support Talk");
         }
     }
 
@@ -365,7 +367,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             if (health < health / 5 && canPlayBark)
             {
                 //trigger dialogue cue
+                PlaySound(degrade);
                 StartCoroutine(CanPlayBark());
+                Debug.Log("degrade Talk");
             }
         }
 
