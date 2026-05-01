@@ -3,6 +3,8 @@ using static ShellBase;
 
 public class BMG : ShellBase
 {
+    public static int MaxHolding;
+
     public BMG()
     {
         Size = 2;

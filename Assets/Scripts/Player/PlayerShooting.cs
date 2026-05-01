@@ -324,10 +324,20 @@ public class PlayerShooting : MonoBehaviour
         {
             playerUI.ChamberUIOff();
             ShellBase shell = Chamber as ShellBase;
-            if (useShells && AmmoCounts[shell.Type] < shell.MaxHolding)
-            { 
-                AmmoCounts[shell.Type]++;
-                AlertController.SetRackAlert(shell.Type);
+            if (useShells) //&& AmmoCounts[shell.Type] < shell.MaxHolding)
+            {
+                bool returnToGun = false;
+                switch(shell.Type)
+                {
+                    case ShellBase.ShellType.Slug:
+                        if (AmmoCounts[ShellBase.ShellType.Slug] < Slug.MaxHolding) returnToGun = true;
+                        break;
+                    case ShellBase.ShellType.Incindiary:
+                        if (AmmoCounts[ShellBase.ShellType.Incindiary] < Incindiary.MaxHolding) returnToGun = true;
+                        break;
+                }
+
+                if (returnToGun) { AmmoCounts[shell.Type]++;  AlertController.SetRackAlert(shell.Type); }
             }
         }
 
@@ -565,15 +575,42 @@ public class PlayerShooting : MonoBehaviour
 
     public bool AddAmmo(int ammoCount, ShellBase shell)
     {
-        //Debug.Log(shell.Type);
-        if (AmmoCounts[shell.Type] < shell.MaxHolding)
-        { 
+        ////Debug.Log(shell.Type);
+        //if (AmmoCounts[shell.Type] < shell.MaxHolding)
+        //{ 
+        //    AmmoCounts[shell.Type] += ammoCount;
+        //    CheckAboveMaxAmmo();
+        //    //Debug.Log($"{shell.Type}, {AmmoCounts[shell.Type]}");
+        //    return true;
+        //}
+
+        bool canAddAmmo = false;
+        switch (shell)
+        {
+            case Slug:
+                if (AmmoCounts[ShellBase.ShellType.Slug] < Slug.MaxHolding) canAddAmmo = true;
+                break;
+            case Incindiary:
+                if (AmmoCounts[ShellBase.ShellType.Slug] < Slug.MaxHolding) canAddAmmo = true;
+                break;
+            default: //default if halfshells
+                canAddAmmo = true;
+                break;
+        }
+
+        if (canAddAmmo)
+        {
             AmmoCounts[shell.Type] += ammoCount;
-            if (AmmoCounts[shell.Type] > shell.MaxHolding) AmmoCounts[shell.Type] = shell.MaxHolding; //Mathf.clamp?
-            //Debug.Log($"{shell.Type}, {AmmoCounts[shell.Type]}");
+            CheckAboveMaxAmmo();
             return true;
         }
-        return false;
+        else return false;
+    }
+
+    public void CheckAboveMaxAmmo()
+    {
+        if (AmmoCounts[ShellBase.ShellType.Slug] > Slug.MaxHolding) AmmoCounts[ShellBase.ShellType.Slug] = Slug.MaxHolding;
+        if (AmmoCounts[ShellBase.ShellType.Incindiary] > Incindiary.MaxHolding) AmmoCounts[ShellBase.ShellType.Incindiary] = Incindiary.MaxHolding;
     }
 
 
@@ -608,8 +645,9 @@ public class PlayerShooting : MonoBehaviour
             playerUI.ChamberUIOff();
             //determine behavior of shot based on shell type
             
-            float impulseRange = Random.Range(0.5f, 2f);
-            impulse.GenerateImpulseWithForce(impulseRange);
+            float impulseRange = Random.Range(0.15f, 0.3f);
+            impulse.GenerateImpulseWithVelocity(new Vector3(Random.Range(-impulseRange,impulseRange),Random.Range(-impulseRange,impulseRange),0));
+            //impulse.GenerateImpulseWithForce(impulseRange);
             //Debug.Log("ImpulseForce:" + impulseRange);
             playerUI.UIRattle(2);
             Destroy(ApollyonBarks);

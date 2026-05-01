@@ -84,22 +84,24 @@ public class ShellSelectionButton : MonoBehaviour
         if (ammoText != null)
         {
             if (type != ShellBase.ShellType.Buckshot) {
-                ShellBase shell;
+                //ShellBase shell;
 
                 switch (type)
                 {
                     case ShellBase.ShellType.Slug:
-                        shell = new Slug();
+                        ammoText.text = $"{player.AmmoCounts[type]}/{Slug.MaxHolding}";
+                        //shell = new Slug();
                         break;
                     case ShellBase.ShellType.Incindiary:
-                        shell = new Incindiary();
+                        ammoText.text = $"{player.AmmoCounts[type]}/{Incindiary.MaxHolding}";
+                        //shell = new Incindiary();
                         break;
                     default:
-                        shell = new HalfShell();
+                        //shell = new HalfShell();
                         break;
                 }
 
-                ammoText.text = $"{player.AmmoCounts[type]}/{shell.MaxHolding}"; 
+                //ammoText.text = $"{player.AmmoCounts[type]}/{shell.MaxHolding}"; 
             }
             else { ammoText.text = $""; }
         }

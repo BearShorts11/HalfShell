@@ -72,10 +72,14 @@ public class AmmoPickup : IPickup
         if (other.gameObject.CompareTag("Player"))
         {
             bool canPickup = false;
-            if (ammoType == ShellBase.ShellType.HalfShell)     { canPickup = Gun.AddAmmo(regainAmount, new HalfShell()); }
-            else if (ammoType == ShellBase.ShellType.Slug)     { canPickup = Gun.AddAmmo(regainAmount, new Slug()); }
-            else if (ammoType == ShellBase.ShellType.Buckshot) { canPickup = Gun.AddAmmo(regainAmount, new Buckshot()); }
-            else if (ammoType == ShellBase.ShellType.Incindiary) { canPickup = Gun.AddAmmo(regainAmount, new Incindiary()); }
+            if (ammoType == ShellBase.ShellType.HalfShell)     
+                { canPickup = Gun.AddAmmo((int)(this.regainAmount * regainMultiplier), new HalfShell()); }
+            else if (ammoType == ShellBase.ShellType.Slug)     
+                { canPickup = Gun.AddAmmo((int)(this.regainAmount * regainMultiplier), new Slug()); }
+            else if (ammoType == ShellBase.ShellType.Buckshot) 
+                { canPickup = Gun.AddAmmo((int)(this.regainAmount * regainMultiplier), new Buckshot()); }
+            else if (ammoType == ShellBase.ShellType.Incindiary) 
+                { canPickup = Gun.AddAmmo((int)(this.regainAmount * regainMultiplier), new Incindiary()); }
 
             if (canPickup)
             {
@@ -103,13 +107,13 @@ public class AmmoPickup : IPickup
                 switch (ammoType)
                 {
                     case ShellBase.ShellType.Incindiary:
-                        AlertController.SetAlert("fire shell", this.regainAmount);
+                        AlertController.SetAlert("fire shell", (int)(this.regainAmount * regainMultiplier));
                         break;
                     case ShellBase.ShellType.Slug:
-                        AlertController.SetAlert("slug", this.regainAmount);
+                        AlertController.SetAlert("slug", (int)(this.regainAmount * regainMultiplier));
                         break;
                     default:
-                        AlertController.SetAlert("half shell", this.regainAmount);
+                        AlertController.SetAlert("half shell", (int)(this.regainAmount * regainMultiplier));
                         break;
                 }
             }

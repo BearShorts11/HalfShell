@@ -13,6 +13,9 @@ public class SceneLoader : MonoBehaviour
     //tracking what scene is currently loaded
     private List<string> _loadedScenes = new List<string>();
 
+    //Go to line 69
+    //private Scene _currentScene;
+
     private void Awake()
     {
         if(Instance != null)
@@ -62,6 +65,11 @@ public class SceneLoader : MonoBehaviour
         yield return op;
         //trackk scene to avoid dupe loading
         _loadedScenes.Add(sceneName);
+
+        //COMMENTED TO AVOID RELOAD CONFLICTS
+        //_currentScene = SceneManager.GetSceneByName(sceneName);
+        //SceneManager.SetActiveScene(_currentScene);
+
         Debug.Log($"SceneLoader Loaded: {sceneName}");
     }
 

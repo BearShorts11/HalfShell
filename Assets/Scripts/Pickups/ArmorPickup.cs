@@ -25,9 +25,9 @@ public class ArmorPickup : IPickup
         {
             if (Player.Armor >= Player.MaxArmor) { return; }
             RuntimeManager.PlayOneShot(pickupSound, transform.position);
-            Player.Armor += regainAmount;
+            Player.Armor += (this.regainAmount * regainMultiplier);
             UI.UpdateArmor(Player.Armor, Player.MaxArmor);
-            AlertController.SetAlert("armor", this.regainAmount);
+            AlertController.SetAlert("armor", (int)(this.regainAmount * regainMultiplier));
 
             base.OnPickup();
             Destroy(gameObject);

@@ -17,8 +17,12 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public float setFireRate = 2f;
     public float nextTimeToFire = 0;
 
-    public float minFireRate = 0.5f;
-    public float maxFireRate = 1.5f;
+    public float minFireRate = 0.12f;
+    public float maxFireRate = 1.2f;
+
+    private int clipSize = 9;
+    private int currentClip;
+    private bool bReloading = false;
 
     /// <summary>
     /// offsets the shot randomly between +/- shot offset on all axises
@@ -44,6 +48,7 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     private void Awake()
     {
         base.Startup();
+        currentClip = clipSize;
     }
 
     // Update is called once per frame
@@ -84,17 +89,40 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         base.TakeDamage(amount);
     }
 
+    private void Reload()
+    {
+        animator.Play("Reload");
+        nextTimeToFire += animator.GetCurrentAnimatorStateInfo(0).length + Random.Range(minFireRate, maxFireRate);
+        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length);
+        bReloading = true;
+    }
+
+    private void FinishReloading()
+    {
+        currentClip = clipSize;
+        bReloading = false;
+    }
+
     public override void Shoot()
     {
+        if (currentClip <= 0) 
+        {
+            if (bReloading) return;
+            Reload();
+            return; 
+        }
+
+        currentClip--;
+
         animator.Play("Pistol Shooting");
 
-        Transform gunChild =RecursiveFindChild(transform, "Pistol");
+        //Transform gunChild =RecursiveFindChild(transform, "Pistol");
 
         //get object from the pool (eventually)
         GameObject bullet = GameObject.Instantiate(bulletPrefab);
         //set transform to that of enemy's gun (seperated for pooling)
-        bullet.transform.position = gunChild.position;
-        bullet.transform.rotation = gunChild.rotation;
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
         bullet.transform.parent = transform;
 
         Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset),
@@ -107,6 +135,8 @@ public class RangedEnemy : Enemy, IHasRangedAttack
 
     public override void SpottedPlayer()
     {
+        base.SpottedPlayer();
+
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {

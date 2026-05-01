@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Slug : ShellBase
 {
+    public static int MaxHolding;
+
     public Slug()
     {
         Size = 1;

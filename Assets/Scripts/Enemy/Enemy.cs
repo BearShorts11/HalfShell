@@ -34,6 +34,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     [SerializeField] public float attackTimer = 0.5f;
     [SerializeField] public float damage = 10f;
+    public static float DamageMultiplier = 1;
 
     /// <summary>
     /// cooldown time after enemy attacks
@@ -90,6 +91,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// enemy will not return to idle even if player is outside of detection radius, instead constantly persuing the player
     /// </summary>
     public bool AlwaysChase;
+
+    private bool bSpottedPlayer = false;
 
 
     [Header("States")]
@@ -401,7 +404,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         return Time.time < lastVocalization + vocalCoolDown;
     }
 
-    public virtual void SpottedPlayer() { }
+    public virtual void SpottedPlayer() { if (bSpottedPlayer) return; bSpottedPlayer = true; }
 
     private void OnDrawGizmos()
     {

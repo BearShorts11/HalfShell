@@ -43,7 +43,7 @@ public class MeleeAttackState : State
             //TO REVISE: if the enemy doesn't do damage to the player have them turn instead of keep attacking the air
             if ((Owner as IHasMeleeAttack).PlayerInTrigger && !hitPlayer)
             { 
-                Owner.Player.TakeDamage(Owner.damage);
+                Owner.Player.TakeDamage(Owner.damage * Enemy.DamageMultiplier);
                 hitPlayer = true;
             }
             //kind of negates the issue of standing behind an enemy? too snappy though

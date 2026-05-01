@@ -37,10 +37,10 @@ public class DebugController : MonoBehaviour
 
         MAX_SLUGS = new DebugCommand("max_slugs", "sets slug shell count to max", "max_slugs", () =>
         {
-            Slug s = new Slug();
-            shooting.AddAmmo(s.MaxHolding, s);
+            //Slug s = new Slug();
+            //shooting.AddAmmo(s.MaxHolding, s);
 
-            //shooting.AddAmmo(Slug.MaxHolding, new Slug());
+            shooting.AddAmmo(Slug.MaxHolding, new Slug());
         });
 
         DAMAGE = new DebugCommand("damage", "damage the player by 10HP", "damage", () =>
@@ -93,15 +93,15 @@ public class DebugController : MonoBehaviour
                 case "slug":
                     shell = new Slug();
 
-                    //shooting.AddAmmo(Slug.MaxHolding, new Slug());
+                    shooting.AddAmmo(Slug.MaxHolding, new Slug());
                     break;
                 default:
                     shell = new HalfShell();
 
-                    //shooting.AddAmmo(1, new HalfShell());
+                    shooting.AddAmmo(1, new HalfShell());
                     break;
             }
-            shooting.AddAmmo(shell.MaxHolding, shell);
+            //shooting.AddAmmo(shell.MaxHolding, shell);
 
         });
 

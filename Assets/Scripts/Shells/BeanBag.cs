@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BeanBag : ShellBase
 {
+    public static int MaxHolding;
+
     public BeanBag()
     {
         Size = 1;
