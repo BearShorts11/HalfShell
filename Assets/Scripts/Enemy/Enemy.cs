@@ -92,7 +92,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     public bool AlwaysChase;
 
-    private bool bSpottedPlayer = false;
+    protected bool bSpottedPlayer = false;
 
 
     [Header("States")]
@@ -180,11 +180,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (!damageFromStatusEffect)
         {
             animator.SetFloat("Damage", amount);
-            if (!IsInvoking(nameof(StopHitReaction)))
-            {
-                animator.SetBool("Hit", true);
-                Invoke(nameof(StopHitReaction), 1);
-            }
+            animator.SetTrigger("Hit");
+            //if (!IsInvoking(nameof(StopHitReaction)))
+            //{
+            //    //animator.SetBool("Hit", true);
+            //    //Invoke(nameof(StopHitReaction), 1);
+            //}
         }
 
         //checking for dead prevents this from firing every time the enemy is shot after death
@@ -331,7 +332,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected void StopHitReaction()
     {
-        animator.SetBool("Hit", false);
+        //animator.SetBool("Hit", false);
     }
 
 
@@ -404,7 +405,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         return Time.time < lastVocalization + vocalCoolDown;
     }
 
-    public virtual void SpottedPlayer() { if (bSpottedPlayer) return; bSpottedPlayer = true; }
+    public virtual bool SpottedPlayer() { if (bSpottedPlayer) return true; bSpottedPlayer = true; return false; }
 
     private void OnDrawGizmos()
     {

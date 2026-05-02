@@ -75,11 +75,12 @@ public class SniperEnemy : RangedEnemy
         }
     }
 
-    public override void SpottedPlayer()
+    public override bool SpottedPlayer()
     {
         catchupTime = 0;
         nextTimeToFire = Time.time + setFireRate;
         EnableLaser();
+        return true;
     }
 
     void UpdateAim()

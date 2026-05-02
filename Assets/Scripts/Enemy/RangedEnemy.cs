@@ -93,7 +93,7 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     {
         animator.Play("Reload");
         nextTimeToFire += animator.GetCurrentAnimatorStateInfo(0).length + Random.Range(minFireRate, maxFireRate);
-        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length);
+        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length + 0.3f);
         bReloading = true;
     }
 
@@ -139,15 +139,16 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         RuntimeManager.PlayOneShot(firingSound, transform.position);
     }
 
-    public override void SpottedPlayer()
+    public override bool SpottedPlayer()
     {
-        base.SpottedPlayer();
+        if (base.SpottedPlayer()) return true;
 
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {
             PlayVoice("event:/Dialogue/cultistBark");
         }
+        return false;
     }
 
     void Voice_Update()

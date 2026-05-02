@@ -55,15 +55,16 @@ public class MeleeEnemy : Enemy, IHasMeleeAttack
         base.TakeDamage(amount);
     }
 
-    public override void SpottedPlayer()
+    public override bool SpottedPlayer()
     {
-        base.SpottedPlayer();
+        if (base.SpottedPlayer()) return true;
 
         vocalCoolDown = 0.00001f;
         if (!IsOnVocalCooldown())
         {
             PlayVoice("event:/Dialogue/cultistBark");
         }
+        return false;
     }
 
     void Voice_Update()
