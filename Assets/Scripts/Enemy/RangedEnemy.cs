@@ -125,8 +125,14 @@ public class RangedEnemy : Enemy, IHasRangedAttack
         bullet.transform.rotation = transform.rotation;
         bullet.transform.parent = transform;
 
-        Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset),
-            UnityEngine.Random.Range(-ShotOffset, ShotOffset), UnityEngine.Random.Range(-ShotOffset, ShotOffset));
+        // Distance modifier made as an attempt to make a fixed cone of inaccuracy as an attempt to make ranged enemies a better shot up close with high ShotOffset values
+        float accuracyMod = ShotOffset * (Vector3.Distance(this.gameObject.transform.position, Player.transform.position) / 15f);
+        Vector3 accuracyOffset = new Vector3(
+            UnityEngine.Random.Range(-accuracyMod, accuracyMod),
+            UnityEngine.Random.Range(-accuracyMod, accuracyMod), 
+            UnityEngine.Random.Range(-accuracyMod, accuracyMod)
+            );
+        Vector3 playerCurrPos = Player.transform.position + accuracyOffset;
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
         muzzleflash.Play(true);
 
