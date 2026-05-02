@@ -9,8 +9,12 @@ public class MaterialSurfaceTypeChecker : MonoBehaviour
 {
     public static int GetSurfaceType(Material material)
     {
-        if (material == null || !material.HasProperty("_SURFACETYPE"))
+        if (material == null)
             return 0;
+
+        if (!material.HasProperty("_SURFACETYPE"))
+            return 0;
+
         return (int)material.GetFloat("_SURFACETYPE");
     }    
 }
