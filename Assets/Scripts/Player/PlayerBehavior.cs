@@ -340,7 +340,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //better way to do this? -N
     public void TakeDamage(float damage)
     {
-        if (invincible) return;
+        if (invincible || health <= 0) return;
         {
             
         }
