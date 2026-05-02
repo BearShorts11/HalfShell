@@ -92,8 +92,8 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     private void Reload()
     {
         animator.Play("Reload");
-        nextTimeToFire += animator.GetCurrentAnimatorStateInfo(0).length + Random.Range(minFireRate, maxFireRate);
-        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(0).length + 0.3f);
+        nextTimeToFire += (animator.GetCurrentAnimatorStateInfo(1).length) + Random.Range(minFireRate, maxFireRate);
+        Invoke(nameof(FinishReloading), animator.GetCurrentAnimatorStateInfo(1).length + 2f);
         bReloading = true;
     }
 
