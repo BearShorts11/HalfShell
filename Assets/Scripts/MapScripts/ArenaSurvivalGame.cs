@@ -31,6 +31,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     public Dictionary<int, SurvivalWave_Events> waveConditions = new();
 
     [Header("Dynamic")]
+    [SerializeField] private int _maxEnemiesAtOnce;
     [SerializeField] private int waveCount;
     [SerializeField] private List<SimpleSpawnVolume> spawnVolumes = new();
     [SerializeField] private List<SimpleSpawnVolume> activeSpawnVolumes = new();
@@ -104,7 +105,13 @@ public class ArenaSurvivalGame : MonoBehaviour
     void StartWave()
     {
         if (WaveConfigured())
+        { 
             currentWave = waves[waveCount];
+            if (waves[waveCount].maxEnemiesAtOnce > 0)
+                _maxEnemiesAtOnce = waves[waveCount].maxEnemiesAtOnce;
+        }
+        else if (_maxEnemiesAtOnce != maxEnemiesAtOnce)
+            _maxEnemiesAtOnce = maxEnemiesAtOnce;
 
         RespawnItems();
 
@@ -188,7 +195,7 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     bool AllEnemiesSpawned()
     {
-        return enemiesSpawned.Count >= enemiesToWipe || enemiesSpawned.Count > maxEnemiesAtOnce;
+        return enemiesSpawned.Count >= enemiesToWipe || enemiesSpawned.Count >= _maxEnemiesAtOnce;
     }
 
     void WaveUpdate()

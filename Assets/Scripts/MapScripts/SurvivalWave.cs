@@ -10,4 +10,5 @@ public class SurvivalWave : ScriptableObject
     public int waveAmount;
     public float spawnRate;
     public int wavetransitionTime;
+    public int maxEnemiesAtOnce;
 }
