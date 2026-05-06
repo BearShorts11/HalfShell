@@ -14,7 +14,8 @@ public class SceneLoader : MonoBehaviour
     private List<string> _loadedScenes = new List<string>();
 
     //Go to line 69
-    //private Scene _currentScene;
+    private Scene _currentScene;
+    [SerializeField] public Transform Spawnpoint;
 
     private void Awake()
     {
@@ -45,6 +46,8 @@ public class SceneLoader : MonoBehaviour
         {
             StartCoroutine(LoadRoutine(sceneName));
         }
+        Spawnpoint = GameObject.Find("Spawnpoint").transform;
+
     }
 
     public void UnloadScene(string sceneName)
@@ -57,6 +60,8 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadRoutine(string sceneName)
     {
+        //TODO: disable "GENERAL"
+
         //load scene with a BG thread without replacing current scene
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         //telling unity to activate scene ASAP
@@ -67,8 +72,12 @@ public class SceneLoader : MonoBehaviour
         _loadedScenes.Add(sceneName);
 
         //COMMENTED TO AVOID RELOAD CONFLICTS
-        //_currentScene = SceneManager.GetSceneByName(sceneName);
-        //SceneManager.SetActiveScene(_currentScene);
+        _currentScene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(_currentScene);
+
+        FindFirstObjectByType<PlayerBehavior>().gameObject.SetActive(false);
+        FindFirstObjectByType<PlayerUI>().gameObject.SetActive(false);
+        //TODO: Enable "GENERAL"
 
         Debug.Log($"SceneLoader Loaded: {sceneName}");
     }
@@ -85,4 +94,6 @@ public class SceneLoader : MonoBehaviour
         _loadedScenes.Remove(sceneName);
         Debug.Log($"SceneLoader Unlaoded: {sceneName}");
     }
+
+    public Scene GetCurrentScene() => _currentScene;
 }

@@ -59,7 +59,7 @@ public class DifficultyController : MonoBehaviour
     { 
         difficulty = Difficulty.HARD;
         IPickup.regainMultiplier = 0.5f;
-        Enemy.DamageMultiplier = 2;
+        Enemy.DamageMultiplier = 1.5f;
 
         Slug.MaxHolding = 10;
         Incindiary.MaxHolding = 5;
