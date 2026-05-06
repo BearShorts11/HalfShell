@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using FMODUnity;
 using UnityEngine;
 
 public class Limb : MonoBehaviour, IDamageable
@@ -7,6 +8,9 @@ public class Limb : MonoBehaviour, IDamageable
     public float defaultHealth = 50f;
     public float maxHealth { get; set; }
     [field: SerializeField] public float Health {  get; set; }
+
+    [SerializeField] private EventReference breakSound;
+    private SimpleSoundEvent soundPlayer;
 
     [Tooltip("Should the limb have it's own health or pass down the damage to the enemy instead. NOTE: damMult is still in effect")]
     public bool isRemovable = true;
@@ -42,6 +46,8 @@ public class Limb : MonoBehaviour, IDamageable
         coll = this.gameObject.GetComponent<Collider>();
         if (coll == null)
             Debug.LogError("Error! No collider attatched to this script's Game Object!");
+        if (soundPlayer == null)
+            soundPlayer = this.gameObject.AddComponent<SimpleSoundEvent>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -88,6 +94,8 @@ public class Limb : MonoBehaviour, IDamageable
         {
             // Check again just incase (Since the enemy took damage prior to this check, include the damage here to consider how much the enemy had prior)
             if (enemy != null && enemy.Health + Damage > 0 && damPctHealthOnRemove > 0) enemy.TakeDamage(enemy.maxHealth * damPctHealthOnRemove);
+            if (!breakSound.IsNull)
+                soundPlayer.PlaySound(breakSound);
             if (isAttatchedToBone) {
                 if (isBoneItself)
                     transform.localScale = Vector3.zero;

@@ -76,6 +76,12 @@
 		<property name="maxVoices">
 			<value>3</value>
 		</property>
+		<property name="minimumDistance">
+			<value>3</value>
+		</property>
+		<property name="maximumDistance">
+			<value>60</value>
+		</property>
 	</object>
 	<object class="MarkerTrack" id="{8555a50c-b348-422f-aa06-b22b1fbdd557}" />
 	<object class="GroupTrack" id="{d3594cfe-9b58-4529-a04a-922bddf68d2b}">
@@ -121,6 +127,7 @@
 	<object class="GroupTrack" id="{03e46af7-6819-49da-85dc-b0a0e2323b62}">
 		<relationship name="modules">
 			<destination>{e50728cb-a25e-4e57-92fa-ecc533aef4b8}</destination>
+			<destination>{689f8082-d6b1-4d9a-9fd6-81b045ed9a51}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{daa1216c-dc4a-48ad-a256-1f48f57673bb}</destination>
@@ -134,6 +141,7 @@
 			<destination>{e50728cb-a25e-4e57-92fa-ecc533aef4b8}</destination>
 			<destination>{49c3dc5f-d14d-4d50-ba66-602091ee9215}</destination>
 			<destination>{c9f56be8-2c5d-4628-a825-b1f2e2c5452e}</destination>
+			<destination>{689f8082-d6b1-4d9a-9fd6-81b045ed9a51}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{ebd888d1-fe0a-4b1b-bdf2-56c8091fedcb}">
@@ -175,6 +183,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{dadc3a0b-1cfa-401f-ae47-16189055cb73}">
+		<property name="volume">
+			<value>6</value>
+		</property>
 		<property name="name">
 			<value>Dirt</value>
 		</property>
@@ -233,6 +244,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{640494f7-153a-4ad5-bc8c-45875339d2c3}">
+		<property name="volume">
+			<value>3</value>
+		</property>
 		<property name="name">
 			<value>Wood</value>
 		</property>
@@ -343,6 +357,23 @@
 			<destination>{d32a204f-f6a4-43c3-b53e-15257a35da31}</destination>
 			<destination>{1ea50864-e177-4999-8d00-b81dfa14e67a}</destination>
 			<destination>{59cd9d4b-57a4-4ebf-9b65-f0ae77f2e41c}</destination>
+		</relationship>
+	</object>
+	<object class="EventSound" id="{689f8082-d6b1-4d9a-9fd6-81b045ed9a51}">
+		<property name="triggerProbabilityEnabled">
+			<value>true</value>
+		</property>
+		<property name="length">
+			<value>2.0804988662131518</value>
+		</property>
+		<relationship name="triggerConditions">
+			<destination>{2e6569a8-dd8f-4099-9b8c-16b7b1fc9827}</destination>
+		</relationship>
+		<relationship name="fadeInCurve">
+			<destination>{2712cbd6-4bb8-4099-89e4-ecfbe759eada}</destination>
+		</relationship>
+		<relationship name="event">
+			<destination>{f0da9f15-90b6-495d-9b77-6a351a2b0b8c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{daa1216c-dc4a-48ad-a256-1f48f57673bb}">
@@ -680,6 +711,25 @@
 			<destination>{f2be09a9-0c07-4eb4-a35e-0fd205272a58}</destination>
 		</relationship>
 	</object>
+	<object class="ParameterCondition" id="{2e6569a8-dd8f-4099-9b8c-16b7b1fc9827}">
+		<property name="minimum">
+			<value>5</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<relationship name="parameter">
+			<destination>{21ac0c35-42d8-4fa4-adf5-09168a87a71e}</destination>
+		</relationship>
+	</object>
+	<object class="FadeCurve" id="{2712cbd6-4bb8-4099-89e4-ecfbe759eada}">
+		<relationship name="startPoint">
+			<destination>{4f76b9d0-d89a-442f-878e-a855adbf7e52}</destination>
+		</relationship>
+		<relationship name="endPoint">
+			<destination>{da5e508d-12f4-45fc-95e1-5fa0d209b8c9}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{aea8e211-63a0-46b0-9ae8-6c5e0a942cbf}">
 		<relationship name="effects">
 			<destination>{c3fb0562-0df7-4255-8a46-edc6fff2b680}</destination>
@@ -721,6 +771,25 @@
 	</object>
 	<object class="MixerBusFader" id="{a1ce0444-e43c-4c97-8835-3fcfb8e63c07}" />
 	<object class="MixerBusFader" id="{a7b222ec-787b-440f-a872-77df5d0ff095}" />
+	<object class="AutomationPoint" id="{4f76b9d0-d89a-442f-878e-a855adbf7e52}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+		<property name="curveShape">
+			<value>-0.2547189</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{da5e508d-12f4-45fc-95e1-5fa0d209b8c9}">
+		<property name="position">
+			<value>0.20000000000000001</value>
+		</property>
+		<property name="value">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{c3fb0562-0df7-4255-8a46-edc6fff2b680}" />
 	<object class="ThreeEQEffect" id="{8b8d82aa-f817-497d-939f-0d133b1b4926}">
 		<property name="lowGain">

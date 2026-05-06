@@ -263,6 +263,7 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 4896151076121982080}
+  fireParticles: []
   HealthPackDrop: {fileID: 0}
   movementSpeed: 8
   detectionRange: 12
@@ -274,6 +275,7 @@ MonoBehaviour:
   <maxHealth>k__BackingField: 1e+9
   Docile: 0
   SpawnAgro: 0
+  AlwaysChase: 0
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -308,9 +310,6 @@ MonoBehaviour:
   stepInterval: 0.25
   minMoveSpeed: 0.1
   raycastDistance: 3.04
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!65 &7132507391989287381
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -441,6 +440,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 20
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 1
   isAttatchedToBone: 1
   isBoneItself: 0
@@ -1698,6 +1704,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1822,6 +1835,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1946,6 +1966,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -2085,6 +2112,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -2209,6 +2243,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -2364,6 +2405,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 50
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 0
   isBoneItself: 0
@@ -2445,6 +2493,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 40
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 0
   isBoneItself: 0
@@ -2579,6 +2634,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -2703,6 +2765,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -2726,6 +2795,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 50
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   isRemovable: 1
   isAttatchedToBone: 0
   isBoneItself: 0
@@ -2865,6 +2941,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHealth: 10
   <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: event:/Explosions/Gib_Explosion
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1

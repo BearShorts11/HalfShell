@@ -239,6 +239,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
         {
+            soundEvents.PlaySound("event:/Explosions/Gib_Explosion");
             FullyGibbedParticle.SetActive(true);
             FullyGibbedParticle.gameObject.transform.parent = null;
             //Destroy(this.gameObject);

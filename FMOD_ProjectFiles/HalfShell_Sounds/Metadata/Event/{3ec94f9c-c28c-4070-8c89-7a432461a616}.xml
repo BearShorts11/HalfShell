@@ -137,7 +137,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{4a165a45-f40f-4afb-8453-97b46561ed2f}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-2.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{e7667bce-825f-482b-905e-aa29bc161e35}</destination>
@@ -202,9 +202,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{a4cdcb04-b3f1-4d36-99d9-1acad36caef0}">
-		<property name="volume">
-			<value>-3</value>
-		</property>
 		<property name="name">
 			<value>Core</value>
 		</property>
@@ -232,9 +229,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{26231c1e-37af-4ce1-a21d-e889343fa4c6}">
-		<property name="volume">
-			<value>-3</value>
-		</property>
 		<property name="name">
 			<value>Sweet</value>
 		</property>
@@ -432,7 +426,7 @@
 			<value>15</value>
 		</property>
 		<property name="maximumDistance">
-			<value>1000</value>
+			<value>600</value>
 		</property>
 		<property name="overrideRange">
 			<value>true</value>
@@ -453,10 +447,10 @@
 			<value>1</value>
 		</property>
 		<property name="minimumDistance">
-			<value>15</value>
+			<value>10</value>
 		</property>
 		<property name="maximumDistance">
-			<value>300</value>
+			<value>200</value>
 		</property>
 		<property name="overrideRange">
 			<value>true</value>
@@ -468,7 +462,7 @@
 			<value>1</value>
 		</property>
 		<property name="minimumDistance">
-			<value>40</value>
+			<value>20</value>
 		</property>
 		<property name="maximumDistance">
 			<value>150</value>
@@ -505,7 +499,7 @@
 			<value>30</value>
 		</property>
 		<property name="maximumDistance">
-			<value>1000</value>
+			<value>500</value>
 		</property>
 		<property name="overrideRange">
 			<value>true</value>
@@ -518,6 +512,7 @@
 		<relationship name="automationPoints">
 			<destination>{f502aa9a-bbbb-47de-b232-5126b0ce7521}</destination>
 			<destination>{c3b72723-51fc-49d7-91ea-b6e5f8e3799a}</destination>
+			<destination>{99cdf6f4-8c70-4551-a417-85e0bb2e7eaf}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{eaa64fab-d88b-4c4f-b2ba-3da2ac2ed816}" />
@@ -526,10 +521,10 @@
 			<value>4</value>
 		</property>
 		<property name="minimumDistance">
-			<value>1000</value>
+			<value>200</value>
 		</property>
 		<property name="maximumDistance">
-			<value>5000</value>
+			<value>1000</value>
 		</property>
 		<property name="overrideRange">
 			<value>true</value>
@@ -571,6 +566,17 @@
 		</property>
 		<property name="value">
 			<value>0</value>
+		</property>
+		<property name="curveShape">
+			<value>0.422117919</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{99cdf6f4-8c70-4551-a417-85e0bb2e7eaf}">
+		<property name="position">
+			<value>2000</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
 		</property>
 	</object>
 </objects>
