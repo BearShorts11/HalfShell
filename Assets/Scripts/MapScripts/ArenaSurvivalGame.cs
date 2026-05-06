@@ -107,8 +107,7 @@ public class ArenaSurvivalGame : MonoBehaviour
         if (WaveConfigured())
         { 
             currentWave = waves[waveCount];
-            if (waves[waveCount].maxEnemiesAtOnce > 0)
-                _maxEnemiesAtOnce = waves[waveCount].maxEnemiesAtOnce;
+            _maxEnemiesAtOnce = waves[waveCount].maxEnemiesAtOnce > 0 ? waves[waveCount].maxEnemiesAtOnce : maxEnemiesAtOnce;
         }
         else if (_maxEnemiesAtOnce != maxEnemiesAtOnce)
             _maxEnemiesAtOnce = maxEnemiesAtOnce;
