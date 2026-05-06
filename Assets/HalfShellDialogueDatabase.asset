@@ -1621,8 +1621,8 @@ MonoBehaviour:
         destinationDialogueID: 6
         isConnector: 0
         priority: 2
-      conditionsString: Variable["TutorialStart"] == false
-      userScript: 
+      conditionsString: 
+      userScript: Variable["TutorialStart"] = true
       onExecute:
         m_PersistentCalls:
           m_Calls: []

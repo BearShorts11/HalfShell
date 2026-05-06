@@ -125,7 +125,8 @@ MonoBehaviour:
   trigger: 8
   delayOneFrame: 0
   condition:
-    luaConditions: []
+    luaConditions:
+    - Variable["TutorialStart"] == false
     questConditions: []
     acceptedTags:
     - Player
