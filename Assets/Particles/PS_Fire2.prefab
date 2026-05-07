@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5667657499290750155}
   - component: {fileID: 6708071529892609381}
   - component: {fileID: 684246287178711087}
+  - component: {fileID: 577120425997803916}
   m_Layer: 0
   m_Name: PS_Fire2
   m_TagString: Untagged
@@ -5031,3 +5032,36 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &577120425997803916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597736280968017136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -709929500
+      Data2: 1255119984
+      Data3: -1730193994
+      Data4: 1147273299
+    Path: event:/AMB/EnvFire
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: Intensity
+    Value: 0.5
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

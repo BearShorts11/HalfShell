@@ -145,9 +145,29 @@ public class PauseMenu : MonoBehaviour
 
     public void ReloadCurrentScene()
     {
+
+        FindFirstObjectByType<PlayerUI>().gameObject.SetActive(true);
+
         paused = false;
-        player.Revive();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        //put this in if loder != null
+        player.gameObject.SetActive(true);
+        player.Revive();
+        deathMenu.SetActive(false);
+        pauseMenu.SetActive(false);
+
+        SceneLoader loader = FindFirstObjectByType<SceneLoader>();
+        if (loader != null && loader.Spawnpoint != null)
+        {
+            player.SetPosition(loader.Spawnpoint);
+            //if(loader.GetCurrentScene() != )
+        }
+        else if (loader != null && loader.Spawnpoint == null)
+        {
+            loader.Spawnpoint = GameObject.Find("Spawnpoint").transform;
+            player.SetPosition(loader.Spawnpoint);
+        }
     }
 
     public void ResetSceneFromCheckpoint()

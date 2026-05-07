@@ -140,6 +140,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         // Object needs a Character Controller for Script to work
         characterController = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
@@ -423,6 +425,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         UI.UpdateArmor(armor, MaxArmor);
 
         if (UI.player is null) UI.player = this;
+    }
+
+    public void SetPosition(Transform newPosition)
+    {
+        this.characterController.enabled = false;
+        this.transform.position = newPosition.position;
+        this.characterController.enabled = true;
     }
 
     public void EquipShotgun()
