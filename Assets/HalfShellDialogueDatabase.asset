@@ -1976,8 +1976,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 173
-        y: 98
+        x: 169
+        y: 96
         width: 160
         height: 30
     - id: 8
@@ -2156,12 +2156,11 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: You can now load me with slugs. You'll be able to shoot farther with
-          these. Use them to your advantage.
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: FMODAudioEvent(event:/Dialogue/apollyonSlugAcq)
+        value: FMODAudioEvent(event:/Dialogue/apollyonSlugAcq);
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 6
@@ -2212,6 +2211,62 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
+        value: You can now load me with slugs. You'll be able to shoot farther with
+          these. Use them to your advantage.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: Delay(8);
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 6
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 6
+        originDialogueID: 2
+        destinationConversationID: 6
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: Variable["SlugTalk"] = true
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 129
+        width: 160
+        height: 30
+    - id: 3
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
         value: 
         type: 0
         typeString: CustomFieldType_Text
@@ -2228,14 +2283,14 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: Variable["SlugTalk"] = true
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 130
+        y: 179
         width: 160
         height: 30
     entryGroups: []
