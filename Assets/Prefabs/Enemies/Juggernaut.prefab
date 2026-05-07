@@ -132,6 +132,7 @@ MonoBehaviour:
   ragdollController: {fileID: 0}
   BloodSplatterProjector: {fileID: 0}
   FullyGibbedParticle: {fileID: 0}
+  fireParticles: []
   HealthPackDrop: {fileID: 0}
   movementSpeed: 8
   detectionRange: 20
@@ -143,11 +144,13 @@ MonoBehaviour:
   <maxHealth>k__BackingField: 1000
   Docile: 0
   SpawnAgro: 0
+  AlwaysChase: 0
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
   soundEvents: {fileID: 0}
-  ProjectilePrefab: {fileID: 0}
+  _shotOffset: 0
+  ProjectilePrefab: {fileID: 6924072200759781386, guid: 149f0b7f09ff10d458819567531d8858, type: 3}
   TimeToRangedAttack: 5
 --- !u!195 &1592721323569115803
 NavMeshAgent:
