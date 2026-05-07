@@ -591,7 +591,7 @@ public class PlayerShooting : MonoBehaviour
                 if (AmmoCounts[ShellBase.ShellType.Slug] < Slug.MaxHolding) canAddAmmo = true;
                 break;
             case Incindiary:
-                if (AmmoCounts[ShellBase.ShellType.Slug] < Incindiary.MaxHolding) canAddAmmo = true;
+                if (AmmoCounts[ShellBase.ShellType.Incindiary] < Incindiary.MaxHolding) canAddAmmo = true;
                 break;
             default: //default if halfshells
                 canAddAmmo = true;
