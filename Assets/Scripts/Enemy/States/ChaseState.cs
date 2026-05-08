@@ -47,6 +47,8 @@ public class ChaseState : State
                 default:
                     if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
+                    //if ((Owner as IHasMeleeAttack).PlayerInTrigger) Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
+                    //else if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
                     break;
             }
         }

@@ -14,10 +14,15 @@ public class DifficultyController : MonoBehaviour
     [SerializeField] GameObject MedIndicator;
     [SerializeField] GameObject HardIndicator;
 
+    [SerializeField] GameObject LoadingText;
+
+    public static int startSceneIndex;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //SetMediumDifficulty();
+        LoadingText.SetActive(false);
     }
 
     [ContextMenu("Set Easy")]
@@ -32,9 +37,11 @@ public class DifficultyController : MonoBehaviour
         //FindFirstObjectByType<PlayerShooting>().CheckAboveMaxAmmo();
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
-        if (ReadyButton != null) ReadyButton.SetActive(true);
+        //if (ReadyButton != null) ReadyButton.SetActive(true);
+        TitleScreenUI.StartFromDifficulty(startSceneIndex);
 
-        ToggleIndicatorImage();
+        //ToggleIndicatorImage();
+        LoadingText.SetActive(true);
     }
 
     [ContextMenu("Set Med")]
@@ -49,9 +56,11 @@ public class DifficultyController : MonoBehaviour
         //FindFirstObjectByType<PlayerShooting>().CheckAboveMaxAmmo();
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
-        if (ReadyButton != null) ReadyButton.SetActive(true);
+        //if (ReadyButton != null) ReadyButton.SetActive(true);
+        TitleScreenUI.StartFromDifficulty(startSceneIndex);
 
-        ToggleIndicatorImage();
+        //ToggleIndicatorImage();
+        LoadingText.SetActive(true);
     }
 
     [ContextMenu("Set Hard")]
@@ -66,9 +75,11 @@ public class DifficultyController : MonoBehaviour
         //FindFirstObjectByType<PlayerShooting>().CheckAboveMaxAmmo();
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
-        if (ReadyButton != null) ReadyButton.SetActive(true);
+        //if (ReadyButton != null) ReadyButton.SetActive(true);
+        TitleScreenUI.StartFromDifficulty(startSceneIndex);
 
-        ToggleIndicatorImage();
+        //ToggleIndicatorImage();
+        LoadingText.SetActive(true);
     }
 
     private void ToggleIndicatorImage()

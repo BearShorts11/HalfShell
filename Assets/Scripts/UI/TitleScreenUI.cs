@@ -5,6 +5,12 @@ public class TitleScreenUI : MonoBehaviour
 {
     [SerializeField] GameObject DifficultySelect;
 
+
+    [SerializeField] GameObject StartButton;
+    [SerializeField] GameObject ExitButton;
+    [SerializeField] GameObject Logo;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,6 +30,9 @@ public class TitleScreenUI : MonoBehaviour
         if (DifficultySelect != null)
         {
             DifficultySelect.SetActive(true);
+            DifficultyController.startSceneIndex = sceneNumber;
+
+            StartButton.SetActive(false); ExitButton.SetActive(false); Logo.SetActive(false);
         }
         else 
         { 
@@ -32,7 +41,7 @@ public class TitleScreenUI : MonoBehaviour
         }
     }
 
-    public void StartFromReady(int sceneNumber)
+    public static void StartFromDifficulty(int sceneNumber)
     {
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.UnloadSceneAsync(currentScene);

@@ -15,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject deathMenu;
     public GameObject sceneSelectMenu;
     public GameObject settingsMenu;
+    [SerializeField] GameObject controls;
     private PlayerBehavior player;
 
     public Slider SensitivitySlider; 
@@ -29,6 +30,7 @@ public class PauseMenu : MonoBehaviour
     private Bus ambientBus; // Ditto
     private Bus musicBus;
     private Bus dialogueBus;
+    [SerializeField] Toggle showControls;
     public Slider masterVolumeSlider; 
     public Slider sfxVolumeSlider; 
     public Slider musicVolumeSlider; 
@@ -168,6 +170,8 @@ public class PauseMenu : MonoBehaviour
             loader.Spawnpoint = GameObject.Find("Spawnpoint").transform;
             player.SetPosition(loader.Spawnpoint);
         }
+
+        //do some magic with checking amt of players?
     }
 
     public void ResetSceneFromCheckpoint()
@@ -233,6 +237,11 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetFloat(DIALOGUE_VOLUME_KEY, DEFAULT_DIALOGUE_VOLUME);
 
         SaveUpdateSettings();
+    }
+
+    public void ToggleControls()
+    { 
+        controls.SetActive(showControls.isOn);
     }
 
     public void ApplySettings()

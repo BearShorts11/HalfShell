@@ -78,10 +78,8 @@ public class AlertController : MonoBehaviour
             _alertText.gameObject.SetActive(false);
         }
 
-        Debug.Log(rackAlertOn + " from update");
         if (rackAlertOn && rackAlertOffTime <= Time.time)
         {
-            Debug.Log("turning rack alert off");
             rackAlertOn = false;
             _rackImage.gameObject.SetActive(false);
             _rackText.gameObject.SetActive(false);
@@ -131,7 +129,6 @@ public class AlertController : MonoBehaviour
     {
         if (type == ShellBase.ShellType.HalfShell) return;
 
-        //Debug.Log("setting rack alert");
         _rackText.text = "+1";
 
         switch (type)
@@ -150,12 +147,10 @@ public class AlertController : MonoBehaviour
                 break;
         }
 
-        //Debug.Log("got here");
         _rackImage.gameObject.SetActive(true);
         _rackText.gameObject.SetActive(true);
         rackAlertOn = true;
         rackAlertOffTime = Time.time + _rackAlertLength;
 
-        Debug.Log(rackAlertOn + " from method");
     }
 }

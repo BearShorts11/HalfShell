@@ -37,21 +37,22 @@ public class MeleeAttackState : State
 
         attackTimer -= Time.deltaTime;
 
+        //rotate towards player to attempt to land an attack
+        Vector3 dir = Owner.Player.transform.position - Owner.transform.position;
+        dir.y = 0;
+        Quaternion rot = Quaternion.LookRotation(dir);
+        // slerp to the desired rotation over time
+        Owner.transform.rotation = Quaternion.Slerp(Owner.transform.rotation, rot, 5f * Time.deltaTime);
+
         if (attackTimer <= 0)
         {
             //if player is still within attack range after the animation finished playing, player takes damage
             //TO REVISE: if the enemy doesn't do damage to the player have them turn instead of keep attacking the air
             if ((Owner as IHasMeleeAttack).PlayerInTrigger && !hitPlayer)
-            { 
+            {
                 Owner.Player.TakeDamage(Owner.damage * Enemy.DamageMultiplier);
                 hitPlayer = true;
             }
-            //kind of negates the issue of standing behind an enemy? too snappy though
-            //real fix is probably only making enemy attack if player is in trigger.... ? 
-            //else
-            //{
-            //    Owner.transform.LookAt(Owner.Player.transform);
-            //}
 
                 //automatically switch to cooldown after attack timer is done
                 Owner.stateMachine._cooldownState.SetCooldownTime(Owner.attackCooldown);
