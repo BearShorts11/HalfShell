@@ -166,6 +166,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
         Enemy.DeathAlert.AddListener(AddKill);
         ShellWheelToggle.AddListener(ShellWheel);
+        killsToDialoge = 4;
         killsSinceDamage = 0;
         canPlayBark = true;
 
@@ -181,6 +182,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             //play dialogue sound
             PlaySound(Support);
             StartCoroutine(CanPlayBark());
+            killsSinceDamage = 0;
             Debug.Log("Support Talk");
         }
     }
