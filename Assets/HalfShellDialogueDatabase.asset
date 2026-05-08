@@ -1549,13 +1549,14 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: Get your rip-off half shells and load them in me! Don't worry about
+          running out, we've made plenty for this day.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
         value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02);
 
-          Delay(30)'
+          Delay(8)'
         type: 0
         typeString: CustomFieldType_Text
       - title: EventGuid
@@ -1573,7 +1574,7 @@ MonoBehaviour:
       - originConversationID: 4
         originDialogueID: 2
         destinationConversationID: 4
-        destinationDialogueID: 3
+        destinationDialogueID: 11
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -1610,7 +1611,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: As you can see, the last shell in the chamber is the first one that
+          gets racked. Keep that in mind when reloading.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1644,8 +1646,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 312
-        y: 415
+        x: 264.66666
+        y: 527
         width: 160
         height: 30
     - id: 4
@@ -1671,13 +1673,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: Well now that seems pretty simple doesn't it? So fire away!
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq04)
+        value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq04);
 
-'
+          delay(6);'
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 4
@@ -1701,7 +1703,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 493
+        x: 490.3333
         y: 507
         width: 160
         height: 30
@@ -2057,6 +2059,119 @@ MonoBehaviour:
         serializedVersion: 2
         x: 658
         y: 574.6667
+        width: 160
+        height: 30
+    - id: 11
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Lucky for you, these half shells only take up half of my tube space.
+          So you can stack up to ten of them in here. but surely you knew all that,
+          and you can load me up faster. Time is of the essence.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: Delay(13)
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 4
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 4
+        originDialogueID: 11
+        destinationConversationID: 4
+        destinationDialogueID: 12
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 220.33337
+        y: 412.99997
+        width: 160
+        height: 30
+    - id: 12
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 'Now you have to rack your shell into the my tube. Otherwise you''ll
+          be shooting nothing but air. '
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: Delay(6)
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 4
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 4
+        originDialogueID: 12
+        destinationConversationID: 4
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 107.00003
+        y: 466.99997
         width: 160
         height: 30
     entryGroups: []
