@@ -100,6 +100,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     private PlayerShooting playerShooting;
     public GameObject ShotgunViewmodel;
     public GameObject ApollyonBark;
+    public GunFace gunFace;
 
     private int killsSinceDamage;
     /// <summary>
@@ -186,8 +187,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     private IEnumerator CanPlayBark()
     {
+        gunFace.Talk();
         canPlayBark = false;
         yield return new WaitForSeconds(dialogueCooldown);
+        gunFace.StopTalking();
         canPlayBark = true;
     }
 
