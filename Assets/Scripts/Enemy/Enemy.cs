@@ -44,7 +44,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// <summary>
     /// cooldown time after enemy is damaged
     /// </summary>
-    [SerializeField] public float damageCooldown = 1.5f;
+    [SerializeField] public float damageCooldown = 0.5f;
 
     [Header("Health & Damage")]
     public float Health { get; set; }
