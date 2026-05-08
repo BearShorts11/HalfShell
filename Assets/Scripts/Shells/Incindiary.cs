@@ -7,8 +7,8 @@ public class Incindiary : ShellBase
     public Incindiary()
     {
         Size = 1f;
-        Damage = 0;
-        AmtProjectiles = 9;
+        Damage = 3;
+        AmtProjectiles = 5;
         MaxRange = 100f;
         type = ShellType.Incindiary;
         DisplayColor = new Color(255, 155, 40);
@@ -17,9 +17,9 @@ public class Incindiary : ShellBase
         hasSpecialEffects = true;
         effect = HitEffect.Fire;
 
-        effectTime = 3;
+        effectTime = 5;
         effectHitPerSecond = 1;
-        effectDamage = 10;
+        effectDamage = 15;
     }
 
     public override float ScaleDamage(RaycastHit hit)
