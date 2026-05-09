@@ -46,6 +46,10 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 
         stateMachine.Update();
         Debug.Log(stateMachine.CurrentState);
+
+        //Controls Idle/Walking/Running 
+        animator.SetFloat("Velocity X", agent.velocity.x);
+        animator.SetFloat("Velocity Y", agent.velocity.z);
     }
 
 
@@ -53,6 +57,7 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
     {
         Health -= amount;
 
+        animator.SetTrigger("Hit");
         Debug.Log("ouchie " + Health);
 
         if (Health <= 0 & Dead == false)
@@ -86,7 +91,15 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
     public override void Shoot()
     {
         //animate
+        animator.SetBool("RangedAttacking", true);
 
+        // Moved the projectile logic to it's own private method below to sync animation with code easier. Change it if you'd like :) - Tommy
+
+        Invoke(nameof(ShootLogic), 1f);
+    }
+
+    private void ShootLogic()
+    {
         //get object from the pool (eventually)
         GameObject bullet = GameObject.Instantiate(ProjectilePrefab, this.transform.position + this.transform.forward, this.transform.rotation, this.transform);
         bullet.SetActive(true);
@@ -96,7 +109,7 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         //bullet.transform.parent = transform;
 
 
-        Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset), 
+        Vector3 playerCurrPos = Player.transform.position + new Vector3(UnityEngine.Random.Range(-ShotOffset, ShotOffset),
             UnityEngine.Random.Range(-ShotOffset, ShotOffset), UnityEngine.Random.Range(-ShotOffset, ShotOffset));
         bullet.GetComponent<EnemyBullet>().GiveTarget(playerCurrPos);
 

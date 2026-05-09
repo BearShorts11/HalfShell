@@ -19,4 +19,9 @@ public class AnimationManager : MonoBehaviour
     {
         animator.SetBool("Hit", false);
     }
+
+    public void FinishRangedAttackAnimation()
+    {
+        animator.SetBool("RangedAttacking", false);
+    }
 }
