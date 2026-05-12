@@ -398,6 +398,7 @@
 	<object class="MixerBusEffectChain" id="{0c3044fa-30d7-4f83-81da-9f1d74db51f9}">
 		<relationship name="effects">
 			<destination>{1c131398-4d18-4451-bc46-57371e1426c0}</destination>
+			<destination>{3b768004-7c1f-4d79-9658-263f5a6a1b4f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b2ad6efe-9e35-48fd-b49a-af953cd05517}" />
@@ -442,6 +443,7 @@
 	<object class="MixerBusEffectChain" id="{1399727e-6f9a-4024-a429-d01f023c34a8}">
 		<relationship name="effects">
 			<destination>{2843b808-346f-42f1-b378-5edd29c21841}</destination>
+			<destination>{ebee45e1-f8a8-444c-b5ce-f77da3ed660c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{73fee87d-46b5-4806-9ce8-0d0f081974ca}" />
@@ -503,10 +505,16 @@
 	<object class="MixerBusFader" id="{b774dec5-28f8-4593-ba56-3a292b5fd208}" />
 	<object class="ThreeEQEffect" id="{d19479af-175d-49b1-bfc6-b54ca515d41b}">
 		<property name="lowGain">
-			<value>6</value>
+			<value>-1</value>
 		</property>
 		<property name="highGain">
-			<value>-4</value>
+			<value>-7.5</value>
+		</property>
+		<property name="lowCrossover">
+			<value>1050</value>
+		</property>
+		<property name="highCrossover">
+			<value>2900</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{d7a69b55-7f5a-43af-acdd-7777497154ef}">
@@ -565,6 +573,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{1c131398-4d18-4451-bc46-57371e1426c0}" />
+	<object class="ThreeEQEffect" id="{3b768004-7c1f-4d79-9658-263f5a6a1b4f}">
+		<property name="lowGain">
+			<value>3</value>
+		</property>
+		<property name="midGain">
+			<value>5.5</value>
+		</property>
+		<property name="highGain">
+			<value>2</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{4f72836d-16c6-4fa9-83b6-dc3ca70755c2}">
 		<property name="position">
 			<value>0</value>
@@ -613,6 +632,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2843b808-346f-42f1-b378-5edd29c21841}" />
+	<object class="ThreeEQEffect" id="{ebee45e1-f8a8-444c-b5ce-f77da3ed660c}">
+		<property name="lowGain">
+			<value>5</value>
+		</property>
+		<property name="lowCrossover">
+			<value>4400</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{bfe85c8d-58c9-4354-9108-43b984d0ff3e}">
 		<property name="position">
 			<value>0.5</value>
