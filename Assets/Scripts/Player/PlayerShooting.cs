@@ -837,7 +837,7 @@ public class PlayerShooting : MonoBehaviour
         // Is this a new target or an old target
         if (lastDamaged != enemy)
         {
-            if (slowmo is not null)
+            if (slowmo is not null && lastDamaged is not null)
             {
                 lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
             }
