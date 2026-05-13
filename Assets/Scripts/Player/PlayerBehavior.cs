@@ -164,7 +164,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             ApollyonBark.SetActive(false);
         }
 
-        Enemy.DeathAlert.AddListener(AddKill);
+        //Enemy.DeathAlert.AddListener(AddKill);
         ShellWheelToggle.AddListener(ShellWheel);
         killsToDialoge = 4;
         killsSinceDamage = 0;
@@ -174,7 +174,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         UpdateFOV();
     }
 
-    private void AddKill()
+    public void AddKill()
     { 
         killsSinceDamage++;
         if (killsSinceDamage >= killsToDialoge && canPlayBark)

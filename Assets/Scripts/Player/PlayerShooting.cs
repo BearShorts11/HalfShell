@@ -25,6 +25,7 @@ public class PlayerShooting : MonoBehaviour
     private LayerMask triggerMask;
     private SlowMo_Manager slowmo;
     public Enemy lastDamaged { get; set; }
+    PlayerBehavior playerBehavior;
 
     #region VFX
     //Impacts
@@ -191,6 +192,7 @@ public class PlayerShooting : MonoBehaviour
         triggerMask = ~LayerMask.GetMask("Trigger", "Ignore Raycast", "Player");
 
         slowmo = GetComponent<SlowMo_Manager>();
+        playerBehavior = GetComponent<PlayerBehavior>();
     }
 
     #region pool behaviors
@@ -826,6 +828,8 @@ public class PlayerShooting : MonoBehaviour
         {
             slowmo.slowMoChance += 0.0025f;
         }
+        if (playerBehavior is not null)
+            playerBehavior.AddKill();
     }
 
     public void SetLastDamaged(Enemy enemy)
@@ -833,16 +837,26 @@ public class PlayerShooting : MonoBehaviour
         // Is this a new target or an old target
         if (lastDamaged != enemy)
         {
-            if (slowmo == null) return;
+            if (slowmo is not null)
+            {
+                lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
+            }
 
             if (lastDamaged != null)
             { 
-                lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
                 CancelInvoke(nameof(Enemy_RemoveKillReward));
             }
+            
             lastDamaged = enemy;
-            lastDamaged.OnDeath.AddListener(slowmo.DramaEvent);
+
+            // Check again if there is a slowmo component before linking this method to the new lastDamaged
+            if (slowmo is not null)
+            { 
+                lastDamaged.OnDeath.AddListener(slowmo.DramaEvent);
+            }
+
             lastDamaged.OnDeath.AddListener(RewardKill);
+
             Invoke(nameof(Enemy_RemoveKillReward), 1f);
         }
     }
@@ -851,7 +865,8 @@ public class PlayerShooting : MonoBehaviour
     {
         if (lastDamaged != null)
         {
-            lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
+            if (slowmo is not null)
+                lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
             lastDamaged.OnDeath.RemoveListener(RewardKill);
             lastDamaged = null;
         }
