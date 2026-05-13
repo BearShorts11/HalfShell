@@ -79,7 +79,7 @@ public class PlayerShooting : MonoBehaviour
 
     public float totalCapacity = 5;
     public float currentCapacity = 0; 
-    [SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
+    //[SerializeField] private float spreadRange = 0.1f; //variation in raycasts for non single shots (random spread)
     private float gunRange = 100f;
     private bool useShells = true; //toggle infinite shells
 
@@ -122,6 +122,7 @@ public class PlayerShooting : MonoBehaviour
     public ShellBase Chamber { get; private set; }
     private ShellBase.ShellType ChamberType;
     public static bool canFire = true;
+    [SerializeField] private bool canLoadShells = true;
 
     #region new input handling
     public PlayerInput input;
@@ -397,6 +398,8 @@ public class PlayerShooting : MonoBehaviour
     // Following the KISS principal
     private bool CanLoad(ShellBase shell)
     {
+        if (canLoadShells == false) return false;
+
         //technicially true, gonna need checks in loading instead for if chamber is empty
         if (shell.Type == ShellBase.ShellType.BMG) return false;
 
@@ -664,7 +667,7 @@ public class PlayerShooting : MonoBehaviour
                     {
                         //https://discussions.unity.com/t/raycast-bullet-spread/753464 
                         Vector3 fwd = fpsCam.transform.forward;
-                        fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange)));
+                        fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-shell.SpreadRange, shell.SpreadRange), Random.Range(-shell.SpreadRange, shell.SpreadRange)));
                         if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
                             if (shell.Type == ShellBase.ShellType.Incindiary)
@@ -682,7 +685,8 @@ public class PlayerShooting : MonoBehaviour
 
                     break;
                 case ShellBase.ShellType.Slug:
-                    if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
+                    Ray shot = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
+                    if (Physics.SphereCast(shot, 0.2f, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
                         DoHit(hit, shell);
                     }
@@ -1056,4 +1060,6 @@ public class PlayerShooting : MonoBehaviour
         shell.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.up * Random.Range(75f, 210f));
         shell.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-15f, 15f), Random.Range(30f, 50f), Random.Range(-5f, -5f)));
     }
+
+    public void CanLoadShells() => canLoadShells = true;
 }

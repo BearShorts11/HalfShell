@@ -67,6 +67,7 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gun.Chamber is null && ChamberUI.transform.childCount > 0) ChamberUIOff();
     }
 
 
@@ -164,7 +165,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ChamberUIOff()
     {
-        Destroy(ChamberUI.transform.GetChild(1).gameObject);
+        Destroy(ChamberUI.transform.GetChild(0).gameObject);
     }
 
     public void ChamberUIOn(ShellBase shell)

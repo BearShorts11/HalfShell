@@ -10,6 +10,7 @@ public class HalfShell : ShellBase
         Damage = 6;
         AmtProjectiles = 9;
         MaxRange = 18f;
+        SpreadRange = 0.1f;
         type = ShellType.HalfShell;
         DisplayColor = Color.red;
         MaxHolding = int.MaxValue;

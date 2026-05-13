@@ -10,6 +10,7 @@ public class Incindiary : ShellBase
         Damage = 3;
         AmtProjectiles = 5;
         MaxRange = 100f;
+        SpreadRange = 0.2f;
         type = ShellType.Incindiary;
         DisplayColor = new Color(255, 155, 40);
         MaxHolding = 5;

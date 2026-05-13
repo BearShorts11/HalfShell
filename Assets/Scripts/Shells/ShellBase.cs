@@ -6,6 +6,7 @@ public abstract class ShellBase : MonoBehaviour
     public float Size;
     public float Damage;
     [SerializeField] public float MaxRange;
+    public float SpreadRange;
     //public static int MaxHolding;
 
     public bool hasSpecialEffects;

@@ -10,6 +10,7 @@ public class ShellWheelController : MonoBehaviour
     public static bool shellWheelDisabled = false;
     public Image selectedItem;
     public Sprite noImage;
+    [SerializeField] private bool canOpenShellWheel = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,7 +23,7 @@ public class ShellWheelController : MonoBehaviour
     {
         if (shellWheelDisabled) return;
 
-        if (PauseMenu.paused != true)
+        if (PauseMenu.paused != true && canOpenShellWheel)
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
@@ -62,4 +63,6 @@ public class ShellWheelController : MonoBehaviour
         }
         PlayerBehavior.ShellWheelToggle?.Invoke();
     }
+
+    public void PlayerCanOpenWheel() => canOpenShellWheel = true;
 }
