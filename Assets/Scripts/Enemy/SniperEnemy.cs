@@ -13,7 +13,7 @@ public class SniperEnemy : RangedEnemy
     // Shooting Behavior
     float time = 0;
     float step { get => Time.deltaTime; }
-    [SerializeField] private float prefireTime = 1f;
+    [SerializeField] private float prefireTime = 0.9f;
     bool bShooting = false;
     bool bFired = false;
     float catchupTime = 0f;
