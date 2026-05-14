@@ -66,7 +66,7 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
             agent.enabled = false;
             Dead = true;
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
             //StartCoroutine(SpawnDeathBloodPool());
         }
 

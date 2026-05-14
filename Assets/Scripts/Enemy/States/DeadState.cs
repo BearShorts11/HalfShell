@@ -22,7 +22,7 @@ public class DeadState : State
         //Object.Destroy(Owner.gameObject, 10f);
 
         //take out when he gets the below componenets
-        if (Owner is Juggernaut) return;
+        //if (Owner is Juggernaut) return;
 
         Owner.animator.enabled = false;
         Owner.ragdollController.SetColliderState(true);

@@ -11,6 +11,8 @@ public class GibletParticles : MonoBehaviour
     public int minAmount = 3;
     [Tooltip("Force to apply when spawned")]
     public Vector2 minMaxForce = new Vector2(4, 8);
+    [Tooltip("Should the particle group always be facing upright when this particle plays? \nTrue = Yes, False = No")]
+    public bool worldSpaceRotation = false;
     private int gibsAmount;
     private Vector3 rotation;
     private Vector3 force;
@@ -24,6 +26,9 @@ public class GibletParticles : MonoBehaviour
     {
         GameObject go;
         this.gameObject.transform.parent = null;
+        // Always look upright when being gibbed
+        if (worldSpaceRotation)
+            this.gameObject.transform.LookAt(transform.position + (Vector3.up * 10));
         if (gibObjects.Length > 0)
         {
             gibsAmount = Random.Range(minAmount, gibObjects.Length);
