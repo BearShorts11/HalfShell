@@ -63,7 +63,7 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     {
         if (Health - amount <= 0)
         {
-            PlayVoice("event:/Enemy/EnemyDeath");
+            PlayVoice("event:/Enemy/Cultist/EnemyDeath");
             base.TakeDamage(amount);
             return;
         }
