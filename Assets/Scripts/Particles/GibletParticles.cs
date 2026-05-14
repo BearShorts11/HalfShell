@@ -28,7 +28,7 @@ public class GibletParticles : MonoBehaviour
         this.gameObject.transform.parent = null;
         // Always look upright when being gibbed
         if (worldSpaceRotation)
-            this.gameObject.transform.LookAt(transform.position + (Vector3.up * 10));
+            this.gameObject.transform.LookAt(transform.position + (Vector3.forward * 10));
         if (gibObjects.Length > 0)
         {
             gibsAmount = Random.Range(minAmount, gibObjects.Length);
