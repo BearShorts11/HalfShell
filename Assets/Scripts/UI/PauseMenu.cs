@@ -244,6 +244,12 @@ public class PauseMenu : MonoBehaviour
         controls.SetActive(showControls.isOn);
     }
 
+    public void TurnControlsOn()
+    {
+        controls.SetActive(true);
+        showControls.isOn = true;
+    }
+
     public void ApplySettings()
     {
         //get value from slider element
