@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 11426072}
   - component: {fileID: 11471062}
   - component: {fileID: 11424616}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dialogue Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8b685e62a9aeb4a9472b30ec2d86d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDatabase: {fileID: 0}
+  initialDatabase: {fileID: 11400000, guid: ca7748c7dc2df6644aa14cfe3be9077f, type: 2}
   displaySettings:
     conversationOverrideSettings:
       useOverrides: 0
@@ -176,8 +176,8 @@ MonoBehaviour:
       cancelConversation:
         key: 27
         buttonName: 
-    dialogueUI: {fileID: 1250216677399277057, guid: 1c86d7ffdf4f1484c9a3526c6971876e, type: 3}
-    defaultCanvas: {fileID: 22325660}
+    dialogueUI: {fileID: 1250216677399277057, guid: 15c014f8c489d5e4e9bc23a77367fe97, type: 3}
+    defaultCanvas: {fileID: 4080741273694981467, guid: d6d81341f6c3e38499f22b8d583d64dd, type: 3}
     localizationSettings:
       language: 
       useSystemLanguage: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
       alertCharsPerSecond: 0
       minAlertSeconds: 0
   persistentDataSettings:
-    recordPersistentDataOn: 1
+    recordPersistentDataOn: 0
     includeActorData: 1
     includeAllItemData: 0
     includeLocationData: 0
@@ -257,7 +257,7 @@ MonoBehaviour:
   preloadResources: 1
   warmUpConversationController: 0
   dontHideImmediateDuringWarmup: 0
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   allowOnlyOneInstance: 1
   onStartTriggerWaitForSaveDataApplied: 0
   dialogueTimeMode: 0
