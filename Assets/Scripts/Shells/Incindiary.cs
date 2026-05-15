@@ -7,7 +7,7 @@ public class Incindiary : ShellBase
     public Incindiary()
     {
         Size = 1f;
-        Damage = 20;
+        Damage = 15;
         AmtProjectiles = 20;
         MaxRange = 30f;
         SpreadRange = .25f;

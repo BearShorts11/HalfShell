@@ -222,11 +222,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             StartCoroutine(SpawnDeathBloodPool());
         }
 
-        if (statusEffected && !Dead && (lastHitFrom.Type != ShellBase.ShellType.Incindiary) && (Time.time > nextTimeToSpecialHealthDrop))
+        if (statusEffected && !damageFromStatusEffect && !Dead && 
+            (lastHitFrom.Type != ShellBase.ShellType.Incindiary) && (Time.time >= nextTimeToSpecialHealthDrop))
         {
             //drop health pack
-            GameObject drop = Instantiate(HealthPackDrop);
+            Debug.Log("dropping health");
+            GameObject drop = Instantiate(HealthPackDrop, this.transform.position, Quaternion.identity);
             drop.GetComponent<HealthPickup>().regainAmount = 5;
+            drop.transform.parent = null;
             nextTimeToSpecialHealthDrop = Time.time + specialHealthDropCooldown;
         }
 

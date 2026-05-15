@@ -686,7 +686,7 @@ public class PlayerShooting : MonoBehaviour
                     break;
                 case ShellBase.ShellType.Slug:
                     Ray shot = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
-                    if (Physics.SphereCast(shot, 0.2f, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
+                    if (Physics.SphereCast(shot, 0.05f, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
                         DoHit(hit, shell);
                     }
