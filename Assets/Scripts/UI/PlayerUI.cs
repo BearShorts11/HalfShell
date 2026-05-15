@@ -33,6 +33,7 @@ public class PlayerUI : MonoBehaviour
     public Image ChamberUI;
     public Image SingleShotCrosshair;
     public Image MultiShotCrosshair;
+    public Image WideShotCrosshair;
 
     //gets around needing a static reference for a static method (Make UI Shell) but needing to assign in the inspector
     public Sprite HalfShellSprite;
@@ -186,12 +187,18 @@ public class PlayerUI : MonoBehaviour
                     //case ShellBase.ShellType. some other shot type that also is a single fire
                     SingleShotCrosshair.gameObject.SetActive(true);
                     MultiShotCrosshair.gameObject.SetActive(false);
+                    WideShotCrosshair.gameObject.SetActive(false);
+                    break;
+                case ShellBase.ShellType.Incindiary:
+                    SingleShotCrosshair.gameObject.SetActive(false);
+                    MultiShotCrosshair.gameObject.SetActive(false);
+                    WideShotCrosshair.gameObject.SetActive(true);
                     break;
                 case ShellBase.ShellType.Buckshot:
-                case ShellBase.ShellType.Incindiary:
                 case ShellBase.ShellType.HalfShell:
                     SingleShotCrosshair.gameObject.SetActive(false);
                     MultiShotCrosshair.gameObject.SetActive(true);
+                    WideShotCrosshair.gameObject.SetActive(false);
                     break;
             }
         }
