@@ -1,6 +1,7 @@
 ﻿using FMODUnity;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +26,10 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
     /// </summary>
     public float nextTimeToRangedAttack { get; private set; }
 
+    public EventReference meleeSwingSound;
+    public EventReference rangeAttackSound;
+    public EventReference fireBallSound;
+
     private void Start()
     {
         //base.Startup();
@@ -38,6 +43,13 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 
         Player = FindFirstObjectByType<PlayerBehavior>();
         agent = GetComponent<NavMeshAgent>();
+
+        // I guess, whatever
+        if (soundEvents == null)
+            soundEvents = this.gameObject.GetComponent<SimpleSoundEvent>();
+        if (soundEvents == null)
+            soundEvents = this.AddComponent<SimpleSoundEvent>();
+        vocalCoolDown = defaultVocalCoolDown;
     }
 
     private void Update()
@@ -92,6 +104,9 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
     {
         //animate
         animator.SetBool("RangedAttacking", true);
+        if (!IsOnVocalCooldown())
+            PlayVoice(rangeAttackSound);
+        vocalCoolDown = 1f;
 
         // Moved the projectile logic to it's own private method below to sync animation with code easier. Change it if you'd like :) - Tommy
 
@@ -100,6 +115,10 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 
     private void ShootLogic()
     {
+        // Prevent post-mortem Fireball
+        if (Dead) return;
+
+        animator.SetBool("RangedAttacking", false);
         //get object from the pool (eventually)
         GameObject bullet = GameObject.Instantiate(ProjectilePrefab, this.transform.position + this.transform.forward, this.transform.rotation, this.transform);
         bullet.SetActive(true);
@@ -115,17 +134,18 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 
         //play sound
         //RuntimeManager.PlayOneShot(firingSound, transform.position);
+        soundEvents.PlaySoundAttached(fireBallSound);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player") PlayerInTrigger = true;
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player") PlayerInTrigger = true;
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player") PlayerInTrigger = false;
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "Player") PlayerInTrigger = false;
+    //}
 
     public void SetPlayerInTrigger(bool boolean)
     {

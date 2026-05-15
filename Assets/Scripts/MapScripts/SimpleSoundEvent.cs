@@ -2,6 +2,7 @@ using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -120,15 +121,40 @@ public class SimpleSoundEvent : MonoBehaviour
     public void ChangeInstanceParameter(string arguments)
     {
         arguments = arguments.Trim((char)32);
-        string[] values = arguments.ToCommaSeparatedString().Split(";");
+        List<List<string>> argMatrix = new List<List<string>>();
+        string[] args = arguments.Split(";");
+        
 
-        if (int.TryParse(values[1], out var intValue))
-        {
-            eventInstance.setParameterByName(values[0], intValue);
-            return;
+        for (int i = 0; i < args.Length; i++) {
+            string[] val = args[i].Split(" ");
+            argMatrix.Add(new List<string>());
+            for (int j = 0; j < val.Length; j++)
+            {
+                argMatrix[i].Add(val[j]);
+            }
         }
-        else if (float.TryParse(values[1], out float floatValue))
-            eventInstance.setParameterByName(values[0], floatValue);
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            for (int j = 1; j < argMatrix[i].Count; j++) 
+            {
+                if (int.TryParse(argMatrix[i][j], out var intValue))
+                {
+                    eventInstance.setParameterByName(argMatrix[i][0], intValue);
+                    return;
+                }
+                else if (float.TryParse(argMatrix[i][j], out float floatValue))
+                    eventInstance.setParameterByName(argMatrix[i][0], floatValue);
+            }
+        }
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            argMatrix[i].Clear();
+            argMatrix[i].TrimExcess();
+        }
+        argMatrix.Clear();
+        argMatrix.TrimExcess();
     }
 
     private void OnDestroy()

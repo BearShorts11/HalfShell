@@ -12,10 +12,13 @@ public class MeleeAttackState : State
     private float attackTimer;
     private bool hitPlayer;
 
+    Juggernaut ownerJuggernaut;
+
     public MeleeAttackState(Enemy owner)
     { 
         this.Owner = owner;
         attackTimer = owner.attackTimer;
+        ownerJuggernaut = owner as Juggernaut;
     }
 
     public override void Enter()
@@ -24,6 +27,11 @@ public class MeleeAttackState : State
         if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
         if(Owner.animator != null) Owner.animator.SetBool("Attacking", true);
         hitPlayer = false;
+
+        if (ownerJuggernaut is not null)
+        {
+            ownerJuggernaut.soundEvents.PlaySoundAttached(ownerJuggernaut.meleeSwingSound);
+        }
     }
 
     public override void Update()

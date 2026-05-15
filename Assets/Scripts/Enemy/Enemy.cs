@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using FMODUnity;
 using System.Collections;
 using System.Xml;
 using Unity.VisualScripting;
@@ -108,6 +109,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected float vocalCoolDown;
     protected float lastVocalization;
 
+    [Header("Enemy Lines/Sounds")]
+    public EventReference painSounds;
+    public EventReference attackSounds;
+    public EventReference barkSounds;
+    public EventReference deathSounds;
+    public EventReference onFireSounds;
+
     protected void Startup()
     {
         stateMachine = new StateMachine(this);
@@ -161,6 +169,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             TakeDamage(statusEffectShell.effectDamage);
             timeToStatusDamage = Time.time + statusEffectShell.effectHitPerSecond;
         }
+
+        Voice_Update();
     }
 
     //not abstract so melee doesn't have to implement it, but should be
@@ -170,6 +180,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
     public virtual void TakeDamage(float amount)
     {
+        if (!statusEffected)
+        {
+            vocalCoolDown = 0.01f;
+            if (!IsOnVocalCooldown())
+            {
+                PlayVoice(painSounds);
+            }
+        }
+
         //Damage is not it's own state because what Damage does depends on what state the enemy WAS in or IS CURRENTLY in
         //ex. damaging a dead enemy is going to be different from damaging a chasing enemy from damaging an idling enemy
 
@@ -191,6 +210,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         //checking for dead prevents this from firing every time the enemy is shot after death
         if (Health <= 0 & Dead == false)
         {
+            PlayVoice(deathSounds);
             stateMachine.TransitionTo(stateMachine._deadState);
             agent.enabled = false;
             Dead = true;
@@ -401,12 +421,59 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    protected void PlayVoice(EventReference eventReference)
+    {
+        if (eventReference.IsNull) return;
+        RuntimeManager.StudioSystem.lookupPath(eventReference.Guid, out string eventPath);
+        if (eventPath != string.Empty)
+            PlayVoice(eventPath);
+    }
+
     protected bool IsOnVocalCooldown()
     {
         return Time.time < lastVocalization + vocalCoolDown;
     }
 
-    public virtual bool SpottedPlayer() { if (bSpottedPlayer) return true; bSpottedPlayer = true; return false; }
+    void Voice_Update()
+    {
+        if (!IsOnVocalCooldown())
+        {
+
+            vocalCoolDown = defaultVocalCoolDown + Random.Range(-1.5f, 1.5f);
+
+            if (statusEffected && statusEffectShell.Type == ShellBase.ShellType.Incindiary)
+            {
+                vocalCoolDown = 5f;
+                PlayVoice(onFireSounds);
+                return;
+            }
+
+            switch (stateMachine.CurrentState)
+            {
+                case MeleeAttackState:
+                    vocalCoolDown = 0.9f;
+                    PlayVoice(attackSounds);
+                    break;
+                    //case ChaseState:
+                    //    PlayVoice("event:/Dialogue/cultistBark");
+                    //    break;
+            }
+
+            //lastVocalization = Time.time;
+        }
+    }
+
+    public virtual bool SpottedPlayer() { 
+        if (bSpottedPlayer) return true; 
+        
+        bSpottedPlayer = true;
+        vocalCoolDown = 0.00001f;
+        if (!IsOnVocalCooldown())
+        {
+            PlayVoice(barkSounds);
+        }
+        return false;
+    }
 
     private void OnDrawGizmos()
     {

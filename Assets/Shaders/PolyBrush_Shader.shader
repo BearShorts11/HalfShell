@@ -14,6 +14,10 @@ Shader "Custom/PolyBrush_Shader"
 	    _Texture1 ("Texture", 2D) = "white" {}
 	    _Texture2 ("Texture", 2D) = "white" {}
 	    _Texture3 ("Texture", 2D) = "white" {}
+
+        [KeywordEnum(Dirt, Gravel, Wood, Concrete, Metal, Body)]_SURFACETYPE("SurfaceType", Float) = 0
+        [HideInInspector]_Surface("_Surface", Float) = 0
+
 	    
     }
     SubShader
@@ -31,6 +35,22 @@ Shader "Custom/PolyBrush_Shader"
             #pragma Lambert vertex:vert
             // make fog work
             #pragma multi_compile_fog
+
+            #pragma shader_feature_local _SURFACETYPE_DIRT _SURFACETYPE_GRAVEL _SURFACETYPE_WOOD _SURFACETYPE_CONCRETE _SURFACETYPE_METAL _SURFACETYPE_BODY
+        
+            #if defined(_SURFACETYPE_DIRT)
+                #define KEYWORD_PERMUTATION_0
+            #elif defined(_SURFACETYPE_GRAVEL)
+                #define KEYWORD_PERMUTATION_1
+            #elif defined(_SURFACETYPE_WOOD)
+                #define KEYWORD_PERMUTATION_2
+            #elif defined(_SURFACETYPE_CONCRETE)
+                #define KEYWORD_PERMUTATION_3
+            #elif defined(_SURFACETYPE_METAL)
+                #define KEYWORD_PERMUTATION_4
+            #else
+                #define KEYWORD_PERMUTATION_5
+            #endif
 
             #include "UnityCG.cginc"
             
@@ -65,7 +85,6 @@ Shader "Custom/PolyBrush_Shader"
             sampler2D _Texture2;
             sampler2D _Texture3;
         
-
             v2f vert (appdata v)
             {
                 v2f o;

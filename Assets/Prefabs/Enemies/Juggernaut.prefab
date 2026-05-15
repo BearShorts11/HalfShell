@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6332091502681263786}
   - component: {fileID: 1592721323569115803}
   - component: {fileID: 4245955449381258069}
+  - component: {fileID: 2281416219534695472}
   m_Layer: 2
   m_Name: Juggernaut
   m_TagString: Enemy
@@ -137,7 +138,7 @@ MonoBehaviour:
   HealthPackDrop: {fileID: 0}
   movementSpeed: 8
   detectionRange: 20
-  attackRange: 5.5
+  attackRange: 3.03
   attackTimer: 1
   damage: 20
   attackCooldown: 0.7
@@ -150,9 +151,65 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   soundEvents: {fileID: 0}
+  painSounds:
+    Guid:
+      Data1: 1196586286
+      Data2: 1130950121
+      Data3: -976121923
+      Data4: 482749934
+    Path: event:/Dialogue/fiendDmg
+  attackSounds:
+    Guid:
+      Data1: -758426129
+      Data2: 1221684223
+      Data3: 1996018308
+      Data4: 1466075021
+    Path: event:/Enemy/Demon/MeleeAttack
+  barkSounds:
+    Guid:
+      Data1: -1875239418
+      Data2: 1168128693
+      Data3: -296038248
+      Data4: -151352626
+    Path: event:/Dialogue/fiendIdle
+  deathSounds:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  onFireSounds:
+    Guid:
+      Data1: -1323131858
+      Data2: 1104721450
+      Data3: 887598759
+      Data4: 716876121
+    Path: event:/Enemy/Demon/DemonIdle
   _shotOffset: 0
   ProjectilePrefab: {fileID: 6924072200759781386, guid: 149f0b7f09ff10d458819567531d8858, type: 3}
   TimeToRangedAttack: 5
+  meleeSwingSound:
+    Guid:
+      Data1: -758426129
+      Data2: 1221684223
+      Data3: 1996018308
+      Data4: 1466075021
+    Path: event:/Enemy/Demon/MeleeAttack
+  rangeAttackSound:
+    Guid:
+      Data1: -149788319
+      Data2: 1092749975
+      Data3: 2080116893
+      Data4: -610654474
+    Path: event:/Dialogue/fiendAtkRange
+  fireBallSound:
+    Guid:
+      Data1: -1540513641
+      Data2: 1231320375
+      Data3: 1463450545
+      Data4: 2027201819
+    Path: event:/Enemy/Demon/FireballAttack
 --- !u!195 &1592721323569115803
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -196,6 +253,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2, z: 1.5}
   m_Center: {x: 0, y: 0, z: 1}
+--- !u!114 &2281416219534695472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6555232634196789814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abe41f093934ea4cbb573c8acb978a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepEvent:
+    Guid:
+      Data1: -727050904
+      Data2: 1173240850
+      Data3: -1549814082
+      Data4: 1179231482
+    Path: event:/Enemy/Demon/DemonFootsteps
+  landEvent:
+    Guid:
+      Data1: -727050904
+      Data2: 1173240850
+      Data3: -1549814082
+      Data4: 1179231482
+    Path: event:/Enemy/Demon/DemonFootsteps
+  surfaceParameterName: SurfaceTerrain
+  stepInterval: 0.5
+  minMoveSpeed: 0.05
+  raycastDistance: 2
 --- !u!1 &8179215271165841013
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a0deefea69925e4983d3e4050d2b489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onTriggerEnterTag: []
+  onTriggerEnterTag:
+  - Player
   onTriggerEnter:
   - m_PersistentCalls:
       m_Calls:
@@ -278,7 +366,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  onTriggerExitTag: []
+  onTriggerExitTag:
+  - Player
   onTriggerExit:
   - m_PersistentCalls:
       m_Calls:

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 903279363539956105}
   - component: {fileID: 2033340831767503619}
   - component: {fileID: 7223720605164096425}
+  - component: {fileID: 1414950818533379573}
   m_Layer: 11
   m_Name: Small Ammo RB
   m_TagString: Untagged
@@ -217,6 +218,26 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1414950818533379573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7287427250971299590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 923811e9fa97cdd4d985c833ec043ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weight: 0
+  physicsSound:
+    Guid:
+      Data1: -1547890757
+      Data2: 1266098393
+      Data3: -337941327
+      Data4: -1682679305
+    Path: event:/Physics/PropImpacts/PropImpact
 --- !u!1001 &7048639724639379920
 PrefabInstance:
   m_ObjectHideFlags: 0
