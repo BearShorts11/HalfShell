@@ -104,6 +104,8 @@ public class ShootState : State
                     else
                         OwnerAsRanged.nextTimeToFire = Time.time + Random.Range(OwnerAsRanged.minFireRate, OwnerAsRanged.maxFireRate);
 
+                    if (!OwnerAsRanged.hasLOS) return;
+
                     Owner.Shoot();
                 }
 

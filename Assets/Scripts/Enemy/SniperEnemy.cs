@@ -27,6 +27,8 @@ public class SniperEnemy : RangedEnemy
         }
     }
 
+    float defaultSpeed;
+
     [SerializeField] private EventReference sniperWarning;
 
     void Awake()
@@ -38,6 +40,7 @@ public class SniperEnemy : RangedEnemy
     void Start()
     {
         aimPos = transform.forward * detectionRange;
+        defaultSpeed = movementSpeed;
         DisableLaser();
         gunChild = RecursiveFindChild(transform, "Pistol");
     }
@@ -127,6 +130,7 @@ public class SniperEnemy : RangedEnemy
         bShooting = true;
         DisableLaser();
         warningGlint.Play(true);
+        movementSpeed = 0f;
         if (!sniperWarning.IsNull)
             RuntimeManager.PlayOneShot(sniperWarning, transform.position);
     }
@@ -162,6 +166,7 @@ public class SniperEnemy : RangedEnemy
         bShooting = false; bFired = false;
         EnableLaser();
         catchupTime = 0;
+        movementSpeed = defaultSpeed;
     }
 
     public override void TakeDamage(float amount)

@@ -37,6 +37,13 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public List<Transform> FirePoints;
     private Transform currentPoint;
 
+    public bool hasLOS
+    {
+        get {
+            Physics.Linecast(transform.position, Player.transform.position, out RaycastHit hitinfo, 1 << 0 | 1 << 4 | 1 << 6 /*| 1 << 7*/ | 1 << 9 | 1 << 12);
+            return hitinfo.collider.gameObject == Player.gameObject; }
+    }
+
     [Header("Free Roam Configuration")]
     public float maxDistanceFromPlayer = 25f;
 
