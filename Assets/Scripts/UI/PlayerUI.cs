@@ -208,6 +208,7 @@ public class PlayerUI : MonoBehaviour
         {
             SingleShotCrosshair.gameObject.SetActive(true);
             MultiShotCrosshair.gameObject.SetActive(false);
+            WideShotCrosshair.gameObject.SetActive(false);
         }
     }
 

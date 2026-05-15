@@ -42,6 +42,13 @@ public class ShootState : State
 
     public override void Update()
     {
+        //prevents issue with hitting player when dead?
+        if (Owner.Dead)
+        {
+            Owner.stateMachine.TransitionTo(Owner.stateMachine._deadState);
+            return;
+        }
+
         float distanceFromPlayer = Vector3.Distance(Owner.Player.transform.position, Owner.transform.position);
 
         //behavior
