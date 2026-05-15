@@ -132,10 +132,6 @@ public class ArenaSurvivalGame : MonoBehaviour
 
     void EndWave()
     {
-        if (waveConditions.ContainsKey(waveCount))
-        {
-            waveConditions[waveCount].RunClearEvents();
-        }
 
         // If there are enemies spawned by the still alive when the wave ends
         if (enemiesSpawned.Count > 0)
@@ -156,6 +152,11 @@ public class ArenaSurvivalGame : MonoBehaviour
         //Debug.Log("Wave Complete!");
 
         UI_Message_Update($"Wave {waveCount} complete!");
+
+        if (waveConditions.ContainsKey(waveCount))
+        {
+            waveConditions[waveCount].RunClearEvents();
+        }
         Invoke(nameof(SetUpNextWave), preparationTime);
     }
 
