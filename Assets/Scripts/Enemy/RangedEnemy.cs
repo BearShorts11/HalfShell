@@ -37,10 +37,12 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public List<Transform> FirePoints;
     private Transform currentPoint;
 
+    public Transform HeadPOV;
+
     public bool hasLOS
     {
         get {
-            Physics.Linecast(transform.position, Player.transform.position, out RaycastHit hitinfo, 1 << 0 | 1 << 4 | 1 << 6 /*| 1 << 7*/ | 1 << 9 | 1 << 12);
+            Physics.Linecast(HeadPOV.position, Player.transform.position, out RaycastHit hitinfo, 1 << 0 | 1 << 4 | 1 << 6 /*| 1 << 7*/ | 1 << 9 | 1 << 12);
             return hitinfo.collider.gameObject == Player.gameObject; }
     }
 
@@ -56,6 +58,10 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     {
         base.Startup();
         currentClip = clipSize;
+        if (HeadPOV == null)
+        {
+            HeadPOV = this.transform;
+        }
     }
 
     // Update is called once per frame
