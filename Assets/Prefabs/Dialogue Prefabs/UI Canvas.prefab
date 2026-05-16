@@ -3847,7 +3847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1566687789908082025
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11619,6 +11619,7 @@ GameObject:
   - component: {fileID: 1585367000638496989}
   - component: {fileID: 2370620763954059596}
   - component: {fileID: 3459672158240049165}
+  - component: {fileID: 7391857307181262463}
   m_Layer: 5
   m_Name: Town Button
   m_TagString: Untagged
@@ -11802,6 +11803,22 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7391857307181262463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4922798769513450921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 531a352cafa786342980ab9ef2cf13a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SetTextColor: 0
+  Hover: {r: 0, g: 0, b: 0, a: 0}
+  Click: {r: 0, g: 0, b: 0, a: 0}
+  Normal: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &4974510649268630168
 GameObject:
   m_ObjectHideFlags: 0
@@ -16925,6 +16942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4328bd3b07263149aa60197bfd4363d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InTitleScreen: 0
   pauseMenu: {fileID: 5765343874931936861}
   deathMenu: {fileID: 5422243233630881501}
   sceneSelectMenu: {fileID: 1670971605243409053}
@@ -16943,7 +16961,6 @@ MonoBehaviour:
   sfxvol_val_txt: {fileID: 1163064490948933460}
   musicvol_val_txt: {fileID: 6932625253974869462}
   dialoguevol_val_txt: {fileID: 1063875981655854452}
-  currentScene: 2
 --- !u!1 &7162750820156363519
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    public bool InTitleScreen = false;
     public static bool paused = false;
     public GameObject pauseMenu;
     public GameObject deathMenu;
@@ -54,13 +55,13 @@ public class PauseMenu : MonoBehaviour
 
     string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
-    public enum Scene
-    {
-        MockUp, //0
-        SampleScene, //1
-        TestArena, //2
-    }
-    public Scene currentScene;
+    //public enum Scene
+    //{
+    //    MockUp, //0
+    //    SampleScene, //1
+    //    TestArena, //2
+    //}
+    //public Scene currentScene;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -69,25 +70,29 @@ public class PauseMenu : MonoBehaviour
         player = FindAnyObjectByType<PlayerBehavior>();
         if (paused) { Pause(); }
 
-        FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange();  });
-        SensitivitySlider.onValueChanged.AddListener(delegate { SensitivityValueChange();  });
+        FOVSlider.onValueChanged.AddListener(delegate { FOVValueChange(); });
+        SensitivitySlider.onValueChanged.AddListener(delegate { SensitivityValueChange(); });
 
-        masterVolumeSlider.onValueChanged.AddListener(delegate      { UpdateVolumeSettings();  });
-        sfxVolumeSlider.onValueChanged.AddListener(delegate         { UpdateVolumeSettings();  });
-        musicVolumeSlider.onValueChanged.AddListener(delegate       { UpdateVolumeSettings();  });
-        dialogueVolumeSlider.onValueChanged.AddListener(delegate    { UpdateVolumeSettings();  });
+        masterVolumeSlider.onValueChanged.AddListener(delegate { UpdateVolumeSettings(); });
+        sfxVolumeSlider.onValueChanged.AddListener(delegate { UpdateVolumeSettings(); });
+        musicVolumeSlider.onValueChanged.AddListener(delegate { UpdateVolumeSettings(); });
+        dialogueVolumeSlider.onValueChanged.AddListener(delegate { UpdateVolumeSettings(); });
+
+        if (!InTitleScreen)
+        { 
+            // These are all Sound Groups that can be edited for mastering
+            masterBus = RuntimeManager.GetBus("bus:/");
+            soundBus = RuntimeManager.GetBus("bus:/SFX");
+            uiBus = RuntimeManager.GetBus("bus:/UI");
+            musicBus = RuntimeManager.GetBus("bus:/Music");
+            dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
+            ambientBus = RuntimeManager.GetBus("bus:/AMB");
+            // For each bus that has their volume updated
+            // They can be run through a method that updates them
+            // Each that have their volume adjusted should be adjusted with this
+            // code: [groupName]Bus.SetVolume(floatValue/float property);
         
-        // These are all Sound Groups that can be edited for mastering
-        masterBus = RuntimeManager.GetBus("bus:/");
-        soundBus = RuntimeManager.GetBus("bus:/SFX");
-        uiBus = RuntimeManager.GetBus("bus:/UI");
-        musicBus = RuntimeManager.GetBus("bus:/Music");
-        dialogueBus = RuntimeManager.GetBus("bus:/Dialogue");
-        ambientBus = RuntimeManager.GetBus("bus:/AMB");
-        // For each bus that has their volume updated
-        // They can be run through a method that updates them
-        // Each that have their volume adjusted should be adjusted with this
-        // code: [groupName]Bus.SetVolume(floatValue/float property);
+        } 
 
         SensitivitySlider.value = player.UpdateSensitivity();
         SensitivityValueChange();
@@ -104,12 +109,13 @@ public class PauseMenu : MonoBehaviour
             dialogueVolumeSlider.value  = PlayerPrefs.GetFloat(DIALOGUE_VOLUME_KEY);
 
         LoadVolumeSettings();
+        ToggleControls();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !InTitleScreen)
         {
             if (settingsMenu.activeSelf)
             { 
@@ -120,7 +126,7 @@ public class PauseMenu : MonoBehaviour
             Pause();
         }
 
-        if (player.Health <= 0)
+        if (player != null && player.Health <= 0)
         {
             Death();
         }
@@ -240,8 +246,8 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void ToggleControls()
-    { 
-        controls.SetActive(showControls.isOn);
+    {
+        if (controls != null) controls.SetActive(showControls.isOn);
     }
 
     public void TurnControlsOn()
