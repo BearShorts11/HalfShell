@@ -225,7 +225,9 @@
 	<object class="MixerBusEffectChain" id="{494cd030-cedc-4690-8c23-64d55590f8c2}">
 		<relationship name="effects">
 			<destination>{f04fe1ba-8744-4f1e-8979-ec6448bc0e55}</destination>
+			<destination>{e75d58a7-694a-4859-8691-441b516bdfe6}</destination>
 			<destination>{fe09186c-36c0-4525-93f0-74915ee949f9}</destination>
+			<destination>{e182d667-780e-47bb-a105-eb625e4598b2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{aed0921a-64c3-47fd-928d-ce5d4a75882d}" />
@@ -241,6 +243,7 @@
 	<object class="MixerBusEffectChain" id="{2edfabbf-03cd-4167-a9d7-6baaea8977f8}">
 		<relationship name="effects">
 			<destination>{15329738-c95d-4745-8845-600215a6af42}</destination>
+			<destination>{8f06b35d-b6ac-45c9-b9fa-1a4105ad9c37}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{48f2210b-b8a5-4786-b4e0-dc8b0451a1c9}" />
@@ -310,16 +313,31 @@
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="minimumExtent">
-			<value>90</value>
-		</property>
-		<property name="userStereoSeparation">
-			<value>120</value>
+			<value>240</value>
 		</property>
 	</object>
+	<object class="Sidechain" id="{e75d58a7-694a-4859-8691-441b516bdfe6}" />
 	<object class="MixerBusFader" id="{fe09186c-36c0-4525-93f0-74915ee949f9}" />
+	<object class="CompressorEffect" id="{e182d667-780e-47bb-a105-eb625e4598b2}">
+		<property name="threshold">
+			<value>-8</value>
+		</property>
+		<property name="ratio">
+			<value>4.4000001</value>
+		</property>
+		<property name="attackTime">
+			<value>0.100000001</value>
+		</property>
+		<property name="releaseTime">
+			<value>10</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{e75d58a7-694a-4859-8691-441b516bdfe6}</destination>
+		</relationship>
+	</object>
 	<object class="AutomationPoint" id="{a0123bf7-3bcb-4ede-96e4-ee41279de4d0}">
 		<property name="position">
 			<value>0.20000000000000001</value>
@@ -340,6 +358,17 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{15329738-c95d-4745-8845-600215a6af42}" />
+	<object class="CompressorEffect" id="{8f06b35d-b6ac-45c9-b9fa-1a4105ad9c37}">
+		<property name="threshold">
+			<value>-8</value>
+		</property>
+		<property name="ratio">
+			<value>4.0999999</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{e75d58a7-694a-4859-8691-441b516bdfe6}</destination>
+		</relationship>
+	</object>
 	<object class="AutomationPoint" id="{e56097c4-2eb0-41d8-a3fc-069029cec080}">
 		<property name="position">
 			<value>0</value>
