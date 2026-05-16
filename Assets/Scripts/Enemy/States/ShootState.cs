@@ -99,10 +99,14 @@ public class ShootState : State
                     //OwnerAsRanged.nextTimeToFire = Time.time + OwnerAsRanged.fireRate;
                     if (Owner is SniperEnemy)
                     {
-                        OwnerAsRanged.nextTimeToFire = Time.time + ((OwnerAsSniper.setFireRate * 2) + 3);
+                        if (!OwnerAsSniper.hasLOS) { OwnerAsSniper.nextTimeToFire += Time.deltaTime; }
+                        else
+                            OwnerAsRanged.nextTimeToFire = Time.time + ((OwnerAsSniper.setFireRate) + OwnerAsSniper.prefireTime);
                     }
                     else
+                    { 
                         OwnerAsRanged.nextTimeToFire = Time.time + Random.Range(OwnerAsRanged.minFireRate, OwnerAsRanged.maxFireRate);
+                    }
 
                     if (!OwnerAsRanged.hasLOS) return;
 

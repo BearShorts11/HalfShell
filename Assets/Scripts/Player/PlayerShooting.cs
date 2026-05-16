@@ -679,6 +679,10 @@ public class PlayerShooting : MonoBehaviour
                                 }
                                 Instantiate(incendiaryFX, hit.point, Quaternion.LookRotation(hit.normal + fwd));
                             }
+                            if (hit.collider.gameObject.tag == "Enemy")
+                                MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, Quaternion.LookRotation(hit.normal + fwd));
+                            else
+                                MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), hit.point, Quaternion.LookRotation(hit.normal + fwd));
                             DoHit(hit, shell);
                         }
                     }
@@ -688,6 +692,10 @@ public class PlayerShooting : MonoBehaviour
                     Ray shot = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
                     if (Physics.SphereCast(shot, 0.05f, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
+                        if (hit.collider.gameObject.tag == "Enemy")
+                            MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward));
+                        else
+                            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward));
                         DoHit(hit, shell);
                     }
                     break;
@@ -699,7 +707,6 @@ public class PlayerShooting : MonoBehaviour
 
     private void DoHit(RaycastHit hit, ShellBase shell)
     {
-        PlayImpactSound(hit);
         Debug.DrawLine(fpsCam.transform.position, hit.point, Color.red, 5f);
 
         if (hit.collider.gameObject.tag == "Player") return; // I'm suspecting the player capsule is blocking the bullets when sprinting + backpedaling, especially when looking at the playtest footage
@@ -707,12 +714,11 @@ public class PlayerShooting : MonoBehaviour
         if (hit.collider.gameObject.tag == "Enemy")
         {
             hitPosition = hit.point;
-            Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
+            //Instantiate(blood, hit.point, Quaternion.LookRotation(hit.normal));
             HitEnemy(hit, shell);
         }
         else if (hit.collider.gameObject.tag == "Breakable")
         {
-            SpawnImpactFX(hit);
             HitBreakable(hit, shell, shell.Type);
             SpawnBulletHole(hit);
         }
@@ -723,11 +729,11 @@ public class PlayerShooting : MonoBehaviour
         }
         else
         {
-            SpawnImpactFX(hit);
             SpawnBulletHole(hit);
         }
+        MaterialSurfaceTypeChecker.PlayImpactSound(hit);
     }
-
+/*
     private void SpawnImpactFX(RaycastHit hit)
     {
         int surfaceTypeID = 0;
@@ -761,7 +767,7 @@ public class PlayerShooting : MonoBehaviour
                 Instantiate(dust, hit.point, Quaternion.LookRotation(hit.normal));
                 break;
         }
-    }
+    }*/
 
     //https://www.youtube.com/shorts/mkIRV4nLOWo 
     private void SpawnBulletHole(RaycastHit hit)
@@ -985,7 +991,8 @@ public class PlayerShooting : MonoBehaviour
     {
         animator.CrossFade("Draw_Inspect", 0f); //this plays Inspector Anim
     }
-    private void PlayImpactSound(RaycastHit hit)
+
+    /*private void PlayImpactSound(RaycastHit hit)
     {
         float surfaceValue = 0f;
         //if (hit.collider.CompareTag("DirtFloor"))
@@ -1022,11 +1029,11 @@ public class PlayerShooting : MonoBehaviour
         // set FMOD parameter for surface type
         impact.setParameterByID(impactSurfaceParamID, surfaceValue);
 
-        impact.getParameterByID(impactSurfaceParamID, out float value);
+        //impact.getParameterByID(impactSurfaceParamID, out float value);
         // Debug.Log("FMOD Parameter Set To: " + value);
         impact.start();
         impact.release();
-    }
+    }*/
 
     public void EjectShell()
     {

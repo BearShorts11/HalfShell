@@ -13,7 +13,7 @@ public class SniperEnemy : RangedEnemy
     // Shooting Behavior
     float time = 0;
     float step { get => Time.deltaTime; }
-    [SerializeField] private float prefireTime = 0.9f;
+    [SerializeField] public float prefireTime { get; } = 0.9f;
     bool bShooting = false;
     bool bFired = false;
     float catchupTime = 0f;
@@ -149,13 +149,18 @@ public class SniperEnemy : RangedEnemy
         LineRenderer bt = Instantiate<LineRenderer>(bulletTracer, gunChild.position, Quaternion.identity);
 
         bt.SetPosition(0, gunChild.position);
+        Vector3 BulletDir = (aimPos + inaccuracy) - gunChild.position;
 
-        if (Physics.Linecast(gunChild.position, aimPos + inaccuracy, out RaycastHit hit, hitMask))
+        if (Physics.Raycast(gunChild.position, BulletDir.normalized, out RaycastHit hit, 9999f, hitMask))
         {
+
             bt.SetPosition(1, hit.point);
 
             if (hit.transform.gameObject.TryGetComponent<PlayerBehavior>(out PlayerBehavior _player))
                 _player.TakeDamage(damage * Enemy.DamageMultiplier);
+
+            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), hit.point, Quaternion.LookRotation(hit.normal + BulletDir.normalized));
+            MaterialSurfaceTypeChecker.PlayImpactSound(hit);
         }
         else
             bt.SetPosition(1, gameObject.transform.forward * 9999);

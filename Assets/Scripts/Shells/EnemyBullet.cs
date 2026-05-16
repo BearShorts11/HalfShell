@@ -38,15 +38,17 @@ public class EnemyBullet : MonoBehaviour
         //If there was something about to be hit, call this method
         if (objectToBeHit != null) {
             transform.position = Vector3.MoveTowards(transform.position, hit.point, 1);
+            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), this.transform.position, Quaternion.LookRotation(hit.normal + transform.forward));
+            MaterialSurfaceTypeChecker.PlayImpactSound(hit);
             HitObject(objectToBeHit); 
             return;
         }
 
-        if (target != null)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, target) <= targetReached) Destroy(this.gameObject);
-        }
+        //if (target != null)
+        //{
+        //    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        //    if (Vector3.Distance(transform.position, target) <= targetReached) Destroy(this.gameObject);
+        //}
         else transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
