@@ -81,6 +81,10 @@ public class AmmoPickup : IPickup
             else if (ammoType == ShellBase.ShellType.Incindiary) 
                 { canPickup = Gun.AddAmmo((int)(this.regainAmount * regainMultiplier), new Incindiary()); }
 
+            // If this is an ammo crate that *has* an animation for picking up ammo, play this animation state -V
+            if (animator != null)
+                animator.CrossFade("Ammo_Pickup", 0.2f);
+
             if (canPickup)
             {
                 RuntimeManager.PlayOneShot(pickupSound, transform.position);
@@ -93,9 +97,6 @@ public class AmmoPickup : IPickup
                    
                 }
 
-                // If this is an ammo crate that *has* an animation for picking up ammo, play this animation state -V
-                if (animator != null)
-                    animator.CrossFade("Ammo_Pickup", 0.2f);
 
                 // More to be added here when Ammo Maximums are added -A
                 if (!infinite) { base.OnPickup(); Destroy(gameObject); }

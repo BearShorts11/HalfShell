@@ -582,8 +582,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 52.953278, y: 0}
+    canvasZoom: 1.7499993
   - id: 2
     fields:
     - title: Title
@@ -1721,7 +1721,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 490.3333
+        x: 491.1598
         y: 507
         width: 160
         height: 30
@@ -1942,6 +1942,10 @@ MonoBehaviour:
         value: 
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 3be5b641-a79b-48fd-80ee-0a47092e7e52
+        type: 0
+        typeString: CustomFieldType_Text
       conversationID: 4
       isRoot: 0
       isGroup: 0
@@ -1949,7 +1953,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 4
+        originDialogueID: 8
+        destinationConversationID: 4
+        destinationDialogueID: 10
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -1957,8 +1967,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 707
-        y: 311
+        x: 709.5316
+        y: 312.26584
         width: 160
         height: 30
     - id: 9
@@ -2059,7 +2069,7 @@ MonoBehaviour:
       - title: EventGuid
         value: ddc62567-f901-483a-a2a7-a12dca79bcb5
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 4
       isRoot: 0
       isGroup: 0
@@ -2075,8 +2085,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 658
-        y: 574.6667
+        x: 717.92285
+        y: 518.9705
         width: 160
         height: 30
     - id: 11
@@ -2193,8 +2203,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 78.00003, y: 4.666687}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 184.81021, y: 204.6503}
+    canvasZoom: 0.78999984
   - id: 5
     fields:
     - title: Title

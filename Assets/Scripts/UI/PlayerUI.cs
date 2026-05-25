@@ -273,6 +273,21 @@ public class PlayerUI : MonoBehaviour
 
     public void UI_SetMessage(string message)
     {
+        string[] args = message.Split(";");
+
+        if (args.Length > 1)
+        {
+            char[] trimChars = new[] { (char)32, char.Parse("f")};
+            args[1] = args[1].Trim(trimChars);
+            if (float.TryParse(args[1], out float value))
+            {
+                messageText.SetMessage(args[0], value);
+                return;
+            }
+            else
+                Debug.LogWarning("Warning! Value input is invalid!");
+        }
+
         messageText.SetMessage(message);
     }
 
