@@ -314,7 +314,7 @@ public class PlayerShooting : MonoBehaviour
         SetWaitTime(gunReloadFinishTime);
     }
 
-    private void PumpBack()
+    public void PumpBack()
     {
         if (isInShellSelect)
             return;
@@ -347,7 +347,7 @@ public class PlayerShooting : MonoBehaviour
         Chamber = null;
         pumped = true;
     }
-    private void PumpFWD()
+    public void PumpFWD()
     {
         if (isInShellSelect)
             return;
