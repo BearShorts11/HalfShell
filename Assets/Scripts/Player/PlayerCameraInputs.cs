@@ -10,14 +10,14 @@ public class PlayerCameraInputs : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
-        if(cursorInputForLook)
-        {
-            LookInput(value.Get<Vector2>());
-        }
+        //if(cursorInputForLook)
+        //{
+        //    LookInput(value.Get<Vector2>());
+        //}
     }
 
     public void LookInput(Vector2 newLookDirection)
     {
-        look = newLookDirection;
+        look = new Vector2(newLookDirection.x, -newLookDirection.y);
     }
 }

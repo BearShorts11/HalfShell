@@ -30,6 +30,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
     public bool startWithShotgun;
+    public bool isRunning;
 
     private float sensitivityModifier = 1f;
     public const float DEFAULT_SENSITIVITY_MOD = 1f;
@@ -212,8 +213,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = UnityEngine.Input.GetKey(KeyCode.LeftShift);
-        //bool isRunning = false;
+     
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * UnityEngine.Input.GetAxis("Horizontal") : 0;
@@ -322,6 +322,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
         return playerCinemachineCamera.Lens.FieldOfView;
     }
+
+    public void SetIsRunning(bool isRunning) => this.isRunning = isRunning;
 
     public void NoMove() => canMove = false;
     public void YesMove() => canMove = true;

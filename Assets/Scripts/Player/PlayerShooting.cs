@@ -240,15 +240,15 @@ public class PlayerShooting : MonoBehaviour
 
         if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
-        //racking
-        if (Input.GetButtonDown("Fire2"))
-        {
-            PumpBack();
-        }
-        if (Input.GetButtonUp("Fire2"))
-        {
-            PumpFWD();
-        }
+        ////racking
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    PumpBack();
+        //}
+        //if (Input.GetButtonUp("Fire2"))
+        //{
+        //    PumpFWD();
+        //}
 
         animator.speed = Time.timeScale < 1 ? 1 / Time.timeScale : 1;
         // Can someone set a button name for these? - V  
