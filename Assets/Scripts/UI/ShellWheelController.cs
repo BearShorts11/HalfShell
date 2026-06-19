@@ -23,18 +23,18 @@ public class ShellWheelController : MonoBehaviour
     {
         if (shellWheelDisabled) return;
 
-        if (PauseMenu.paused != true && canOpenShellWheel)
-        {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                ToggleWheel(true);
-            }
+        //if (PauseMenu.paused != true && canOpenShellWheel)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Tab))
+        //    {
+        //        ToggleWheel(true);
+        //    }
 
-            if (Input.GetKeyUp(KeyCode.Tab))
-            {
-                ToggleWheel(false);
-            }
-        }
+        //    if (Input.GetKeyUp(KeyCode.Tab))
+        //    {
+        //        ToggleWheel(false);
+        //    }
+        //}
 
         if (shellWheelSelected)
         {
@@ -51,17 +51,22 @@ public class ShellWheelController : MonoBehaviour
 
     public void ToggleWheel(bool toggle)
     {
-        if (toggle)
-        {
-            PlayerBehavior.UnlockCursor();
-            shellWheelSelected = true;
+        if (PauseMenu.paused != true && canOpenShellWheel)
+        { 
+
+            if (toggle)
+            {
+                PlayerBehavior.UnlockCursor();
+                shellWheelSelected = true;
+            }
+            else
+            {
+                PlayerBehavior.LockCursor();
+                shellWheelSelected = false;
+            }
+            PlayerBehavior.ShellWheelToggle?.Invoke();
+        
         }
-        else
-        {
-            PlayerBehavior.LockCursor();
-            shellWheelSelected = false;
-        }
-        PlayerBehavior.ShellWheelToggle?.Invoke();
     }
 
     public void PlayerCanOpenWheel() => canOpenShellWheel = true;

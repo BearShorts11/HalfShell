@@ -30,7 +30,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float lookXLimit = 90f;
     public float defaultHeight = 2f;
     public bool startWithShotgun;
-    public bool isRunning;
+    bool isRunning;
 
     private float sensitivityModifier = 1f;
     public const float DEFAULT_SENSITIVITY_MOD = 1f;

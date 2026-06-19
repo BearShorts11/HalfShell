@@ -238,7 +238,7 @@ public class PlayerShooting : MonoBehaviour
         }
         if (lookingAtGun) return;
 
-        if (canFire && Input.GetButtonDown("Fire1")) Fire();
+        //if (canFire && Input.GetButtonDown("Fire1")) Fire();
 
         ////racking
         //if (Input.GetButtonDown("Fire2"))

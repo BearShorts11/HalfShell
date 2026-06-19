@@ -115,16 +115,16 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !InTitleScreen)
-        {
-            if (settingsMenu.activeSelf)
-            { 
-                settingsMenu.SetActive(false);
-                pauseMenu.SetActive(true);
-                return;
-            }
-            Pause();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape) && !InTitleScreen)
+        //{
+        //    if (settingsMenu.activeSelf)
+        //    { 
+        //        settingsMenu.SetActive(false);
+        //        pauseMenu.SetActive(true);
+        //        return;
+        //    }
+        //    Pause();
+        //}
 
         if (player != null && player.Health <= 0)
         {
@@ -134,6 +134,15 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        if (InTitleScreen) return;
+
+        if (settingsMenu.activeSelf)
+        {
+            settingsMenu.SetActive(false);
+            pauseMenu.SetActive(true);
+            return;
+        }
+
         switch (paused)
         {
             case false:

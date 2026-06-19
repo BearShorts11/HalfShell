@@ -3,10 +3,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    //Player
     PlayerBehavior behavior;
     PlayerShooting shooting;
     PlayerCameraInputs cameraInputs;
 
+    //UI
+    ShellWheelController shellWheelController;
+    PauseMenu pauseMenu;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,6 +18,9 @@ public class PlayerController : MonoBehaviour
         behavior = GetComponent<PlayerBehavior>();
         shooting = GetComponent<PlayerShooting>();
         cameraInputs = GetComponent<PlayerCameraInputs>();
+
+        shellWheelController = FindFirstObjectByType<ShellWheelController>();
+        pauseMenu = FindFirstObjectByType<PauseMenu>();
     }
 
     // Update is called once per frame
@@ -24,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext context)
     { 
-    
+        
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -38,8 +45,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnShoot(InputAction.CallbackContext context)
-    { 
-        
+    {
+        if (shooting != null && PlayerShooting.canFire && context.performed) { shooting.Fire(); }
     }
 
     public void OnRack(InputAction.CallbackContext context)
@@ -55,12 +62,12 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnShellWheel(InputAction.CallbackContext context)
-    { 
-        
+    {
+        if (shellWheelController != null) { shellWheelController.ToggleWheel(context.performed); }
     }
 
     public void OnPause(InputAction.CallbackContext context)
-    { 
-        
+    {
+        if (pauseMenu != null) { pauseMenu.Pause(); }
     }
 }
