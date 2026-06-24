@@ -34,9 +34,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void OnLook(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if(cameraInputs != null) cameraInputs.LookInput(context.ReadValue<Vector2>());
+        if (behavior != null) behavior.Jump(context.performed);
+    }
+
+    public void OnLook(InputAction.CallbackContext value)
+    {
+        if(cameraInputs != null) cameraInputs.LookInput(value.ReadValue<Vector2>());
     }
 
     public void OnSprint(InputAction.CallbackContext context)
@@ -69,5 +74,20 @@ public class PlayerController : MonoBehaviour
     public void OnPause(InputAction.CallbackContext context)
     {
         if (pauseMenu != null) { pauseMenu.Pause(); }
+    }
+
+    public void OnAddHS(InputAction.CallbackContext context)
+    {
+        if (shooting != null && context.started) shooting.AddHalfShell();
+    }
+
+    public void OnAddSL(InputAction.CallbackContext context)
+    {
+        if (shooting != null && context.started) shooting.AddSlug();
+    }
+
+    public void OnAddFS(InputAction.CallbackContext context)
+    {
+        if (shooting != null && context.started) shooting.AddIncindiary();
     }
 }

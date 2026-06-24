@@ -83,6 +83,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     private bool canMove = true;
     private static bool canLook = true;
+    private bool jumping = false;
 
     public float SlowedTime = 0.1f;
     public static UnityEvent ShellWheelToggle { get; private set; } = new();
@@ -225,7 +226,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
 
         // Checks that the player can move and is touching the ground when they press the "Jump" input key, then allows them to jump
-        if (UnityEngine.Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (jumping && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
         }
@@ -282,6 +283,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         else if(FindObjectsByType<RangedEnemy>(FindObjectsSortMode.None).Length > 0) IsInCombat = true;
         else IsInCombat = false;
         //add additional checks for cutscenes etc. here
+    }
+
+    public void Jump(bool jumping)
+    {
+        this.jumping = jumping;
+        Debug.Log(this.jumping);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

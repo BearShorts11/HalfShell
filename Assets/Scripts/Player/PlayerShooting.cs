@@ -267,11 +267,11 @@ public class PlayerShooting : MonoBehaviour
         playerUI.SwitchCrosshairUI(Chamber, magCount);
 
         //Changed Inputs from "c, x" to number pads / alpha pads to select shells - Alex
-        if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
+        //if (Input.GetKeyDown(KeyCode.Keypad1) | Input.GetKeyDown(KeyCode.Alpha1)) AddHalfShell(); 
         
-        if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
+        //if (Input.GetKeyDown(KeyCode.Keypad2) | Input.GetKeyDown(KeyCode.Alpha2)) AddSlug(); 
 
-        if (Input.GetKeyDown(KeyCode.Keypad3) | Input.GetKeyDown(KeyCode.Alpha3)) AddIncindiary(); 
+        //if (Input.GetKeyDown(KeyCode.Keypad3) | Input.GetKeyDown(KeyCode.Alpha3)) AddIncindiary(); 
         
     }
 

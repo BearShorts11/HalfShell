@@ -121,27 +121,27 @@ public class PlayerUI : MonoBehaviour
 
     public void LoadMagUI(ShellBase shell)
     {
-        LoadMagUI2(shell);
+        LoadMagUI2(shell); //open close principle wow!
         return;
 
 
-        GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
+        //GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
 
-        //set position based on capacity, shell size, & buffer
-        float size = shell.Size;
-        float y = 0;
-        y = -122;
-        if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f; //half of halfshell width //should be 14 for adjusted size
-        shellUIstart = y;
+        ////set position based on capacity, shell size, & buffer
+        //float size = shell.Size;
+        //float y = 0;
+        //y = -122;
+        //if (shell.Type == ShellBase.ShellType.HalfShell) y -= 14f; //half of halfshell width //should be 14 for adjusted size
+        //shellUIstart = y;
 
-        for (int i = 1; i < gun.magUI.Count; i++)
-        {
-            if (gun.magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y += 30;
-            else y += 60;
-        }
+        //for (int i = 1; i < gun.magUI.Count; i++)
+        //{
+        //    if (gun.magUI[i - 1].Type == ShellBase.ShellType.HalfShell) y += 30;
+        //    else y += 60;
+        //}
 
-        UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
-        UIshell.SetActive(true);
+        //UIshell.GetComponent<RectTransform>().localPosition = new Vector3(y, 0, 0);
+        //UIshell.SetActive(true);
     }
 
     public void LoadMagUI2(ShellBase shell)
