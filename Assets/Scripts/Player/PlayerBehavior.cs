@@ -1,17 +1,18 @@
+using Assets.Scripts;
+using FMODUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
+using Unity.Burst.CompilerServices;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using FMODUnity;
-using System.Diagnostics.CodeAnalysis;
-using UnityEngine.Windows;
-using Unity.Cinemachine;
-using Assets.Scripts;
-using System;
-using Unity.VisualScripting;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 // Code Stolen Directly From a Unity Tutorial by @ Brogammer on Youtube
 // https://www.youtube.com/watch?v=1uW-GbHrtQc
@@ -49,6 +50,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             health = value;
 
+            if (health >= maxHealth * .25f) foreach (LowHealthHintBehavior hint in hints) hint.ShowHints(false);
             if (health > maxHealth) health = maxHealth;
 
             //this no worky but I want it to -N
@@ -72,6 +74,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     {
         get { return maxArmor; }
     }
+
+    // Hints stuff
+    [SerializeField] private float lowHealthHintCheckRate = 0.5f;
+    [SerializeField] private float lowHealthHintCheckTime;
+    [SerializeField] private float hintNearDist = 300f;
+    private List<LowHealthHintBehavior> hints = new();
+    private List<LowHealthHintBehavior> nearbyHints = new();
 
     // Uncomment if Lvl Design feels strongly for crouching -A
     //public float crouchHeight = 1f;
@@ -132,6 +141,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public EventReference degrade;
     public EventReference Support;
     public EventReference Idle;
+
     // Dedicating a function that just calls this so the code isn't full of these really long function calls -V
     /// <summary>
     /// Plays a sound from the game object that this script is attached to, in this case, the player
@@ -174,6 +184,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
         UpdateSensitivity();
         UpdateFOV();
+
+        //hints = Resources.FindObjectsOfTypeAll<LowHealthHintBehavior>().ToListPooled<LowHealthHintBehavior>();
     }
 
     public void AddKill()
@@ -318,6 +330,21 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
     }
 
+    void FixedUpdate()
+    {
+        if (PauseMenu.paused) return;
+
+        if (health <= maxHealth * 0.25f)
+        {
+            lowHealthHintCheckTime += Time.fixedDeltaTime;
+            if (lowHealthHintCheckTime >= lowHealthHintCheckRate)
+            {
+                UpdateNearByHints();
+                lowHealthHintCheckTime = 0.0f;
+            }
+        }
+    }
+
     public float UpdateSensitivity()
     {
         if (PlayerPrefs.HasKey(SENSITIVITY_KEY)) sensitivityModifier = PlayerPrefs.GetFloat(SENSITIVITY_KEY);
@@ -356,7 +383,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     //better way to do this? -N
     public void TakeDamage(float damage)
     {
-        if (invincible || health <= 0) return;
+        if (invincible || Health <= 0) return;
         {
             
         }
@@ -376,8 +403,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
                 UI.UpdateArmor(armor, maxArmor);
                 damage = newDamage;
             }
-            health -= damage;
-            UI.UpdateHP(health, maxHealth);
+            Health -= damage;
+            UI.UpdateHP(Health, maxHealth);
             PlaySound(dmgEfforts);
 
             if (health < health / 5 && canPlayBark)
@@ -400,7 +427,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void GainHealth(float gainhealth)
     {
-        health = health + gainhealth;
+        Health = health + gainhealth;
     }
 
 
@@ -414,7 +441,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void Revive()
     {
-        health = maxHealth;
+        Health = maxHealth;
 
         LockCursor();
         ResumeTime();
@@ -423,7 +450,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void SetHealth(float health)
     {
-        this.health = health;
+        this.Health = health;
         if (UI is null) UI = FindFirstObjectByType<PlayerUI>();
         UI.UpdateHP(health, maxHealth);
 
@@ -456,6 +483,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
     public void Invincible() => invincible = true;
+
     public void Mortal() => invincible = false;
 
     private void ShellWheel()
@@ -483,4 +511,64 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         UI.UI_SetMessage(message, time);
     }
 
+    public void UpdateHintList(LowHealthHintBehavior newHint)
+    {
+        // So this if statement doesn't seem to be doing jack
+        if (!hints.Contains(newHint))
+            hints.Add(newHint);
+    }
+
+    public void RemoveFromHintList(LowHealthHintBehavior hint)
+    {
+        // So this if statement doesn't be doing jack
+        if (hints.Contains(hint))
+        {
+            hints.Remove(hint);
+            hints.TrimExcess();
+            if (nearbyHints.Contains(hint))
+            {
+                hint.ShowHints(false);
+                nearbyHints.Remove(hint);
+                nearbyHints.TrimExcess();
+            }
+            RemoveNearbyHint(hint);
+        }
+    }
+
+    public void RemoveNearbyHint(LowHealthHintBehavior nearHint)
+    {
+        nearHint.ShowHints(false);
+        nearbyHints.Remove(nearHint);
+        nearbyHints.TrimExcess();
+    }
+
+    public void UpdateNearByHints()
+    {
+        nearbyHints.Clear();
+        nearbyHints.TrimExcess();
+
+        foreach (LowHealthHintBehavior hint in hints)
+        {
+            if ((hint.gameObject.transform.position - gameObject.transform.position).magnitude < hintNearDist)
+            {
+                if (!nearbyHints.Contains(hint))
+                { 
+                    hint.ShowHints(true);
+                    nearbyHints.Add(hint);
+                }
+            }
+        }
+        foreach (LowHealthHintBehavior nearHint in nearbyHints)
+        {
+            if ((nearHint.gameObject.transform.position - gameObject.transform.position).magnitude > hintNearDist)
+            {
+                if (nearbyHints.Contains(nearHint))
+                { 
+                    nearHint.ShowHints(false);
+                    nearbyHints.Remove(nearHint);
+                    nearbyHints.TrimExcess();
+                }
+            }
+        }
+    }
 }
