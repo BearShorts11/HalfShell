@@ -24,6 +24,11 @@ public class DifficultyController : MonoBehaviour
     {
         //SetMediumDifficulty();
         if (LoadingText != null) LoadingText.SetActive(false);
+
+        //skips has key and set difficulty checks if in the title screen
+        //(player will select a difficulty there, no need to do it before then + it breaks if done before selected by player)
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+
         if (PlayerPrefs.HasKey("DIFFICULTY"))
         { 
             difficulty = (Difficulty)PlayerPrefs.GetInt("DIFFICULTY");
