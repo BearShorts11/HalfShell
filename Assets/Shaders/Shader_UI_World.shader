@@ -1,5 +1,7 @@
 // Default UI Shader but eddited to always draw over anything else in the world taken from this thread: https://discussions.unity.com/t/world-space-canvas-on-top-of-everything/128165/9
 // Current Limitation: Cannot be transparent, can only be 100% visible or 100% invisible.
+// Addendum: Above limitation has been resolved. -V
+
 Shader "UI/Default_OverlayNoZTest"
 {
     Properties
@@ -96,10 +98,11 @@ Shader "UI/Default_OverlayNoZTest"
 
             fixed4 frag(v2f IN) : SV_Target
             {
-                half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                // half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                fixed4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
                 //Added for font color support
                 clip(color.a - 0.01);
-                return color;
+                return (color.r, color.g, color.b, IN.color.a * color.a);
             }
             ENDCG
         }

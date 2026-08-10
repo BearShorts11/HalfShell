@@ -111,7 +111,7 @@ public class Canvas2DSpriteBehavior : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!bHidden && billboard)
+        if ((!bHidden && canvasGroup.alpha != 0) && billboard)
         {
             // Billboard effect
             // I looked up how to billboard and the tutorials pretty much go to the LookAt method
