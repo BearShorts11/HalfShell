@@ -41,7 +41,7 @@ public class TitleScreenUI : MonoBehaviour
         }
     }
 
-    public static void StartFromDifficulty(int sceneNumber)
+    public static void StartGameFromDifficulty(int sceneNumber)
     {
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.UnloadSceneAsync(currentScene);

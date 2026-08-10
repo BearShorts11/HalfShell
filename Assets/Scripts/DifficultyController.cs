@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DifficultyController : MonoBehaviour
 {
@@ -22,13 +23,31 @@ public class DifficultyController : MonoBehaviour
     void Start()
     {
         //SetMediumDifficulty();
-        LoadingText.SetActive(false);
+        if (LoadingText != null) LoadingText.SetActive(false);
+        if (PlayerPrefs.HasKey("DIFFICULTY"))
+        { 
+            difficulty = (Difficulty)PlayerPrefs.GetInt("DIFFICULTY");
+            switch (difficulty)
+            { 
+                case Difficulty.EASY:
+                    SetEasyDifficulty();
+                    break;
+                case Difficulty.MEDIUM:
+                    SetMediumDifficulty();
+                    break;
+                case Difficulty.HARD:
+                    SetHardDifficulty();
+                    break;
+            }
+        }
+        else SetMediumDifficulty();
     }
 
     [ContextMenu("Set Easy")]
     public void SetEasyDifficulty()
     { 
         difficulty = Difficulty.EASY;
+        PlayerPrefs.SetInt("DIFFICULTY", (int)difficulty);
         IPickup.regainMultiplier = 2;
         Enemy.DamageMultiplier = 0.5f;
 
@@ -38,16 +57,17 @@ public class DifficultyController : MonoBehaviour
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
         //if (ReadyButton != null) ReadyButton.SetActive(true);
-        TitleScreenUI.StartFromDifficulty(startSceneIndex);
+        if(SceneManager.GetActiveScene().buildIndex == 0) TitleScreenUI.StartGameFromDifficulty(startSceneIndex);
 
         //ToggleIndicatorImage();
-        LoadingText.SetActive(true);
+        if(LoadingText != null) LoadingText.SetActive(true);
     }
 
     [ContextMenu("Set Med")]
     public void SetMediumDifficulty()
     { 
         difficulty = Difficulty.MEDIUM;
+        PlayerPrefs.SetInt("DIFFICULTY", (int)difficulty);
         IPickup.regainMultiplier = 1;
         Enemy.DamageMultiplier = 1;
 
@@ -57,16 +77,17 @@ public class DifficultyController : MonoBehaviour
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
         //if (ReadyButton != null) ReadyButton.SetActive(true);
-        TitleScreenUI.StartFromDifficulty(startSceneIndex);
+        if (SceneManager.GetActiveScene().buildIndex == 0) TitleScreenUI.StartGameFromDifficulty(startSceneIndex);
 
         //ToggleIndicatorImage();
-        LoadingText.SetActive(true);
+        if (LoadingText != null) LoadingText.SetActive(true);
     }
 
     [ContextMenu("Set Hard")]
     public void SetHardDifficulty()
     { 
         difficulty = Difficulty.HARD;
+        PlayerPrefs.SetInt("DIFFICULTY", (int)difficulty);
         IPickup.regainMultiplier = 0.5f;
         Enemy.DamageMultiplier = 1.5f;
 
@@ -76,10 +97,10 @@ public class DifficultyController : MonoBehaviour
 
         if (DifficultySelectionScreen != null) DifficultySelectionScreen.SetActive(false);
         //if (ReadyButton != null) ReadyButton.SetActive(true);
-        TitleScreenUI.StartFromDifficulty(startSceneIndex);
+        if (SceneManager.GetActiveScene().buildIndex == 0) TitleScreenUI.StartGameFromDifficulty(startSceneIndex);
 
         //ToggleIndicatorImage();
-        LoadingText.SetActive(true);
+        if (LoadingText != null) LoadingText.SetActive(true);
     }
 
     private void ToggleIndicatorImage()
