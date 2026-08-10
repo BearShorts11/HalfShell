@@ -28,7 +28,7 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
     public PickupType Type;
     [SerializeField] bool isBig;
 
-    protected LowHealthHintBehavior hint;
+    [SerializeField] protected LowHealthHintBehavior hint;
 
     //data saving
     [SerializeField] public PickupData data;
@@ -46,8 +46,6 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
         gun = FindFirstObjectByType<PlayerShooting>();
         ui = FindFirstObjectByType<PlayerUI>();
 
-        hint = gameObject.GetComponent<LowHealthHintBehavior>();
-        
         //if (!data.Saved && !data.FirstBind) Destroy(this.gameObject);
     }
 
@@ -82,7 +80,7 @@ public abstract class IPickup : MonoBehaviour, IBind<PickupData>
     {
         if (hint != null)
         {
-            hint.ShowHints(false);
+            hint.ShowHints(false, true);
             player.RemoveFromHintList(hint);
         }
         //Kerth k = FindFirstObjectByType<Kerth>();

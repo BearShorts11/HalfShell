@@ -54,9 +54,8 @@ public class Canvas2DSpriteBehavior : MonoBehaviour
     /// <param name="bHide">True: Fade the object out, False: Fade the object in</param>
     public void HidePrompt(bool bHide)
     {
-        if (bHidden == bHide) return;
-
         bHidden = bHide;
+
         //if (canvas != null)
         //    canvas.enabled = bShow;
 

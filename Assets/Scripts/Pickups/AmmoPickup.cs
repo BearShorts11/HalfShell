@@ -17,10 +17,13 @@ public class AmmoPickup : IPickup
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Player = FindFirstObjectByType<PlayerBehavior>();
         Gun = FindFirstObjectByType<PlayerShooting>();
         UI = FindFirstObjectByType<PlayerUI>();
         this.Type = PickupType.Ammo;
         SetSmallAmmoColor();
+
+        hint = this.gameObject.GetComponent<LowHealthHintBehavior>();
     }
 
     // Update is called once per frame

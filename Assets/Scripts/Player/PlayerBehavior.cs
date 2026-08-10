@@ -78,7 +78,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     // Hints stuff
     [SerializeField] private float lowHealthHintCheckRate = 0.5f;
     [SerializeField] private float lowHealthHintCheckTime;
-    [SerializeField] private float hintNearDist = 300f;
+    [SerializeField] private float hintNearDist = 50f;
     private List<LowHealthHintBehavior> hints = new();
     private List<LowHealthHintBehavior> nearbyHints = new();
 
@@ -513,62 +513,49 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     public void UpdateHintList(LowHealthHintBehavior newHint)
     {
-        // So this if statement doesn't seem to be doing jack
         if (!hints.Contains(newHint))
             hints.Add(newHint);
     }
 
     public void RemoveFromHintList(LowHealthHintBehavior hint)
     {
-        // So this if statement doesn't be doing jack
         if (hints.Contains(hint))
-        {
             hints.Remove(hint);
-            hints.TrimExcess();
-            if (nearbyHints.Contains(hint))
-            {
-                hint.ShowHints(false);
-                nearbyHints.Remove(hint);
-                nearbyHints.TrimExcess();
-            }
+        hints.TrimExcess();
+        if (nearbyHints.Contains(hint))
             RemoveNearbyHint(hint);
-        }
     }
 
     public void RemoveNearbyHint(LowHealthHintBehavior nearHint)
     {
-        nearHint.ShowHints(false);
         nearbyHints.Remove(nearHint);
         nearbyHints.TrimExcess();
     }
 
     public void UpdateNearByHints()
     {
-        nearbyHints.Clear();
-        nearbyHints.TrimExcess();
+        int i = 0;
 
-        foreach (LowHealthHintBehavior hint in hints)
+        for (i = hints.Count - 1; i >= 0; i--)
         {
-            if ((hint.gameObject.transform.position - gameObject.transform.position).magnitude < hintNearDist)
+            if ((gameObject.transform.position - hints[i].gameObject.transform.position).sqrMagnitude < hintNearDist)
             {
-                if (!nearbyHints.Contains(hint))
-                { 
-                    hint.ShowHints(true);
-                    nearbyHints.Add(hint);
+                if (!nearbyHints.Contains(hints[i]))
+                {
+                    hints[i].ShowHints(true);
+                    nearbyHints.Add(hints[i]);
                 }
             }
         }
-        foreach (LowHealthHintBehavior nearHint in nearbyHints)
+
+        for (i = nearbyHints.Count - 1; i >= 0; i--)
         {
-            if ((nearHint.gameObject.transform.position - gameObject.transform.position).magnitude > hintNearDist)
+            if ((gameObject.transform.position - nearbyHints[i].gameObject.transform.position).sqrMagnitude > hintNearDist)
             {
-                if (nearbyHints.Contains(nearHint))
-                { 
-                    nearHint.ShowHints(false);
-                    nearbyHints.Remove(nearHint);
-                    nearbyHints.TrimExcess();
-                }
+                nearbyHints[i].ShowHints(false);
+                RemoveNearbyHint(nearbyHints[i]);
             }
         }
+
     }
 }

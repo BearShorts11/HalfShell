@@ -12,6 +12,9 @@ public class HealthPickup : IPickup
         Player = FindFirstObjectByType<PlayerBehavior>();
         UI = FindFirstObjectByType<PlayerUI>();
         this.Type = PickupType.Health;
+
+        hint = this.gameObject.GetComponent<LowHealthHintBehavior>();
+
     }
 
     // Update is called once per frame

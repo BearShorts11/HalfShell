@@ -10,6 +10,9 @@ public class ArmorPickup : IPickup
         Player = FindFirstObjectByType<PlayerBehavior>();
         UI = FindFirstObjectByType<PlayerUI>();
         this.Type = PickupType.Armor;
+
+        hint = this.gameObject.GetComponent<LowHealthHintBehavior>();
+
     }
 
     // Update is called once per frame

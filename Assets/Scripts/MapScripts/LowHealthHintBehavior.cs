@@ -29,14 +29,17 @@ public class LowHealthHintBehavior : MonoBehaviour
         FindFirstObjectByType<PlayerBehavior>().UpdateHintList(this);
     }
 
-    public void ShowHints(bool bShow)
+    public void ShowHints(bool bShow, bool instant = false)
     {
         // Inverting this since the function in Canvas2DSprite behavior is about hiding them
         bShow = !bShow;
 
         if (hint != null) 
         {
-            hint.HidePrompt(bShow);
+            if (instant)
+                hint.HidePromptInstant(bShow);
+            else
+                hint.HidePrompt(bShow);
         }
     }
 }
