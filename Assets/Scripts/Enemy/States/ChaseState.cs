@@ -19,7 +19,7 @@ public class ChaseState : State
     public override void Enter()
     {
         this.attackRange = Owner.attackRange;
-        Owner.agent.isStopped = false;
+        if(Owner.agent.isOnNavMesh) Owner.agent.isStopped = false;
 
         Owner.SpottedPlayer();
 

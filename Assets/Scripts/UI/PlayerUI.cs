@@ -123,8 +123,6 @@ public class PlayerUI : MonoBehaviour
     {
         LoadMagUI2(shell); //open close principle wow!
         return;
-
-
         //GameObject UIshell = MakeUIShell(gun.magazineUI, shell, true);
 
         ////set position based on capacity, shell size, & buffer
@@ -296,4 +294,9 @@ public class PlayerUI : MonoBehaviour
         messageText.SetMessage(message, time);
     }
 
+
+    public void UI_SetMessage_TutorialControls()
+    {
+        messageText.SetMessage("Open settings to toggle on screen controls", 7f);
+    }
 }
