@@ -92,11 +92,14 @@ public class PauseMenu : MonoBehaviour
             // Each that have their volume adjusted should be adjusted with this
             // code: [groupName]Bus.SetVolume(floatValue/float property);
         
-        } 
+        }
 
-        SensitivitySlider.value = player.UpdateSensitivity();
+        if (player != null)
+        { 
+            SensitivitySlider.value = player.UpdateSensitivity();
+            FOVSlider.value = player.UpdateFOV();
+        }
         SensitivityValueChange();
-        FOVSlider.value = player.UpdateFOV();
         FOVValueChange();
 
         if (PlayerPrefs.HasKey(MASTER_VOLUME_KEY))
@@ -220,7 +223,7 @@ public class PauseMenu : MonoBehaviour
         screen.SetActive(false);
         if (screen.name == "Settings Menu")
         {
-            pauseMenu.SetActive(true);
+            if(pauseMenu != null) pauseMenu.SetActive(true);
         }
     }
 
@@ -234,7 +237,7 @@ public class PauseMenu : MonoBehaviour
     public void OpenSettings()
     { 
         settingsMenu.SetActive(true);
-        pauseMenu.SetActive(false);
+        if(pauseMenu != null) pauseMenu.SetActive(false);
     }
 
     public void ResetSettings()
@@ -265,6 +268,12 @@ public class PauseMenu : MonoBehaviour
         showControls.isOn = true;
     }
 
+    public void TurnControlsOff()
+    {
+        controls.SetActive(false);
+        showControls.isOn = false;
+    }
+
     public void ApplySettings()
     {
         //get value from slider element
@@ -283,12 +292,15 @@ public class PauseMenu : MonoBehaviour
     private void SaveUpdateSettings()
     {
         PlayerPrefs.Save();
-        player.UpdateSensitivity();
-        player.UpdateFOV();
+        if (player != null)
+        { 
+            player.UpdateSensitivity();
+            player.UpdateFOV();
+        }
         FOV_val_txt.text = $"{FOVSlider.value}";
 
 
-        //save out to json
+        //save out to json?
     }
 
     private void LoadVolumeSettings()
