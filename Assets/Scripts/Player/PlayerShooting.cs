@@ -231,7 +231,7 @@ public class PlayerShooting : MonoBehaviour
         // Looking at the face of the gun: cannot shoot or reload while looking at it.
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isInShellSelect && !pumped) 
         {
-            Debug.Log("LeftControl hit Shooting script");
+            //Debug.Log("LeftControl hit Shooting script");
             lookingAtGun = !lookingAtGun;
             
             LookAtGun(lookingAtGun);

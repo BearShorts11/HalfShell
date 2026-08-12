@@ -62,12 +62,15 @@ public class Dialogue : MonoBehaviour
 
      void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
+    }
 
-            StartDialogue();
-            Debug.Log("LeftControl Hit StartDialogue");
-        }
+    public void InputTrigger()
+    {
+        //prevents player from pressing ctrl before having the shotgun
+        if (!player.ShotgunViewmodel.activeInHierarchy) return;
+
+        StartDialogue();
+        Debug.Log("LeftControl Hit StartDialogue");
     }
 
     public void Click()

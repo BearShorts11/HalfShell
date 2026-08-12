@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     PlayerBehavior behavior;
     PlayerShooting shooting;
     PlayerCameraInputs cameraInputs;
+    [SerializeField] Dialogue dialogue;
 
     //UI
     ShellWheelController shellWheelController;
@@ -89,5 +90,10 @@ public class PlayerController : MonoBehaviour
     public void OnAddFS(InputAction.CallbackContext context)
     {
         if (shooting != null && context.started) shooting.AddIncindiary();
+    }
+
+    public void OnControl(InputAction.CallbackContext context)
+    {
+        if (dialogue != null && context.performed) dialogue.InputTrigger();
     }
 }
