@@ -124,11 +124,10 @@ public class PlayerShooting : MonoBehaviour
     public static bool canFire = true;
     [SerializeField] private bool canLoadShells = true;
 
-    #region new input handling
+    /// <summary>
+    /// new input handling
+    /// </summary>
     public PlayerInput input;
-    bool rack_performed;
-    bool rack_cancled;
-    #endregion
 
     #region Sound variables
     //Sound variable
@@ -667,8 +666,11 @@ public class PlayerShooting : MonoBehaviour
                     {
                         //https://discussions.unity.com/t/raycast-bullet-spread/753464 
                         Vector3 fwd = fpsCam.transform.forward;
-                        fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-shell.SpreadRange, shell.SpreadRange), Random.Range(-shell.SpreadRange, shell.SpreadRange)));
-                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
+                        fwd += fpsCam.transform.TransformDirection(new Vector3(Random.Range(-shell.SpreadRange, shell.SpreadRange), 
+                            Random.Range(-shell.SpreadRange, shell.SpreadRange)));
+
+                        if (Physics.Raycast(fpsCam.transform.position, fwd, out hit, gunRange, triggerMask, 
+                            QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                         {
                             if (shell.Type == ShellBase.ShellType.Incindiary)
                             {
@@ -680,9 +682,16 @@ public class PlayerShooting : MonoBehaviour
                                 Instantiate(incendiaryFX, hit.point, Quaternion.LookRotation(hit.normal + fwd));
                             }
                             if (hit.collider.gameObject.tag == "Enemy")
-                                MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, Quaternion.LookRotation(hit.normal + fwd));
+                            { 
+                                MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, 
+                                    Quaternion.LookRotation(hit.normal + fwd)); 
+                            }
                             else
-                                MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), hit.point, Quaternion.LookRotation(hit.normal + fwd));
+                            { 
+                                MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), 
+                                    hit.point, Quaternion.LookRotation(hit.normal + fwd)); 
+                            }
+                            
                             DoHit(hit, shell);
                         }
                     }
@@ -690,12 +699,20 @@ public class PlayerShooting : MonoBehaviour
                     break;
                 case ShellBase.ShellType.Slug:
                     Ray shot = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
-                    if (Physics.SphereCast(shot, 0.05f, out hit, gunRange, triggerMask, QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
+                    if (Physics.SphereCast(shot, 0.05f, out hit, gunRange, triggerMask, 
+                        QueryTriggerInteraction.Collide) && hit.distance <= shell.MaxRange)
                     {
                         if (hit.collider.gameObject.tag == "Enemy")
-                            MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward));
+                        { 
+                            MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, 
+                                Quaternion.LookRotation(hit.normal + fpsCam.transform.forward)); 
+                        }
                         else
-                            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward));
+                        { 
+                            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider),
+                                hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward)); 
+                        }
+                        
                         DoHit(hit, shell);
                     }
                     break;

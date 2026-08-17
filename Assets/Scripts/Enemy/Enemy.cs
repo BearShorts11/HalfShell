@@ -47,6 +47,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     [SerializeField] public float damageCooldown = 0.5f;
 
+    /// <summary>
+    /// amount of knockback applied to the enemy when taking damage
+    /// </summary>
+    [SerializeField] float knockbackAmount;
+
     [Header("Health & Damage")]
     public float Health { get; set; }
     [field: SerializeField] public float maxHealth { get; set; } = 50f;
@@ -277,6 +282,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
 
         damageFromStatusEffect = false;
+    }
+
+    public virtual void DoKnockback(RaycastHit hit)
+    { 
+        
     }
 
     public void HitEffect(ShellBase shell)

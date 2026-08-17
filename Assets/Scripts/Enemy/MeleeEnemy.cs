@@ -31,5 +31,4 @@ public class MeleeEnemy : Enemy, IHasMeleeAttack
     {
         PlayerInTrigger = boolean;
     }
-
 }
