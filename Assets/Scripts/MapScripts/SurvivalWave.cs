@@ -9,6 +9,6 @@ public class SurvivalWave : ScriptableObject
     public List<GameObject> StrayEnemies;
     public int waveAmount;
     public float spawnRate;
-    public int wavetransitionTime;
+    public float wavetransitionTime;
     public int maxEnemiesAtOnce;
 }

@@ -6,16 +6,26 @@
 public class IdleState : State
 {
     private float detectionRange;
+    /// <summary>
+    /// Cast owner to MannequinEnemy as it gives access to MannequinEnemy specific variables
+    /// </summary>
+    private MannequinEnemy OwnerAsMannequin;
 
     public IdleState(Enemy owner)
     {
         this.Owner = owner;
         this.detectionRange = owner.detectionRange;
+        OwnerAsMannequin = Owner as MannequinEnemy;
     }
 
     public override void Enter()
     {
         this.detectionRange = Owner.detectionRange;
+        if (OwnerAsMannequin != null)
+        {
+            OwnerAsMannequin.lookComponent.SetLookSpeed(OwnerAsMannequin.lookComponent.defaultLookSpeed * 2f);
+            OwnerAsMannequin.lookComponent.DisableLooking();
+        }
     }
 
 

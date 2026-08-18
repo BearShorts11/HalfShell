@@ -13,7 +13,7 @@ public class LookScript : MonoBehaviour
     public float headResetTimer = 0.5f;
 
     [Header("Dynamic")]
-    [SerializeField] private bool lookEnabled = false;
+    [SerializeField] public bool lookEnabled { get; private set; } = false;
     [SerializeField] private float lookSpeed;
     [SerializeField] private float headResetTime;
     [SerializeField] private Transform focusPoint;

@@ -12,7 +12,7 @@ public class ArenaSurvivalGame : MonoBehaviour
     public List<SurvivalWave> waves;
 
     [Tooltip("Time delay to let the wave end. Adds onto the wave transition time set in the Wave Scriptable Object")]
-    public int preparationTime = 5;
+    public float preparationTime = 5;
     [Tooltip("Default rate to use when there are no more defined waves to go through")]
     public float endlessWaveSpawnRate = 0.3f;
     [Tooltip("Default pool of enemies to draw when there are no waves configured")]
