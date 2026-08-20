@@ -28,16 +28,16 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     public float combatMovementSpeed = 2f;
 
     [Tooltip("How close (preferrably within detection range, outside attack range) the player needs to be for this enemy to start moving to the player")]
-    public float defaultEngageRange = 5f;
+    public float defaultEngageRange = 1f;
     [Tooltip("Whether or not the enemy will start chasing the player when they're within engagement range")]
     public bool canEngage = true;
 
     [Header("Dynamic")]
+    [SerializeField] private float engageRange;
     [field:SerializeField] public bool PlayerInTrigger { get; set; } = false;
 
     [field:SerializeField] public bool isEngaging { get; private set; } = false;
     // Something to discuss maybe: Double range when the player isn't looking at the mannequin, making them "active" at a further distance when the player is facing away
-    [SerializeField] private float engageRange;
 
     [SerializeField] private bool bPlayerSaw = false;
     [SerializeField] private float PlayerSawTime = 0f;
