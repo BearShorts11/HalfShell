@@ -8,7 +8,15 @@ using UnityEngine;
 // (https://johnleonardfrench.music/terrain-footsteps-in-unity-how-to-detect-different-textures/)
 // ADDENDUM: the link above is most likely obsolete since we're not using terrain any more and are instead resorting to using Polybrush instead.
 //              Good thing I haven't gotten around to following that tutorial until now eh? -V, 4/20/2026
-
+public enum MatSurfaceType
+{
+    Dirt = 0,
+    Gravel = 1,
+    Wood = 2,
+    Asphalt = 3,
+    Metal = 4,
+    Meat = 5
+}
 public class MaterialSurfaceTypeChecker : MonoBehaviour
 {
     [SerializeField] private static ParticleSystem[] impactParticles;
@@ -19,7 +27,7 @@ public class MaterialSurfaceTypeChecker : MonoBehaviour
     {
         bulletImpactEvent = RuntimeManager.PathToEventReference("event:/Weapons/BulletImpacts/WeaponImpacts");
 
-        impactParticles = new ParticleSystem[6];
+        impactParticles = new ParticleSystem[Enum.GetValues(typeof(MatSurfaceType)).Length];
 
         impactParticles[0] = Resources.Load<ParticleSystem>("PS_SmokePuff2");
         impactParticles[1] = Resources.Load<ParticleSystem>("PS_SmokePuff2");
@@ -69,6 +77,14 @@ public class MaterialSurfaceTypeChecker : MonoBehaviour
                 mat = CheckForProperty(renderer.sharedMaterials);
         }
 
+        if (mat == null || renderer == null) // if this thing is still null, Check if it's an enemy or a part of the enemy
+        {
+            if (collider.gameObject.TryGetComponent<Limb>(out Limb hitLimb))
+                return hitLimb.GetSurfaceType();
+            if (collider.gameObject.TryGetComponent<Enemy>(out Enemy enemy)) // Because it can't get the enemy's mesh renderer properly -_-
+                return enemy.GetSurfaceType();
+        }
+
         if (mat == null || renderer == null) // if this thing is still null, I give up -_-
             return 0;
 
@@ -107,8 +123,6 @@ public class MaterialSurfaceTypeChecker : MonoBehaviour
         impact.set3DAttributes(RuntimeUtils.To3DAttributes(hit.point));
 
         int id = GetSurfaceType(hit.collider);
-        if (hit.collider.gameObject.CompareTag("Enemy")) // Because it can't get the enemy's mesh renderer properly -_-
-            id = 5;
             
         // set FMOD parameter for surface type
         impact.setParameterByID(impactSurfaceParamID, id);

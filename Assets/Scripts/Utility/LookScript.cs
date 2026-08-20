@@ -13,29 +13,41 @@ public class LookScript : MonoBehaviour
     public float headResetTimer = 0.5f;
 
     [Header("Dynamic")]
-    [SerializeField] public bool lookEnabled { get; private set; } = false;
+    public bool lookEnabled { get; private set; } = false;
     [SerializeField] private float lookSpeed;
     [SerializeField] private float headResetTime;
     [SerializeField] private Transform focusPoint;
-    [SerializeField] private bool isLooking = false;
+    public bool isLooking { get; private set; } = false;
     [SerializeField] private Quaternion lastRotation;
+    [SerializeField] private Vector3 localRestPosition;
+    [SerializeField] private Quaternion localRestRotation;
+    [SerializeField] private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         lookSpeed = defaultLookSpeed;
+        localRestPosition = headBone.localPosition;
+        localRestRotation = headBone.localRotation;
 
         // If a copy of the headbone object is not made and parented to the object the original headbone is parented to manually, make a copy automatically.
         if (headFwd == null && headBone != null)
-        { 
+        {
             //headFwd = this.gameObject.transform;
-            GameObject newFwd = new GameObject(headBone.gameObject.name + "_FWD");
-            newFwd.transform.position = headBone.transform.position;
-            newFwd.transform.rotation = headBone.transform.rotation;
-            newFwd.transform.parent = headBone.transform.parent;
-            headFwd = newFwd.transform;
+            SetUpHead();
         }
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
     }
+    void SetUpHead()
+    {
+        GameObject newFwd = new GameObject(headBone.gameObject.name + "_FWD");
+        newFwd.transform.position = headBone.position;
+        newFwd.transform.rotation = headBone.rotation;
+        newFwd.transform.parent = headBone.parent;
+        headFwd = newFwd.transform;
+    }
+
 
     void OnValidate()
     {
@@ -48,7 +60,7 @@ public class LookScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void LateUpdate()
@@ -58,6 +70,16 @@ public class LookScript : MonoBehaviour
     }
 
 #region For controlling via external components
+    public void UpdateHead()
+    {
+        headFwd.SetPositionAndRotation(headBone.position, headBone.rotation);
+    }
+
+    public void ResetHead()
+    {
+        headFwd.SetPositionAndRotation(headFwd.TransformVector(localRestPosition), headFwd.rotation * localRestRotation);
+    }
+
     public void EnableLooking()
     {
         lookEnabled = true;
@@ -97,6 +119,12 @@ public class LookScript : MonoBehaviour
 
         if (focusPoint != null)
         {
+            if (headFwd == null)
+            {
+                // If it's still null, don't delay the setup, do it immediately
+                CancelInvoke(nameof(SetUpHead));
+                SetUpHead();
+            }
             Vector3 Dir = (focusPoint.position - headBone.position).normalized;
             float Angle = Vector3.SignedAngle(Dir, headFwd.forward, headFwd.up);
             //Debug.Log("Look Angle:" + Angle);

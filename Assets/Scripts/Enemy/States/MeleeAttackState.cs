@@ -13,19 +13,21 @@ public class MeleeAttackState : State
     private bool hitPlayer;
 
     Juggernaut ownerJuggernaut;
+    MannequinEnemy ownerMannequin;
 
     public MeleeAttackState(Enemy owner)
     { 
         this.Owner = owner;
         attackTimer = owner.attackTimer;
         ownerJuggernaut = owner as Juggernaut;
+        ownerMannequin = owner as MannequinEnemy;
     }
 
     public override void Enter()
     {
         attackTimer = Owner.attackTimer;
-        if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
-        if(Owner.animator != null) Owner.animator.SetBool("Attacking", true);
+        if (Owner.agent.isOnNavMesh && ownerMannequin is null) Owner.agent.isStopped = true;
+        if (Owner.animator != null) Owner.animator.SetTrigger("Attacking");
         hitPlayer = false;
 
         if (ownerJuggernaut is not null)
@@ -41,6 +43,11 @@ public class MeleeAttackState : State
         { 
             Owner.stateMachine.TransitionTo(Owner.stateMachine._deadState);
             return;
+        }
+
+        if (ownerMannequin is not null)
+        {
+            if (!ownerMannequin.isEngaging) return;
         }
 
         attackTimer -= Time.deltaTime;
@@ -80,6 +87,5 @@ public class MeleeAttackState : State
 
     public override void Exit()
     {
-        if (Owner.animator != null) Owner.animator.SetBool("Attacking", false);
     }
 }

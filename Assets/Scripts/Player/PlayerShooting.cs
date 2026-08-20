@@ -12,6 +12,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
+using static MaterialSurfaceTypeChecker;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -681,14 +682,19 @@ public class PlayerShooting : MonoBehaviour
                                 }
                                 Instantiate(incendiaryFX, hit.point, Quaternion.LookRotation(hit.normal + fwd));
                             }
-                            if (hit.collider.gameObject.tag == "Enemy")
+                            if (hit.collider.gameObject.TryGetComponent<Limb>(out Limb hitlimb))
+                            {
+                                SpawnImpactParticle(hitlimb.GetSurfaceType(), hit.point, 
+                                    Quaternion.LookRotation(hit.normal + fwd)); 
+                            }
+                            else if (hit.collider.gameObject.tag == "Enemy")
                             { 
-                                MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, 
+                                SpawnImpactParticle(5, hit.point, 
                                     Quaternion.LookRotation(hit.normal + fwd)); 
                             }
                             else
                             { 
-                                MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider), 
+                                SpawnImpactParticle(GetSurfaceType(hit.collider), 
                                     hit.point, Quaternion.LookRotation(hit.normal + fwd)); 
                             }
                             
@@ -704,12 +710,12 @@ public class PlayerShooting : MonoBehaviour
                     {
                         if (hit.collider.gameObject.tag == "Enemy")
                         { 
-                            MaterialSurfaceTypeChecker.SpawnImpactParticle(5, hit.point, 
+                            SpawnImpactParticle(5, hit.point, 
                                 Quaternion.LookRotation(hit.normal + fpsCam.transform.forward)); 
                         }
                         else
                         { 
-                            MaterialSurfaceTypeChecker.SpawnImpactParticle(MaterialSurfaceTypeChecker.GetSurfaceType(hit.collider),
+                            SpawnImpactParticle(GetSurfaceType(hit.collider),
                                 hit.point, Quaternion.LookRotation(hit.normal + fpsCam.transform.forward)); 
                         }
                         
@@ -748,7 +754,7 @@ public class PlayerShooting : MonoBehaviour
         {
             SpawnBulletHole(hit);
         }
-        MaterialSurfaceTypeChecker.PlayImpactSound(hit);
+        PlayImpactSound(hit);
     }
 /*
     private void SpawnImpactFX(RaycastHit hit)
@@ -762,7 +768,7 @@ public class PlayerShooting : MonoBehaviour
             renderer = hit.collider.gameObject.GetComponentInParent<Renderer>(false);
 
         if (renderer != null) // if this thing still null, I give up -_-
-            surfaceTypeID = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
+            surfaceTypeID = GetSurfaceType(renderer.sharedMaterial);
 
         switch (surfaceTypeID)
         {
@@ -1032,7 +1038,7 @@ public class PlayerShooting : MonoBehaviour
             renderer = hit.collider.gameObject.GetComponentInParent<Renderer>();
 
         if (renderer != null) // I hate this.
-            surfaceValue = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterial);
+            surfaceValue = GetSurfaceType(renderer.sharedMaterial);
         
         if (hit.collider.CompareTag("Enemy")) // Because it can't get the enemy's mesh renderer properly -_-
             surfaceValue = 5f;

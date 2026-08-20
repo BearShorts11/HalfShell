@@ -44,6 +44,10 @@ public class ChaseState : State
                 case RangedEnemy:
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._shootState);
                     break;
+                case MannequinEnemy:
+                    if ((Owner as MannequinEnemy).isEngaging)
+                        Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
+                    break;
                 default:
                     if (Owner.agent.isOnNavMesh) Owner.agent.isStopped = true;
                     Owner.stateMachine.TransitionTo(Owner.stateMachine._meleeAttackState);
@@ -52,7 +56,7 @@ public class ChaseState : State
                     break;
             }
         }
-        else if ((Owner is RangedEnemy) && distanceFromPlayer > Owner.detectionRange && !Owner.AlwaysChase)
+        else if ((Owner is RangedEnemy || Owner is MannequinEnemy) && distanceFromPlayer > Owner.detectionRange && !Owner.AlwaysChase)
         {
             Owner.stateMachine.TransitionTo(Owner.stateMachine._idleState);
         }

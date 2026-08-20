@@ -121,6 +121,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public EventReference deathSounds;
     public EventReference onFireSounds;
 
+    [Header("VFX")]
+    public MatSurfaceType surfaceType = MatSurfaceType.Meat;
+
     protected void Startup()
     {
         stateMachine = new StateMachine(this);
@@ -503,4 +506,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     /// </summary>
     /// <param name="shell"></param>
     public void HitFrom(ShellBase shell) => lastHitFrom = shell;
+
+    public int GetSurfaceType()
+    {
+        return (int)surfaceType;
+    }
 }

@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5022379561780638245}
   - component: {fileID: 2384688364125489803}
-  m_Layer: 0
+  - component: {fileID: 2545270217565726379}
+  m_Layer: 7
   m_Name: Waist_Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39,7 +40,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784762584792573042}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -53,6 +54,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6653239, y: 0.53909916, z: 0.3970581}
   m_Center: {x: 0.0000005066395, y: 0.26955175, z: 0.16}
+--- !u!114 &2545270217565726379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784762584792573042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultHealth: 50
+  <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 1151562379
+      Data2: 1127981165
+      Data3: -263524216
+      Data4: 1568571016
+    Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
+  isRemovable: 0
+  isAttatchedToBone: 1
+  isBoneItself: 0
+  removableAfterDeath: 1
+  hasCollision: 1
+  Gibs: {fileID: 0}
+  damMult: 1
+  damPctHealthOnRemove: 0
+  <enemy>k__BackingField: {fileID: 0}
 --- !u!1 &2905613714965686575
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,9 +101,9 @@ GameObject:
   - component: {fileID: 8500343492384388659}
   - component: {fileID: 4609832982016842540}
   - component: {fileID: 1804911097111762536}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Mannequin_Enemy_Prototype
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,6 +122,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8562306934362699019}
+  - {fileID: 7738675655213677254}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &3737091666178836311
@@ -111,7 +144,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.15
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -179,11 +212,11 @@ MonoBehaviour:
   HealthPackDrop: {fileID: 0}
   movementSpeed: 0
   detectionRange: 8
-  attackRange: 0.5
-  attackTimer: 0.5
+  attackRange: 1.7
+  attackTimer: 0.35
   damage: 0
-  attackCooldown: 2
-  damageCooldown: 2
+  attackCooldown: 1
+  damageCooldown: 1
   knockbackAmount: 0
   <maxHealth>k__BackingField: 99999
   Docile: 0
@@ -228,10 +261,16 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  surfaceType: 3
+  combatMovementSpeed: 2
+  engageRange: 1
+  canEngage: 1
   <PlayerInTrigger>k__BackingField: 0
+  <isEngaging>k__BackingField: 0
   bPlayerSaw: 0
   PlayerSawTime: 0
   <lookComponent>k__BackingField: {fileID: 0}
+  idleAnim: 0
 --- !u!114 &8500343492384388659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,6 +334,9 @@ MonoBehaviour:
   focusPoint: {fileID: 0}
   isLooking: 0
   lastRotation: {x: 0, y: 0, z: 0, w: 0}
+  localRestPosition: {x: 0, y: 0, z: 0}
+  localRestRotation: {x: 0, y: 0, z: 0, w: 0}
+  animator: {fileID: 0}
 --- !u!1 &3679948541647707709
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +423,109 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4889169235757858876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7738675655213677254}
+  - component: {fileID: 6422630239780320084}
+  - component: {fileID: 7785003193757960997}
+  m_Layer: 11
+  m_Name: Melee Hit Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7738675655213677254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889169235757858876}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5413553464325371915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6422630239780320084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889169235757858876}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 0.75}
+--- !u!114 &7785003193757960997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889169235757858876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0deefea69925e4983d3e4050d2b489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTriggerEnterTag:
+  - Player
+  onTriggerEnter:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2941266850982354983}
+        m_TargetAssemblyTypeName: MannequinEnemy, Assembly-CSharp
+        m_MethodName: set_PlayerInTrigger
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onTriggerExitTag:
+  - Player
+  onTriggerExit:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2941266850982354983}
+        m_TargetAssemblyTypeName: MannequinEnemy, Assembly-CSharp
+        m_MethodName: SetPlayerInTrigger
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  InitEnemyCounter: 0
+  EnemyDeathsCounter: 0
+  onKillAll: []
 --- !u!1 &7406153798956071811
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,9 +536,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7150913381985131115}
   - component: {fileID: 2980273579747232268}
-  m_Layer: 0
+  - component: {fileID: 877531203762585841}
+  m_Layer: 7
   m_Name: Hip_Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,7 +566,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7406153798956071811}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -434,6 +580,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6653239, y: 0.2415621, z: 0.37875476}
   m_Center: {x: 0.00000059604645, y: -0.025849134, z: 0.037168905}
+--- !u!114 &877531203762585841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7406153798956071811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultHealth: 50
+  <Health>k__BackingField: 0
+  breakSound:
+    Guid:
+      Data1: 1151562379
+      Data2: 1127981165
+      Data3: -263524216
+      Data4: 1568571016
+    Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
+  isRemovable: 0
+  isAttatchedToBone: 1
+  isBoneItself: 0
+  removableAfterDeath: 1
+  hasCollision: 1
+  Gibs: {fileID: 0}
+  damMult: 1
+  damPctHealthOnRemove: 0
+  <enemy>k__BackingField: {fileID: 0}
 --- !u!1001 &8167794384628093664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -565,9 +742,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3120235394191848496, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4872236287079895999}
-    - targetCorrespondingSourceObject: {fileID: 3120235394191848496, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1246007476461553053}
     - targetCorrespondingSourceObject: {fileID: 2768318771524676462, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4391433357250727810}
@@ -622,9 +796,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1254219274238241776, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7369746811410721570}
-    - targetCorrespondingSourceObject: {fileID: 1254219274238241776, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7325394634477559130}
     - targetCorrespondingSourceObject: {fileID: -2954816267292288922, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1268433336616195680}
@@ -685,6 +856,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1321993354330606538, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1888438766850420955}
+    - targetCorrespondingSourceObject: {fileID: 7131725551077710909, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3976721167331451436}
   m_SourcePrefab: {fileID: 100100000, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
 --- !u!1 &1223980514442080223 stripped
 GameObject:
@@ -719,7 +893,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341274242289793267}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -829,6 +1003,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -838,6 +1013,27 @@ MonoBehaviour:
   damMult: 1
   damPctHealthOnRemove: 0
   <enemy>k__BackingField: {fileID: 0}
+--- !u!1 &1414463631069826781 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7131725551077710909, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+  m_PrefabInstance: {fileID: 8167794384628093664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3976721167331451436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414463631069826781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e01677c01d37a4da123d71eff3323f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propertyName: _MainTex
+  tex: {fileID: 2800000, guid: db64612060c3f944da5b419c6cdc4981, type: 3}
+  updateWhole: 0
+  matIndex: 0
 --- !u!1 &1974042288352877434 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7655240544665160090, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -850,7 +1046,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1974042288352877434}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -960,6 +1156,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -981,7 +1178,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089252119172507350}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1091,6 +1288,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1117,7 +1315,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2857454752915999366}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1227,6 +1425,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1253,7 +1452,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6283329581096515982}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1363,6 +1562,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1404,36 +1604,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1246007476461553053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6490980332997174992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultHealth: 50
-  <Health>k__BackingField: 0
-  breakSound:
-    Guid:
-      Data1: 1151562379
-      Data2: 1127981165
-      Data3: -263524216
-      Data4: 1568571016
-    Path: event:/Explosions/Gib_Explosion
-  isRemovable: 0
-  isAttatchedToBone: 1
-  isBoneItself: 1
-  removableAfterDeath: 1
-  hasCollision: 1
-  Gibs: {fileID: 0}
-  damMult: 1
-  damPctHealthOnRemove: 0
-  <enemy>k__BackingField: {fileID: 0}
 --- !u!4 &6593281683343427491 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3087744716665935171, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -1451,7 +1621,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6742261776741333843}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1561,6 +1731,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1582,7 +1753,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6893469531480262879}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1692,6 +1863,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1779,36 +1951,6 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &7325394634477559130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6935038196956477712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cee605debde8e64a90d4fc05e0177fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultHealth: 50
-  <Health>k__BackingField: 0
-  breakSound:
-    Guid:
-      Data1: 1151562379
-      Data2: 1127981165
-      Data3: -263524216
-      Data4: 1568571016
-    Path: event:/Explosions/Gib_Explosion
-  isRemovable: 0
-  isAttatchedToBone: 1
-  isBoneItself: 1
-  removableAfterDeath: 1
-  hasCollision: 1
-  Gibs: {fileID: 0}
-  damMult: 1
-  damPctHealthOnRemove: 0
-  <enemy>k__BackingField: {fileID: 0}
 --- !u!4 &7825620565902211213 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7078561548185654675, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -1826,7 +1968,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8249976146985457656}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1934,6 +2076,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -1960,7 +2103,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8564769419419936669}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 448ee4c65e9f344448a587c2a8398660, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2070,6 +2213,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 3
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
