@@ -57,11 +57,13 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         //base.BaseUpdate();
 
         stateMachine.Update();
-        Debug.Log(stateMachine.CurrentState);
+        //Debug.Log(stateMachine.CurrentState);
+
+        HandleAnimation();
 
         //Controls Idle/Walking/Running 
-        animator.SetFloat("Velocity X", agent.velocity.x);
-        animator.SetFloat("Velocity Y", agent.velocity.z);
+        //animator.SetFloat("Velocity X", agent.velocity.x);
+        //animator.SetFloat("Velocity Y", agent.velocity.z);
     }
 
 
@@ -103,7 +105,7 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
     public override void Shoot()
     {
         //animate
-        animator.SetBool("RangedAttacking", true);
+        animator.SetTrigger("RangedAttacking");
         if (!IsOnVocalCooldown())
             PlayVoice(rangeAttackSound);
         vocalCoolDown = 1f;
@@ -118,7 +120,7 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         // Prevent post-mortem Fireball
         if (Dead) return;
 
-        animator.SetBool("RangedAttacking", false);
+        //animator.SetBool("RangedAttacking", false);
         //get object from the pool (eventually)
         GameObject bullet = GameObject.Instantiate(ProjectilePrefab, this.transform.position + this.transform.forward, this.transform.rotation, this.transform);
         bullet.SetActive(true);

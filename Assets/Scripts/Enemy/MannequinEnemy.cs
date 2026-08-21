@@ -49,7 +49,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     private float difficultyFOVScale { get { return ( Math.Clamp(160f - Player.playerCinemachineCamera.Lens.FieldOfView, 90, 160) + (10f * (4 - PlayerPrefs.GetInt("DIFFICULTY")))); } }
     private float distToPlayer
     {
-        get { return (this.gameObject.transform.position - Player.gameObject.transform.position).magnitude; }
+        get { return (this.gameObject.transform.position - Player.gameObject.transform.position).sqrMagnitude; }
     }
 
     private float lastTwitchTime;
@@ -121,7 +121,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
                         lookComponent.EnableLooking();
                     }
                 }
-                if (distToPlayer < engageRange)
+                if (distToPlayer < (engageRange * engageRange)) // This is squared distance check
                     EngagePlayer();
             }
         }
@@ -154,6 +154,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     public void EngagePlayer()
     {
         isEngaging = true;
+        AlwaysChase = true; // Do not go back to idle: when the player is outside the range, we want them persistent like the melee cultists when they're active.
         animator.SetTrigger("StartMoving");
         movementSpeed = combatMovementSpeed;
         agent.speed = movementSpeed;

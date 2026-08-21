@@ -363,6 +363,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected void HandleAnimation()
     {
         //Controls Idle/Walking/Running 
+        animator.SetFloat("VelocitySqr", agent.velocity.sqrMagnitude);
         animator.SetFloat("Velocity X", agent.velocity.x);
         animator.SetFloat("Velocity Y", agent.velocity.z);
     }

@@ -164,7 +164,7 @@ NavMeshAgent:
   m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
@@ -675,6 +675,30 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5996394560380704333, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -5996394560380704333, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: -5840232260083901889, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -5840232260083901889, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: -2954816267292288922, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -2954816267292288922, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: -2398759541474018928, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9930604
@@ -703,6 +727,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2034223612753319405, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -2034223612753319405, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: -1321993354330606538, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -1321993354330606538, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 226332474114016536, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 226332474114016536, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 542114068045460861, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 542114068045460861, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: m_Name
       value: HalfShell_Prototype_Dummy_Enemy
@@ -711,6 +767,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 77266ea3339adfb4da223b40cf9f87cd, type: 2}
+    - target: {fileID: 2768318771524676462, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768318771524676462, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: m_Controller
       value: 
@@ -722,6 +786,14 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7655240544665160090, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7655240544665160090, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1980,8 +2052,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.2
-  m_Center: {x: 0, y: 0.02, z: 0.06}
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 0.07, z: 0.09}
 --- !u!54 &2141549249056113344
 Rigidbody:
   m_ObjectHideFlags: 0
