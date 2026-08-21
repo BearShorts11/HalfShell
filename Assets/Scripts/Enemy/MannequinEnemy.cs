@@ -80,7 +80,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = ColorsExt.orange;
-        Gizmos.DrawWireSphere(transform.position, engageRange);
+        Gizmos.DrawWireSphere(transform.position, defaultEngageRange);
     }
 
     // Update is called once per frame
