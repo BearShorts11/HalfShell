@@ -72,14 +72,14 @@ public class RangedEnemy : Enemy, IHasRangedAttack
 
     public override void TakeDamage(float amount)
     {
-        if (agent.velocity.x > 0 || agent.velocity.z > 0)
+        /*if (agent.velocity.x > 0 || agent.velocity.z > 0)
         {
             animator.Play("Pistol Hit Running");
         }
         else
         {
             animator.Play("Pistol Hit Reaction");
-        }
+        }*/
 
         base.TakeDamage(amount);
     }

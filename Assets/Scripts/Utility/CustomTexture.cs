@@ -18,7 +18,7 @@ public class CustomTexture : MonoBehaviour
     [Tooltip("Material index to replace the texture (Requires updateWhole = true)")]
     public int matIndex = 0;
     MaterialPropertyBlock matProp;
-    Renderer Rend;
+    [SerializeField] Renderer Rend;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -124,6 +124,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("VFX")]
     public MatSurfaceType surfaceType = MatSurfaceType.Meat;
 
+    private Vector3 velocity { get { return transform.InverseTransformDirection(agent.velocity) * agent.velocity.sqrMagnitude; } } 
+
     protected void Startup()
     {
         stateMachine = new StateMachine(this);
@@ -364,8 +366,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         //Controls Idle/Walking/Running 
         animator.SetFloat("VelocitySqr", agent.velocity.sqrMagnitude);
-        animator.SetFloat("Velocity X", agent.velocity.x);
-        animator.SetFloat("Velocity Y", agent.velocity.z);
+        animator.SetFloat("Velocity X", velocity.z / movementSpeed);
+        animator.SetFloat("Velocity Y", velocity.x / movementSpeed);
     }
 
     protected void StopHitReaction()

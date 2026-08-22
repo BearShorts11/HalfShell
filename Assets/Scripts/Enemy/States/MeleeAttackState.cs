@@ -58,6 +58,11 @@ public class MeleeAttackState : State
         Quaternion rot = Quaternion.LookRotation(dir);
         // slerp to the desired rotation over time
         Owner.transform.rotation = Quaternion.Slerp(Owner.transform.rotation, rot, 5f * Time.deltaTime);
+        
+        // Continue moving towards the player if they can move while attacking
+        if ((Owner as IHasMeleeAttack).moveWhileAttacking)
+                if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) 
+                    Owner.agent.SetDestination(Owner.Player.transform.position);
 
         if (attackTimer <= 0)
         {

@@ -1,25 +1,12 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
-
-/// <summary>
-/// Mannequin Idle animations made into an enum list. To only be used with the mannequin enemy.
-/// </summary>
-public enum MannequinIdle
-{
-    Idle1, 
-    Idle2, 
-    Idle3, 
-    Idle4, 
-    Idle5, 
-    Idle6, 
-    Idle7, 
-    Idle8
-}
 
 /// <summary>
 /// Mannequin Cultist(?), a tortured soul given new meaning in life by fitting in with the people.
 /// The "people" in question being mannequins. Will not attack the player on sight unless given the chance.
 /// </summary>
+[RequireComponent(typeof(MannequinPoses))]
 public class MannequinEnemy : Enemy, IHasMeleeAttack
 {
 
@@ -43,27 +30,22 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     [SerializeField] private float PlayerSawTime = 0f;
     [field: SerializeField] public LookScript lookComponent { get; private set; }
 
-    public MannequinIdle idleAnim;
-    private string[] idleAnims = new string[8];
-
     private float difficultyFOVScale { get { return ( Math.Clamp(160f - Player.playerCinemachineCamera.Lens.FieldOfView, 90, 160) + (10f * (4 - PlayerPrefs.GetInt("DIFFICULTY")))); } }
     private float distToPlayer
     {
         get { return (this.gameObject.transform.position - Player.gameObject.transform.position).sqrMagnitude; }
     }
 
+    public bool moveWhileAttacking { get; set; } = true;
+
     private float lastTwitchTime;
+
+    private MannequinPoses IdlePose;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         engageRange = defaultEngageRange;
-        idleAnims = Enum.GetNames(typeof(MannequinIdle));
-        if (animator != null)
-        { 
-            animator.Play(idleAnims[(int)idleAnim]);
-            lookComponent.UpdateHead();
-        }
     }
 
     void Awake()
@@ -73,6 +55,11 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         base.Startup();
     }
 
+    void OnValidate()
+    {
+        engageRange = defaultEngageRange;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -80,7 +67,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = ColorsExt.orange;
-        Gizmos.DrawWireSphere(transform.position, defaultEngageRange);
+        Gizmos.DrawWireSphere(transform.position, engageRange);
     }
 
     // Update is called once per frame
@@ -121,7 +108,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
                         lookComponent.EnableLooking();
                     }
                 }
-                if (distToPlayer < (engageRange * engageRange)) // This is squared distance check
+                if (distToPlayer < math.square(engageRange)) // This is squared distance check
                     EngagePlayer();
             }
         }
@@ -155,6 +142,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     {
         isEngaging = true;
         AlwaysChase = true; // Do not go back to idle: when the player is outside the range, we want them persistent like the melee cultists when they're active.
+        lookComponent.ResetHead();
         animator.SetTrigger("StartMoving");
         movementSpeed = combatMovementSpeed;
         agent.speed = movementSpeed;

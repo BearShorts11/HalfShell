@@ -8,11 +8,13 @@ using UnityEngine;
 public class CooldownState : State
 {
     private float timer;
+    private float setTime;
 
     public CooldownState(Enemy owner)
     {
         this.Owner = owner;
         timer = 5f;
+        setTime = timer;
     }
 
     public override void Enter()
@@ -24,6 +26,9 @@ public class CooldownState : State
     public override void Update()
     {
         timer -= Time.deltaTime;
+
+        if (timer > setTime * 0.5f && (Owner as IHasMeleeAttack).moveWhileAttacking)
+            if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
 
         if (timer <= 0)
         {
@@ -48,5 +53,6 @@ public class CooldownState : State
     public void SetCooldownTime(float time)
     { 
         timer = time;
+        setTime = time;
     }
 }

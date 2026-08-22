@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Look at object script (Following this tutorial: https://www.youtube.com/watch?v=dnFTT5vIb68)
 public class LookScript : MonoBehaviour
@@ -21,7 +22,6 @@ public class LookScript : MonoBehaviour
     [SerializeField] private Quaternion lastRotation;
     [SerializeField] private Vector3 localRestPosition;
     [SerializeField] private Quaternion localRestRotation;
-    [SerializeField] private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,8 +36,6 @@ public class LookScript : MonoBehaviour
             //headFwd = this.gameObject.transform;
             SetUpHead();
         }
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
     }
     void SetUpHead()
     {
@@ -47,7 +45,6 @@ public class LookScript : MonoBehaviour
         newFwd.transform.parent = headBone.parent;
         headFwd = newFwd.transform;
     }
-
 
     void OnValidate()
     {
@@ -121,8 +118,6 @@ public class LookScript : MonoBehaviour
         {
             if (headFwd == null)
             {
-                // If it's still null, don't delay the setup, do it immediately
-                CancelInvoke(nameof(SetUpHead));
                 SetUpHead();
             }
             Vector3 Dir = (focusPoint.position - headBone.position).normalized;

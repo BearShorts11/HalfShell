@@ -97,10 +97,11 @@ GameObject:
   - component: {fileID: 3737091666178836311}
   - component: {fileID: 5347339380570544952}
   - component: {fileID: 422305237668526259}
+  - component: {fileID: 1804911097111762536}
+  - component: {fileID: 4068270446916965918}
   - component: {fileID: 2941266850982354983}
   - component: {fileID: 8500343492384388659}
   - component: {fileID: 4609832982016842540}
-  - component: {fileID: 1804911097111762536}
   m_Layer: 2
   m_Name: Mannequin_Enemy_Prototype
   m_TagString: Untagged
@@ -190,6 +191,45 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &1804911097111762536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905613714965686575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cfc437cb954c4469bb632c20125342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headBone: {fileID: 3453189234807843696}
+  headFwd: {fileID: 7113723659268388185}
+  maxAngle: 90
+  defaultLookSpeed: 3
+  headResetTimer: 0.5
+  _animation: {fileID: 0}
+  lookSpeed: 3
+  headResetTime: 0
+  focusPoint: {fileID: 0}
+  lastRotation: {x: 0, y: 0, z: 0, w: 0}
+  localRestPosition: {x: 0, y: 0, z: 0}
+  localRestRotation: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4068270446916965918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905613714965686575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26604f0e50cbea942a35a8306c7f79e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAnim: 1
+  animator: {fileID: 2320268731524099953}
+  look: {fileID: 1804911097111762536}
 --- !u!114 &2941266850982354983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +311,6 @@ MonoBehaviour:
   bPlayerSaw: 0
   PlayerSawTime: 0
   <lookComponent>k__BackingField: {fileID: 0}
-  idleAnim: 0
 --- !u!114 &8500343492384388659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,30 +352,37 @@ MonoBehaviour:
     FirstBind: 1
     State: 
   enemy: {fileID: 2941266850982354983}
---- !u!114 &1804911097111762536
-MonoBehaviour:
+--- !u!1 &3027025389638680389
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2905613714965686575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99cfc437cb954c4469bb632c20125342, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headBone: {fileID: 3453189234807843696}
-  headFwd: {fileID: 0}
-  maxAngle: 90
-  defaultLookSpeed: 3
-  headResetTimer: 0.5
-  lookSpeed: 3
-  headResetTime: 0
-  focusPoint: {fileID: 0}
-  lastRotation: {x: 0, y: 0, z: 0, w: 0}
-  localRestPosition: {x: 0, y: 0, z: 0}
-  localRestRotation: {x: 0, y: 0, z: 0, w: 0}
-  animator: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7113723659268388185}
+  m_Layer: 0
+  m_Name: CC_Base_Head_FWD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7113723659268388185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027025389638680389}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.117605165, y: -0.000037024063, z: -0.0000004384731, w: 0.99306047}
+  m_LocalPosition: {x: 0.000000258795, y: 0.061214723, z: -0.0000021881474}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9170994093088200658}
+  m_LocalEulerAnglesHint: {x: -13.508, y: -0.004, z: 0}
 --- !u!1 &3679948541647707709
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +850,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7078561548185654675, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5022379561780638245}
+    - targetCorrespondingSourceObject: {fileID: 1016757153237189938, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7113723659268388185}
     - targetCorrespondingSourceObject: {fileID: -2398759541474018928, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2757371395600353380}
@@ -2295,3 +2344,8 @@ MonoBehaviour:
   damMult: 1
   damPctHealthOnRemove: 0
   <enemy>k__BackingField: {fileID: 0}
+--- !u!4 &9170994093088200658 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1016757153237189938, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+  m_PrefabInstance: {fileID: 8167794384628093664}
+  m_PrefabAsset: {fileID: 0}

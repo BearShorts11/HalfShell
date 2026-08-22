@@ -6,6 +6,8 @@ public class MeleeEnemy : Enemy, IHasMeleeAttack
     [Header("Melee Enemy")]
     public bool PlayerInTrigger { get; set; }
 
+    public bool moveWhileAttacking { get; set; } = false;
+
     private void Awake()
     {
         base.Startup();

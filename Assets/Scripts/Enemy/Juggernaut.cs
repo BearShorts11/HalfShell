@@ -7,6 +7,8 @@ using UnityEngine.AI;
 
 public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
 {
+    public bool moveWhileAttacking { get; set; } = true;
+
     [Header("Juggernaut Variables")]
 
     [SerializeField] private float _shotOffset;
