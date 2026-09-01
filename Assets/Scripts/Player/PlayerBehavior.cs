@@ -379,6 +379,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public static void PauseTime() => Time.timeScale = 0;
     public static void ResumeTime() => Time.timeScale = 1;
 
+    public void TakeDamage(float damage, ShellBase.ShellType type)
+    {
+        TakeDamage(damage);
+    }
 
     //better way to do this? -N
     public void TakeDamage(float damage)

@@ -750,6 +750,11 @@ public class PlayerShooting : MonoBehaviour
             HitObjActivator(hit, shell.Type);
             SpawnBulletHole(hit);
         }
+        else if (hit.collider.gameObject.GetComponent<SimpleDamageTrigger>())
+        {
+            HitDamageable(hit, shell, shell.Type);
+            SpawnBulletHole(hit);
+        }
         else
         {
             SpawnBulletHole(hit);
@@ -902,6 +907,14 @@ public class PlayerShooting : MonoBehaviour
                 lastDamaged.OnDeath.RemoveListener(slowmo.DramaEvent);
             lastDamaged.OnDeath.RemoveListener(RewardKill);
             lastDamaged = null;
+        }
+    }
+
+    private void HitDamageable(RaycastHit hit, ShellBase shell, ShellBase.ShellType type)
+    {
+        if (hit.transform.gameObject.TryGetComponent<IDamageable>(out IDamageable hitDamageable))
+        {
+            hitDamageable.TakeDamage(shell.Damage, type);
         }
     }
 

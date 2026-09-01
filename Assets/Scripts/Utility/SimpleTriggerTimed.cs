@@ -18,12 +18,13 @@ public enum TriggerMode
 {
     Enter = 0,
     Exit = 1,
-    OnKillAll = 2
+    OnKillAll = 2,
+    Scripted = 3 // Scripted: You don't need to enter, exit, or kill enemies, you only want the map or something else to interact this externally.
 }
 
 /// <summary>
 /// Simple Triggers: Timed
-/// Only one of the three methods of activation can be used
+/// Only one of the four methods of activation can be used
 /// Very similar to SceneSequences, though I think this may be the better one.
 /// </summary>
 public class SimpleTriggerTimed : MonoBehaviour
@@ -65,6 +66,10 @@ public class SimpleTriggerTimed : MonoBehaviour
     public int EnemyDeathsCounter;
     public List<TimedTriggerEvent> onKillAll = new();
 
+    [Header("Scripted Trigger")]
+    [Tooltip("List of events to activate when triggered")]
+    public List<TimedTriggerEvent> onScripted = new();
+
     private void Start()
     {
         // Set the timer for the first event of the selected trigger mode (redundant if the first event's time is set to 0 but better safe than sorry)
@@ -83,6 +88,9 @@ public class SimpleTriggerTimed : MonoBehaviour
                 break;
             case TriggerMode.OnKillAll:
                 timer = onKillAll[0].time;
+                break;
+            case TriggerMode.Scripted:
+                timer = onScripted[0].time;
                 break;
             default:
                 break;
@@ -130,6 +138,13 @@ public class SimpleTriggerTimed : MonoBehaviour
         }
     }
 
+    public void ActivateScript()
+    {
+        if (triggered && triggerOnce) return;
+
+        triggered = true;
+    }
+
     public void CancelTrigger()
     {
         if (cancelled & triggerOnce) return;
@@ -143,6 +158,8 @@ public class SimpleTriggerTimed : MonoBehaviour
 
     public void Trigger(List<TimedTriggerEvent> TimedEvents, int i)
     {
+        if (eventNo >= TimedEvents.Count && triggerOnce) return;
+
         // Activate the events in this index
         for (int j = 0; j < TimedEvents[i].triggerEvent.Length; j++)
         {
@@ -153,8 +170,11 @@ public class SimpleTriggerTimed : MonoBehaviour
         i++;
         if (i >= TimedEvents.Count) // If this is the final event that was triggered, stop the timer by setting triggered to false
         { 
+
             triggered = false;
             i = 0; // Reset to the first event if this is a repeatable trigger
+            if (!triggerOnce)
+                eventNo = 0;
         }
         timer = TimedEvents[i].time;
     }
@@ -177,6 +197,9 @@ public class SimpleTriggerTimed : MonoBehaviour
                     break;
                 case TriggerMode.OnKillAll:
                     Trigger(onKillAll, eventNo);
+                    break;
+                case TriggerMode.Scripted:
+                    Trigger(onScripted, eventNo);
                     break;
                 default:
                     break;

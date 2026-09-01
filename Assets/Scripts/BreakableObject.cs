@@ -91,6 +91,11 @@ public class BreakableObject : MonoBehaviour, IDamageable
         if (explosive) { fragmentHits = new Collider[fragments]; }
     }
 
+    public void TakeDamage(float damageAmt, ShellBase.ShellType shellType)
+    {
+        TakeDamage(damageAmt);
+    }
+
     public void TakeDamage(float damageAmt)
     {
         Health -= damageAmt;

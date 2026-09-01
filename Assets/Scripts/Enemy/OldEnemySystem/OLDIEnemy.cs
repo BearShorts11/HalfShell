@@ -154,6 +154,10 @@ public class OLDIEnemy : MonoBehaviour, IDamageable
         }
     }
 
+    virtual public void TakeDamage(float damageAmt, ShellBase.ShellType type)
+    {
+        TakeDamage(damageAmt);
+    }
 
     virtual public void TakeDamage(float damageAmt)
     {

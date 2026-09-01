@@ -16,5 +16,12 @@ namespace Assets.Scripts
         /// </summary>
         /// <param name="amount"></param>
         public void TakeDamage(float amount);
+
+        /// <summary>
+        /// Damages this object, can take shell type into consideration.
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="shellType"></param>
+        public void TakeDamage(float amount, ShellBase.ShellType shellType);
     }
 }

@@ -187,6 +187,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     //actually should probably be an interface "IRangedAttack"
     public virtual void Shoot() { }
 
+    public virtual void TakeDamage(float amount, ShellBase.ShellType type)
+    {
+        TakeDamage(amount);
+    }
+
     //could move to death state but it's the difference between chekcing every frame vs. checking when the body actually takes damage
     public virtual void TakeDamage(float amount)
     {

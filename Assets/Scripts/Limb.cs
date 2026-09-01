@@ -80,6 +80,10 @@ public class Limb : MonoBehaviour, IDamageable
         if (enemy.Health <= 0 && coll.enabled) hasCollision = false ? coll.isTrigger = true ? coll.enabled = true : coll.enabled = false : coll.enabled = true;
     }
 
+    public void TakeDamage(float amount, ShellBase.ShellType shellType)
+    {
+        TakeDamage(amount);
+    }
     public void TakeDamage(float Damage) // Should be called by the shotgun or any other source that would damage this
     {
         if (Health <= 0f) return; // Do not run the code if the limb is already at 0 health! Fixes the strange issue of this funciton being called multiple times from being hit by a half shell (Multi-hit, so it makes sense that it would do that I guess?) 
