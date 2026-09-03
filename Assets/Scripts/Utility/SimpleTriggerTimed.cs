@@ -70,6 +70,8 @@ public class SimpleTriggerTimed : MonoBehaviour
     [Tooltip("List of events to activate when triggered")]
     public List<TimedTriggerEvent> onScripted = new();
 
+    protected List<TimedTriggerEvent> currentMode;
+
     private void Start()
     {
         // Set the timer for the first event of the selected trigger mode (redundant if the first event's time is set to 0 but better safe than sorry)
@@ -156,9 +158,20 @@ public class SimpleTriggerTimed : MonoBehaviour
         SetTimer();
     }
 
+    private bool CheckEventCount(int Count, int Index)
+    {
+        return (Index >= Count - 1);
+    }
+
     public void Trigger(List<TimedTriggerEvent> TimedEvents, int i)
     {
-        if (eventNo >= TimedEvents.Count - 1 && triggerOnce) return;
+        currentMode = TimedEvents;
+
+        if (triggerOnce)
+        {
+            if (CheckEventCount(TimedEvents.Count, i))
+                return;
+        }
 
         // Activate the events in this index
         for (int j = 0; j < TimedEvents[i].triggerEvent.Length; j++)
@@ -205,7 +218,8 @@ public class SimpleTriggerTimed : MonoBehaviour
                     break;
             }
             time = 0;
-            eventNo++;
+            if (!CheckEventCount(currentMode.Count, eventNo))
+                eventNo++;
         }
 
     }
