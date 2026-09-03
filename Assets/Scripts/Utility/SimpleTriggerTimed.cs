@@ -160,18 +160,14 @@ public class SimpleTriggerTimed : MonoBehaviour
 
     private bool CheckEventCount(int Count, int Index)
     {
-        return (Index >= Count - 1);
+        return (Index >= Count);
     }
 
     public void Trigger(List<TimedTriggerEvent> TimedEvents, int i)
     {
         currentMode = TimedEvents;
 
-        if (triggerOnce)
-        {
-            if (CheckEventCount(TimedEvents.Count, i))
-                return;
-        }
+        if (CheckEventCount(currentMode.Count, i)) return;
 
         // Activate the events in this index
         for (int j = 0; j < TimedEvents[i].triggerEvent.Length; j++)
@@ -182,13 +178,16 @@ public class SimpleTriggerTimed : MonoBehaviour
         // Set the timer for the next index Event timer
         i++;
         if (i >= TimedEvents.Count) // If this is the final event that was triggered, stop the timer by setting triggered to false
-        { 
-
+        {
             triggered = false;
             i = 0; // Reset to the first event if this is a repeatable trigger
             if (!triggerOnce)
                 eventNo = 0;
+            else
+                eventNo++;
         }
+        else
+            eventNo = i;
         timer = TimedEvents[i].time;
     }
 
@@ -218,8 +217,6 @@ public class SimpleTriggerTimed : MonoBehaviour
                     break;
             }
             time = 0;
-            if (!CheckEventCount(currentMode.Count, eventNo))
-                eventNo++;
         }
 
     }
