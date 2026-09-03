@@ -158,7 +158,7 @@ public class SimpleTriggerTimed : MonoBehaviour
 
     public void Trigger(List<TimedTriggerEvent> TimedEvents, int i)
     {
-        if (eventNo >= TimedEvents.Count && triggerOnce) return;
+        if (eventNo >= TimedEvents.Count - 1 && triggerOnce) return;
 
         // Activate the events in this index
         for (int j = 0; j < TimedEvents[i].triggerEvent.Length; j++)
