@@ -332,7 +332,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     void FixedUpdate()
     {
-        if (PauseMenu.paused) return;
+        if (PauseMenu.paused || health <= 0) return;
 
         if (health <= maxHealth * 0.25f)
         {
