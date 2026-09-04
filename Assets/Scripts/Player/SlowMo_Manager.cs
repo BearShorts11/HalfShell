@@ -88,7 +88,7 @@ public class SlowMo_Manager : MonoBehaviour
         if (slowMoActive)
         {
             slowMoActive = false;
-            if (ShellWheelController.shellWheelSelected && setTimeScale > player.SlowedTime)
+            if (ShellWheelController.shellWheelSelected)
             {
                 TransitionTimeScale(player.SlowedTime);
             }
@@ -116,13 +116,15 @@ public class SlowMo_Manager : MonoBehaviour
         }
 
         slowMoDurationTimeDefault = _SlowMoDurationTime;
-        slowMoChanceDefault= slowMoChance;
+        slowMoChanceDefault = slowMoChance;
         //Enemy.DeathAlert.AddListener(DramaEvent);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (PauseMenu.paused) return;
+
         //if (PlayerBehavior.SlowMoActive)
         //{
         //    if (!ShellWheelController.shellWheelSelected)
@@ -138,7 +140,7 @@ public class SlowMo_Manager : MonoBehaviour
         //    }
         //}
 
-        if (!PauseMenu.paused && (time < slowMoDurationModified || transitionTime < 1))
+        if (time < slowMoDurationModified || transitionTime < 1)
         {
             step = Time.deltaTime;
             time += step;
@@ -152,9 +154,13 @@ public class SlowMo_Manager : MonoBehaviour
                 if (Time.timeScale == 1 && time >= 1 && transitioning)
                     transitioning = false;
             }
-            if ((time >= slowMoDurationModified) && slowMoActive)
+            if (time >= slowMoDurationModified && slowMoActive)
             {
                 StopSlowMo();
+                if (ShellWheelController.shellWheelSelected)
+                {
+                    TransitionTimeScale(player.SlowedTime);
+                }
             }
         }
     }

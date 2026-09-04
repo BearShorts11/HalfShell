@@ -51,7 +51,7 @@ public class ShellWheelController : MonoBehaviour
 
     public void ToggleWheel(bool toggle)
     {
-        if (PauseMenu.paused != true && canOpenShellWheel)
+        if (!PauseMenu.paused && canOpenShellWheel)
         { 
 
             if (toggle)
