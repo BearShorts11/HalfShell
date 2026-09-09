@@ -79,7 +79,7 @@ MonoBehaviour:
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 0
-  removableAfterDeath: 1
+  removableAfterDeath: 0
   hasCollision: 1
   Gibs: {fileID: 0}
   damMult: 1
@@ -208,7 +208,6 @@ MonoBehaviour:
   maxAngle: 90
   defaultLookSpeed: 3
   headResetTimer: 0.5
-  _animation: {fileID: 0}
   lookSpeed: 3
   headResetTime: 0
   focusPoint: {fileID: 0}
@@ -258,7 +257,7 @@ MonoBehaviour:
   attackCooldown: 1
   damageCooldown: 1
   knockbackAmount: 0
-  <maxHealth>k__BackingField: 99999
+  <maxHealth>k__BackingField: 500
   Docile: 0
   SpawnAgro: 0
   AlwaysChase: 0
@@ -305,12 +304,17 @@ MonoBehaviour:
   combatMovementSpeed: 2
   defaultEngageRange: 1
   canEngage: 1
+  Hand: {fileID: 408072886053293077}
+  handRB: {fileID: 497671257209903069}
+  goal: 0
   engageRange: 1
   <PlayerInTrigger>k__BackingField: 0
   <isEngaging>k__BackingField: 0
   bPlayerSaw: 0
   PlayerSawTime: 0
   <lookComponent>k__BackingField: {fileID: 0}
+  <nearWeapon>k__BackingField: {fileID: 0}
+  currentWeapon: {fileID: 0}
 --- !u!114 &8500343492384388659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,7 +655,7 @@ MonoBehaviour:
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 0
-  removableAfterDeath: 1
+  removableAfterDeath: 0
   hasCollision: 1
   Gibs: {fileID: 0}
   damMult: 1
@@ -981,6 +985,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3976721167331451436}
   m_SourcePrefab: {fileID: 100100000, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+--- !u!4 &408072886053293077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8426254245088255733, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+  m_PrefabInstance: {fileID: 8167794384628093664}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1223980514442080223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7036213049465896255, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -1155,6 +1164,7 @@ MonoBehaviour:
   tex: {fileID: 2800000, guid: db64612060c3f944da5b419c6cdc4981, type: 3}
   updateWhole: 0
   matIndex: 0
+  Rend: {fileID: 6143400667431366816}
 --- !u!1 &1974042288352877434 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7655240544665160090, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -1559,6 +1569,11 @@ MonoBehaviour:
 --- !u!4 &3453189234807843696 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2398759541474018928, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+  m_PrefabInstance: {fileID: 8167794384628093664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6143400667431366816 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
   m_PrefabInstance: {fileID: 8167794384628093664}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6283329581096515982 stripped

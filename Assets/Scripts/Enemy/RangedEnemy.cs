@@ -10,7 +10,7 @@ public class RangedEnemy : Enemy, IHasRangedAttack
     public GameObject bulletPrefab;
     //private ObjectPool<GameObject> bulletPool; TODO
     /// <summary>
-    /// If enemy is maked as free range (does  not use fire points), this is the distance at which the player is considered too close.
+    /// If enemy is marked as free range (does  not use fire points), this is the distance at which the player is considered too close.
     /// AKA minimum distance between enemy and player
     /// </summary>
     public float tooCloseRange = 10f;

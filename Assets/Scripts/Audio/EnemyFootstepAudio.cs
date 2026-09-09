@@ -148,6 +148,8 @@ public class NPCFootstepAudio : MonoBehaviour
                     break;
             }*/
 
+            if (!hit.collider.gameObject.activeInHierarchy) return;
+
             if (hit.collider.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
                 if (renderer.sharedMaterial == null)
                     currentSurfaceIndex = MaterialSurfaceTypeChecker.GetSurfaceType(renderer.sharedMaterials[1]);

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 /// <summary>
 /// Handles enemy chase behavior: state where enemy will close distance between itself and the player until it is within attacking distance
@@ -8,12 +7,15 @@ public class ChaseState : State
 {
     //public IEnemy Owner { get; private set; }
 
+    private MannequinEnemy OwnerMannequin;
     float attackRange;
+    Vector3 destination;
 
     public ChaseState(Enemy owner)
     {
         Owner = owner;
         this.attackRange = owner.attackRange;
+        OwnerMannequin = Owner as MannequinEnemy;
     }
 
     public override void Enter()
@@ -25,6 +27,11 @@ public class ChaseState : State
 
         //have owner as jugg set ranged attack time
         if (Owner is Juggernaut) (Owner as Juggernaut).SetNextRangedAttackTime();
+        if (OwnerMannequin.goal == MannequinEnemy.Goal.GetWeapon)
+        { 
+            if (!OwnerMannequin.nearWeapon)
+                destination = OwnerMannequin.FindNearestWeapon().transform.position;
+        }
     }
 
     public override void Exit()
@@ -34,7 +41,19 @@ public class ChaseState : State
 
     public override void Update()
     {
+        destination = Owner.Player.transform.position;
 
+        if (OwnerMannequin && OwnerMannequin.goal == MannequinEnemy.Goal.GetWeapon)
+        {
+            if (destination != OwnerMannequin.nearWeapon.transform.position)
+            {
+                destination = OwnerMannequin.nearWeapon.transform.position;
+            }
+            if ((Owner.transform.position - destination).magnitude <= Mathf.Pow(OwnerMannequin.nearWeapon.pickupRange, 2))
+            {
+                OwnerMannequin.GrabWeapon(OwnerMannequin.nearWeapon);
+            }
+        }
         float distanceFromPlayer = Vector3.Distance(Owner.transform.position, Owner.Player.transform.position);
         if (distanceFromPlayer <= attackRange)
         {
@@ -67,7 +86,7 @@ public class ChaseState : State
         else
         {
             //attempting to avoid editor errors
-            if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(Owner.Player.transform.position);
+            if (Owner.agent.isActiveAndEnabled && Owner.agent.isOnNavMesh) Owner.agent.SetDestination(destination);
         }
     }
 }

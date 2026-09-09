@@ -9,6 +9,11 @@ using UnityEngine;
 [RequireComponent(typeof(MannequinPoses))]
 public class MannequinEnemy : Enemy, IHasMeleeAttack
 {
+    public enum Goal
+    {
+        Default = 0,
+        GetWeapon = 1
+    }
 
     [Header("Mannequin Enemy Properties")]
     // This enemy is still/static/fixed by default even when they spot the player, when they *actually* start chasing the player, this value will set the movement speed.
@@ -19,7 +24,11 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     [Tooltip("Whether or not the enemy will start chasing the player when they're within engagement range")]
     public bool canEngage = true;
 
+    public Transform Hand;
+    public Rigidbody handRB;
+
     [Header("Dynamic")]
+    public Goal goal = Goal.Default;
     [SerializeField] private float engageRange;
     [field:SerializeField] public bool PlayerInTrigger { get; set; } = false;
 
@@ -40,12 +49,17 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
 
     private float lastTwitchTime;
 
-    private MannequinPoses IdlePose;
+    [field: SerializeField] public Enemy_Weapon_Base nearWeapon { get; private set; }
+
+    [SerializeField] protected Enemy_Weapon_Base currentWeapon;
+
+    private float currDeathTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         engageRange = defaultEngageRange;
+        moveWhileAttacking = goal == Goal.GetWeapon ? false : moveWhileAttacking;
     }
 
     void Awake()
@@ -116,6 +130,60 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         base.BaseUpdate();
     }
 
+    public Transform FindNearestWeapon()
+    {
+        Enemy_Weapon_Base[] availableWeapons = FindObjectsByType<Enemy_Weapon_Base>(FindObjectsSortMode.None);
+
+        if (availableWeapons.Length >= 1)
+            nearWeapon = availableWeapons[0];
+
+        foreach (Enemy_Weapon_Base weapon in availableWeapons) {
+            if (weapon.type == IEnemyWeapon.WeaponType.Ranged) continue;
+            if ((this.gameObject.transform.position - weapon.gameObject.transform.position).magnitude < (this.gameObject.transform.position - nearWeapon.gameObject.transform.position).magnitude)
+                nearWeapon = weapon;
+        }
+
+        return nearWeapon.transform;
+    }
+
+    public void SetDesirableWeapon(Transform weapon)
+    {
+        if (weapon)
+            nearWeapon = weapon.gameObject.GetComponent<Enemy_Weapon_Base>();
+    }
+
+    public void GrabWeapon(Enemy_Weapon_Base weapon)
+    {
+        lookComponent.ResetHead();
+        lookComponent.DisableLooking();
+
+        if (Hand)
+        {
+            //weapon.transform.SetParent(Hand, true);
+            weapon.transform.parent = Hand;
+            weapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
+
+        currentWeapon = weapon;
+        currentWeapon.Grabbed(this);
+
+        // Load Weapon stats
+        damage = currentWeapon.weaponDamage;
+        switch (currentWeapon.type)
+        {
+            default:
+                attackRange = currentWeapon.meleeRange;
+                break;
+        }
+
+        //TODO: Anims?
+
+        if (goal == Goal.GetWeapon)
+            goal = Goal.Default;
+
+        moveWhileAttacking = true;
+    }
+
     void FixedUpdate()
     {
         if (isEngaging)
@@ -127,6 +195,19 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
                 {
                     animator.SetTrigger("Twitch");
                 }
+            }
+            if (goal == Goal.GetWeapon)
+            {
+                lookComponent.SetFocusPoint(Player.playerCinemachineCamera.gameObject.transform);
+                lookComponent.EnableLooking();
+            }
+        }
+
+        if (Health < 0 && currentWeapon)
+        {
+            if (Time.time > currDeathTime)
+            {
+                DropWeapon();
             }
         }
     }
@@ -163,5 +244,26 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     public void SetPlayerInTrigger(bool boolean)
     {
         PlayerInTrigger = boolean;
+    }
+
+    public override void TakeDamage(float amount, ShellBase.ShellType type)
+    {
+        if (Health < 0) return;
+
+        TakeDamage(amount);
+
+        if (Health < 0)
+            currDeathTime = Time.time + 0.1f;
+    }
+
+    protected void DropWeapon()
+    {
+        if (currentWeapon)
+        {
+            if (handRB)
+                currentWeapon.Drop(handRB.linearVelocity, handRB.angularVelocity);
+            else
+                currentWeapon.Drop();
+        }
     }
 }
