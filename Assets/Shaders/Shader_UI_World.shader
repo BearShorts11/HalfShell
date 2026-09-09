@@ -96,13 +96,16 @@ Shader "UI/Default_OverlayNoZTest"
 
             sampler2D _MainTex;
 
-            fixed4 frag(v2f IN) : SV_Target
+            float4 frag(v2f IN) : SV_Target
             {
                 // half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
-                fixed4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                // fixed4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                float4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                float4 alpha = (0,0,0, IN.color.a);
                 //Added for font color support
                 clip(color.a - 0.01);
-                return (color.r, color.g, color.b, IN.color.a * color.a);
+                // return (color.r, color.g, color.b, IN.color.a * color.a);
+                return color * alpha;
             }
             ENDCG
         }
