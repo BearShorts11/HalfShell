@@ -27,10 +27,14 @@ public class ChaseState : State
 
         //have owner as jugg set ranged attack time
         if (Owner is Juggernaut) (Owner as Juggernaut).SetNextRangedAttackTime();
-        if (OwnerMannequin.goal == MannequinEnemy.Goal.GetWeapon)
-        { 
-            if (!OwnerMannequin.nearWeapon)
-                destination = OwnerMannequin.FindNearestWeapon().transform.position;
+
+        if (Owner is MannequinEnemy)
+        {
+            if (OwnerMannequin.goal == MannequinEnemy.Goal.GetWeapon)
+            {
+                if (!OwnerMannequin.nearWeapon)
+                    destination = OwnerMannequin.FindNearestWeapon().transform.position;
+            }
         }
     }
 
