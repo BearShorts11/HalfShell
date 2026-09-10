@@ -42,9 +42,22 @@ public class SimpleTrigger : MonoBehaviour
         }
     }
 
+    public void SetActive(bool active)
+    {
+        if (gameObject)
+            gameObject.SetActive(active);
+
+        if (active)
+        {
+            ArenaKillCounter(0);
+        }
+    }
+
     public void ArenaKillCounter(int value)
     {
         EnemyDeathsCounter += value;
+
+        if (!gameObject.activeInHierarchy) return;
 
         if (EnemyDeathsCounter >= InitEnemyCounter)
         {
