@@ -921,6 +921,8 @@ public class PlayerShooting : MonoBehaviour
     private void HitBreakable(RaycastHit hit, ShellBase shell, ShellBase.ShellType shellType)
     {
         BreakableObject obj = hit.transform.GetComponent<BreakableObject>();
+        if (!obj) return;
+
         if (obj.destructionOveride == false) { obj.DestructionPos = gameObject.transform.position; }
 
         if (obj != null) 
