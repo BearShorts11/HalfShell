@@ -60,6 +60,10 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
     {
         engageRange = defaultEngageRange;
         moveWhileAttacking = goal == Goal.GetWeapon ? false : moveWhileAttacking;
+        if (SpawnAgro)
+        {
+            EngagePlayer();
+        }
     }
 
     void Awake()
@@ -229,6 +233,10 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         agent.speed = movementSpeed;
         agent.angularSpeed = 7200f;
         agent.acceleration = 80f;
+        if (stateMachine.CurrentState is not ChaseState)
+        {
+            stateMachine.Initialize(stateMachine._chaseState);
+        }
     }
 
     public override void TakeDamage(float amount)
