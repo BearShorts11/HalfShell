@@ -814,6 +814,14 @@ PrefabInstance:
       value: HalfShell_Prototype_Dummy_Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 257
       objectReference: {fileID: 0}
@@ -1015,6 +1023,7 @@ MonoBehaviour:
   explosionForce: 50
   explosionRadius: 2.5
   explosionLift: 0.5
+  ragdollEnabled: 0
   mesh: {fileID: 6143400667431366816}
 --- !u!1 &1341274242289793267 stripped
 GameObject:

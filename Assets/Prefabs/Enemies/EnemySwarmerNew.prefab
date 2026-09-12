@@ -653015,6 +653015,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4944753576818255360, guid: 7ad23db753c311642b46784161ce54d3, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7ad23db753c311642b46784161ce54d3, type: 3}
       propertyPath: m_Controller
       value: 
@@ -653519,6 +653523,11 @@ MonoBehaviour:
   damMult: 1
   damPctHealthOnRemove: 0
   <enemy>k__BackingField: {fileID: 0}
+--- !u!137 &2368135722659120362 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4944753576818255360, guid: 7ad23db753c311642b46784161ce54d3, type: 3}
+  m_PrefabInstance: {fileID: 7224343119831671530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2513714630422018179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4134155019704657303, guid: 7ad23db753c311642b46784161ce54d3, type: 3}
@@ -654464,6 +654473,9 @@ MonoBehaviour:
   explosionForce: 50
   explosionRadius: 5
   explosionLift: 0.2
+  ragdollEnabled: 0
+  mesh: {fileID: 2368135722659120362}
+  meshes: []
 --- !u!114 &2231438201465603461
 MonoBehaviour:
   m_ObjectHideFlags: 0

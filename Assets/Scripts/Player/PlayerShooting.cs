@@ -833,13 +833,18 @@ public class PlayerShooting : MonoBehaviour
 
             if (enemy != null)
             {
-                GameObject splatter = Instantiate(enemy.BloodSplatterProjector);
-                Quaternion normal = Quaternion.LookRotation(-hit.normal, Vector3.up);
-                Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
-                splatter.transform.SetPositionAndRotation(hit.point + (hit.normal * 0.05f), rotation * normal);
-                splatter.transform.SetParent(hit.transform, true);
-                splatter.GetComponent<DecalProjector>().size = new(0.5f, 0.5f, 0.5f);
-                splatter.GetComponent<DecalProjector>().pivot = new(0, 0, 0);
+                if (enemy.BloodSplatterProjector)
+                {
+                    GameObject splatter = Instantiate(enemy.BloodSplatterProjector);
+
+                    Quaternion normal = Quaternion.LookRotation(-hit.normal, Vector3.up);
+                    Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
+
+                    splatter.transform.SetPositionAndRotation(hit.point + (hit.normal * 0.05f), rotation * normal);
+                    splatter.transform.SetParent(hit.transform, true);
+                    splatter.GetComponent<DecalProjector>().size = new(0.5f, 0.5f, 0.5f);
+                    splatter.GetComponent<DecalProjector>().pivot = new(0, 0, 0);
+                }
                 enemy.HitFrom(shell);
                 if (shell.hasSpecialEffects)
                 { 

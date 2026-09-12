@@ -13,6 +13,7 @@ public class RagdollController : MonoBehaviour
 
     public bool ragdollEnabled = false; // Variable to enable updating view bounds because they do not follow the ragdoll/armature leading to weird rendering issues when they are far from the point to where the
     [SerializeField] private SkinnedMeshRenderer mesh;
+    [SerializeField] private SkinnedMeshRenderer[] meshes; // That Ranged Enemy Mesh being split coming to bite me in the ass :sob: -V
     private Bounds meshBounds;
     private Rigidbody root;
     private PlayerShooting playerShooting;
@@ -22,10 +23,12 @@ public class RagdollController : MonoBehaviour
     void Start()
     {
         playerShooting = FindFirstObjectByType<PlayerShooting>();
-        if (mesh)
+        if (!mesh)
         {
-            meshBounds = mesh.bounds;
+            mesh = GetComponentInChildren<SkinnedMeshRenderer>();
         }
+        if (meshes.Length <= 0)
+            meshes = GetComponentsInChildren<SkinnedMeshRenderer>();
         root = GetComponentInChildren<Rigidbody>();
         EnableRagdoll(ragdollEnabled);
     }
@@ -51,12 +54,29 @@ public class RagdollController : MonoBehaviour
     {
         if (ragdollEnabled)
         {
-            UpdateViewBounds();
+            if (root)
+            {
+                if (!root.IsSleeping())
+                    UpdateViewBounds();
+            }
         }
     }
 
     private void UpdateViewBounds()
     {
+        if (meshes.Length > 1)
+        {
+            foreach(SkinnedMeshRenderer localMesh in meshes)
+            {
+                meshBounds = localMesh.localBounds;
+                if (root)
+                {
+                    meshBounds.center = root.gameObject.transform.localPosition;
+                }
+                localMesh.localBounds = meshBounds;
+            }
+            return;
+        }
         if (mesh)
         {
             meshBounds = mesh.localBounds;

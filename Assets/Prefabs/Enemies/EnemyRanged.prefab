@@ -240,6 +240,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -403,6 +404,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -566,6 +568,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -744,6 +747,29 @@ MonoBehaviour:
   explosionForce: 30
   explosionRadius: 2
   explosionLift: 0.2
+  ragdollEnabled: 0
+  mesh: {fileID: 0}
+  meshes:
+  - {fileID: 6597302195946547191}
+  - {fileID: 4980217519236931851}
+  - {fileID: 8544560675346130038}
+  - {fileID: 5291331341003467859}
+  - {fileID: 1042052051833927879}
+  - {fileID: 3480304981516599518}
+  - {fileID: 3982046975289611473}
+  - {fileID: 3982046975289611473}
+  - {fileID: 3822351033814745949}
+  - {fileID: 4497749585955416391}
+  - {fileID: 3696720152833363194}
+  - {fileID: 5712209042969466279}
+  - {fileID: 8815311585788300221}
+  - {fileID: 8953497570217289542}
+  - {fileID: 6302097898227263369}
+  - {fileID: 251716216057953847}
+  - {fileID: 1238923256356580334}
+  - {fileID: 6339184951183776872}
+  - {fileID: 7866730430503520037}
+  - {fileID: 5377862798077533191}
 --- !u!1 &945809316659003898
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,8 +896,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 7082389498687383783}
   m_AABB:
-    m_Center: {x: -0.008984506, y: 0.6754322, z: 0.0039518513}
-    m_Extent: {x: 0.11146795, y: 0.16499045, z: 0.1223439}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1092079443254496384
 GameObject:
@@ -998,8 +1024,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 3851689046905248372}
   m_AABB:
-    m_Center: {x: -0.09620654, y: 0.94177556, z: -0.10884944}
-    m_Extent: {x: 0.18288958, y: 0.1389687, z: 0.19133618}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1584802742166399414
 GameObject:
@@ -1090,8 +1116,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6766538668060639966}
   m_AABB:
-    m_Center: {x: -0.0000008419156, y: 0.27888343, z: 0.06616582}
-    m_Extent: {x: 0.08235243, y: 0.117600225, z: 0.10324551}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1787118232196391669
 GameObject:
@@ -1183,8 +1209,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 3851689046905248372}
   m_AABB:
-    m_Center: {x: -0.012441743, y: 0.6864531, z: -0.080491096}
-    m_Extent: {x: 0.10241002, y: 0.27658355, z: 0.171056}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2204181174462613249
 GameObject:
@@ -1333,6 +1359,7 @@ MonoBehaviour:
   damage: 5
   attackCooldown: 0.5
   damageCooldown: 1.5
+  knockbackAmount: 0
   <maxHealth>k__BackingField: 50
   Docile: 0
   SpawnAgro: 0
@@ -1376,6 +1403,7 @@ MonoBehaviour:
       Data3: -1644899932
       Data4: 479449000
     Path: event:/Enemy/EnemyBurning
+  surfaceType: 5
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   tooCloseRange: 10
   setFireRate: 2
@@ -1589,8 +1617,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: -0.007968478, y: 0.23530167, z: -0.0010213777}
-    m_Extent: {x: 0.195479, y: 0.21971151, z: 0.14193416}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2259305929865963142
 GameObject:
@@ -6656,8 +6684,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4757570541926184717}
   m_AABB:
-    m_Center: {x: 0.014710605, y: 0.68074644, z: -0.08297615}
-    m_Extent: {x: 0.09557102, y: 0.27056882, z: 0.16604564}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2707458619279607493
 GameObject:
@@ -6752,8 +6780,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 1205201637559631382}
   m_AABB:
-    m_Center: {x: 0.31463525, y: 0.13797082, z: -0.0071098693}
-    m_Extent: {x: 0.16785696, y: 0.1367488, z: 0.061922755}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2715237649892224991
 GameObject:
@@ -11896,8 +11924,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: -0.00050471723, y: -0.10778273, z: -0.0020409077}
-    m_Extent: {x: 0.16043244, y: 0.116369404, z: 0.11135058}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &4154091559229080932
 GameObject:
@@ -12072,8 +12100,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: 0.083849505, y: -0.31800607, z: 0.019775689}
-    m_Extent: {x: 0.077211246, y: 0.22392027, z: 0.11847025}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &4366176704969249572
 GameObject:
@@ -12229,6 +12257,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -12364,8 +12393,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: -0.0000144168735, y: 0.14755465, z: 0.07066695}
-    m_Extent: {x: 0.06529274, y: 0.25514007, z: 0.04496462}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &4994793011266562154
 GameObject:
@@ -12553,6 +12582,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -12671,6 +12701,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -12834,6 +12865,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -13028,6 +13060,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -13128,8 +13161,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 7082389498687383783}
   m_AABB:
-    m_Center: {x: 0.05948209, y: 0.4471846, z: -0.071170196}
-    m_Extent: {x: 0.118570365, y: 0.18236122, z: 0.12673804}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &5613735206567201102
 GameObject:
@@ -13221,8 +13254,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: -0.08390324, y: -0.32082313, z: 0.017541569}
-    m_Extent: {x: 0.0772398, y: 0.2205835, z: 0.1158085}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &5956462966586636298
 GameObject:
@@ -13348,8 +13381,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 1205201637559631382}
   m_AABB:
-    m_Center: {x: -0.31993967, y: 0.09393017, z: 0.0025388598}
-    m_Extent: {x: 0.17404559, y: 0.17519073, z: 0.08120023}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &6450387195508738449
 GameObject:
@@ -13540,8 +13573,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6766538668060639966}
   m_AABB:
-    m_Center: {x: -0.5499276, y: 0.04163742, z: -0.057852566}
-    m_Extent: {x: 0.23845956, y: 0.21621692, z: 0.11608073}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &6798545132052972974
 GameObject:
@@ -13725,6 +13758,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -13855,8 +13889,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: 0.000004723668, y: -0.019757954, z: 0.007962164}
-    m_Extent: {x: 0.15166704, y: 0.04046396, z: 0.091541365}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &7436505144554928127
 GameObject:
@@ -14010,6 +14044,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 1
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -14143,8 +14178,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6766538668060639966}
   m_AABB:
-    m_Center: {x: 0.004216697, y: 0.1312398, z: 0.015057644}
-    m_Extent: {x: 0.068420276, y: 0.107328154, z: 0.05173163}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &7501838708809893543
 GameObject:
@@ -14272,8 +14307,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 1205201637559631382}
   m_AABB:
-    m_Center: {x: -0.00000086426735, y: 0.2892228, z: 0.041428477}
-    m_Extent: {x: 0.13205561, y: 0.23984304, z: 0.16696963}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &7637232429947311577
 GameObject:
@@ -14437,8 +14472,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6420519268694297729}
   m_AABB:
-    m_Center: {x: -0.0032385886, y: 0.20957223, z: -0.011642776}
-    m_Extent: {x: 0.29763857, y: 0.25855815, z: 0.12575024}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &8558336340009318963
 GameObject:
@@ -14594,6 +14629,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -19594,8 +19630,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 3941452647781976816}
   m_AABB:
-    m_Center: {x: 0.0021076873, y: 0.37213874, z: -0.0045389384}
-    m_Extent: {x: 0.11485615, y: 0.15770973, z: 0.1096915}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1001 &1587940964400670613
 PrefabInstance:

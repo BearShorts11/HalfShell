@@ -30121,6 +30121,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -60266,8 +60267,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.0000018700957, y: 0.516685, z: 0.048589777}
-    m_Extent: {x: 0.06420676, y: 0.09128441, z: 0.09103225}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1224659661052472796
 GameObject:
@@ -75412,8 +75413,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.067063026, y: -0.6450096, z: -0.080707714}
-    m_Extent: {x: 0.10256217, y: 0.2680322, z: 0.16260342}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1291327498066539896
 GameObject:
@@ -76048,8 +76049,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.7807156, y: 0.40047866, z: 0.01595759}
-    m_Extent: {x: 0.14039722, y: 0.079397544, z: 0.092050076}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1374859800168499571
 GameObject:
@@ -76614,8 +76615,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.3110119, y: 0.37801132, z: -0.018512543}
-    m_Extent: {x: 0.17004628, y: 0.14506963, z: 0.094740346}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1625978355099440300
 GameObject:
@@ -91480,8 +91481,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.00000078231096, y: 0.056050353, z: 0.008466631}
-    m_Extent: {x: 0.14945754, y: 0.042173788, z: 0.09004911}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &1755060530687443786
 GameObject:
@@ -106457,6 +106458,7 @@ MonoBehaviour:
   damage: 85
   attackCooldown: 0.5
   damageCooldown: 1.5
+  knockbackAmount: 0
   <maxHealth>k__BackingField: 50
   Docile: 0
   SpawnAgro: 0
@@ -106500,6 +106502,7 @@ MonoBehaviour:
       Data3: -1644899932
       Data4: 479449000
     Path: event:/Enemy/EnemyBurning
+  surfaceType: 5
   bulletPrefab: {fileID: 803325307025959695, guid: dd47329a2e23f7d448ba618b2d58b514, type: 3}
   tooCloseRange: 10
   setFireRate: 3
@@ -106525,7 +106528,6 @@ MonoBehaviour:
   laserDot: {fileID: 572775877801042973}
   laser: {fileID: 7035757803618455544}
   bulletTracer: {fileID: 6956234224314470677, guid: 419ba74e32ea189418f22233178fe05f, type: 3}
-  prefireTime: 0.9
   sniperWarning:
     Guid:
       Data1: -476026740
@@ -111808,6 +111810,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -112004,6 +112007,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -117206,8 +117210,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.06512191, y: -0.6567524, z: -0.086311035}
-    m_Extent: {x: 0.09609706, y: 0.24712068, z: 0.15057033}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2178397783311971319
 GameObject:
@@ -137137,8 +137141,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.31614056, y: 0.37711835, z: -0.018312741}
-    m_Extent: {x: 0.17516965, y: 0.14347434, z: 0.09452662}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2515894218802571531
 GameObject:
@@ -142191,8 +142195,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.08619587, y: -0.24356686, z: -0.023105107}
-    m_Extent: {x: 0.07730125, y: 0.21401738, z: 0.09291508}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2548811586680473865
 GameObject:
@@ -177422,8 +177426,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.5868734, y: 0.43810093, z: -0.005296178}
-    m_Extent: {x: 0.14694203, y: 0.06570159, z: 0.05737654}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &2842679266595916521
 GameObject:
@@ -202425,6 +202429,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -227270,8 +227275,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.5868751, y: 0.43811435, z: -0.005364746}
-    m_Extent: {x: 0.14694032, y: 0.065712884, z: 0.0574108}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &3346812354148591226
 GameObject:
@@ -272477,6 +272482,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -317797,8 +317803,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.000001065433, y: 0.20896123, z: 0.106903836}
-    m_Extent: {x: 0.06305154, y: 0.25681132, z: 0.06447977}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &4601419576750702197
 GameObject:
@@ -327863,6 +327869,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -332810,6 +332817,27 @@ MonoBehaviour:
   explosionForce: 30
   explosionRadius: 2
   explosionLift: 0.2
+  ragdollEnabled: 0
+  mesh: {fileID: 0}
+  meshes:
+  - {fileID: 130493560917082462}
+  - {fileID: 4209077369111650776}
+  - {fileID: 5890951367334247417}
+  - {fileID: 1357865759866868614}
+  - {fileID: 6228431885797710184}
+  - {fileID: 8072164170292303913}
+  - {fileID: 6367464733435650859}
+  - {fileID: 6124644565989348772}
+  - {fileID: 1041093742284392590}
+  - {fileID: 8382782090453021985}
+  - {fileID: 72400379667731810}
+  - {fileID: 4737100909922951377}
+  - {fileID: 2932892365032088015}
+  - {fileID: 1720442404509076616}
+  - {fileID: 8384563879829174946}
+  - {fileID: 8542064132141179543}
+  - {fileID: 2146198140789402196}
+  - {fileID: 438265754008741110}
 --- !u!1 &4732470176637412908
 GameObject:
   m_ObjectHideFlags: 0
@@ -347953,8 +347981,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.08619597, y: -0.24357045, z: -0.02310457}
-    m_Extent: {x: 0.07730714, y: 0.21401995, z: 0.09291988}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &4988825865268966287
 GameObject:
@@ -372883,8 +372911,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.00048200786, y: -0.02322087, z: -0.011150222}
-    m_Extent: {x: 0.16525127, y: 0.11460906, z: 0.108714774}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &5333110700114023656
 GameObject:
@@ -383378,8 +383406,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.7807249, y: 0.4005189, z: 0.015941452}
-    m_Extent: {x: 0.14038745, y: 0.079345584, z: 0.09205015}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &5659225704045440162
 GameObject:
@@ -433257,6 +433285,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -438317,8 +438346,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.000008329749, y: -0.9559804, z: -0.10299747}
-    m_Extent: {x: 0.17526354, y: 0.1768564, z: 0.19535981}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &6228775694353771334
 GameObject:
@@ -468021,8 +468050,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.0000014677644, y: 0.6248876, z: 0.10496351}
-    m_Extent: {x: 0.08235798, y: 0.15553658, z: 0.14601013}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &6554530830926634311
 GameObject:
@@ -483743,8 +483772,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: 0.0000026077032, y: 0.53808904, z: 0.07453405}
-    m_Extent: {x: 0.13206398, y: 0.27015465, z: 0.29310238}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &6860718312991969310
 GameObject:
@@ -508785,8 +508814,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.019944891, y: 0.31229103, z: 0.028026052}
-    m_Extent: {x: 0.20742542, y: 0.22981822, z: 0.15412775}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &7272978448172109348
 GameObject:
@@ -518994,6 +519023,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 1
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -524023,8 +524053,8 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 4085633784101971721}
   m_AABB:
-    m_Center: {x: -0.0034875125, y: 0.2907204, z: 0.0017656907}
-    m_Extent: {x: 0.29742604, y: 0.2693115, z: 0.15674257}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1, y: 1, z: 1}
   m_DirtyAABB: 0
 --- !u!1 &7560065765667103199
 GameObject:
@@ -529155,6 +529185,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -569685,6 +569716,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
@@ -635554,6 +635586,7 @@ MonoBehaviour:
       Data3: -263524216
       Data4: 1568571016
     Path: event:/Explosions/Gib_Explosion
+  surfaceType: 5
   isRemovable: 0
   isAttatchedToBone: 1
   isBoneItself: 1
