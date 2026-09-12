@@ -1827,7 +1827,7 @@ MonoBehaviour:
       - title: Sequence
         value: 'FMODAudioEvent(event:/Dialogue/apollyonDoorSeq02-1, , , true);
 
-          Delay(3)'
+          Delay(2)'
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 4
@@ -1841,7 +1841,13 @@ MonoBehaviour:
       - originConversationID: 4
         originDialogueID: 6
         destinationConversationID: 4
-        destinationDialogueID: 9
+        destinationDialogueID: 7
+        isConnector: 0
+        priority: 2
+      - originConversationID: 4
+        originDialogueID: 6
+        destinationConversationID: 4
+        destinationDialogueID: 8
         isConnector: 0
         priority: 2
       conditionsString: 
