@@ -17,6 +17,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public NavMeshAgent agent;
     public Animator animator;
     public RagdollController ragdollController;
+    [SerializeField] private Rigidbody rigidbody;
 
     public GameObject BloodSplatterProjector;
     private Material[] decals;
@@ -295,9 +296,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         damageFromStatusEffect = false;
     }
 
-    public virtual void DoKnockback(RaycastHit hit)
-    { 
-        
+    public virtual void DoKnockback(ShellBase shell)
+    {
+        if (rigidbody != null)
+        { 
+            Vector3 direction = this.transform.position - Player.transform.position;
+            rigidbody.AddForce(direction.normalized * shell.KnockbackAmount, ForceMode.VelocityChange);
+        }
     }
 
     public void HitEffect(ShellBase shell)

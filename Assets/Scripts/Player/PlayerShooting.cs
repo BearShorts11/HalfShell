@@ -851,15 +851,17 @@ public class PlayerShooting : MonoBehaviour
                     enemy.HitEffect(shell);
                     Debug.Log("hit effect on enemy");
                 }
+
+                SetLastDamaged(enemy);
+                enemy.DoKnockback(shell);
             }
 
-            if (enemy != null)
-            {
-                SetLastDamaged(enemy);
-            }
+            //if (enemy != null)
+            //{
+            //    SetLastDamaged(enemy);
+            //}
 
             damageable.TakeDamage(Damage);
-
         }
 
         //Limb eLimb = hit.transform.GetComponent<Limb>();

@@ -105,7 +105,7 @@ public class PauseMenu : MonoBehaviour
 
         UpdateVolumeSettings();
         SetVolumes();
-        ToggleControls();
+        //ToggleControls();
     }
 
     // Update is called once per frame

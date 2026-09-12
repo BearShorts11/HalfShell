@@ -562,4 +562,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         }
 
     }
+
+    public void Bullshit()
+    {
+        PauseMenu menu = FindFirstObjectByType<PauseMenu>();
+        if (menu != null) { menu.ToggleControls(); }
+    }
 }
