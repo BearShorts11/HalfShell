@@ -55,14 +55,6 @@ public class PauseMenu : MonoBehaviour
 
     string JsonFilePath = "Assets/JsonFiles/Settings/PlayerSettings.txt";
 
-    //public enum Scene
-    //{
-    //    MockUp, //0
-    //    SampleScene, //1
-    //    TestArena, //2
-    //}
-    //public Scene currentScene;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -111,7 +103,8 @@ public class PauseMenu : MonoBehaviour
         if (PlayerPrefs.HasKey(DIALOGUE_VOLUME_KEY))
             dialogueVolumeSlider.value  = PlayerPrefs.GetFloat(DIALOGUE_VOLUME_KEY);
 
-        LoadVolumeSettings();
+        UpdateVolumeSettings();
+        SetVolumes();
         ToggleControls();
     }
 
@@ -298,12 +291,12 @@ public class PauseMenu : MonoBehaviour
             player.UpdateFOV();
         }
         FOV_val_txt.text = $"{FOVSlider.value}";
-
+        
 
         //save out to json?
     }
 
-    private void LoadVolumeSettings()
+    private void SetVolumes()
     {
         masterBus.setVolume(masterVolume);
         soundBus.setVolume(sfxVolume);
@@ -325,7 +318,7 @@ public class PauseMenu : MonoBehaviour
         musicvol_val_txt    .text = musicVolume.ToString("0.00");
         dialoguevol_val_txt .text = dialogueVolume.ToString("0.00");
 
-        LoadVolumeSettings();
+        SetVolumes();
         SaveVolumeSettings(); // Shouldn't really put it here but since there is no apply button, but I guess this will do.
     }
 
@@ -336,7 +329,8 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicVolume);
         PlayerPrefs.SetFloat(DIALOGUE_VOLUME_KEY, dialogueVolume);
 
-        LoadVolumeSettings();
+        PlayerPrefs.Save();
+        SetVolumes();
     }
 
     private void FOVValueChange()
