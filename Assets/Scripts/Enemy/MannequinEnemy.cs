@@ -194,7 +194,7 @@ public class MannequinEnemy : Enemy, IHasMeleeAttack
         {
             if (Time.time > lastTwitchTime)
             {
-                lastTwitchTime = Time.time + UnityEngine.Random.Range(1f, 8f);
+                lastTwitchTime = Time.time + UnityEngine.Random.Range(2f, 8f);
                 if (UnityEngine.Random.Range(0f, 1f) > 0.5f)
                 {
                     animator.SetTrigger("Twitch");

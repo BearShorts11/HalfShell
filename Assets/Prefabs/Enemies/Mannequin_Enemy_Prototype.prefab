@@ -245,7 +245,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   animator: {fileID: 2320268731524099953}
   ragdollController: {fileID: 46083098953571944}
-  BloodSplatterProjector: {fileID: 0}
+  BloodSplatterProjector: {fileID: 7463983661494074983, guid: af4f2d7dd9909254ea9968ba485228d3, type: 3}
   FullyGibbedParticle: {fileID: 0}
   fireParticles: []
   HealthPackDrop: {fileID: 0}
@@ -814,6 +814,10 @@ PrefabInstance:
       value: HalfShell_Prototype_Dummy_Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 257
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600947447523238464, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 77266ea3339adfb4da223b40cf9f87cd, type: 2}
@@ -1011,6 +1015,7 @@ MonoBehaviour:
   explosionForce: 50
   explosionRadius: 2.5
   explosionLift: 0.5
+  mesh: {fileID: 6143400667431366816}
 --- !u!1 &1341274242289793267 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2034223612753319405, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}

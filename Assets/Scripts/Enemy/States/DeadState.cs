@@ -25,8 +25,7 @@ public class DeadState : State
         //if (Owner is Juggernaut) return;
 
         Owner.animator.enabled = false;
-        Owner.ragdollController.SetColliderState(true);
-        Owner.ragdollController.SetRigidbodyState(false);
+        Owner.ragdollController.EnableRagdoll(true);
 
         Owner.OnDeath?.Invoke();
 

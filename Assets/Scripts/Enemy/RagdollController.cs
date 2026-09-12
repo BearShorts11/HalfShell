@@ -11,6 +11,10 @@ public class RagdollController : MonoBehaviour
     public float explosionRadius;
     public float explosionLift;
 
+    public bool ragdollEnabled = false; // Variable to enable updating view bounds because they do not follow the ragdoll/armature leading to weird rendering issues when they are far from the point to where the
+    [SerializeField] private SkinnedMeshRenderer mesh;
+    private Bounds meshBounds;
+    private Rigidbody root;
     private PlayerShooting playerShooting;
     
     //public Rigidbody enemyRigidbody;
@@ -18,8 +22,12 @@ public class RagdollController : MonoBehaviour
     void Start()
     {
         playerShooting = FindFirstObjectByType<PlayerShooting>();
-        SetRigidbodyState(true);
-        SetColliderState(false);
+        if (mesh)
+        {
+            meshBounds = mesh.bounds;
+        }
+        root = GetComponentInChildren<Rigidbody>();
+        EnableRagdoll(ragdollEnabled);
     }
 
     // Update is called once per frame
@@ -27,7 +35,41 @@ public class RagdollController : MonoBehaviour
     {
         
     }
-    
+
+    public void EnableRagdoll(bool enable)
+    {
+        SetColliderState(enable);
+        SetRigidbodyState(!enable);
+        ragdollEnabled = enable;
+        if (enable == false)
+        {
+            UpdateViewBounds();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (ragdollEnabled)
+        {
+            UpdateViewBounds();
+        }
+    }
+
+    private void UpdateViewBounds()
+    {
+        if (mesh)
+        {
+            meshBounds = mesh.localBounds;
+            if (root)
+            {
+                meshBounds.center = root.gameObject.transform.localPosition;
+                //Debug.Log("Visible Bound Center: " + meshBounds.center);
+            }
+            //mesh.bounds = meshBounds;
+            mesh.localBounds = meshBounds;
+        }
+    }
+
     public void SetRigidbodyState(bool state)
     {
         Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -36,8 +78,6 @@ public class RagdollController : MonoBehaviour
         {
             rigidbody.isKinematic = state;
         }
-
-        
     }
 
     public void SetColliderState(bool state)

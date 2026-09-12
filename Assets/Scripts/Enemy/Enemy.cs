@@ -269,9 +269,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         //VFX
         if (BloodSplatterProjector != null)
         {
-            GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
+            Physics.Raycast(this.transform.position, Vector3.down, out RaycastHit hit, 50f);
+            GameObject splatter = Instantiate(BloodSplatterProjector, hit.point + (hit.normal * 0.01f), Quaternion.LookRotation(-hit.normal, Vector3.up));
             splatter.GetComponent<DecalProjector>().material = decals[UnityEngine.Random.Range(2, decals.Length)];
-
+            //splatter.GetComponent<DecalProjector>().renderingLayerMask = 1;
             splatter.transform.Rotate(90, 0, 0);
         }
 
@@ -347,8 +348,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Dead = false;
 
         animator.enabled = true;
-        ragdollController.SetColliderState(false);
-        ragdollController.SetRigidbodyState(true);
+        ragdollController.EnableRagdoll(false);
     }
 
     protected IEnumerator SpawnDeathBloodPool()
@@ -359,9 +359,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (BloodSplatterProjector == null) yield break; // Error prevention from having no blood splatter projector
         GameObject splatter = Instantiate(BloodSplatterProjector, this.transform.position, Quaternion.identity);
         splatter.GetComponent<DecalProjector>().material = decals[0];
-        splatter.GetComponent<DecalProjector>().size = new Vector3(3, 3, 5);
+        splatter.GetComponent<DecalProjector>().size = new Vector3(3, 3, 0.05f);
         splatter.transform.Rotate(90, 0, 0);
-
+        //splatter.GetComponent<DecalProjector>().renderingLayerMask = 1;
     }
 
     /// <summary>
