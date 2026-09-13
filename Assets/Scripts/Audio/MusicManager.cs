@@ -1,3 +1,4 @@
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using Unity.VisualScripting;
@@ -16,14 +17,14 @@ public class MusicManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null)
-            Debug.LogError("More than one Music Manager is found in the scene! Please keep only one at a time.");
+            UnityEngine.Debug.LogError("More than one Music Manager is found in the scene! Please keep only one at a time.");
         instance = this;
     }
 
     private void SetupMusic()
     {
         if (musicToPlay.IsNull) {
-            Debug.LogError("Error! Music Manager in the scene but no Music Event is defined!");
+            UnityEngine.Debug.LogError("Error! Music Manager in the scene but no Music Event is defined!");
             return; 
         }
         musicInstance = RuntimeManager.CreateInstance(musicToPlay);
@@ -48,23 +49,28 @@ public class MusicManager : MonoBehaviour
 
     public void ChangeMusic(string MusicPath)
     {
-        EventReference NewMusic = new()
-        {
-            Guid = RuntimeManager.PathToGUID(MusicPath)
-        };
-        if (NewMusic.Guid != null)
-        {
+        //GUID NewMusic = RuntimeManager.PathToGUID(MusicPath);
+        //if (NewMusic != null)
+        //{
+        //    StopMusic();
+        //    musicInstance.release();
+        //    musicToPlay = RuntimeManager.PathToEventReference(MusicPath);
+        //    musicInstance = RuntimeManager.CreateInstance(NewMusic);
+        //    PlayMusic();
+        //}
+        EventReference NewMusic = RuntimeManager.PathToEventReference(MusicPath);
+        if (!NewMusic.IsUnityNull())
             ChangeMusic(NewMusic);
-        }
     }
 
     // In theory, changes to a new music. Currently Untested.
     public void ChangeMusic(EventReference NewMusic)
     {
-        StopMusic();
+        PlayStopMusic(false);
         musicInstance.release();
         musicToPlay = NewMusic;
         musicInstance = RuntimeManager.CreateInstance(musicToPlay);
+        PlayStopMusic(true);
     }
 
     /// <summary>
