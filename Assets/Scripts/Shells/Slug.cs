@@ -13,6 +13,7 @@ public class Slug : ShellBase
         type = ShellType.Slug;
         DisplayColor = Color.green;
         MaxHolding = 15; //eventually 15
+        KnockbackAmount = 20f;
     }
 
     public override float ScaleDamage(RaycastHit hit)

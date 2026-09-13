@@ -300,9 +300,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         if (rigidbody != null)
         { 
+            agent.updatePosition = false;
+            rigidbody.isKinematic = false;
             Vector3 direction = this.transform.position - Player.transform.position;
             rigidbody.AddForce(direction.normalized * shell.KnockbackAmount, ForceMode.VelocityChange);
+            //rigidbody.isKinematic = true;
+            StartCoroutine(KnockbackDelay());
+            agent.updatePosition = true;
         }
+    }
+
+    private IEnumerator KnockbackDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        rigidbody.isKinematic = true;
     }
 
     public void HitEffect(ShellBase shell)

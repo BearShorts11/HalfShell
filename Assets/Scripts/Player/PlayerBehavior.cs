@@ -566,7 +566,10 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     }
 
-    public void Bullshit()
+    /// <summary>
+    /// getting around Pixel Crusher's system that won't let me get directly to PauseMenu for some reason
+    /// </summary>
+    public void RedirectToPauseMenuShowControls()
     {
         PauseMenu menu = FindFirstObjectByType<PauseMenu>();
         if (menu != null) { menu.ToggleControls(); }

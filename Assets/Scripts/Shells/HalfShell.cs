@@ -14,7 +14,7 @@ public class HalfShell : ShellBase
         type = ShellType.HalfShell;
         DisplayColor = Color.red;
         MaxHolding = int.MaxValue;
-        KnockbackAmount = 1;
+        KnockbackAmount = 2.5f;
     }
 
     public override float ScaleDamage(RaycastHit hit)

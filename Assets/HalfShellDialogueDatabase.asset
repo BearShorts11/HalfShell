@@ -1830,6 +1830,10 @@ MonoBehaviour:
           Delay(2)'
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 193e3dc4-0382-40dc-982e-65004d1ed4ca
+        type: 0
+        typeString: 
       conversationID: 4
       isRoot: 0
       isGroup: 0
@@ -1854,10 +1858,46 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: NoMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: UnlockCursor
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: PauseTime
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
-        x: 399
+        x: 400.19403
         y: 195
         width: 160
         height: 30
@@ -1952,10 +1992,22 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: ResumeTime
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       canvasRect:
         serializedVersion: 2
         x: 475.77832
-        y: 321
+        y: 322.194
         width: 160
         height: 30
     - id: 8
@@ -2026,6 +2078,18 @@ MonoBehaviour:
           - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
             m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
             m_MethodName: YesMove
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1584785158103645611, guid: ad216669ab7d60044958d9824b59b3e4, type: 3}
+            m_TargetAssemblyTypeName: PlayerBehavior, Assembly-CSharp
+            m_MethodName: ResumeTime
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
