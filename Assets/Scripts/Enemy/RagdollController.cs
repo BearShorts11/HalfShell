@@ -11,6 +11,7 @@ public class RagdollController : MonoBehaviour
     public float explosionRadius;
     public float explosionLift;
 
+    public bool strangeVisibility = false; // I dont know any more. This is for enemies affected by knockback for whatever reason.
     public bool ragdollEnabled = false; // Variable to enable updating view bounds because they do not follow the ragdoll/armature leading to weird rendering issues when they are far from the point to where the
     [SerializeField] private SkinnedMeshRenderer mesh;
     [SerializeField] private SkinnedMeshRenderer[] meshes; // That Ranged Enemy Mesh being split coming to bite me in the ass :sob: -V
@@ -72,7 +73,7 @@ public class RagdollController : MonoBehaviour
                 meshBounds = localMesh.localBounds;
                 if (root)
                 {
-                    meshBounds.center = root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position);
+                    meshBounds.center = strangeVisibility ? root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position) : root.gameObject.transform.localPosition;
                 }
                 localMesh.localBounds = meshBounds;
             }
@@ -83,7 +84,7 @@ public class RagdollController : MonoBehaviour
             meshBounds = mesh.localBounds;
             if (root)
             {
-                meshBounds.center = root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position);
+                meshBounds.center = strangeVisibility ? root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position) : root.gameObject.transform.localPosition;
                 //Debug.Log("Visible Bound Center: " + meshBounds.center);
             }
             //mesh.bounds = meshBounds;

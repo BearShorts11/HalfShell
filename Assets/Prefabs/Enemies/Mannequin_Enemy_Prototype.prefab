@@ -244,7 +244,8 @@ MonoBehaviour:
   Player: {fileID: 0}
   agent: {fileID: 0}
   animator: {fileID: 2320268731524099953}
-  ragdollController: {fileID: 46083098953571944}
+  ragdollController: {fileID: 0}
+  rigidbody: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: af4f2d7dd9909254ea9968ba485228d3, type: 3}
   FullyGibbedParticle: {fileID: 0}
   fireParticles: []
@@ -873,9 +874,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2757371395600353380}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7036213049465896255, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 46083098953571944}
+      addedObject: {fileID: 5235608095266984477}
     - targetCorrespondingSourceObject: {fileID: 3120235394191848496, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4872236287079895999}
@@ -1002,29 +1003,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8426254245088255733, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
   m_PrefabInstance: {fileID: 8167794384628093664}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1223980514442080223 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7036213049465896255, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
-  m_PrefabInstance: {fileID: 8167794384628093664}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &46083098953571944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223980514442080223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494f966683179da46be5810b9492f09e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyCollider: {fileID: 3737091666178836311}
-  explosionForce: 50
-  explosionRadius: 2.5
-  explosionLift: 0.5
-  ragdollEnabled: 0
-  mesh: {fileID: 6143400667431366816}
 --- !u!1 &1341274242289793267 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2034223612753319405, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
@@ -2373,6 +2351,32 @@ MonoBehaviour:
   damMult: 1
   damPctHealthOnRemove: 0
   <enemy>k__BackingField: {fileID: 0}
+--- !u!1 &9050190598182350769 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
+  m_PrefabInstance: {fileID: 8167794384628093664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5235608095266984477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9050190598182350769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494f966683179da46be5810b9492f09e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCollider: {fileID: 3737091666178836311}
+  explosionForce: 50
+  explosionRadius: 2.5
+  explosionLift: 0.5
+  strangeVisibility: 0
+  ragdollEnabled: 0
+  mesh: {fileID: 6143400667431366816}
+  meshes: []
+  root: {fileID: 0}
 --- !u!4 &9170994093088200658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1016757153237189938, guid: cab9a2090f7234d4ea5702cc6a694720, type: 3}
