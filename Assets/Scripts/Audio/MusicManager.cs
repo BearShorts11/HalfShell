@@ -46,6 +46,18 @@ public class MusicManager : MonoBehaviour
         musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
+    public void ChangeMusic(string MusicPath)
+    {
+        EventReference NewMusic = new()
+        {
+            Guid = RuntimeManager.PathToGUID(MusicPath)
+        };
+        if (NewMusic.Guid != null)
+        {
+            ChangeMusic(NewMusic);
+        }
+    }
+
     // In theory, changes to a new music. Currently Untested.
     public void ChangeMusic(EventReference NewMusic)
     {
