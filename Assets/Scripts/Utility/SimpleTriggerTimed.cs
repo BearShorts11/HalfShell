@@ -105,7 +105,11 @@ public class SimpleTriggerTimed : MonoBehaviour
 
         if (onTriggerEnter.Count == 1 && onTriggerEnterTag.Count == 0) { triggered = true; return; }
 
-        if (onTriggerEnter.Count != onTriggerEnterTag.Count) { Debug.Log("Trigger Enter tags don't match"); return; }
+        if (onTriggerEnterTag.Count > 1 && onTriggerEnter.Count != onTriggerEnterTag.Count) 
+        { 
+            Debug.Log("Trigger Enter tags don't match"); 
+            return;
+        }
 
         for (int i = 0; i < onTriggerEnter.Count; i++)
         {
@@ -119,7 +123,7 @@ public class SimpleTriggerTimed : MonoBehaviour
 
         if (onTriggerExit.Count == 1 && onTriggerExitTag.Count == 0) { triggered = true; return; }
 
-        if (onTriggerExit.Count != onTriggerExitTag.Count) { Debug.Log("Trigger Exit tags don't match"); return; }
+        if ( onTriggerExitTag.Count > 1 && onTriggerExit.Count != onTriggerExitTag.Count) { Debug.Log("Trigger Exit tags don't match"); return; }
 
         for (int i = 0; i < onTriggerExit.Count; i++)
         {
