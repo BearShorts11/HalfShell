@@ -4,8 +4,8 @@ using UnityEngine.EventSystems;
 
 public class MouseOverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    float originalScale;
-    float expandedScale;
+    Vector3 originalScale;
+    Vector3 expandedScale;
     RectTransform rectTransform;
 
     public bool SetTextColor;
@@ -16,19 +16,19 @@ public class MouseOverButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        originalScale = rectTransform.localScale.x;
-        expandedScale = originalScale + 0.1f;
+        originalScale = rectTransform.localScale;
+        expandedScale = new Vector3(originalScale.x + 0.1f, originalScale.y + 0.1f, originalScale.z + 0.1f);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rectTransform.localScale = new Vector3(expandedScale, expandedScale, expandedScale);
+        rectTransform.localScale = expandedScale;
         if (SetTextColor) transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Hover;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        rectTransform.localScale = new Vector3(originalScale, originalScale, originalScale);
+        rectTransform.localScale = originalScale;
         if (SetTextColor) transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Normal;
     }
 
