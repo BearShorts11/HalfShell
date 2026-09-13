@@ -102,6 +102,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     [Header("Cinemachine")]
     public CinemachineCamera playerCinemachineCamera;
     public GameObject CinemachineCameraTarget;
+    public static Transform playerView { get; private set; } // For getting the actual camera view + rotation in other classes
     public PlayerInput input;
     public PlayerCameraInputs cameraInput;
     public float TopClamp = 90.0f;
@@ -185,6 +186,8 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         UpdateSensitivity();
         UpdateFOV();
 
+        if (CinemachineCameraTarget)
+            playerView = CinemachineCameraTarget.transform;
         //hints = Resources.FindObjectsOfTypeAll<LowHealthHintBehavior>().ToListPooled<LowHealthHintBehavior>();
     }
 

@@ -23,6 +23,19 @@ public class Canvas2DSpriteBehavior : MonoBehaviour
 
     [SerializeField] protected Canvas canvas;
     [SerializeField] protected CanvasGroup canvasGroup;
+    // _cam: Because of the way that the player camera is setup, you cannot actually trust the transform of Camera.main
+    //      as it will always be upright for some reason. So what ever is set as the player view might be reliable.
+    //      Thanks cinemachine. -V
+    Transform _cam
+    {
+        get
+        {
+            if (PlayerBehavior.playerView)
+                return PlayerBehavior.playerView;
+            else
+                return cam;
+        }
+    }
     Transform cam;
     Vector3 initScale = Vector3.one;
     private FadeMode transition = FadeMode.None;
@@ -123,7 +136,7 @@ public class Canvas2DSpriteBehavior : MonoBehaviour
             //  and it has the shader material/sprite to set up the billboard effect.
             {
                 //canvas.transform.LookAt(cam, Vector3.up);
-                canvas.transform.rotation = cam.rotation;
+                canvas.transform.rotation = _cam.rotation;
                 //canvas.transform.Rotate(0, 180, 0);
             }
             //canvas.transform.forward = -cam.forward;
