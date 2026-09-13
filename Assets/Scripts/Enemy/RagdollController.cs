@@ -15,7 +15,7 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer mesh;
     [SerializeField] private SkinnedMeshRenderer[] meshes; // That Ranged Enemy Mesh being split coming to bite me in the ass :sob: -V
     private Bounds meshBounds;
-    private Rigidbody root;
+    [SerializeField] private Rigidbody root;
     private PlayerShooting playerShooting;
     
     //public Rigidbody enemyRigidbody;
@@ -23,13 +23,14 @@ public class RagdollController : MonoBehaviour
     void Start()
     {
         playerShooting = FindFirstObjectByType<PlayerShooting>();
+
         if (!mesh)
-        {
             mesh = GetComponentInChildren<SkinnedMeshRenderer>();
-        }
         if (meshes.Length <= 0)
             meshes = GetComponentsInChildren<SkinnedMeshRenderer>();
-        root = GetComponentInChildren<Rigidbody>();
+        if (!root)
+            root = GetComponentInChildren<Rigidbody>();
+
         EnableRagdoll(ragdollEnabled);
     }
 
@@ -71,7 +72,7 @@ public class RagdollController : MonoBehaviour
                 meshBounds = localMesh.localBounds;
                 if (root)
                 {
-                    meshBounds.center = root.gameObject.transform.localPosition;
+                    meshBounds.center = root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position);
                 }
                 localMesh.localBounds = meshBounds;
             }
@@ -82,7 +83,7 @@ public class RagdollController : MonoBehaviour
             meshBounds = mesh.localBounds;
             if (root)
             {
-                meshBounds.center = root.gameObject.transform.localPosition;
+                meshBounds.center = root.gameObject.transform.InverseTransformPoint(root.gameObject.transform.position);
                 //Debug.Log("Visible Bound Center: " + meshBounds.center);
             }
             //mesh.bounds = meshBounds;
