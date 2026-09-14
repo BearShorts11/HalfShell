@@ -52,6 +52,11 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
         if (soundEvents == null)
             soundEvents = this.AddComponent<SimpleSoundEvent>();
         vocalCoolDown = defaultVocalCoolDown;
+
+        if (gibSound.IsNull)
+        {
+            gibSound = RuntimeManager.PathToEventReference("event:/Explosions/Gib_Explosion");
+        }
     }
 
     private void Update()
@@ -97,6 +102,9 @@ public class Juggernaut : Enemy, IHasMeleeAttack, IHasRangedAttack
             stateMachine._cooldownState.SetCooldownTime(damageCooldown);
             stateMachine.TransitionTo(stateMachine._cooldownState);
         }
+
+        if (TryGib())
+            return;
     }
 
     public void SetNextRangedAttackTime()

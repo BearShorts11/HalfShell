@@ -56,6 +56,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [Header("Health & Damage")]
     public float Health { get; set; }
     [field: SerializeField] public float maxHealth { get; set; } = 50f;
+
+    [Tooltip("Negative Health threshold for corpse gibbing\n0: Default Max Health * 2, -1: Always Gib on death")]
+    public float corpseGibThreshold = 0f;
     public bool Dead { get; set; }
 
     /// <summary>
@@ -122,6 +125,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public EventReference deathSounds;
     public EventReference onFireSounds;
 
+    public EventReference gibSound;
+
     [Header("VFX")]
     public MatSurfaceType surfaceType = MatSurfaceType.Meat;
 
@@ -160,6 +165,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (soundEvents == null)
             soundEvents = this.AddComponent<SimpleSoundEvent>();
         vocalCoolDown = defaultVocalCoolDown;
+
+        if (gibSound.IsNull)
+        {
+            gibSound = RuntimeManager.PathToEventReference("event:/Explosions/Gib_Explosion");
+        }
     }
 
     /// <summary>
@@ -277,9 +287,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             splatter.transform.Rotate(90, 0, 0);
         }
 
-        if (Health <= -(maxHealth * 2) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
+        if (TryGib())
         {
-            soundEvents.PlaySound("event:/Explosions/Gib_Explosion");
+            return;
+        }
+
+        damageFromStatusEffect = false;
+    }
+
+    protected bool TryGib()
+    {
+        if ((corpseGibThreshold <= -1 || corpseGibThreshold == 0 && Health <= -(maxHealth * 2) || corpseGibThreshold > 0 && Health <= -(corpseGibThreshold)) && FullyGibbedParticle != null) // Enemy/Corpse took a lot of damage than twice it's max HP, turn into mist completely
+        {
+            soundEvents.PlaySound(gibSound);
             FullyGibbedParticle.SetActive(true);
             FullyGibbedParticle.gameObject.transform.parent = null;
             //Destroy(this.gameObject);
@@ -290,10 +310,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             //TODO: add to kerth list like pickups
             //re-enable on reload
 
-            return;
+            return true;
         }
-
-        damageFromStatusEffect = false;
+        return false;
     }
 
     public virtual void DoKnockback(ShellBase shell)

@@ -747,6 +747,7 @@ MonoBehaviour:
   explosionForce: 30
   explosionRadius: 2
   explosionLift: 0.2
+  strangeVisibility: 0
   ragdollEnabled: 0
   mesh: {fileID: 0}
   meshes:
@@ -770,6 +771,7 @@ MonoBehaviour:
   - {fileID: 6339184951183776872}
   - {fileID: 7866730430503520037}
   - {fileID: 5377862798077533191}
+  root: {fileID: 0}
 --- !u!1 &945809316659003898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,6 +1348,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   animator: {fileID: 0}
   ragdollController: {fileID: 0}
+  rigidbody: {fileID: 0}
   BloodSplatterProjector: {fileID: 7463983661494074983, guid: 6e1ea0ad5aa349149b58f8e731a706ec, type: 3}
   FullyGibbedParticle: {fileID: 5192910537136234875}
   fireParticles:
@@ -1360,7 +1363,8 @@ MonoBehaviour:
   attackCooldown: 0.5
   damageCooldown: 1.5
   knockbackAmount: 0
-  <maxHealth>k__BackingField: 50
+  <maxHealth>k__BackingField: 40
+  corpseGibThreshold: 180
   Docile: 0
   SpawnAgro: 0
   AlwaysChase: 0

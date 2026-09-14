@@ -133,6 +133,7 @@ MonoBehaviour:
   agent: {fileID: 1592721323569115803}
   animator: {fileID: 1800514114450269705}
   ragdollController: {fileID: 3290379719334388622}
+  rigidbody: {fileID: 0}
   BloodSplatterProjector: {fileID: 0}
   FullyGibbedParticle: {fileID: 7040073752356727286}
   fireParticles: []
@@ -146,6 +147,7 @@ MonoBehaviour:
   damageCooldown: 1.5
   knockbackAmount: 0
   <maxHealth>k__BackingField: 2500
+  corpseGibThreshold: 1250
   Docile: 0
   SpawnAgro: 0
   AlwaysChase: 0
@@ -188,6 +190,13 @@ MonoBehaviour:
       Data3: 887598759
       Data4: 716876121
     Path: event:/Enemy/Demon/DemonIdle
+  gibSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   surfaceType: 5
   _shotOffset: 0
   ProjectilePrefab: {fileID: 6924072200759781386, guid: 149f0b7f09ff10d458819567531d8858, type: 3}
@@ -2581,9 +2590,11 @@ MonoBehaviour:
   explosionForce: 30
   explosionRadius: 2
   explosionLift: 0.2
+  strangeVisibility: 0
   ragdollEnabled: 0
   mesh: {fileID: 4415315625049464326}
   meshes: []
+  root: {fileID: 0}
 --- !u!1 &5085447133818963346 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: a1733a24e3f0de040ac584576bbaf106, type: 3}

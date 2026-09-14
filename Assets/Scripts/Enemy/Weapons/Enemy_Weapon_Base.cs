@@ -23,6 +23,8 @@ public class Enemy_Weapon_Base : MonoBehaviour, IEnemyWeapon
 
     private Collider[] col;
 
+    private Vector3 defaultScale;
+
     public void Start()
     {
         if (gameObject.TryGetComponent<Rigidbody>(out Rigidbody component))
@@ -33,6 +35,26 @@ public class Enemy_Weapon_Base : MonoBehaviour, IEnemyWeapon
             rb = gameObject.GetComponentInChildren<Rigidbody>();
 
         col = gameObject.GetComponentsInChildren<Collider>();
+
+        defaultScale = gameObject.transform.localScale;
+    }
+
+    void Update()
+    {
+        if (gameObject.transform.parent != null)
+        {
+            if (gameObject.transform.parent.lossyScale == Vector3.zero)
+            {
+                Rigidbody rb = GetComponentInParent<Rigidbody>();
+                
+                if (rb)
+                    Drop(rb.linearVelocity, rb.angularVelocity);
+                else
+                    Drop();
+
+                gameObject.transform.localScale = defaultScale;
+            }
+        }
     }
 
     virtual public void Drop()
