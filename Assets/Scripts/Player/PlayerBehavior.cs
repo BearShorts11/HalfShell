@@ -356,7 +356,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     public float UpdateFOV()
     {
         //for some reason does not do exact value, but still works fine
-        if (PlayerPrefs.HasKey(FOV_KEY)) playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+        if (PlayerPrefs.HasKey(FOV_KEY))
+        { 
+            playerCinemachineCamera.Lens.FieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+            // set the viewmodel camera FOV as well since we're camera stacking (TODO: Alt. way to render viewmodel so that it takes lighting and shadows?)
+            playerCamera.gameObject.transform.GetChild(0).GetComponent<Camera>().fieldOfView = PlayerPrefs.GetFloat(FOV_KEY);
+        }
         return playerCinemachineCamera.Lens.FieldOfView;
     }
 

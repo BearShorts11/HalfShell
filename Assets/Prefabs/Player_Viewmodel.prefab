@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 3142030119010781667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: -0.2}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -412,24 +412,28 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
+      propertyPath: m_RootBone
+      value: 
+      objectReference: {fileID: 5932802550912816889}
+    - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Center.x
-      value: 2.67
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Center.y
-      value: -0.5
+      value: -8.03
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Center.z
-      value: -0.16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Extent.x
-      value: 4.02
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Extent.y
-      value: 0.66
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -3984878927742336774, guid: 5359200b254587a4eab17ef68681a820, type: 3}
       propertyPath: m_AABB.m_Extent.z
@@ -669,6 +673,7 @@ MonoBehaviour:
   - {fileID: 6613266595751239564}
   transformPoints:
   - {fileID: 7926164267064449851}
+  animationEvents: []
 --- !u!1001 &8248299590438566668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1267,7 +1272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5797384429611982230, guid: 0214c7fd032997b429fcdf3b81d15c79, type: 3}
       propertyPath: m_AABB.m_Center.y
-      value: -3.2
+      value: -7.24
       objectReference: {fileID: 0}
     - target: {fileID: 5797384429611982230, guid: 0214c7fd032997b429fcdf3b81d15c79, type: 3}
       propertyPath: m_AABB.m_Center.z
