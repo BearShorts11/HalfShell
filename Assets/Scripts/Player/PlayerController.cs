@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 
 public class PlayerController : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (shooting != null && PlayerShooting.canFire && context.performed) { shooting.Fire(); }
+        if (shooting != null && PlayerShooting.canFire && context.performed) { shooting.Fire(); dialogue.EndDialogue(); }
     }
 
     public void OnRack(InputAction.CallbackContext context)
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
         if (context.started && shooting != null)
         {
             shooting.PumpBack();
+            dialogue.EndDialogue();
         }
         else if (context.canceled && shooting != null)
         {
@@ -69,31 +71,37 @@ public class PlayerController : MonoBehaviour
 
     public void OnShellWheel(InputAction.CallbackContext context)
     {
-        if (shellWheelController != null) { shellWheelController.ToggleWheel(context.performed); }
+        if (shellWheelController != null) 
+        {
+            shellWheelController.PlayerCanOpenWheel();
+            shellWheelController.ToggleWheel(context.performed);
+            dialogue.EndDialogue();
+        }
     }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        if (pauseMenu != null) { pauseMenu.Pause(); }
+        if (pauseMenu != null) { pauseMenu.Pause(); dialogue.EndDialogue(); }
     }
 
     public void OnAddHS(InputAction.CallbackContext context)
     {
-        if (shooting != null && context.started) shooting.AddHalfShell();
+        if (shooting != null && context.started) { shooting.AddHalfShell(); dialogue.EndDialogue(); }
     }
 
     public void OnAddSL(InputAction.CallbackContext context)
     {
-        if (shooting != null && context.started) shooting.AddSlug();
+        if (shooting != null && context.started) { shooting.AddSlug(); dialogue.EndDialogue(); }
     }
 
     public void OnAddFS(InputAction.CallbackContext context)
     {
-        if (shooting != null && context.started) shooting.AddIncindiary();
+        if (shooting != null && context.started) { shooting.AddIncindiary(); dialogue.EndDialogue(); }
     }
 
     public void OnControl(InputAction.CallbackContext context)
     {
-        if (dialogue != null && context.performed) dialogue.InputTrigger();
+        if (dialogue != null && context.performed) { dialogue.InputTrigger(); Debug.Log("here"); }
+        
     }
 }

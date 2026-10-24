@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 
 public class Dialogue : MonoBehaviour
@@ -29,6 +30,7 @@ public class Dialogue : MonoBehaviour
 
     private int index;
     private bool speech;
+    private bool inDialogue;
 
     private static System.Random rand = new System.Random();
     private static int GetRandomNumber(int max) => rand.Next(max);
@@ -69,6 +71,17 @@ public class Dialogue : MonoBehaviour
         //prevents player from pressing ctrl before having the shotgun
         if (!player.ShotgunViewmodel.activeInHierarchy) return;
 
+        //switch (inDialogue)
+        //{
+        //    case false:
+        //        StartDialogue();
+        //        inDialogue = true;
+        //        break;
+        //    case true:
+        //        inDialogue = false;
+        //        break;
+        //}
+
         StartDialogue();
         Debug.Log("LeftControl Hit StartDialogue");
     }
@@ -99,8 +112,20 @@ public class Dialogue : MonoBehaviour
             txtComp.text = string.Empty;
 
         }
+    }
 
+    public void EndDialogue()
+    {
+        if (playerShoot.lookingAtGun == true)
+        {
+            //gunFace.StopTalking();
+            Debug.Log("player is NOT looking at gun.");
+            Apollyon.SetActive(false);
+            PlayerBehavior.LockCursor();
+            txtComp.text = string.Empty;
 
+            playerShoot.ForceLookAtGun();
+        }
     }
 
     public void LockCursor()
