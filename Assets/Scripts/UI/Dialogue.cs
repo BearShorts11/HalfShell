@@ -11,6 +11,7 @@ using System;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
 using Unity.VisualScripting.Dependencies.Sqlite;
+using PixelCrushers.DialogueSystem;
 
 
 public class Dialogue : MonoBehaviour
@@ -110,6 +111,7 @@ public class Dialogue : MonoBehaviour
             Apollyon.SetActive(false);
             PlayerBehavior.LockCursor();
             txtComp.text = string.Empty;
+           
 
         }
     }
@@ -123,7 +125,7 @@ public class Dialogue : MonoBehaviour
             Apollyon.SetActive(false);
             PlayerBehavior.LockCursor();
             txtComp.text = string.Empty;
-
+            DialogueManager.StopConversation();
             playerShoot.ForceLookAtGun();
         }
     }
