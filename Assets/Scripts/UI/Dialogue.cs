@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
-using Unity.VisualScripting.Dependencies.Sqlite;
+//using Unity.VisualScripting.Dependencies.Sqlite;
 using PixelCrushers.DialogueSystem;
 
 
@@ -118,14 +118,15 @@ public class Dialogue : MonoBehaviour
 
     public void EndDialogue()
     {
-        if (playerShoot.lookingAtGun == true)
+        if (playerShoot.lookingAtGun == true || Input.GetKeyDown(KeyCode.Mouse1))
         {
             //gunFace.StopTalking();
-            Debug.Log("player is NOT looking at gun.");
+            Debug.Log("player is REALLY NOT looking at gun.");
             Apollyon.SetActive(false);
             PlayerBehavior.LockCursor();
             txtComp.text = string.Empty;
             DialogueManager.StopConversation();
+            player.YesMove(); //added this so that player's shoudl always be able to move if they exit the Dialogeu menu
             playerShoot.ForceLookAtGun();
         }
     }
