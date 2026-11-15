@@ -118,7 +118,7 @@ public class Dialogue : MonoBehaviour
 
     public void EndDialogue()
     {
-        if (playerShoot.lookingAtGun == true || Input.GetKeyDown(KeyCode.Mouse1))
+        if (playerShoot.lookingAtGun == true && Input.GetKeyDown(KeyCode.Mouse1))
         {
             //gunFace.StopTalking();
             Debug.Log("player is REALLY NOT looking at gun.");
