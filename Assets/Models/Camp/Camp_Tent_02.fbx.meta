@@ -3,7 +3,17 @@ guid: a188000b0b772564d991fc21b3576240
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Tent_02
+    second: {fileID: 2100000, guid: ffbb7e06a8b697444bd2446257a0b116, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Tent_SupportBeam
+    second: {fileID: 2100000, guid: a84dab52e5fd00943a7d068e9477bc11, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -50,7 +60,7 @@ ModelImporter:
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 0
+    bakeAxisConversion: 1
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
