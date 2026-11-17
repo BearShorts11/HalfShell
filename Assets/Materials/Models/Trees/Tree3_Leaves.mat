@@ -26,18 +26,17 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHATEST_ON
+  - _SPECULAR_SETUP
   - _SURFACETYPE_WOOD
-  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Transparent
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
-  - DepthOnly
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -119,8 +118,8 @@ Material:
     - Vector1_E8746023: 16
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 1
-    - _AlphaToMask: 0
-    - _Alpha_Clipping: 0.05
+    - _AlphaToMask: 1
+    - _Alpha_Clipping: 0.48
     - _Alpha_Multiplier: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 0
@@ -129,12 +128,12 @@ Material:
     - _CellSize: 24
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
-    - _DstBlendAlpha: 10
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _Exposure: 1
     - _GlossMapScale: 0
@@ -151,12 +150,12 @@ Material:
     - _Smoothness2: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _Surface: 1
-    - _WorkflowMode: 1
+    - _Surface: 0
+    - _WorkflowMode: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
     - Color_2E5415DE: {r: 1, g: 1, b: 1, a: 0}
