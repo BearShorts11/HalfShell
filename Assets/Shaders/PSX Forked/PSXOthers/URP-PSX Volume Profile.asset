@@ -19,6 +19,62 @@ MonoBehaviour:
   tint:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-8772609067053159042
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbb66dc641fe8ef4c843eb98a8fa4058, type: 3}
+  m_Name: FullScreenFog
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  densityMode:
+    m_OverrideState: 1
+    m_Value: 2
+  startLine:
+    m_OverrideState: 1
+    m_Value: 0
+  endLine:
+    m_OverrideState: 1
+    m_Value: 10
+  startHeight:
+    m_OverrideState: 1
+    m_Value: 5
+  endHeight:
+    m_OverrideState: 1
+    m_Value: 0
+  density:
+    m_OverrideState: 1
+    m_Value: 0.1
+  noiseMode:
+    m_OverrideState: 1
+    m_Value: 0
+  noiseTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+    dimension: 1
+  noiseIntensity:
+    m_OverrideState: 1
+    m_Value: 0.5
+  noiseScale:
+    m_OverrideState: 1
+    m_Value: 1
+  noiseScrollSpeed:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1}
 --- !u!114 &-8573746058171356457
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -40,13 +96,13 @@ MonoBehaviour:
     m_Value: 0
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.967997, b: 0.8962264, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 0
 --- !u!114 &-8565697437747668144
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -283,7 +339,7 @@ MonoBehaviour:
     m_Value: 0
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 0.2
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -302,13 +358,13 @@ MonoBehaviour:
   active: 1
   widthPixelation:
     m_OverrideState: 1
-    m_Value: 428
+    m_Value: 512
   heightPixelation:
     m_OverrideState: 1
-    m_Value: 240
+    m_Value: 512
   colorPrecision:
     m_OverrideState: 1
-    m_Value: 128
+    m_Value: 32
 --- !u!114 &-1103184823351686471
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -324,13 +380,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   highlights:
     m_OverrideState: 1
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 0
 --- !u!114 &-758010384845797820
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -346,16 +402,16 @@ MonoBehaviour:
   active: 1
   patternIndex:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   ditherThreshold:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 512
   ditherStrength:
     m_OverrideState: 1
     m_Value: 1
   ditherScale:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
 --- !u!114 &-481527927588478010
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -412,6 +468,7 @@ MonoBehaviour:
   - {fileID: 1550702760263395103}
   - {fileID: 2517938949045701733}
   - {fileID: -7146545020748804254}
+  - {fileID: -8772609067053159042}
 --- !u!114 &169896938054019971
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -427,34 +484,34 @@ MonoBehaviour:
   active: 1
   fogDensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   fogDistance:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 10
   fogColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 0}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   ambientColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 0}
+    m_Value: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
   fogNear:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   fogFar:
     m_OverrideState: 1
-    m_Value: 81.3
+    m_Value: 100
   fogAltScale:
     m_OverrideState: 1
     m_Value: 10
   fogThinning:
     m_OverrideState: 1
-    m_Value: 468
+    m_Value: 100
   noiseScale:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 100
   noiseStrength:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.05
 --- !u!114 &813629861817367561
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -500,7 +557,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
+          inSlope: 1
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -510,7 +567,7 @@ MonoBehaviour:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -943,7 +1000,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   scale:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 1
 --- !u!114 &8772656644991795544
 MonoBehaviour:
   m_ObjectHideFlags: 3

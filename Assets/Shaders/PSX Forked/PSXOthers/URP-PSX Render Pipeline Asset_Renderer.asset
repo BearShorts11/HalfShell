@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7813741425bf9df4b8f6b5a4f6b1f66f, type: 3}
   m_Name: Crt
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
 --- !u!114 &-4223126051207057144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,13 +73,14 @@ MonoBehaviour:
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
   - {fileID: 2606515335583478340}
-  - {fileID: 6965443398785072023}
+  - {fileID: 2971264839007132805}
   - {fileID: -1925210268287778290}
   - {fileID: -5677514569700259782}
-  - {fileID: -4223126051207057144}
   - {fileID: 3282919613930813186}
   - {fileID: 4956538738642933216}
-  m_RendererFeatureMap: 3a48e961946a35b108f11a443b7164c5023782c6fe458f2de05546d0b829c944
+  - {fileID: -4223126051207057144}
+  - {fileID: 6965443398785072023}
+  m_RendererFeatureMap: 3a48e961946a35b185dca0eea00d3c29023782c6fe458f2de05546d0b829c944e669621787211bdf46c6e3c83dc93f7d0a20e8e81f8c2e1d08f11a443b7164c5
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -98,7 +99,7 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 0
+  m_RenderingMode: 2
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
   m_DepthAttachmentFormat: 0
@@ -118,6 +119,22 @@ MonoBehaviour:
   m_Name: Fog
   m_EditorClassIdentifier: 
   m_Active: 1
+--- !u!114 &2971264839007132805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8a626e4a363604d8b1a959cc4ab28f, type: 3}
+  m_Name: FullScreenFogRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _injectionPoint: 550
+  _renderCamera: 7
+  _shader: {fileID: -6465566751694194690, guid: a1b07ed697d67f145899e797afa7e6d3, type: 3}
 --- !u!114 &3282919613930813186
 MonoBehaviour:
   m_ObjectHideFlags: 0
