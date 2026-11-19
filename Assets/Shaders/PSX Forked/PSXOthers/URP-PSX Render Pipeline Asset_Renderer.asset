@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5677514569700259782
+--- !u!114 &-6295097668683044836
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7813741425bf9df4b8f6b5a4f6b1f66f, type: 3}
-  m_Name: Crt
+  m_Name: CRT
   m_EditorClassIdentifier: 
   m_Active: 0
 --- !u!114 &-4223126051207057144
@@ -72,17 +72,17 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
+  - {fileID: -6295097668683044836}
   - {fileID: 2606515335583478340}
-  - {fileID: -1925210268287778290}
   - {fileID: 2971264839007132805}
-  - {fileID: -5677514569700259782}
   - {fileID: 3282919613930813186}
   - {fileID: 4956538738642933216}
   - {fileID: -4223126051207057144}
   - {fileID: 6965443398785072023}
-  m_RendererFeatureMap: 3a48e961946a35b1023782c6fe458f2d85dca0eea00d3c29e05546d0b829c944e669621787211bdf46c6e3c83dc93f7d0a20e8e81f8c2e1d08f11a443b7164c5
+  - {fileID: -1925210268287778290}
+  m_RendererFeatureMap: 1ce8c1ef0552a3a83a48e961946a35b185dca0eea00d3c29e669621787211bdf46c6e3c83dc93f7d0a20e8e81f8c2e1d08f11a443b7164c5023782c6fe458f2d
   m_UseNativeRenderPass: 0
-  xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
+  xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 2
   m_OpaqueLayerMask:
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 2
   m_DepthPrimingMode: 0
-  m_CopyDepthMode: 0
+  m_CopyDepthMode: 1
   m_DepthAttachmentFormat: 0
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: Viewmodel
-    Event: 300
+    Event: 450
     filterSettings:
       RenderQueueType: 0
       LayerMask:
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: ViewmodelZFix
-    Event: 300
+    Event: 450
     filterSettings:
       RenderQueueType: 0
       LayerMask:
